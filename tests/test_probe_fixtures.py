@@ -113,6 +113,12 @@ def test_ipma_observaties():
             assert abs(obs["intensidadeVento"] * 3.6 - obs["intensidadeVentoKM"]) < 0.6  # m/s en km/u
 
 
+@pytest.mark.skipif(not ok("emodnet_platforms"), reason="nog niet opgehaald")
+def test_emodnet_platformen():
+    namen = {p["call_name"] for p in load("emodnet_platforms")}
+    assert {"Sines coastal buoy", "Leixoes coastal buoy", "Faro coastal buoy"} <= namen
+
+
 def test_neaps_stations():
     st = load("neaps_stations")
     namen = {s["naam"] for s in st}

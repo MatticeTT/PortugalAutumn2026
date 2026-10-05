@@ -97,6 +97,15 @@ def emodnet_search():
     return get_json(f"{EMODNET}/search/advanced.json", params)
 
 
+def emodnet_platforms():
+    """Golfplatformen binnen de kaderrechthoek, uit de catalogus van EMODnet."""
+    cons = (f"&latitude>={BBOX['minLat']}&latitude<={BBOX['maxLat']}"
+            f"&longitude>={BBOX['minLon']}&longitude<={BBOX['maxLon']}")
+    url = f"{EMODNET}/tabledap/ERD_EP_WAVES_INSITU_METADATA.json?{urllib.parse.quote(cons, safe='=&><.-')}"
+    t = json.loads(get(url))["table"]
+    return [dict(zip(t["columnNames"], r, strict=False)) for r in t["rows"]]
+
+
 def emodnet_buoy():
     """Golfplatformen in Portugal uit de catalogus, daarna één dag metingen van één platform.
 
@@ -206,6 +215,7 @@ SOURCES = {
     "openmeteo_gfswave": openmeteo_gfswave,
     "copernicus_ibi": copernicus_ibi,
     "emodnet_search": emodnet_search,
+    "emodnet_platforms": emodnet_platforms,
     "emodnet_buoy": emodnet_buoy,
     "ipma_warnings": ipma_warnings,
     "ipma_stations": ipma_stations,

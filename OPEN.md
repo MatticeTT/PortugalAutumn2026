@@ -23,13 +23,24 @@ De proef voor Copernicus IBI is geschreven maar overgeslagen: er zijn nog geen s
 
 **Voorstel:** de eigenaar maakt een gratis account op data.marine.copernicus.eu/register en zet `COPERNICUSMARINE_SERVICE_USERNAME` en `COPERNICUSMARINE_SERVICE_PASSWORD` als geheimen in GitHub (Settings → Secrets and variables → Actions). Daarna de workflow `probe` opnieuw starten.
 
-### 3. `emodnet_buoy`: nog geen metingen
+### 3. `emodnet_buoy`: EMODnet heeft geen recente metingen van de Portugese boeien
 
-Eerste run in GitHub Actions (5 oktober 2026, 14:40 UTC): de zoekfunctie van ERDDAP geeft voor Portugal alleen catalogi terug (`ERD_EP_TS_*_NRT_METADATA`, `ERD_EP_WAVES_INSITU_METADATA`). Die bevatten per platform `PLATFORMCODE`, `call_name`, `latitude`, `longitude`, `lastDateObservation` en de gemeten parameters, maar geen metingen.
+Tweede run in GitHub Actions (5 oktober 2026, 14:50 UTC). De catalogus `ERD_EP_WAVES_INSITU_METADATA` kent tien golfplatformen in de kaderrechthoek (opgeslagen als `emodnet_platforms.json`):
 
-De proef is aangepast: eerst de platformen in Portugal uit de VHM0-catalogus, dan per platform de dataset met de metingen zoeken. Wacht op de volgende run. Of Nazaré erin zit, blijft **[onbevestigd]**.
+| Platform | Code | Ligging | Laatste meting |
+|---|---|---|---|
+| Sines (open zee) | 6201081 | 37,68 N 9,73 W | 20-10-2025 |
+| Sines kustboei | Sines-coast-buoy | 37,92 N 8,93 W | 20-10-2025 |
+| Leixões kustboei | Leixoes-coast-buoy (ook 6201077) | 41,32 N 8,98 W | 20-10-2025 |
+| Faro kustboei | Faro-coast-buoy (ook 6201079) | 36,90 N 7,90 W | 20-10-2025 |
+| Monican01 (bij Nazaré) | 6200192 | 39,51 N 9,64 W | 01-10-2025 |
+| Monican02 (bij Nazaré) | 6200199 | 39,56 N 9,21 W | 22-05-2025 |
+| Raia01 | 6200191 | 41,15 N 9,58 W | 12-02-2025 |
+| Cabo Silleiro (Spanje) | 6200084 | 42,12 N 9,43 W | 20-10-2025 |
 
-**Terugval:** Copernicus In-Situ (`INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033`), met hetzelfde account als punt 2.
+Sinds 20 oktober 2025 komen er via EMODnet geen metingen meer binnen van de Portugese boeien. Een boei bij Nazaré bestaat (MONICAN), maar levert evenmin recente data. Per platform een dataset met metingen zoeken gaf niets (de zoekfunctie geeft 404).
+
+**Voorstel voor M6:** Copernicus In-Situ (`INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033`) proberen, met het account uit punt 2. Levert dat ook niets recents, dan de boeidata van het Instituto Hidrográfico zelf zoeken (zie ook punt 4). Zonder recente boeimetingen kan M6 niet starten.
 
 ### 4. `hidrografico_collections`: de host bestaat niet
 
