@@ -8,6 +8,7 @@ on:
       - pipeline/probe/**
       - pipeline/tides/probe.mjs
       - .github/workflows/probe.yml
+      - pyproject.toml
 permissions:
   contents: write
 concurrency: { group: probe, cancel-in-progress: false }
