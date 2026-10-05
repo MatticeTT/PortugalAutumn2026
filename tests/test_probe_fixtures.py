@@ -77,12 +77,15 @@ def test_gfswave_deelgolven(name):
     for deel in ("swell_wave", "secondary_swell_wave", "wind_wave"):
         for v in ("height", "period", "direction"):
             assert f"{deel}_{v}" in h
-    # Bevinding M0: GFS-Wave geeft geen piekperiode voor de eerste deining.
-    assert all(x is None for x in h["swell_wave_peak_period"])
-    # Totale hoogte ~ wortel van de som van de kwadraten van de deelgolven (BoM).
+    # Bevinding M0: GFS-Wave geeft geen piekperiodes (OPEN.md punt 5).
+    for v in ("wave_peak_period", "swell_wave_peak_period", "wind_wave_peak_period"):
+        assert all(x is None for x in h.get(v, [None]))
+    # De drie deelgolven, opgeteld als wortel van de som van de kwadraten, liggen tot
+    # ongeveer 12 procent onder de totale hoogte en nooit duidelijk erboven (OPEN.md punt 10).
     for i in range(len(h["time"])):
         som = sum(h[f"{d}_height"][i] ** 2 for d in ("swell_wave", "secondary_swell_wave", "wind_wave")) ** 0.5
-        assert abs(som - h["wave_height"][i]) < 0.1
+        tot = h["wave_height"][i]
+        assert 0.85 * tot <= som <= 1.05 * tot + 0.01
 
 
 @pytest.mark.parametrize("name", [n for n in ("ipma_warnings", "firecrawl_ipma_warnings") if ok(n)])
@@ -94,6 +97,20 @@ def test_ipma_waarschuwingen(name):
         assert r["awarenessLevelID"] in {"green", "yellow", "orange", "red"}
     assert any(r["awarenessTypeName"] == "Agitação Marítima" for r in recs)
     assert any(r["idAreaAviso"] == "FAR" for r in recs)
+
+
+@pytest.mark.skipif(not ok("ipma_observations"), reason="nog niet opgehaald")
+def test_ipma_observaties():
+    d = load("ipma_observations")
+    tijd = next(k for k in d if not k.startswith("_"))
+    stations = d[tijd]
+    assert len(stations) > 100
+    for obs in stations.values():
+        if obs is None:
+            continue
+        assert {"intensidadeVento", "intensidadeVentoKM", "idDireccVento"} <= set(obs)
+        if obs["intensidadeVento"] >= 0 and obs["intensidadeVentoKM"] >= 0:  # -99 = ontbrekend
+            assert abs(obs["intensidadeVento"] * 3.6 - obs["intensidadeVentoKM"]) < 0.6  # m/s en km/u
 
 
 def test_neaps_stations():

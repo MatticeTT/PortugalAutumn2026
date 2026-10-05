@@ -6,7 +6,7 @@ dependencies = ["pyyaml>=6"]
 
 [project.optional-dependencies]
 copernicus = ["copernicusmarine>=2.5"]
-dev = ["pytest>=8", "ruff>=0.6"]
+dev = ["pytest>=8", "ruff==0.15.20"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -20,3 +20,6 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
 include = ["pipeline*"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP"]

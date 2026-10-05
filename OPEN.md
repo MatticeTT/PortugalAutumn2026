@@ -12,6 +12,7 @@ Wat er gebeurd is:
 
 - Open-Meteo (wind en golven) en de IPMA-waarschuwingen zijn één keer opgehaald via Firecrawl. Die antwoorden staan als `firecrawl_*.json`.
 - Neaps rekent offline en is lokaal echt aangeroepen.
+- Alle overige bronnen draaien via `pipeline/probe/probe.py` in GitHub Actions; de eerste run (5 oktober, 14:40 UTC) slaagde voor Open-Meteo (drie modellen), IPMA (waarschuwingen, stations, observaties), OpenFreeMap en Neaps.
 - Voor de rest draait `pipeline/probe/probe.py` in GitHub Actions (`.github/workflows/probe.yml`), waar het netwerk open is. De workflow schrijft de antwoorden terug naar `tests/fixtures/probe/`.
 
 **Voorstel:** de eigenaar voegt die hosts toe aan de toegelaten domeinen van de omgeving (Network access → Custom). Anders werkt Claude Code verder via GitHub Actions, wat trager is maar volstaat.
@@ -22,19 +23,23 @@ De proef voor Copernicus IBI is geschreven maar overgeslagen: er zijn nog geen s
 
 **Voorstel:** de eigenaar maakt een gratis account op data.marine.copernicus.eu/register en zet `COPERNICUSMARINE_SERVICE_USERNAME` en `COPERNICUSMARINE_SERVICE_PASSWORD` als geheimen in GitHub (Settings → Secrets and variables → Actions). Daarna de workflow `probe` opnieuw starten.
 
-### 3. `emodnet_buoy`: dataset-ID onbekend
+### 3. `emodnet_buoy`: nog geen metingen
 
-De ID van de golfdataset met de Portugese boeien staat nergens in het plan. De proef zoekt zelf in de ERDDAP-catalogus op "wave" binnen de kaderrechthoek van Portugal en probeert de eerste datasets met `VHM0`. Wacht op de eerste run in GitHub Actions. Of Nazaré erin zit, blijft **[onbevestigd]**.
+Eerste run in GitHub Actions (5 oktober 2026, 14:40 UTC): de zoekfunctie van ERDDAP geeft voor Portugal alleen catalogi terug (`ERD_EP_TS_*_NRT_METADATA`, `ERD_EP_WAVES_INSITU_METADATA`). Die bevatten per platform `PLATFORMCODE`, `call_name`, `latitude`, `longitude`, `lastDateObservation` en de gemeten parameters, maar geen metingen.
+
+De proef is aangepast: eerst de platformen in Portugal uit de VHM0-catalogus, dan per platform de dataset met de metingen zoeken. Wacht op de volgende run. Of Nazaré erin zit, blijft **[onbevestigd]**.
 
 **Terugval:** Copernicus In-Situ (`INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033`), met hetzelfde account als punt 2.
 
-### 4. `ipma_observations`, `ipma_stations`, `hidrografico_collections`, `openfreemap_style`
+### 4. `hidrografico_collections`: de host bestaat niet
 
-Wachten op de eerste run in GitHub Actions (zie punt 1). De IPMA-observaties zijn groot (24 uur × alle stations); de proef bewaart alleen het laatste tijdstip.
+`api-features.hidrografico.pt` geeft in GitHub Actions `Name or service not known`: de naam bestaat niet in DNS. Het adres uit het plan (3.4 en 10) klopt dus niet of de dienst is verhuisd.
+
+**Voorstel:** voor M2 en M6 is het niet nodig (de getijtafel komt uit Neaps, de controle uit de pdf). De juiste OGC-API zoeken op hidrografico.pt zodra de waterstanden nodig zijn (M6). De IPMA-observaties, de IPMA-stations en OpenFreeMap werken wel.
 
 ### 5. GFS-Wave geeft geen piekperiode per deining
 
-`swell_wave_peak_period` komt terug als `null`, met eenheid `"undefined"`. Er is wel `swell_wave_period`, `secondary_swell_wave_period` en `wind_wave_period`. Welke periode dat is (gemiddeld of piek) staat niet in het antwoord **[onbevestigd]**.
+`wave_peak_period`, `swell_wave_peak_period` en `wind_wave_peak_period` komen alle drie terug als `null`, met eenheid `"undefined"`. Ontbrekende deelgolven staan op `0` (hoogte, periode én richting), niet op `null`. Er is wel `swell_wave_period`, `secondary_swell_wave_period` en `wind_wave_period`. Welke periode dat is (gemiddeld of piek) staat niet in het antwoord **[onbevestigd]**.
 
 De formule van Komar en Gaughan (2.5) gebruikt de piekperiode. Een gemiddelde periode ligt doorgaans 10 tot 20 procent lager, wat Hb met ongeveer 4 tot 8 procent laat zakken (Hb hangt af van T^0,4).
 
@@ -70,6 +75,18 @@ Neaps geeft per station een LAT die 1,79 m (Nazaré) tot 1,92 m (Lagos) onder MS
 
 **Voorstel:** blijven bij wat beslissing 3 al zegt: `noindex`, een `robots.txt` die alles weigert en een link die niet te raden is. Is een echte login nodig, dan kan Cloudflare Pages met Cloudflare Access gratis tot 50 gebruikers met een code per e-mail (**[onbevestigd]**). De eigenaar beslist; tot dan bouwt M4 voor Vercel.
 
-### 10. Firecrawl-tegoed
+### 10. Deelgolven tellen niet op tot de totale hoogte
 
-Het Firecrawl-account dat voor punt 1 gebruikt is, meldde bij elke aanroep dat het tegoed bijna op is. Verdere proeven lopen daarom via GitHub Actions.
+In 48 uren GFS-Wave voor Arrifana ligt de wortel van de som van de kwadraten van de drie deelgolven tot 12 procent onder `wave_height` (gemiddeld een paar procent). De rest van de energie zit kennelijk niet in de drie deelgolven die Open-Meteo doorgeeft. De WAVE-score (2.5) rekent met de deelgolven en schat Hb dan iets te laag.
+
+**Voorstel voor M5:** als de deelgolven samen minder geven dan het totaal, het verschil bij de windgolf tellen (met de windgolfperiode, of de totale periode als die 0 is). Dat is een eigen keuze en gaat eerst naar de eigenaar.
+
+### 11. IPMA-stations geven de windrichting als sector
+
+`idDireccVento` is een klasse van 0 tot 9, geen hoek. Vermoedelijk 1 tot 8 = N, NO, O, ZO, Z, ZW, W, NW, en 0 of 9 = windstil of veranderlijk **[onbevestigd]**. Wind staat in m/s (`intensidadeVento`) en km/u (`intensidadeVentoKM`); `-99` betekent ontbrekend. Om 14:00 UTC hadden 116 van de 227 stations geen waarneming (`null`).
+
+**Voorstel voor M6:** windsnelheid vergelijken per uur; richting alleen per sector van 45 graden.
+
+### 12. Firecrawl-tegoed
+
+Het Firecrawl-account dat voor punt 1 gebruikt is, meldde bij elke aanroep dat het tegoed bijna op is. Verdere proeven lopen daarom via GitHub Actions. Zodra de live proeven daar slagen, zijn de `firecrawl_*`-bestanden alleen nog een tweede steekproef.

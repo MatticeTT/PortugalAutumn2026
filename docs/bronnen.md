@@ -29,10 +29,11 @@ De volledige lijst van sleutels per antwoord staat in `tests/fixtures/probe/FIEL
 | `swell_wave_height`, `_period`, `_direction` | m, s, ° | Eerste deining |
 | `secondary_swell_wave_height`, `_period`, `_direction` | m, s, ° | Tweede deining |
 | `wind_wave_height`, `_period`, `_direction` | m, s, ° | Windgolf |
-| `swell_wave_peak_period` | — | **Leeg bij GFS-Wave** (`null`, eenheid `"undefined"`) |
+| `wave_peak_period`, `swell_wave_peak_period`, `wind_wave_peak_period` | — | **Leeg bij GFS-Wave** (`null`, eenheid `"undefined"`) |
 
 - Golfrichting: waar de golven vandaan komen.
-- Getoetst: `wave_height` is binnen 0,1 m gelijk aan de wortel van de som van de kwadraten van de drie deelgolven.
+- Een ontbrekende deelgolf staat op `0`, niet op `null`.
+- De drie deelgolven samen liggen tot 12 procent onder `wave_height` (`OPEN.md` punt 10).
 
 ## Copernicus Marine IBI
 
@@ -73,7 +74,9 @@ npm-pakket `neaps` met `@neaps/tide-database` (TICON-4). Rekent offline.
 ## IPMA, stations
 
 - `observation/meteorology/stations/stations.json`: lijst van stations (GeoJSON).
-- `observation/meteorology/stations/observations.json`: `{tijdstip: {stationId: {...}}}`. Velden volgen na de eerste run.
+- `stations.json`: GeoJSON-lijst; `properties.idEstacao` (getal), `properties.localEstacao` (naam), `geometry.coordinates` [lon, lat]. 227 stations.
+- `observations.json`: `{tijdstip: {idEstacao: waarneming of null}}`, 24 uurlijkse tijdstippen in UTC zonder zone.
+- Velden per waarneming: `intensidadeVento` (m/s), `intensidadeVentoKM` (km/u), `idDireccVento` (sector 0 tot 9, zie `OPEN.md` punt 11), `temperatura`, `humidade`, `pressao`, `precAcumulada`, `radiacao`. `-99` = ontbrekend.
 
 ## EMODnet Physics ERDDAP
 
@@ -81,8 +84,8 @@ npm-pakket `neaps` met `@neaps/tide-database` (TICON-4). Rekent offline.
 
 ## Instituto Hidrográfico, OGC API
 
-`GET https://api-features.hidrografico.pt/collections?f=json`. Lijst van collecties volgt na de eerste run.
+`api-features.hidrografico.pt` bestaat niet in DNS (`OPEN.md` punt 4).
 
 ## OpenFreeMap
 
-Stijl `https://tiles.openfreemap.org/styles/liberty`, rechtstreeks bruikbaar in MapLibre GL JS.
+Stijl `https://tiles.openfreemap.org/styles/liberty`: MapLibre-stijl versie 8, vectorbron `openmaptiles` (`https://tiles.openfreemap.org/planet`), 111 lagen. Rechtstreeks bruikbaar in MapLibre GL JS, zonder sleutel.

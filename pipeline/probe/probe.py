@@ -16,7 +16,7 @@ import os
 import sys
 import urllib.parse
 import urllib.request
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -98,43 +98,69 @@ def emodnet_search():
 
 
 def emodnet_buoy():
-    """Eén dag golfmetingen van de eerste boei die in Portugal valt."""
-    search = emodnet_search()
-    table = search["table"]
-    cols = table["columnNames"]
-    rows = [dict(zip(cols, r)) for r in table["rows"]]
-    tabledap = [r for r in rows if r.get("tabledap")]
-    if not tabledap:
-        raise RuntimeError("geen tabledap-datasets in de zoekresultaten")
-    end = datetime.now(timezone.utc).replace(minute=0, second=0, microsecond=0)
-    start = end - timedelta(days=1)
+    """Golfplatformen in Portugal uit de catalogus, daarna één dag metingen van één platform.
+
+    Stap 1: de catalogus VHM0 (golfhoogte) filteren op de kaderrechthoek.
+    Stap 2: per platform in de ERDDAP-zoekfunctie de datasets met dat platform zoeken
+    en de eerste met VHM0 een dag laten teruggeven.
+    """
     tried = []
-    for row in tabledap[:15]:
-        ds = row["Dataset ID"]
-        try:
-            info = get_json(f"{EMODNET}/info/{ds}/index.json")
-        except Exception as e:  # noqa: BLE001
-            tried.append(f"{ds}: info {e}")
-            continue
-        names = [r[1] for r in info["table"]["rows"] if r[0] == "variable"]
-        wave_vars = [v for v in ("VHM0", "VTPK", "VMDR", "VTM02", "VAVH") if v in names]
-        if not wave_vars:
-            tried.append(f"{ds}: geen golfvariabelen ({', '.join(names[:12])})")
-            continue
-        base = [v for v in ("time", "latitude", "longitude", "PLATFORMCODE", "platform_code", "EP_PLATFORM_ID") if v in names]
-        q = ",".join(base + wave_vars)
-        cons = (f"&time>={start:%Y-%m-%dT%H:%M:%SZ}&time<={end:%Y-%m-%dT%H:%M:%SZ}"
-                f"&latitude>={BBOX['minLat']}&latitude<={BBOX['maxLat']}"
+    platforms = []
+    for cat in ("ERD_EP_TS_VHM0_NRT_METADATA", "ERD_EP_WAVES_INSITU_METADATA"):
+        cons = (f"&latitude>={BBOX['minLat']}&latitude<={BBOX['maxLat']}"
                 f"&longitude>={BBOX['minLon']}&longitude<={BBOX['maxLon']}")
-        url = f"{EMODNET}/tabledap/{ds}.json?{urllib.parse.quote(q + cons, safe='=&,><:-')}"
+        url = f"{EMODNET}/tabledap/{cat}.json?{urllib.parse.quote(cons, safe='=&><.-')}"
         try:
-            data = json.loads(get(url, timeout=120))
+            t = json.loads(get(url))["table"]
         except Exception as e:  # noqa: BLE001
-            tried.append(f"{ds}: data {e}")
+            tried.append(f"{cat}: {e}")
             continue
-        return {"dataset": ds, "title": row.get("Title"), "variables": names, "query": url, "data": data,
-                "geprobeerd": tried}
-    raise RuntimeError("geen bruikbare dataset; geprobeerd: " + " | ".join(tried))
+        platforms = [dict(zip(t["columnNames"], r, strict=False)) for r in t["rows"]]
+        catalog = cat
+        break
+    if not platforms:
+        raise RuntimeError("geen platformcatalogus; " + " | ".join(tried))
+    end = datetime.now(UTC).replace(minute=0, second=0, microsecond=0)
+    start = end - timedelta(days=1)
+    found = {}
+    for pf in platforms[:12]:
+        code = pf.get("PLATFORMCODE")
+        try:
+            res = get_json(f"{EMODNET}/search/index.json", dict(searchFor=code, page=1, itemsPerPage=20))
+            rows = [dict(zip(res["table"]["columnNames"], r, strict=False)) for r in res["table"]["rows"]]
+        except Exception as e:  # noqa: BLE001
+            tried.append(f"zoek {code}: {e}")
+            continue
+        found[code] = [r["Dataset ID"] for r in rows]
+        for r in rows:
+            if not r.get("tabledap") or r["Dataset ID"].endswith("_METADATA"):
+                continue
+            ds = r["Dataset ID"]
+            try:
+                info = get_json(f"{EMODNET}/info/{ds}/index.json")
+            except Exception as e:  # noqa: BLE001
+                tried.append(f"{ds}: info {e}")
+                continue
+            names = [x[1] for x in info["table"]["rows"] if x[0] == "variable"]
+            if "VHM0" not in names:
+                continue
+            cols = [v for v in ("time", "latitude", "longitude", "PLATFORMCODE", "VHM0", "VTPK", "VMDR", "VTM02")
+                    if v in names]
+            cons = f"&time>={start:%Y-%m-%dT%H:%M:%SZ}&time<={end:%Y-%m-%dT%H:%M:%SZ}"
+            if "PLATFORMCODE" in names:
+                cons += f'&PLATFORMCODE="{code}"'
+            url = f"{EMODNET}/tabledap/{ds}.json?{urllib.parse.quote(','.join(cols) + cons, safe='=&,><:-')}"
+            try:
+                data = json.loads(get(url, timeout=120))
+            except Exception as e:  # noqa: BLE001
+                tried.append(f"{ds}/{code}: data {e}")
+                continue
+            return {"catalogus": catalog, "platformen": platforms, "datasets_per_platform": found,
+                    "dataset": ds, "platform": code, "variables": names, "query": url, "data": data,
+                    "geprobeerd": tried}
+    raise RuntimeError(json.dumps({"catalogus": catalog, "platformen": [
+        {k: p.get(k) for k in ("PLATFORMCODE", "call_name", "latitude", "longitude", "lastDateObservation")}
+        for p in platforms], "datasets_per_platform": found, "geprobeerd": tried}, ensure_ascii=False))
 
 
 def hidrografico_collections():
@@ -154,7 +180,7 @@ def copernicus_ibi():
         raise SkipSource("geen Copernicus-account in de omgeving (COPERNICUSMARINE_SERVICE_USERNAME/PASSWORD)")
     import copernicusmarine  # noqa: PLC0415
 
-    now = datetime.now(timezone.utc).replace(minute=0, second=0, microsecond=0)
+    now = datetime.now(UTC).replace(minute=0, second=0, microsecond=0)
     ds = copernicusmarine.open_dataset(
         dataset_id="cmems_mod_ibi_wav_anfc_0.027deg_PT1H-i",
         minimum_longitude=SEA_LON - 0.03, maximum_longitude=SEA_LON + 0.03,
@@ -224,7 +250,7 @@ def main(argv: list[str]) -> int:
     names = argv or list(SOURCES)
     manifest_path = OUT / "manifest.json"
     manifest = json.loads(manifest_path.read_text()) if manifest_path.exists() else {}
-    stamp = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%MZ")
+    stamp = datetime.now(UTC).strftime("%Y-%m-%dT%H:%MZ")
     for name in names:
         try:
             data = SOURCES[name]()
@@ -235,7 +261,7 @@ def main(argv: list[str]) -> int:
             manifest[name] = {"status": "overgeslagen", "op": stamp, "reden": str(e)}
             print(f"SKIP  {name}: {e}")
         except Exception as e:  # noqa: BLE001
-            manifest[name] = {"status": "fout", "op": stamp, "reden": f"{type(e).__name__}: {e}"[:500]}
+            manifest[name] = {"status": "fout", "op": stamp, "reden": f"{type(e).__name__}: {e}"[:4000]}
             print(f"FOUT  {name}: {type(e).__name__}: {e}")
     manifest_path.write_text(json.dumps(dict(sorted(manifest.items())), ensure_ascii=False, indent=1) + "\n")
     write_fields(manifest)
