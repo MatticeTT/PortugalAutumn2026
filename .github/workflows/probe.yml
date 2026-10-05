@@ -37,5 +37,5 @@ jobs:
           git add tests/fixtures/probe
           git diff --cached --quiet && exit 0
           git commit -m "M0: proefantwoorden bijgewerkt vanuit GitHub Actions"
-          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git pull --rebase --autostash origin "${GITHUB_REF_NAME}"
           git push origin "HEAD:${GITHUB_REF_NAME}"
