@@ -4,19 +4,19 @@ Gegenereerd door `pipeline/probe/probe.py`. Niet met de hand bewerken.
 
 ## copernicus_ibi
 
-Status: overgeslagen (2026-10-05T14:40Z, via ?)
+Status: overgeslagen (2026-10-05T14:46Z, via ?)
 
 Reden: geen Copernicus-account in de omgeving (COPERNICUSMARINE_SERVICE_USERNAME/PASSWORD)
 
 ## emodnet_buoy
 
-Status: fout (2026-10-05T14:40Z, via ?)
+Status: fout (2026-10-05T14:46Z, via ?)
 
-Reden: RuntimeError: geen bruikbare dataset; geprobeerd: ERD_EP_TS_VMDR_NRT_METADATA: geen golfvariabelen (PLATFORMCODE, call_name, latitude, longitude, DataFeatureType, firstDateObservation, lastDateObservation, parameters_group_longname, parameters_group_P02, parameters, parameters_P01, WMO) | ERD_EP_TS_SINC_NRT_METADATA: geen golfvariabelen (PLATFORMCODE, call_name, latitude, longitude, DataFeatureType, firstDateObservation, lastDateObservation, parameters_group_longname, parameters_group_P02, param
+Reden: RuntimeError: {"catalogus": "ERD_EP_WAVES_INSITU_METADATA", "platformen": [{"PLATFORMCODE": "6200199", "call_name": "Monican02", "latitude": 39.560001373291016, "longitude": -9.210000038146973, "lastDateObservation": "2025-05-22T11:00:00Z"}, {"PLATFORMCODE": "6200084", "call_name": "Cabo Silleiro buoy", "latitude": 42.119998931884766, "longitude": -9.430000305175781, "lastDateObservation": "2025-10-20T10:00:00Z"}, {"PLATFORMCODE": "6201081", "call_name": "Sines", "latitude": 37.67499923706055, "longitude": -9.725000381469727, "lastDateObservation": "2025-10-20T10:00:00Z"}, {"PLATFORMCODE": "6200192", "call_name": "Monican01", "latitude": 39.5099983215332, "longitude": -9.640000343322754, "lastDateObservation": "2025-10-01T14:00:00Z"}, {"PLATFORMCODE": "6200191", "call_name": "Raia01", "latitude": 41.150001525878906, "longitude": -9.579999923706055, "lastDateObservation": "2025-02-12T15:00:00Z"}, {"PLATFORMCODE": "Sines-coast-buoy", "call_name": "Sines coastal buoy", "latitude": 37.921112060546875, "longitude": -8.928889274597168, "lastDateObservation": "2025-10-20T08:26:44Z"}, {"PLATFORMCODE": "Leixoes-coast-buoy", "call_name": "Leixoes coastal buoy", "latitude": 41.31666564941406, "longitude": -8.983333587646484, "lastDateObservation": "2025-10-20T07:02:13Z"}, {"PLATFORMCODE": "Faro-coast-buoy", "call_name": "Faro coastal buoy", "latitude": 36.90472412109375, "longitude": -7.898333549499512, "lastDateObservation": "2025-10-20T04:55:24Z"}, {"PLATFORMCODE": "6201079", "call_name": "Datawell", "latitude": 36.904361724853516, "longitude": -7.899449825286865, "lastDateObservation": "2025-10-20T04:25:00Z"}, {"PLATFORMCODE": "6201077", "call_name": "Datawell", "latitude": 41.31631088256836, "longitude": -8.983099937438965, "lastDateObservation": "2025-10-19T23:32:00Z"}], "datasets_per_platform": {"6201081": ["ERD_EP_TS_RELH_NRT_METADATA"]}, "geprobeerd": ["ERD_EP_TS_VHM0_NRT_METADATA: HTTP Error 404: ", "zoek 6200199: HTTP Error 404: ", "zoek 6200084: HTTP Error 404: ", "zoek 6200192: HTTP Error 404: ", "zoek 6200191: HTTP Error 404: ", "zoek Sines-coast-buoy: HTTP Error 404: ", "zoek Leixoes-coast-buoy: HTTP Error 404: ", "zoek Faro-coast-buoy: HTTP Error 404: ", "zoek 6201079: HTTP Error 404: ", "zoek 6201077: HTTP Error 404: "]}
 
 ## emodnet_search
 
-Status: ok (2026-10-05T14:40Z, via github-actions)
+Status: ok (2026-10-05T14:46Z, via github-actions)
 
 ```
 table: dict
@@ -124,13 +124,13 @@ hourly.wind_direction_10m_ecmwf_ifs025: list
 
 ## hidrografico_collections
 
-Status: fout (2026-10-05T14:40Z, via ?)
+Status: fout (2026-10-05T14:46Z, via ?)
 
 Reden: URLError: <urlopen error [Errno -2] Name or service not known>
 
 ## ipma_observations
 
-Status: ok (2026-10-05T14:40Z, via github-actions)
+Status: ok (2026-10-05T14:46Z, via github-actions)
 
 ```
 _ingekort: str
@@ -148,7 +148,7 @@ _ingekort: str
 
 ## ipma_stations
 
-Status: ok (2026-10-05T14:40Z, via github-actions)
+Status: ok (2026-10-05T14:46Z, via github-actions)
 
 ```
 [].geometry: dict
@@ -162,7 +162,7 @@ Status: ok (2026-10-05T14:40Z, via github-actions)
 
 ## ipma_warnings
 
-Status: ok (2026-10-05T14:40Z, via github-actions)
+Status: ok (2026-10-05T14:46Z, via github-actions)
 
 ```
 [].text: str
@@ -175,11 +175,11 @@ Status: ok (2026-10-05T14:40Z, via github-actions)
 
 ## neaps
 
-Status: ok (2026-10-05T14:35Z, via lokaal)
+Status: ok (2026-10-05T14:41Z, via github-actions)
 
 ## openfreemap_style
 
-Status: ok (2026-10-05T14:40Z, via github-actions)
+Status: ok (2026-10-05T14:46Z, via github-actions)
 
 ```
 version: int
@@ -199,7 +199,7 @@ _layers: int
 
 ## openmeteo_ecmwf_wind
 
-Status: ok (2026-10-05T14:40Z, via github-actions)
+Status: ok (2026-10-05T14:46Z, via github-actions)
 
 ```
 latitude: float
@@ -223,7 +223,7 @@ hourly.wind_direction_10m: list
 
 ## openmeteo_gfs_wind
 
-Status: ok (2026-10-05T14:40Z, via github-actions)
+Status: ok (2026-10-05T14:46Z, via github-actions)
 
 ```
 latitude: float
@@ -247,7 +247,7 @@ hourly.wind_direction_10m: list
 
 ## openmeteo_gfswave
 
-Status: ok (2026-10-05T14:40Z, via github-actions)
+Status: ok (2026-10-05T14:46Z, via github-actions)
 
 ```
 latitude: float
