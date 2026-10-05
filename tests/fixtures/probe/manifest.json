@@ -1,18 +1,18 @@
 {
  "copernicus_ibi": {
   "status": "overgeslagen",
-  "op": "2026-10-05T14:38Z",
+  "op": "2026-10-05T14:40Z",
   "reden": "geen Copernicus-account in de omgeving (COPERNICUSMARINE_SERVICE_USERNAME/PASSWORD)"
  },
  "emodnet_buoy": {
   "status": "fout",
-  "op": "2026-10-05T14:38Z",
-  "reden": "URLError: <urlopen error Tunnel connection failed: 403 Forbidden>"
+  "op": "2026-10-05T14:40Z",
+  "reden": "RuntimeError: geen bruikbare dataset; geprobeerd: ERD_EP_TS_VMDR_NRT_METADATA: geen golfvariabelen (PLATFORMCODE, call_name, latitude, longitude, DataFeatureType, firstDateObservation, lastDateObservation, parameters_group_longname, parameters_group_P02, parameters, parameters_P01, WMO) | ERD_EP_TS_SINC_NRT_METADATA: geen golfvariabelen (PLATFORMCODE, call_name, latitude, longitude, DataFeatureType, firstDateObservation, lastDateObservation, parameters_group_longname, parameters_group_P02, param"
  },
  "emodnet_search": {
-  "status": "fout",
-  "op": "2026-10-05T14:38Z",
-  "reden": "URLError: <urlopen error Tunnel connection failed: 403 Forbidden>"
+  "status": "ok",
+  "op": "2026-10-05T14:40Z",
+  "via": "github-actions"
  },
  "firecrawl_ipma_warnings": {
   "status": "ok",
@@ -34,47 +34,47 @@
  },
  "hidrografico_collections": {
   "status": "fout",
-  "op": "2026-10-05T14:38Z",
-  "reden": "URLError: <urlopen error Tunnel connection failed: 403 Forbidden>"
+  "op": "2026-10-05T14:40Z",
+  "reden": "URLError: <urlopen error [Errno -2] Name or service not known>"
  },
  "ipma_observations": {
-  "status": "fout",
-  "op": "2026-10-05T14:38Z",
-  "reden": "URLError: <urlopen error Tunnel connection failed: 403 Forbidden>"
+  "status": "ok",
+  "op": "2026-10-05T14:40Z",
+  "via": "github-actions"
  },
  "ipma_stations": {
-  "status": "fout",
-  "op": "2026-10-05T14:38Z",
-  "reden": "URLError: <urlopen error Tunnel connection failed: 403 Forbidden>"
+  "status": "ok",
+  "op": "2026-10-05T14:40Z",
+  "via": "github-actions"
  },
  "ipma_warnings": {
-  "status": "fout",
-  "op": "2026-10-05T14:38Z",
-  "reden": "URLError: <urlopen error Tunnel connection failed: 403 Forbidden>"
+  "status": "ok",
+  "op": "2026-10-05T14:40Z",
+  "via": "github-actions"
  },
  "neaps": {
   "status": "ok",
-  "op": "2026-10-05T14:35Z",
-  "via": "lokaal"
+  "op": "2026-10-05T14:41Z",
+  "via": "github-actions"
  },
  "openfreemap_style": {
-  "status": "fout",
-  "op": "2026-10-05T14:38Z",
-  "reden": "URLError: <urlopen error Tunnel connection failed: 403 Forbidden>"
+  "status": "ok",
+  "op": "2026-10-05T14:40Z",
+  "via": "github-actions"
  },
  "openmeteo_ecmwf_wind": {
-  "status": "fout",
-  "op": "2026-10-05T14:38Z",
-  "reden": "URLError: <urlopen error Tunnel connection failed: 403 Forbidden>"
+  "status": "ok",
+  "op": "2026-10-05T14:40Z",
+  "via": "github-actions"
  },
  "openmeteo_gfs_wind": {
-  "status": "fout",
-  "op": "2026-10-05T14:38Z",
-  "reden": "URLError: <urlopen error Tunnel connection failed: 403 Forbidden>"
+  "status": "ok",
+  "op": "2026-10-05T14:40Z",
+  "via": "github-actions"
  },
  "openmeteo_gfswave": {
-  "status": "fout",
-  "op": "2026-10-05T14:38Z",
-  "reden": "URLError: <urlopen error Tunnel connection failed: 403 Forbidden>"
+  "status": "ok",
+  "op": "2026-10-05T14:40Z",
+  "via": "github-actions"
  }
 }
