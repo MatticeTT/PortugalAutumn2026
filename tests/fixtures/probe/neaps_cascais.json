@@ -1,0 +1,55 @@
+{
+ "station": "ticon/cascais-209-prt-uhslc_fd",
+ "datum": "MSL",
+ "units": "meters",
+ "extremes": [
+  {
+   "time": "2026-10-05T03:42:58.565Z",
+   "level": -0.506,
+   "high": false,
+   "label": "Low"
+  },
+  {
+   "time": "2026-10-05T10:01:07.920Z",
+   "level": 0.856,
+   "high": true,
+   "label": "High"
+  },
+  {
+   "time": "2026-10-05T16:40:52.249Z",
+   "level": -0.79,
+   "high": false,
+   "label": "Low"
+  },
+  {
+   "time": "2026-10-05T22:57:41.777Z",
+   "level": 0.735,
+   "high": true,
+   "label": "High"
+  },
+  {
+   "time": "2026-10-06T04:59:33.418Z",
+   "level": -0.67,
+   "high": false,
+   "label": "Low"
+  },
+  {
+   "time": "2026-10-06T11:11:59.584Z",
+   "level": 1.037,
+   "high": true,
+   "label": "High"
+  },
+  {
+   "time": "2026-10-06T17:42:07.383Z",
+   "level": -0.98,
+   "high": false,
+   "label": "Low"
+  },
+  {
+   "time": "2026-10-06T23:53:58.356Z",
+   "level": 0.925,
+   "high": true,
+   "label": "High"
+  }
+ ]
+}

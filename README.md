@@ -1,0 +1,32 @@
+# Surfkaart Portugal
+
+Webkaart van de stranden van het Portugese vasteland met per uur wind, golven, getij en twee scores (WIND en WAVE). Het plan staat in [PLAN.md](PLAN.md), de open punten in [OPEN.md](OPEN.md).
+
+Gratis, niet-commercieel, voor een besloten kring.
+
+## Stand
+
+| Mijlpaal | Stand |
+|---|---|
+| M0 Proeven en sleutels | Bezig: zie OPEN.md |
+| M1 tot M7 | Nog niet begonnen |
+
+## Lokaal
+
+```sh
+pip install -e ".[dev]"     # Python 3.11 of hoger
+npm ci                      # Node 20 of hoger
+pytest && npm test
+python -m pipeline.probe.probe   # één echte aanroep per bron
+node pipeline/tides/probe.mjs    # getij via Neaps
+```
+
+Sleutels: kopieer `.env.example` naar `.env`.
+
+## Mappen
+
+- `pipeline/`: ophalen en rekenen (Python), getij (Node).
+- `tests/fixtures/probe/`: opgeslagen antwoorden van de bronnen.
+- `docs/`: veldnamen per bron, architectuurkeuzes.
+- `web/`: de site (vanaf M4).
+- `data/`: gegenereerde bestanden.
