@@ -8,7 +8,7 @@ Gratis, niet-commercieel, voor een besloten kring.
 
 | Mijlpaal | Stand |
 |---|---|
-| M0 Proeven en sleutels | Bezig: zie OPEN.md |
+| M0 Proeven en sleutels | Klaar op Copernicus na (wacht op account); zie OPEN.md |
 | M1 tot M7 | Nog niet begonnen |
 
 ## Lokaal
