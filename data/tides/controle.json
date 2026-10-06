@@ -1,0 +1,255 @@
+{
+ "gemaakt": "2026-10-06T08:38Z",
+ "jaar": 2026,
+ "havens": [
+  {
+   "haven": "VIANA DO CASTELO",
+   "stations": [
+    "viana"
+   ],
+   "gewicht": 0.0,
+   "km_langs_kust": 21,
+   "extremen_tabel": 1411,
+   "niet_gekoppeld": 0,
+   "tijd_mediaan_abs_min": 3,
+   "tijd_gemiddeld_min": -0.3,
+   "tijd_binnen_3_min_pct": 64.2,
+   "tijd_binnen_10_min_pct": 98.4,
+   "hoogte_gemiddeld_m_zh200": 0.045,
+   "hoogte_binnen_10cm_pct_zh200": 78.6,
+   "nivel_medio_tabel": 2.0,
+   "hoogte_gemiddeld_m_nm": 0.045,
+   "hoogte_binnen_10cm_pct_nm": 78.5,
+   "haalt_norm": false
+  },
+  {
+   "haven": "LEIXÕES",
+   "stations": [
+    "leixoes",
+    "nazare"
+   ],
+   "gewicht": 0.0,
+   "km_langs_kust": 77,
+   "extremen_tabel": 1411,
+   "niet_gekoppeld": 0,
+   "tijd_mediaan_abs_min": 3,
+   "tijd_gemiddeld_min": -2.2,
+   "tijd_binnen_3_min_pct": 63.3,
+   "tijd_binnen_10_min_pct": 98.4,
+   "hoogte_gemiddeld_m_zh200": 0.045,
+   "hoogte_binnen_10cm_pct_zh200": 80.6,
+   "nivel_medio_tabel": 2.0,
+   "hoogte_gemiddeld_m_nm": 0.045,
+   "hoogte_binnen_10cm_pct_nm": 80.4,
+   "haalt_norm": false
+  },
+  {
+   "haven": "AVEIRO",
+   "stations": [
+    "leixoes",
+    "nazare"
+   ],
+   "gewicht": 0.33,
+   "km_langs_kust": 138,
+   "extremen_tabel": 1411,
+   "niet_gekoppeld": 0,
+   "tijd_mediaan_abs_min": 14,
+   "tijd_gemiddeld_min": -14.3,
+   "tijd_binnen_3_min_pct": 12.1,
+   "tijd_binnen_10_min_pct": 44.9,
+   "hoogte_gemiddeld_m_zh200": 0.05,
+   "hoogte_binnen_10cm_pct_zh200": 68.7,
+   "nivel_medio_tabel": 2.0,
+   "hoogte_gemiddeld_m_nm": 0.05,
+   "hoogte_binnen_10cm_pct_nm": 68.6,
+   "haalt_norm": false
+  },
+  {
+   "haven": "FIGUEIRA DA FOZ",
+   "stations": [
+    "leixoes",
+    "nazare"
+   ],
+   "gewicht": 0.64,
+   "km_langs_kust": 193,
+   "extremen_tabel": 1411,
+   "niet_gekoppeld": 0,
+   "tijd_mediaan_abs_min": 6,
+   "tijd_gemiddeld_min": -5.9,
+   "tijd_binnen_3_min_pct": 26.2,
+   "tijd_binnen_10_min_pct": 87.5,
+   "hoogte_gemiddeld_m_zh200": 0.043,
+   "hoogte_binnen_10cm_pct_zh200": 79.0,
+   "nivel_medio_tabel": 2.0,
+   "hoogte_gemiddeld_m_nm": 0.043,
+   "hoogte_binnen_10cm_pct_nm": 78.7,
+   "haalt_norm": false
+  },
+  {
+   "haven": "PENICHE",
+   "stations": [
+    "peniche",
+    "cascais"
+   ],
+   "gewicht": 0.01,
+   "km_langs_kust": 295,
+   "extremen_tabel": 1411,
+   "niet_gekoppeld": 0,
+   "tijd_mediaan_abs_min": 3,
+   "tijd_gemiddeld_min": -1.9,
+   "tijd_binnen_3_min_pct": 63.9,
+   "tijd_binnen_10_min_pct": 98.9,
+   "hoogte_gemiddeld_m_zh200": 0.045,
+   "hoogte_binnen_10cm_pct_zh200": 79.7,
+   "nivel_medio_tabel": 2.0,
+   "hoogte_gemiddeld_m_nm": 0.045,
+   "hoogte_binnen_10cm_pct_nm": 79.4,
+   "haalt_norm": false
+  },
+  {
+   "haven": "CASCAIS",
+   "stations": [
+    "peniche",
+    "cascais"
+   ],
+   "gewicht": 1.0,
+   "km_langs_kust": 373,
+   "extremen_tabel": 1411,
+   "niet_gekoppeld": 0,
+   "tijd_mediaan_abs_min": 2,
+   "tijd_gemiddeld_min": 1.4,
+   "tijd_binnen_3_min_pct": 79.3,
+   "tijd_binnen_10_min_pct": 100.0,
+   "hoogte_gemiddeld_m_zh200": -0.033,
+   "hoogte_binnen_10cm_pct_zh200": 90.1,
+   "nivel_medio_tabel": 2.08,
+   "hoogte_gemiddeld_m_nm": 0.047,
+   "hoogte_binnen_10cm_pct_nm": 83.8,
+   "haalt_norm": false
+  },
+  {
+   "haven": "LISBOA",
+   "stations": [
+    "peniche",
+    "cascais"
+   ],
+   "gewicht": 1.0,
+   "km_langs_kust": 373,
+   "extremen_tabel": 1411,
+   "niet_gekoppeld": 0,
+   "tijd_mediaan_abs_min": 29,
+   "tijd_gemiddeld_min": -29.7,
+   "tijd_binnen_3_min_pct": 0.0,
+   "tijd_binnen_10_min_pct": 0.3,
+   "hoogte_gemiddeld_m_zh200": -0.15,
+   "hoogte_binnen_10cm_pct_zh200": 44.9,
+   "nivel_medio_tabel": 2.2,
+   "hoogte_gemiddeld_m_nm": 0.05,
+   "hoogte_binnen_10cm_pct_nm": 27.7,
+   "haalt_norm": false
+  },
+  {
+   "haven": "SESIMBRA",
+   "stations": [
+    "cascais",
+    "sines"
+   ],
+   "gewicht": 0.43,
+   "km_langs_kust": 414,
+   "extremen_tabel": 2820,
+   "niet_gekoppeld": 996,
+   "tijd_mediaan_abs_min": 16.0,
+   "tijd_gemiddeld_min": -13.7,
+   "tijd_binnen_3_min_pct": 28.8,
+   "tijd_binnen_10_min_pct": 41.3,
+   "hoogte_gemiddeld_m_zh200": 0.053,
+   "hoogte_binnen_10cm_pct_zh200": 70.6,
+   "nivel_medio_tabel": 2.0,
+   "hoogte_gemiddeld_m_nm": 0.053,
+   "hoogte_binnen_10cm_pct_nm": 69.9,
+   "haalt_norm": false
+  },
+  {
+   "haven": "SINES",
+   "stations": [
+    "sines",
+    "lagos"
+   ],
+   "gewicht": 0.0,
+   "km_langs_kust": 468,
+   "extremen_tabel": 1411,
+   "niet_gekoppeld": 1,
+   "tijd_mediaan_abs_min": 2.0,
+   "tijd_gemiddeld_min": -1.5,
+   "tijd_binnen_3_min_pct": 79.6,
+   "tijd_binnen_10_min_pct": 99.7,
+   "hoogte_gemiddeld_m_zh200": 0.046,
+   "hoogte_binnen_10cm_pct_zh200": 85.0,
+   "nivel_medio_tabel": 2.0,
+   "hoogte_gemiddeld_m_nm": 0.046,
+   "hoogte_binnen_10cm_pct_nm": 84.8,
+   "haalt_norm": false
+  },
+  {
+   "haven": "LAGOS",
+   "stations": [
+    "sines",
+    "lagos"
+   ],
+   "gewicht": 1.0,
+   "km_langs_kust": 603,
+   "extremen_tabel": 1411,
+   "niet_gekoppeld": 1,
+   "tijd_mediaan_abs_min": 4.0,
+   "tijd_gemiddeld_min": -4.1,
+   "tijd_binnen_3_min_pct": 36.5,
+   "tijd_binnen_10_min_pct": 99.1,
+   "hoogte_gemiddeld_m_zh200": 0.044,
+   "hoogte_binnen_10cm_pct_zh200": 85.5,
+   "nivel_medio_tabel": 2.0,
+   "hoogte_gemiddeld_m_nm": 0.044,
+   "hoogte_binnen_10cm_pct_nm": 85.2,
+   "haalt_norm": false
+  },
+  {
+   "haven": "FARO-OLHÃO",
+   "stations": [
+    "lagos"
+   ],
+   "gewicht": 0.0,
+   "km_langs_kust": 675,
+   "extremen_tabel": 1411,
+   "niet_gekoppeld": 1,
+   "tijd_mediaan_abs_min": 13.0,
+   "tijd_gemiddeld_min": -13.5,
+   "tijd_binnen_3_min_pct": 5.5,
+   "tijd_binnen_10_min_pct": 34.8,
+   "hoogte_gemiddeld_m_zh200": 0.071,
+   "hoogte_binnen_10cm_pct_zh200": 67.9,
+   "nivel_medio_tabel": 2.0,
+   "hoogte_gemiddeld_m_nm": 0.071,
+   "hoogte_binnen_10cm_pct_nm": 67.4,
+   "haalt_norm": false
+  },
+  {
+   "haven": "VILA REAL DE SANTO ANTÓNIO",
+   "stations": [
+    "lagos"
+   ],
+   "gewicht": 0.0,
+   "km_langs_kust": 721,
+   "extremen_tabel": 1411,
+   "niet_gekoppeld": 1,
+   "tijd_mediaan_abs_min": 16.0,
+   "tijd_gemiddeld_min": -15.8,
+   "tijd_binnen_3_min_pct": 0.4,
+   "tijd_binnen_10_min_pct": 12.1,
+   "hoogte_gemiddeld_m_zh200": 0.041,
+   "hoogte_binnen_10cm_pct_zh200": 70.6,
+   "nivel_medio_tabel": 2.0,
+   "hoogte_gemiddeld_m_nm": 0.041,
+   "hoogte_binnen_10cm_pct_nm": 70.6,
+   "haalt_norm": false
+  }
+ ]
+}
