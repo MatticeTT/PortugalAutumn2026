@@ -45,7 +45,7 @@ jobs:
           git add data/beaches docs/steekproef
           git diff --cached --quiet && exit 0
           git commit -m "M1: strandentabel bijgewerkt vanuit GitHub Actions"
-          git pull --rebase --autostash origin "${GITHUB_REF_NAME}"
+          git pull --rebase --autostash -X theirs origin "${GITHUB_REF_NAME}"
           git push origin "HEAD:${GITHUB_REF_NAME}"
       - if: steps.fetch.outcome == 'failure'
         run: echo "Ophalen deels mislukt, zie de stap 'Ruwe data ophalen'" && exit 1

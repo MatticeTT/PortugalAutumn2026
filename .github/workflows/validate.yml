@@ -41,5 +41,5 @@ jobs:
           git add data/validate/*.json
           git diff --cached --quiet && exit 0
           git commit -m "M6: resultaat vanuit GitHub Actions"
-          git pull --rebase --autostash origin "${GITHUB_REF_NAME}"
+          git pull --rebase --autostash -X theirs origin "${GITHUB_REF_NAME}"
           git push origin "HEAD:${GITHUB_REF_NAME}"
