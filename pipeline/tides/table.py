@@ -97,7 +97,8 @@ def parse(text: str) -> dict[str, Port]:
             group.clear()
             return
         for c, g in group.items():
-            if g["day"] is None or not g["events"]:
+            # Meer dan vier waarden op een dag: een tabel met uurhoogtes, geen hoog- en laagwater.
+            if g["day"] is None or not g["events"] or len(g["events"]) > 4:
                 continue
             month = months[min(c // 2, len(months) - 1)]
             for hh, mm, h in g["events"]:

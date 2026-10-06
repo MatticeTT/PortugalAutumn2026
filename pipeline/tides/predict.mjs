@@ -1,7 +1,10 @@
 // M2: hoog- en laagwater voor de zeven Portugese peilstations, 2026 en 2027.
 // Harmonische voorspelling met Neaps en de TICON-4-constanten (PLAN.md 3.2).
 //
-// Hoogtes tegenover het Zero Hidrográfico: MSL + 2,00 m (OPEN.md punt 8).
+// Hoogtes tegenover het Zero Hidrográfico (ZH). Het ZH ligt 2,00 m onder het gemiddelde
+// niveau, in Cascais 2,08 m (notas van de Tabela de Marés 2026). Het gemiddelde niveau van
+// TICON-4 ligt 4,5 cm hoger dan dat van de tabel (gemeten in M2, data/tides/controle.json);
+// die 4,5 cm gaan eraf.
 // Tijden in UTC. Schrijft data/tides/stations.json:
 //   { stations: [{ id, naam, lat, lon, licentie, extremen: [[minuten sinds 1970 UTC, hoogte in cm, 1 = hoog / 0 = laag], ...] }] }
 import { mkdirSync, writeFileSync } from 'node:fs'
@@ -15,12 +18,16 @@ export const STATIONS = [
   ['cascais', 'ticon/cascais-209-prt-uhslc_fd', 'Cascais'],
   ['sines', 'ticon/sinestg-sin-prt-cmems', 'Sines'],
   ['lagos', 'ticon/lagos_algarve-723a-prt-uhslc_rq', 'Lagos'],
+  // Spaans station voorbij de Guadiana: zonder dit station is er ten oosten van Lagos niets.
+  ['huelva', 'ticon/huelvatg-hue-esp-cmems', 'Huelva (Spanje)'],
 ]
-const ZH_ONDER_MSL = 2.0
+const ZH_ONDER_MSL = { cascais: 2.08 }
+const ZH_STANDAARD = 2.0
+const TICON_MSL_CORRECTIE = -0.045
 const START = new Date('2026-01-01T00:00:00Z')
 const END = new Date('2028-01-01T00:00:00Z')
 
-const out = { bron: 'Neaps + TICON-4 (DOI 10.17882/109129)', datum: 'Zero Hidrográfico = MSL - 2,00 m',
+const out = { bron: 'Neaps + TICON-4 (DOI 10.17882/109129)', datum: 'Zero Hidrográfico: MSL(TICON) - 2,00 m (Cascais 2,08 m) - 0,045 m',
   tijd: 'UTC', van: START.toISOString(), tot: END.toISOString(), stations: [] }
 for (const [key, id, naam] of STATIONS) {
   const s = findStation(id)
@@ -28,7 +35,7 @@ for (const [key, id, naam] of STATIONS) {
   out.stations.push({
     id: key, neaps_id: id, naam, lat: s.latitude, lon: s.longitude, licentie: s.license.type,
     extremen: extremes.map((e) => [Math.round(new Date(e.time).getTime() / 60000),
-      Math.round((e.level + ZH_ONDER_MSL) * 100), e.high ? 1 : 0]),
+      Math.round((e.level + (ZH_ONDER_MSL[key] ?? ZH_STANDAARD) + TICON_MSL_CORRECTIE) * 100), e.high ? 1 : 0]),
   })
 }
 const dir = new URL('../../data/tides/', import.meta.url)

@@ -30,8 +30,8 @@ def test_interpolatie_halverwege():
 
 def test_kustvolgorde_stations():
     sts = interp.load_stations()
-    assert [s["id"] for s in sts] == ["viana", "leixoes", "nazare", "peniche", "cascais", "sines", "lagos"]
+    assert [s["id"] for s in sts] == ["viana", "leixoes", "nazare", "peniche", "cascais", "sines", "lagos", "huelva"]
     a, b, w, _ = interp.weights(-9.17, 38.65, sts)  # Costa da Caparica
     assert (a, b) == ("cascais", "sines") and 0 < w < 0.3
-    a, b, w, _ = interp.weights(-7.92, 36.98, sts)  # Faro: ten oosten van Lagos
-    assert (a, b, w) == ("lagos", "lagos", 0.0)
+    a, b, w, _ = interp.weights(-7.92, 36.98, sts)  # Faro: tussen Lagos en Huelva
+    assert (a, b) == ("lagos", "huelva") and 0.3 < w < 0.6
