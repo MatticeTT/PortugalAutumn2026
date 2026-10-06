@@ -1,18 +1,17 @@
-"""M4: de databestanden voor de site maken.
+"""De databestanden voor de site maken.
 
 Leest de strandentabel, de voorspelling (tak `data`), het getij en de IPMA-waarschuwingen,
-en rekent per strand en per uur WIND, WAVE en het label uit, voor twee standen:
-
-- "wg":   zelfde model als Windguru (GFS-wind, GFS-Wave)
-- "fijn": ECMWF-wind en Copernicus IBI-golven (GFS-Wave waar IBI ophoudt)
+en rekent per strand, per uur en per sport het cijfer van 1 tot 5 uit (pipeline/sport).
+Wind: ECMWF IFS. Golven: Copernicus IBI, met GFS-Wave waar IBI ophoudt (M6: IBI zit het
+dichtst bij de boeien, data/validate/golven.json).
 
 Schrijft web/public/data/:
-- index.json          tijdas, standen, labels en nota's (als codes), bronvermelding
-- kaart.json          per strand: naam, ligging, en per stand een reeks "WIND WAVE" cijfers per uur
-- getij.json          hoog- en laagwaters per station + per strand de stations en het gewicht
-- strand/<id>.json    alles voor de fiche: de ruwe tabel en per uur
-                      [WIND, WAVE, label, [nota's], [redenen], Hb, [bereik], windsurf, waarschuwing, windklasse]
-                      (label, nota's, redenen, windsurf en waarschuwing als nummer in index.json)
+- index.json          tijdas, sporten, schaal, redenen, bronvermelding
+- kaart.json          per strand: id, naam, ligging
+- sport/<sport>.json  per strand (zelfde volgorde als kaart.json) een reeks cijfers, één per uur (0 = geen)
+- getij.json          hoog- en laagwaters per station
+- strand/<id>.json    alles voor de fiche: de voorspelling, GOLF, RUW, het getij en per sport
+                      de cijfers en de redenen (elk een reeks, één teken per uur; reden 0 = geen)
 """
 
 from __future__ import annotations
@@ -24,27 +23,26 @@ import urllib.request
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
-from pipeline.rules.score import Strand, Uur, rules, score
+import yaml
+
+from pipeline.sport.score import Invoer, bereken, sporten, strandfactor, tij_op
+from pipeline.tides.interp import interpolate
 
 ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "data"
 OUT = ROOT / "web" / "public" / "data"
 IPMA_URL = "https://api.ipma.pt/open-data/forecast/warnings/warnings_www.json"
 HOURS = 240
-
-STANDEN = {
-    "fijn": {"naam": "Nauwkeurigste model", "wind": "wind_ecmwf", "golf": ["golf_ibi", "golf_gfswave"],
-             "bron": "ECMWF IFS 9 km en Copernicus IBI 3 km"},
-    "wg": {"naam": "Windguru-model", "wind": "wind_gfs", "golf": ["golf_gfswave"],
-           "bron": "GFS 13 km en GFS-Wave 16 km"},
-}
-STANDAARD = "fijn"  # M6: IBI zit dichter bij de boeien dan GFS-Wave (data/validate/golven.json)
+WIND = "wind_ecmwf"
+GOLF = ["golf_ibi", "golf_gfswave"]   # de eerste bron wint, de volgende vult aan
+BRON = "ECMWF IFS 9 km (wind) en Copernicus IBI 3 km (golven; GFS-Wave 16 km waar IBI ophoudt)"
 WAVE_KEYS = [
     ("wave_height", "wave_period", "wave_direction"),
     ("swell_wave_height", "swell_wave_period", "swell_wave_direction"),
     ("secondary_swell_wave_height", "secondary_swell_wave_period", "secondary_swell_wave_direction"),
     ("wind_wave_height", "wind_wave_period", "wind_wave_direction"),
 ]
+TIJ_CODE = {"laag": 0, "opkomend": 1, "hoog": 2, "afgaand": 3}
 
 
 def load(name: str):
@@ -100,26 +98,29 @@ def r1(x):
     return None if x is None else round(x, 1)
 
 
+def eigen() -> dict:
+    path = DATA / "beaches" / "sport.yaml"
+    return (yaml.safe_load(path.read_text()) or {}) if path.exists() else {}
+
+
 def main(fetch_ipma: bool = True):
     fc = json.loads((DATA / "beaches" / "stranden.geojson").read_text())
     punten = load("punten")
-    src = {n: load(n) for n in ("wind_gfs", "wind_ecmwf", "golf_gfswave", "golf_ibi")
-           if (DATA / "forecast" / f"{n}.json").exists()}
-    axis = time_axis(src["wind_gfs"])
+    src = {n: load(n) for n in (WIND, *GOLF) if (DATA / "forecast" / f"{n}.json").exists()}
+    axis = time_axis(src[WIND])
+    minuten = [datetime.fromisoformat(t).replace(tzinfo=UTC).timestamp() / 60 for t in axis]
     warn = ipma_levels(fetch_ipma)
     getij = json.loads((DATA / "tides" / "stranden_getij.json").read_text())
-
-    labels: list[str] = []
-    notas: list[str] = []
-    teksten: list[str] = []   # redenen, windsurfregels en waarschuwingen: één keer bewaard, per uur een nummer
-
-    def code(lst, s):
-        if s not in lst:
-            lst.append(s)
-        return lst.index(s)
+    stations = json.loads((DATA / "tides" / "stations.json").read_text())
+    ext_by = {s["id"]: s["extremen"] for s in stations["stations"]}
+    cfg = sporten()
+    namen = list(cfg["sporten"])
+    eigen_k = eigen()
 
     (OUT / "strand").mkdir(parents=True, exist_ok=True)
+    (OUT / "sport").mkdir(parents=True, exist_ok=True)
     kaart = []
+    per_sport: dict[str, list[str]] = {s: [] for s in namen}
     for f in fc["features"]:
         p = f["properties"]
         pid = p["id"]
@@ -127,61 +128,74 @@ def main(fetch_ipma: bool = True):
         pt = punten.get(pid)
         if pt is None:  # nieuw strand: de voorspelling volgt bij de volgende run
             continue
-        strand = Strand(kijkrichting=p["kijkrichting"], blootstelling=p["blootstelling"],
-                        richting_onzeker=p["onzeker"], besloten_water=p["besloten_water"])
-        detail = {"id": pid, "naam": p["naam"], "lat": lat, "lon": lon, "kijkrichting": p["kijkrichting"],
-                  "district": p["district"], "onzeker": p["onzeker"], "redenen_onzeker": p["redenen"],
-                  "venster": p["venster"], "getij": getij.get(pid), "standen": {}}
-        k_entry = {"id": pid, "n": p["naam"], "x": lon, "y": lat}
-        for mode, cfg in STANDEN.items():
-            wsrc = src.get(cfg["wind"])
-            if wsrc is None:
+        e = eigen_k.get(pid) or {}
+        K, k_bron = strandfactor(p["blootstelling"], p["redenen"])
+        if e.get("K") is not None:
+            K, k_bron = float(e["K"]), "eigen invoer"
+        besttij = e.get("BESTTIJ")
+        droog = e.get("DROOG") in (True, "ja")
+        luwte = tuple(e["LUWTE"]) if e.get("LUWTE") else None
+
+        g = getij.get(pid)
+        ext = interpolate(ext_by[g["a"]], ext_by[g["b"]], g["w"]) if g else []
+        tij = [tij_op(ext, m) for m in minuten]
+
+        wsrc = src[WIND]
+        ws = align(wsrc, pt["wind"], "wind_speed_10m", axis)
+        wg = align(wsrc, pt["wind"], "wind_gusts_10m", axis)
+        wd = align(wsrc, pt["wind"], "wind_direction_10m", axis)
+        waves: dict[str, list] = {}
+        for gname in reversed(GOLF):
+            gs = src.get(gname)
+            if gs is None:
                 continue
-            ws = align(wsrc, pt["wind"], "wind_speed_10m", axis)
-            wg = align(wsrc, pt["wind"], "wind_gusts_10m", axis)
-            wd = align(wsrc, pt["wind"], "wind_direction_10m", axis)
-            waves = {}
-            for gname in reversed(cfg["golf"]):  # de eerste bron wint, de volgende vult aan
-                g = src.get(gname)
-                if g is None:
-                    continue
-                for trio in WAVE_KEYS:
-                    for v in trio:
-                        vals = align(g, pt["golf"], v, axis)
-                        old = waves.get(v, [None] * len(axis))
-                        waves[v] = [n if n is not None else o for n, o in zip(vals, old, strict=True)]
-                if gname == "golf_ibi":
-                    waves["wave_peak_period"] = align(g, pt["golf"], "wave_peak_period", axis)
-            digits, rows = [], []
-            for i, t in enumerate(axis):
-                if ws[i] is None or waves.get("wave_height", [None])[i] is None:
-                    digits.append("00")
-                    rows.append(None)
-                    continue
-                parts = [tuple(waves[k][i] or 0 for k in trio) for trio in WAVE_KEYS[1:]]
-                u = Uur(wind_kn=ws[i], vlagen_kn=wg[i] or ws[i], windrichting=wd[i] or 0, deelgolven=parts,
-                        golfhoogte_totaal=waves["wave_height"][i], golfperiode_totaal=waves["wave_period"][i],
-                        golfrichting_totaal=waves["wave_direction"][i],
-                        ipma_zeegang=warning_at(warn, p.get("ipma_area"), t))
-                s = score(u, strand)
-                digits.append(f"{s.wind}{s.wave}")
-                rows.append([s.wind, s.wave, code(labels, s.label), [code(notas, n) for n in s.notas],
-                             [code(teksten, r) for r in s.redenen], s.hb, list(s.hb_bereik),
-                             code(teksten, s.windsurf) if s.windsurf else None,
-                             code(teksten, s.waarschuwing) if s.waarschuwing else None, s.windklasse])
-            k_entry[mode] = "".join(digits)
-            detail["standen"][mode] = {
-                "bron": cfg["bron"],
-                "wind": [r1(x) for x in ws], "vlagen": [r1(x) for x in wg],
-                "windrichting": [None if x is None else round(x) for x in wd],
-                **{k: [None if x is None else (round(x) if "direction" in k else round(x, 1)) for x in v]
-                   for k, v in waves.items()},
-                "score": rows,
-            }
-        kaart.append(k_entry)
+            for trio in WAVE_KEYS:
+                for v in trio:
+                    vals = align(gs, pt["golf"], v, axis)
+                    old = waves.get(v, [None] * len(axis))
+                    waves[v] = [n if n is not None else o for n, o in zip(vals, old, strict=True)]
+        # T is de piekperiode: IBI geeft ze (VTPK); waar IBI ophoudt, de periode van GFS-Wave
+        # (die ligt dicht bij de gemeten piekperiode, zie pipeline/validate/waves.py).
+        piek = align(src["golf_ibi"], pt["golf"], "wave_peak_period", axis) if "golf_ibi" in src else [None] * len(axis)
+        gfs_t = (align(src["golf_gfswave"], pt["golf"], "wave_period", axis)
+                 if "golf_gfswave" in src else [None] * len(axis))
+        T = [a if a is not None else b for a, b in zip(piek, gfs_t, strict=True)]
+
+        cijfers = {s: [] for s in namen}
+        redenen = {s: [] for s in namen}
+        golf_s, ruw_s = [], []
+        for i in range(len(axis)):
+            uit = bereken(Invoer(N=p["kijkrichting"], K=K, BESTTIJ=besttij, DROOG=droog, LUWTE=luwte,
+                                 H=waves["wave_height"][i], T=T[i], GR=waves["wave_direction"][i],
+                                 V=ws[i], G=wg[i], WR=wd[i], TIJ=tij[i]))
+            for s in namen:
+                cijfers[s].append(str(uit.cijfers[s]) if uit else "0")
+                redenen[s].append(str(uit.redenen[s]) if uit else "0")
+            golf_s.append(None if uit is None else round(uit.GOLF, 2))
+            ruw_s.append(None if uit is None else round(uit.RUW, 2))
+        for s in namen:
+            per_sport[s].append("".join(cijfers[s]))
+
+        detail = {
+            "id": pid, "naam": p["naam"], "lat": lat, "lon": lon, "kijkrichting": p["kijkrichting"],
+            "district": p["district"], "onzeker": p["onzeker"], "redenen_onzeker": p["redenen"],
+            "getij": g, "K": K, "K_bron": k_bron, "BESTTIJ": besttij, "DROOG": droog, "LUWTE": luwte,
+            "wind": [r1(x) for x in ws], "vlagen": [r1(x) for x in wg],
+            "windrichting": [None if x is None else round(x) for x in wd],
+            **{k: [None if x is None else (round(x) if "direction" in k else round(x, 1)) for x in v]
+               for k, v in waves.items()},
+            "piekperiode": [r1(x) for x in T],
+            "GOLF": golf_s, "RUW": ruw_s,
+            "tij": [None if t is None else TIJ_CODE[t] for t in tij],
+            "ipma": [warning_at(warn, p.get("ipma_area"), t) for t in axis],
+            "cijfers": {s: "".join(v) for s, v in cijfers.items()},
+            "redenen": {s: "".join(v) for s, v in redenen.items()},
+        }
+        kaart.append({"id": pid, "n": p["naam"], "x": lon, "y": lat})
         (OUT / "strand" / f"{re.sub(r'[^A-Za-z0-9_.-]', '_', pid)}.json").write_text(
             json.dumps(detail, ensure_ascii=False, separators=(",", ":")))
-    stations = json.loads((DATA / "tides" / "stations.json").read_text())
+    for s, rows in per_sport.items():
+        (OUT / "sport" / f"{s}.json").write_text(json.dumps(rows, separators=(",", ":")))
     (OUT / "getij.json").write_text(json.dumps(
         {"stations": {s["id"]: {"naam": s["naam"], "lat": s["lat"], "lon": s["lon"], "e": s["extremen"]}
                       for s in stations["stations"]}}, separators=(",", ":")))
@@ -189,16 +203,16 @@ def main(fetch_ipma: bool = True):
     index = {
         "gemaakt": datetime.now(UTC).strftime("%Y-%m-%dT%H:%MZ"),
         "opgehaald": {n: s.get("_opgehaald") for n, s in src.items()},
-        "tijd": axis, "standen": {m: {"naam": c["naam"], "bron": c["bron"]} for m, c in STANDEN.items()},
-        "standaard": STANDAARD,
+        "tijd": axis, "bron": BRON,
+        "sporten": [{"id": s, **c} for s, c in cfg["sporten"].items()],
+        "groepen": cfg["groepen"], "schaal": cfg["schaal"],
+        "redenen": {str(k): v for k, v in cfg["redenen"].items()},
         "nauwkeurigheid": json.loads((DATA / "validate" / "golven.json").read_text())
         if (DATA / "validate" / "golven.json").exists() else None,
-        "labels": labels, "notas": notas, "teksten": teksten, "ipma": warn,
-        "regels": rules(),
+        "ipma": warn,
     }
     (OUT / "index.json").write_text(json.dumps(index, ensure_ascii=False, separators=(",", ":")))
-    print(f"{len(kaart)} stranden, {len(axis)} uur, {len(labels)} labels, {len(notas)} nota's, "
-          f"{len(warn)} IPMA-waarschuwingen")
+    print(f"{len(kaart)} stranden, {len(axis)} uur, {len(namen)} sporten, {len(warn)} IPMA-waarschuwingen")
 
 
 if __name__ == "__main__":

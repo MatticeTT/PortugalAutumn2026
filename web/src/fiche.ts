@@ -1,7 +1,7 @@
-import { BLAUW, CYAAN, LICHT } from './kleuren'
+import { KLEUR, tekstKleur } from './kleuren'
 import { extremen, hoogte, vensters, zon, type Extreem } from './getij'
-import { kiesUur, lisDag, lisUur, staat, toonDag, toonTijd, utc, vliegNaar } from './main'
-import type { Detail, ScoreRij } from './types'
+import { kiesSport, kiesUur, lisDag, lisUur, sportNaam, staat, toonDag, toonTijd, utc, vliegNaar } from './main'
+import type { Detail } from './types'
 
 const cache = new Map<string, Promise<Detail>>()
 let huidig: Detail | null = null
@@ -13,6 +13,9 @@ const el = () => document.getElementById('fiche')!
 const fmt = (x: number | null | undefined, nd = 1) => (x == null ? '–' : x.toFixed(nd).replace('.', ','))
 const kompas = (d: number) => ['N', 'NNO', 'NO', 'ONO', 'O', 'OZO', 'ZO', 'ZZO', 'Z', 'ZZW', 'ZW', 'WZW', 'W', 'WNW', 'NW', 'NNW'][Math.round(d / 22.5) % 16]
 const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!)
+const TIJ = ['laag', 'opkomend', 'hoog', 'afgaand']
+const TIJ_KORT = ['laag', 'op', 'hoog', 'af']
+const IPMA: Record<string, string> = { yellow: 'geel', orange: 'oranje', red: 'rood' }
 
 function laad(id: string): Promise<Detail> {
   if (!cache.has(id)) cache.set(id, fetch(`data/strand/${id.replace(/[^A-Za-z0-9_.-]/g, '_')}.json`).then((r) => r.json()))
@@ -42,30 +45,8 @@ export function toonUur() {
   if (huidig && staat.open === huidig.id) render()
 }
 
-// Windpijl: wijst waar de wind naartoe waait.
-function windpijl(dir: number | null, kn: number | null) {
-  if (dir == null) return ''
-  return `<svg width="58" height="58" viewBox="-29 -29 58 58" role="img" aria-label="wind uit ${kompas(dir)}">
-    <circle r="27" fill="none" stroke="var(--lijn)"/>
-    <g transform="rotate(${dir + 180})"><path d="M0 -22 L9 6 L0 0 L-9 6 Z" fill="var(--wind)"/></g>
-    <text y="24" text-anchor="middle" font-size="9" fill="var(--zacht)">${Math.round(kn ?? 0)} kn</text></svg>`
-}
-
-// Golfje: groter en feller naarmate de golven groter zijn (zoals in het prototype).
-function golfje(hb: number, wave: number) {
-  const s = Math.min(1, 0.25 + hb / 3)
-  const kleur = BLAUW[Math.max(0, wave - 1)]
-  const h = 10 + 34 * s
-  return `<svg width="84" height="58" viewBox="0 0 84 58" role="img" aria-label="golf ${fmt(hb)} m">
-    <path d="M2 56 C 20 56, 26 ${56 - h}, 46 ${56 - h} C 60 ${56 - h}, 66 ${56 - h * 0.55}, 58 ${56 - h * 0.35}
-      C 70 ${56 - h * 0.5}, 76 52, 82 56 Z" fill="${kleur}" stroke="var(--golf)" stroke-width="1.2"/></svg>`
-}
-
-function scoreBlok(soort: 'WIND' | 'WAVE', n: number, reden: string) {
-  const kleur = (soort === 'WIND' ? CYAAN : BLAUW)[n - 1] ?? '#ccc'
-  return `<div class="score ${LICHT(n) ? 'licht' : ''} ${n === 5 ? 'gevaar' : ''}" style="background:${kleur}">
-    <b>${soort} ${n}</b><small>${esc(reden.replace(/^(WIND|WAVE) \d: /, ''))}</small></div>`
-}
+const cel = (n: number, extra = '') =>
+  `<td class="cijfer ${extra}" style="background:${n ? KLEUR[n - 1] : 'transparent'};color:${n ? tekstKleur(n) : 'inherit'}">${n || '–'}</td>`
 
 function getijBlok(d: Detail, dagStart: number, dagEind: number, nu: number) {
   if (!d.getij) return ''
@@ -106,74 +87,87 @@ function getijBlok(d: Detail, dagStart: number, dagEind: number, nu: number) {
     <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="getijcurve">${nacht}${vensterRect}
       <polyline points="${pts.join(' ')}" fill="none" stroke="var(--golf)" stroke-width="2"/>${labels}${nuLijn}${uren}</svg>
     <div class="tijden">${tijden}</div>
-    <p class="klein">Surfvenster (midden tussen eb en vloed, bij daglicht): ${vtxt}. Hoogtes tegenover het Zero Hidrográfico. Het getij verandert de scores niet.</p>${nauw}</div>`
+    <p class="klein">Surfvenster (midden tussen eb en vloed, bij daglicht): ${vtxt}. Hoogtes tegenover het Zero Hidrográfico.
+      Het getij telt mee bij kiten op land (hoog water: geen strand), bij stranden die droogvallen en bij golfsporten als het beste getij van het strand gekend is.</p>${nauw}</div>`
 }
 
-function dagstrook(rows: (ScoreRij | null)[], idx: number[]) {
-  const cel = (n: number, pal: string[]) => `<td style="background:${pal[n - 1] ?? 'transparent'};color:${LICHT(n) ? '#0d2530' : '#fff'}">${n || '–'}</td>`
-  return `<div class="tabel"><table><tr><th>uur</th>${idx.map((i) => `<th class="${i === staat.i ? 'nu' : ''}"><a href="#" data-i="${i}">${lisUur(utc(staat.index.tijd[i]))}</a></th>`).join('')}</tr>
-    <tr><td>WIND</td>${idx.map((i) => cel(rows[i]?.[0] ?? 0, CYAAN)).join('')}</tr>
-    <tr><td>WAVE</td>${idx.map((i) => cel(rows[i]?.[1] ?? 0, BLAUW)).join('')}</tr></table></div>`
+function dagstrook(d: Detail, idx: number[]) {
+  const c = d.cijfers[staat.sport] ?? ''
+  return `<div class="tabel"><table>
+    <tr><th>uur</th>${idx.map((i) => `<th class="${i === staat.i ? 'nu' : ''}"><a href="#" data-i="${i}">${lisUur(utc(staat.index.tijd[i]))}</a></th>`).join('')}</tr>
+    <tr><td>${esc(sportNaam(staat.sport))}</td>${idx.map((i) => cel(Number(c[i] ?? 0), i === staat.i ? 'nu' : '')).join('')}</tr></table></div>`
 }
 
-function ruweTabel(s: any, idx: number[]) {
-  const pijl = (d: number | null) => (d == null ? '–' : `<span class="pijl" style="transform:rotate(${d + 180}deg)" title="${kompas(d)}">↑</span>`)
+function alleSporten(d: Detail, i: number) {
+  const I = staat.index
+  return Object.entries(I.groepen).map(([g, naam]) => `<div class="groep"><span class="klein">${esc(naam)}</span><div class="chips">
+    ${I.sporten.filter((s) => s.groep === g).map((s) => {
+      const n = Number(d.cijfers[s.id]?.[i] ?? 0)
+      return `<button class="chip ${s.id === staat.sport ? 'gekozen' : ''}" data-sport="${s.id}"
+        style="--c:${n ? KLEUR[n - 1] : 'transparent'};--t:${n ? tekstKleur(n) : 'inherit'}"><b>${n || '–'}</b> ${esc(s.naam)}</button>`
+    }).join('')}</div></div>`).join('')
+}
+
+function ruweTabel(d: Detail, idx: number[]) {
+  const pijl = (x: number | null) => (x == null ? '–' : `<span class="pijl" style="transform:rotate(${x + 180}deg)" title="${kompas(x)}">↑</span>`)
   const rij = (naam: string, f: (i: number) => string) => `<tr><td>${naam}</td>${idx.map((i) => `<td class="${i === staat.i ? 'nu' : ''}">${f(i)}</td>`).join('')}</tr>`
   // Een deelgolf van 0 m heeft geen periode of richting: dan een streepje.
   const leeg = (k: string, i: number) => {
     const h = k.replace(/_(period|direction)$/, '_height')
-    return h !== k && !s[h]?.[i]
+    return h !== k && !d[h]?.[i]
   }
-  const n = (k: string, nd = 1) => (i: number) => (leeg(k, i) ? '–' : fmt(s[k]?.[i], nd))
-  const p = (k: string) => (i: number) => (leeg(k, i) ? '–' : pijl(s[k]?.[i]))
+  const n = (k: string, nd = 1) => (i: number) => (leeg(k, i) ? '–' : fmt(d[k]?.[i], nd))
+  const p = (k: string) => (i: number) => (leeg(k, i) ? '–' : pijl(d[k]?.[i]))
   return `<div class="tabel"><table>
     <tr><th>uur</th>${idx.map((i) => `<th class="${i === staat.i ? 'nu' : ''}">${lisUur(utc(staat.index.tijd[i]))}</th>`).join('')}</tr>
     ${rij('Wind (kn)', n('wind', 0))}${rij('Vlagen (kn)', n('vlagen', 0))}${rij('Windrichting', p('windrichting'))}
-    ${rij('Golf (m)', n('wave_height'))}${rij('Periode (s)', n('wave_period', 0))}${rij('Golfrichting', p('wave_direction'))}
+    ${rij('Golf (m)', n('wave_height'))}${rij('Piekperiode (s)', n('piekperiode', 0))}${rij('Golfrichting', p('wave_direction'))}
     ${rij('Deining 1 (m)', n('swell_wave_height'))}${rij('· periode (s)', n('swell_wave_period', 0))}${rij('· richting', p('swell_wave_direction'))}
     ${rij('Deining 2 (m)', n('secondary_swell_wave_height'))}${rij('· periode (s)', n('secondary_swell_wave_period', 0))}${rij('· richting', p('secondary_swell_wave_direction'))}
     ${rij('Windgolf (m)', n('wind_wave_height'))}${rij('· periode (s)', n('wind_wave_period', 0))}${rij('· richting', p('wind_wave_direction'))}
-    ${rij('Op het strand (m)', (i) => fmt(s.score[i]?.[5]))}
+    ${rij('Surfgolf GOLF (m)', n('GOLF'))}${rij('Ruwheid RUW (m)', n('RUW'))}
+    ${rij('Getij', (i) => (d.tij[i] == null ? '–' : TIJ_KORT[d.tij[i]!]))}
   </table></div>`
+}
+
+function strandGegevens(d: Detail) {
+  const delen = [`strandfactor K ${fmt(d.K)} (${esc(d.K_bron)})`]
+  if (d.BESTTIJ) delen.push(`beste getij: ${esc(d.BESTTIJ)}`)
+  if (d.DROOG) delen.push('valt droog bij laag water')
+  if (d.LUWTE) delen.push(`luwte bij wind uit ${d.LUWTE[0]}° tot ${d.LUWTE[1]}°`)
+  const onzeker = d.onzeker ? ` Kijkrichting onzeker: ${esc(d.redenen_onzeker.join('; '))}.` : ''
+  return `<p class="klein">Dit strand: kijkt naar ${kompas(d.kijkrichting)} (${d.kijkrichting}°), ${delen.join(', ')}.${onzeker}</p>`
 }
 
 function render() {
   const d = huidig!
   const I = staat.index
-  const s = d.standen[staat.stand]
   const i = staat.i
-  const row = s?.score[i]
   const ms = utc(I.tijd[i])
   const dagKey = lisDag(ms)
   const idx = I.tijd.map((_, k) => k).filter((k) => lisDag(utc(I.tijd[k])) === dagKey)
   const dagStart = utc(I.tijd[idx[0]]) - lisUur(utc(I.tijd[idx[0]])) * 3600e3
-  const kop = `<button class="sluit" aria-label="Sluiten">×</button>
-    <h2>${esc(d.naam)}</h2><div class="sub">${esc(d.district)} · kijkt naar ${kompas(d.kijkrichting)} (${d.kijkrichting}°) · ${toonDag(ms)} ${toonTijd(ms)}</div>`
-  if (!row) {
-    el().innerHTML = `${kop}<p>Voor dit uur is er geen voorspelling van ${esc(I.standen[staat.stand].naam)}.</p>`
-    bind()
-    return
-  }
-  const [wind, wave, li, notas, red, hb, bereik, ws, warn] = row
-  const notaTxt = notas.map((n) => I.notas[n])
-  const onzeker = d.onzeker ? `<p class="klein">Kijkrichting onzeker: ${esc(d.redenen_onzeker.join('; '))}.</p>` : ''
-  el().innerHTML = `${kop}
-    <div class="label">${esc(I.labels[li])}</div>
-    ${warn != null ? `<div class="waarschuwing">⚠ ${esc(I.teksten[warn])}</div>` : ''}
-    <div class="scores">${scoreBlok('WIND', wind, I.teksten[red[0]])}${scoreBlok('WAVE', wave, I.teksten[red[1]])}</div>
-    <div class="beeld">
-      <figure>${golfje(hb, wave)}<figcaption>op het strand<br>${fmt(bereik[0])}–${fmt(bereik[1])} m</figcaption></figure>
-      <figure>${windpijl(s.windrichting[i], s.wind[i])}<figcaption>wind ${s.windrichting[i] != null ? 'uit ' + kompas(s.windrichting[i]!) : ''}</figcaption></figure>
-    </div>
-    ${ws != null ? `<p>${esc(I.teksten[ws])}</p>` : ''}
-    ${notaTxt.length ? `<ul class="notas">${notaTxt.map((t) => `<li>${esc(t)}</li>`).join('')}</ul>` : ''}
-    ${onzeker}
-    <div class="blok"><h3>Deze dag</h3>${dagstrook(s.score, idx)}</div>
+  const n = Number(d.cijfers[staat.sport]?.[i] ?? 0)
+  const r = d.redenen[staat.sport]?.[i] ?? '0'
+  const reden = r !== '0' ? I.redenen[r] : ''
+  const warn = d.ipma[i] && d.ipma[i] !== 'green' ? `<div class="waarschuwing">⚠ IPMA: waarschuwing zeegang (${IPMA[d.ipma[i]] ?? d.ipma[i]})</div>` : ''
+  const groot = n
+    ? `<div class="score" style="background:${KLEUR[n - 1]};color:${tekstKleur(n)}">
+        <b>${n}</b><span><strong>${esc(I.schaal[n - 1])}</strong>${reden ? `<small>${esc(reden)}</small>` : ''}</span></div>`
+    : `<p>Voor dit uur is er geen cijfer: de voorspelling ontbreekt.</p>`
+  el().innerHTML = `<button class="sluit" aria-label="Sluiten">×</button>
+    <h2>${esc(d.naam)}</h2>
+    <div class="sub">${esc(d.district)} · ${esc(sportNaam(staat.sport))} · ${toonDag(ms)} ${toonTijd(ms)}${d.tij[i] != null ? ` · getij ${TIJ[d.tij[i]!]}` : ''}</div>
+    ${warn}${groot}
+    <div class="blok"><h3>Deze dag</h3>${dagstrook(d, idx)}</div>
+    <div class="blok"><h3>Alle sporten om ${toonTijd(ms)}</h3>${alleSporten(d, i)}</div>
     ${getijBlok(d, dagStart, dagStart + 24 * 3600e3, ms / 60000)}
-    <div class="blok"><h3>Voorspelling (${esc(s.bron)})</h3>${ruweTabel(s, idx)}</div>
+    <div class="blok"><h3>Voorspelling</h3>${ruweTabel(d, idx)}
+      <p class="klein">${esc(I.bron)}.</p>${strandGegevens(d)}</div>
     <div class="blok klein">Surf, kite en windsurf zijn verboden in zones voor baders (nationaal strandedict).
       Havenkapiteins leggen in het badseizoen afstanden op (Cascais: 300 m van badstranden).
-      De scores zijn geen veiligheidsadvies.</div>`
+      Niet in het cijfer: stroming, rotsen, watertemperatuur, drukte en of er redders zijn.
+      De cijfers zijn geen veiligheidsadvies.</div>`
   bind()
 }
 
@@ -181,4 +175,6 @@ function bind() {
   el().querySelector('.sluit')?.addEventListener('click', sluitFiche)
   el().querySelectorAll<HTMLAnchorElement>('a[data-i]').forEach((a) =>
     a.addEventListener('click', (e) => { e.preventDefault(); kiesUur(Number(a.dataset.i)) }))
+  el().querySelectorAll<HTMLButtonElement>('button[data-sport]').forEach((b) =>
+    b.addEventListener('click', () => kiesSport(b.dataset.sport!)))
 }

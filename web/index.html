@@ -12,13 +12,12 @@
   <header class="balk">
     <div class="balk-boven">
       <h1>Surfkaart <span>Portugal</span></h1>
-      <label class="stand">
-        <span class="sr">Model</span>
-        <select id="stand"></select>
-      </label>
       <button id="legende-knop" class="knop" aria-haspopup="dialog" aria-label="Legende">?</button>
     </div>
-    <nav id="dagen" class="dagen" aria-label="Dag"></nav>
+    <div class="keuzes">
+      <label><span class="sr">Datum</span><select id="datum"></select></label>
+      <label><span class="sr">Sport</span><select id="sport"></select></label>
+    </div>
     <div class="uurrij">
       <input id="uur" type="range" min="0" max="23" step="1" aria-label="Uur" />
       <output id="uurlabel" for="uur"></output>
@@ -31,16 +30,10 @@
   <dialog id="legende">
     <form method="dialog"><button class="sluit" aria-label="Sluiten">×</button></form>
     <h2>Zo lees je de kaart</h2>
-    <div class="leg-bol" id="leg-bol"></div>
-    <p>Elk bolletje is een strand. <b>Links (cyaan)</b> het WIND-cijfer voor kitesurf en windsurf, <b>rechts (blauw)</b> het WAVE-cijfer voor golfsurfen. Hoe feller, hoe meer. Een rode rand betekent: gevaarlijk.</p>
-    <table class="schaal">
-      <tr><th>1</th><td>De moeite niet</td></tr>
-      <tr><th>2</th><td>Je kan proberen, wellicht niets</td></tr>
-      <tr><th>3</th><td>Ideaal voor beginners</td></tr>
-      <tr><th>4</th><td>Sterk: voor gevorderden</td></tr>
-      <tr><th>5</th><td>Gevaarlijk</td></tr>
-    </table>
-    <p class="klein">De cijfers zeggen hoeveel wind en golf er is en voor wie. Ze zeggen niets over stroming, rotsen, drukte of je eigen niveau, en ze zijn <b>geen veiligheidsadvies</b>. Golfhoogte op het strand is een schatting: de zeebodem kan ze halveren of verdubbelen.</p>
+    <p>Kies een datum, een sport en een uur. Elk bolletje is een strand, met het cijfer van 1 tot 5 voor die sport op dat uur.</p>
+    <table class="schaal" id="schaal"></table>
+    <p>Een 1 en een 5 betekenen allebei: niet gaan. Een 4 kan ook van ruw water of van de windrichting komen. Tik op een strand: de fiche zegt waarom.</p>
+    <p class="klein">Bij een groep stranden toont het bolletje het beste cijfer van de groep (eerst 3, dan 4, 2, 5 en 1). De cijfers zeggen niets over stroming, rotsen, drukte of je eigen niveau, en ze zijn <b>geen veiligheidsadvies</b>.</p>
     <p><a href="rekenen.html">Hoe rekenen we?</a></p>
   </dialog>
   <footer class="bronnen">

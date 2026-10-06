@@ -1,16 +1,20 @@
-export type Mode = 'wg' | 'fijn'
+export interface Sport {
+  id: string
+  naam: string
+  groep: 'A' | 'B' | 'C' | 'D'
+  [k: string]: any // grenzen, zie pipeline/sport/sporten.yaml
+}
 
 export interface Index {
   gemaakt: string
   opgehaald: Record<string, string>
   tijd: string[] // UTC, "YYYY-MM-DDTHH:MM"
-  standen: Record<Mode, { naam: string; bron: string }>
-  labels: string[]
-  notas: string[]
-  teksten: string[]
+  bron: string
+  sporten: Sport[]
+  groepen: Record<string, string>
+  schaal: string[]
+  redenen: Record<string, string>
   ipma: { area: string; level: string; start: string; end: string }[]
-  regels: any
-  standaard?: Mode
   nauwkeurigheid?: any
 }
 
@@ -19,20 +23,6 @@ export interface KaartStrand {
   n: string
   x: number
   y: number
-  wg?: string
-  fijn?: string
-}
-
-// [WIND, WAVE, label, [nota's], [redenen], Hb, [laag, hoog], windsurf, waarschuwing, windklasse]
-export type ScoreRij = [number, number, number, number[], number[], number, [number, number], number | null, number | null, string | null]
-
-export interface StandData {
-  bron: string
-  wind: (number | null)[]
-  vlagen: (number | null)[]
-  windrichting: (number | null)[]
-  score: (ScoreRij | null)[]
-  [k: string]: any
 }
 
 export interface Detail {
@@ -44,9 +34,23 @@ export interface Detail {
   district: string
   onzeker: boolean
   redenen_onzeker: string[]
-  venster: [number, number][]
   getij: { a: string; b: string; w: number; nauwkeurigheid: string; nota: string | null } | null
-  standen: Record<Mode, StandData>
+  K: number
+  K_bron: string
+  BESTTIJ: string | null
+  DROOG: boolean
+  LUWTE: [number, number] | null
+  wind: (number | null)[]
+  vlagen: (number | null)[]
+  windrichting: (number | null)[]
+  piekperiode: (number | null)[]
+  GOLF: (number | null)[]
+  RUW: (number | null)[]
+  tij: (number | null)[] // 0 laag, 1 opkomend, 2 hoog, 3 afgaand
+  ipma: string[]
+  cijfers: Record<string, string> // één teken per uur, 0 = geen cijfer
+  redenen: Record<string, string> // één teken per uur, 0 = geen reden
+  [k: string]: any // de golfreeksen (wave_height, swell_wave_period, ...)
 }
 
 export interface Getij {

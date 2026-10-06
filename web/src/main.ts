@@ -1,9 +1,9 @@
 import maplibregl, { type GeoJSONSource, type StyleSpecification } from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import './style.css'
-import { bolletje, bolletjeUrl } from './kleuren'
+import { bolletje, KLEUR, RANG, tekstKleur } from './kleuren'
 import { openFiche, sluitFiche, toonUur } from './fiche'
-import type { Getij, Index, KaartStrand, Mode } from './types'
+import type { Getij, Index, KaartStrand } from './types'
 
 const TZ = 'Europe/Lisbon'
 const fmtDag = new Intl.DateTimeFormat('nl-BE', { timeZone: TZ, weekday: 'short', day: 'numeric', month: 'short' })
@@ -15,7 +15,8 @@ export const staat = {
   index: null as unknown as Index,
   stranden: [] as KaartStrand[],
   getij: null as unknown as Getij,
-  stand: 'wg' as Mode,
+  sport: 'short',
+  cijfers: [] as string[], // per strand (volgorde van kaart.json) één teken per uur
   i: 0, // index in index.tijd
   open: null as string | null,
 }
@@ -25,6 +26,7 @@ export const lisDag = (ms: number) => fmtSleutel.format(ms)
 export const lisUur = (ms: number) => Number(fmtUurNr.format(ms))
 export const toonTijd = (ms: number) => fmtUur.format(ms)
 export const toonDag = (ms: number) => fmtDag.format(ms)
+export const sportNaam = (id: string) => staat.index.sporten.find((s) => s.id === id)?.naam ?? id
 
 const OFM = 'https://tiles.openfreemap.org/styles/liberty'
 
@@ -52,64 +54,68 @@ async function stijl(): Promise<StyleSpecification | string> {
   return reserveStijl()
 }
 
+const sportCache = new Map<string, Promise<string[]>>()
+function laadSport(id: string) {
+  if (!sportCache.has(id)) sportCache.set(id, fetch(`data/sport/${id}.json`).then((r) => r.json()))
+  return sportCache.get(id)!
+}
+
 function features() {
   const i = staat.i
   return {
     type: 'FeatureCollection' as const,
-    features: staat.stranden.map((s) => {
-      const reeks = s[staat.stand] ?? ''
-      const w = Number(reeks[2 * i] ?? 0)
-      const v = Number(reeks[2 * i + 1] ?? 0)
+    features: staat.stranden.map((s, k) => {
+      const n = Number(staat.cijfers[k]?.[i] ?? 0)
       return { type: 'Feature' as const, geometry: { type: 'Point' as const, coordinates: [s.x, s.y] },
-        properties: { id: s.id, naam: s.n, w, v, icoon: `b${w}${v}` } }
+        properties: { id: s.id, naam: s.n, n, rang: RANG[n] } }
     }),
   }
 }
 
 let kaart: maplibregl.Map
+const perDag = new Map<string, number[]>()
+const slider = () => document.getElementById('uur') as HTMLInputElement
+const datumKeuze = () => document.getElementById('datum') as HTMLSelectElement
 
 function ververs() {
   const src = kaart?.getSource('stranden') as GeoJSONSource | undefined
   src?.setData(features())
   const ms = utc(staat.index.tijd[staat.i])
-  ;(document.getElementById('uurlabel') as HTMLOutputElement).value = `${toonDag(ms)} ${toonTijd(ms)}`
+  ;(document.getElementById('uurlabel') as HTMLOutputElement).value = toonTijd(ms)
   toonUur()
-  try { localStorage.setItem('stand', staat.stand) } catch { /* privévenster */ }
+}
+
+function zetDag(k: string) {
+  const idx = perDag.get(k)!
+  const T = staat.index.tijd
+  const huidig = lisUur(utc(T[staat.i]))
+  const best = idx.reduce((a, b) => (Math.abs(lisUur(utc(T[b])) - huidig) < Math.abs(lisUur(utc(T[a])) - huidig) ? b : a))
+  staat.i = best
+  datumKeuze().value = k
+  const s = slider()
+  s.min = String(lisUur(utc(T[idx[0]])))
+  s.max = String(lisUur(utc(T[idx[idx.length - 1]])))
+  s.value = String(lisUur(utc(T[best])))
+  ververs()
 }
 
 function dagen() {
-  const nav = document.getElementById('dagen')!
-  const perDag = new Map<string, number[]>()
   staat.index.tijd.forEach((t, i) => {
     const k = lisDag(utc(t))
     if (!perDag.has(k)) perDag.set(k, [])
     perDag.get(k)!.push(i)
   })
-  const slider = document.getElementById('uur') as HTMLInputElement
-  const knoppen: HTMLButtonElement[] = []
-  const zetDag = (k: string) => {
-    knoppen.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.dag === k)))
-    const idx = perDag.get(k)!
-    const huidig = lisUur(utc(staat.index.tijd[staat.i]))
-    const best = idx.reduce((a, b) => Math.abs(lisUur(utc(staat.index.tijd[b])) - huidig) < Math.abs(lisUur(utc(staat.index.tijd[a])) - huidig) ? b : a)
-    staat.i = best
-    slider.min = String(lisUur(utc(staat.index.tijd[idx[0]])))
-    slider.max = String(lisUur(utc(staat.index.tijd[idx[idx.length - 1]])))
-    slider.value = String(lisUur(utc(staat.index.tijd[best])))
-    ververs()
-  }
+  const sel = datumKeuze()
   for (const [k, idx] of perDag) {
-    const b = document.createElement('button')
-    b.dataset.dag = k
-    b.textContent = toonDag(utc(staat.index.tijd[idx[0]]))
-    b.onclick = () => zetDag(k)
-    nav.appendChild(b)
-    knoppen.push(b)
+    const o = document.createElement('option')
+    o.value = k
+    o.textContent = toonDag(utc(staat.index.tijd[idx[0]]))
+    sel.appendChild(o)
   }
-  slider.oninput = () => {
-    const k = lisDag(utc(staat.index.tijd[staat.i]))
-    const idx = perDag.get(k)!
-    const want = Number(slider.value)
+  sel.onchange = () => zetDag(sel.value)
+  slider().oninput = () => {
+    const idx = perDag.get(lisDag(utc(staat.index.tijd[staat.i])))!
+    const want = Number(slider().value)
     staat.i = idx.find((i) => lisUur(utc(staat.index.tijd[i])) === want) ?? staat.i
     ververs()
   }
@@ -121,10 +127,47 @@ function dagen() {
 
 export function kiesUur(i: number) {
   staat.i = i
-  const k = lisDag(utc(staat.index.tijd[i]))
-  document.querySelectorAll<HTMLButtonElement>('#dagen button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.dag === k)))
-  ;(document.getElementById('uur') as HTMLInputElement).value = String(lisUur(utc(staat.index.tijd[i])))
+  datumKeuze().value = lisDag(utc(staat.index.tijd[i]))
+  zetDag(datumKeuze().value)
+}
+
+export async function kiesSport(id: string) {
+  staat.sport = id
+  ;(document.getElementById('sport') as HTMLSelectElement).value = id
+  try { localStorage.setItem('sport', id) } catch { /* privévenster */ }
+  const rows = await laadSport(id)
+  if (staat.sport !== id) return
+  staat.cijfers = rows
   ververs()
+}
+
+function sportKeuze() {
+  const sel = document.getElementById('sport') as HTMLSelectElement
+  const I = staat.index
+  for (const [g, naam] of Object.entries(I.groepen)) {
+    const og = document.createElement('optgroup')
+    og.label = naam
+    for (const s of I.sporten.filter((s) => s.groep === g)) {
+      const o = document.createElement('option')
+      o.value = s.id; o.textContent = s.naam
+      og.appendChild(o)
+    }
+    sel.appendChild(og)
+  }
+  let start = I.sporten[0].id
+  try { start = localStorage.getItem('sport') || start } catch { /* geen opslag */ }
+  if (!I.sporten.some((s) => s.id === start)) start = I.sporten[0].id
+  staat.sport = start
+  sel.value = start
+  sel.onchange = () => kiesSport(sel.value)
+}
+
+function legende() {
+  const t = document.getElementById('schaal')!
+  t.innerHTML = staat.index.schaal.map((naam, k) =>
+    `<tr><th style="background:${KLEUR[k]};color:${tekstKleur(k + 1)}">${k + 1}</th><td>${naam}</td></tr>`).join('')
+  const dlg = document.getElementById('legende') as HTMLDialogElement
+  document.getElementById('legende-knop')!.onclick = () => dlg.showModal()
 }
 
 async function start() {
@@ -134,26 +177,9 @@ async function start() {
     fetch('data/getij.json').then((r) => r.json()),
   ])
   Object.assign(staat, { index, stranden, getij })
-  staat.stand = (index.standaard as Mode) || 'fijn'
-  try { staat.stand = (localStorage.getItem('stand') as Mode) || staat.stand } catch { /* geen opslag */ }
-
-  const sel = document.getElementById('stand') as HTMLSelectElement
-  for (const [m, s] of Object.entries(index.standen) as [Mode, { naam: string; bron: string }][]) {
-    const o = document.createElement('option')
-    o.value = m; o.textContent = s.naam; o.title = s.bron
-    sel.appendChild(o)
-  }
-  sel.value = staat.stand
-  sel.onchange = () => { staat.stand = sel.value as Mode; ververs() }
-
-  const legBol = document.getElementById('leg-bol')!
-  for (const [w, v] of [[1, 1], [3, 2], [2, 3], [4, 4], [5, 3], [3, 5]]) {
-    const img = document.createElement('img')
-    img.src = bolletjeUrl(w, v); img.alt = `WIND ${w}, WAVE ${v}`
-    legBol.appendChild(img)
-  }
-  const dlg = document.getElementById('legende') as HTMLDialogElement
-  document.getElementById('legende-knop')!.onclick = () => dlg.showModal()
+  sportKeuze()
+  legende()
+  const eerste = laadSport(staat.sport)
 
   kaart = new maplibregl.Map({
     container: 'kaart', style: await stijl(), center: [-8.6, 39.4], zoom: 5.8, minZoom: 5, maxZoom: 16,
@@ -162,24 +188,26 @@ async function start() {
   kaart.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-left')
   kaart.addControl(new maplibregl.GeolocateControl({ trackUserLocation: false }), 'top-left')
 
-  kaart.on('load', () => {
-    for (let w = 0; w <= 5; w++) for (let v = 0; v <= 5; v++) {
-      if ((w === 0) !== (v === 0)) continue
-      kaart.addImage(`b${w}${v}`, bolletje(w, v, 44), { pixelRatio: 2 })
+  kaart.on('load', async () => {
+    staat.cijfers = await eerste
+    for (let n = 0; n <= 5; n++) {
+      kaart.addImage(`s${n}`, bolletje(n, 30), { pixelRatio: 2 })
+      kaart.addImage(`g${n}`, bolletje(n, 36, true), { pixelRatio: 2 })
     }
     kaart.addSource('stranden', {
-      type: 'geojson', data: features(), cluster: true, clusterRadius: 34, clusterMaxZoom: 9,
-      clusterProperties: { w: ['max', ['get', 'w']], v: ['max', ['get', 'v']] },
+      type: 'geojson', data: features(), cluster: true, clusterRadius: 30, clusterMaxZoom: 9,
+      clusterProperties: { rang: ['max', ['get', 'rang']] },
     })
-    // Samengeklonterd: het bolletje toont het hoogste WIND- en WAVE-cijfer van de groep.
+    // Samengeklonterd: het interessantste cijfer van de groep (3, dan 4, 2, 5, 1).
     kaart.addLayer({
       id: 'groepen', type: 'symbol', source: 'stranden', filter: ['has', 'point_count'],
-      layout: { 'icon-image': ['concat', 'b', ['to-string', ['get', 'w']], ['to-string', ['get', 'v']]],
-        'icon-allow-overlap': true, 'icon-size': 1.1 },
+      layout: { 'icon-image': ['concat', 'g', ['to-string', ['match', ['get', 'rang'], 5, 3, 4, 4, 3, 2, 2, 5, 1, 1, 0]]],
+        'icon-allow-overlap': true },
     })
     kaart.addLayer({
       id: 'stranden', type: 'symbol', source: 'stranden', filter: ['!', ['has', 'point_count']],
-      layout: { 'icon-image': ['get', 'icoon'], 'icon-allow-overlap': true, 'icon-size': 1 },
+      layout: { 'icon-image': ['concat', 's', ['to-string', ['get', 'n']]], 'icon-allow-overlap': true,
+        'symbol-sort-key': ['get', 'rang'] },
     })
     kaart.on('click', 'stranden', (e) => {
       const id = e.features?.[0]?.properties?.id

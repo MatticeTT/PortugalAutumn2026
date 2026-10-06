@@ -240,3 +240,23 @@ Beperkingen:
 - Open-Meteo bewaart wel oude windvoorspellingen per vooruitzicht (Previous Runs API, bevestigd). Die worden gebruikt zodra er metingen tegenover staan.
 
 Tot die meting er is, gebruikt het "Nauwkeurigste model" ECMWF voor de wind, op basis van de eigen verklaring van ECMWF (PLAN.md 3.1), niet van een eigen meting.
+
+## Sportscore (6 oktober 2026)
+
+De site toont nu per sport één cijfer van 1 tot 5 (21 sporten), volgens het document "Sportscore 1 tot 5: rekenregels per sport" van de eigenaar. Bovenaan: datum, sport en uur. De grenzen staan in `pipeline/sport/sporten.yaml`, de rekenwijze in `pipeline/sport/score.py`. De 41 testgevallen van het document geven exact dezelfde cijfers (`tests/test_sport.py`). WIND en WAVE (M5) staan niet meer op de site; de code in `pipeline/rules` blijft. De keuze tussen twee modellen is weg: altijd ECMWF-wind en IBI-golven (GFS-Wave waar IBI ophoudt).
+
+### 27. Strandfactor K: uit de blootstelling, nog na te kijken
+
+K wordt per strand afgeleid uit de grootste blootstellingsfactor f van M1: f vanaf 0,8 → K 1; vanaf 0,6 → 0,6; vanaf 0,35 → 0,3; vanaf 0,1 → 0,1; anders 0 (lagune). Telling: 632 stranden K 1, 19 K 0,6, 10 K 0,3, 7 K 0,1 en 14 K 0.
+
+Waar het punt voor de kust op land viel, is f niet te vertrouwen. Daar geldt K 1, de standaard van het document. Het gaat om 9 stranden: Praínha, Cantinho da Baía, Praia dos Coxos, Praia da Baía de Porto Covo, Praia da Engardaceira, Praia da Angra da Barrela, Praia de Cacela Velha, Praia do Pintadinho en Praia da Baleeira. Cacela Velha ligt aan de Ria Formosa en hoort eerder K 0.
+
+Eigen waarden (K, BESTTIJ, DROOG, LUWTE) gaan in `data/beaches/sport.yaml`; die gaan voor.
+
+### 28. Reden alleen als het cijfer verschoof
+
+Het document geeft per reden een voorwaarde. Een reden wordt alleen getoond als het cijfer daardoor afwijkt van het basiscijfer, zoals deel 1 van het document vraagt ("de regel die het heeft verschoven"). Anders zou een kitesurf-1 door te weinig wind "ongunstige windrichting" krijgen. Dit verandert geen enkel cijfer.
+
+### 29. T is de piekperiode
+
+IBI geeft de piekperiode (VTPK). Waar IBI ophoudt, wordt de `wave_period` van GFS-Wave gebruikt; die ligt dicht bij de gemeten piekperiode (punt 25). Geeft geen enkel model een periode, dan is er voor dat uur geen cijfer (document, stap 0).

@@ -1,0 +1,10 @@
+# Eigen kennis per strand voor de sportscore (document "Sportscore 1 tot 5", deel 2).
+# Alles mag ontbreken. Per strand-id (zie de fiche, of data/beaches/stranden.geojson):
+#   K:       strandfactor 0 tot 1,5 (1 open, 0,6 half beschut, 0,3 beschut, 0,1 sterk beschut, 0 lagune).
+#            Ontbreekt K, dan rekent de site hem uit de blootstelling van het strand.
+#   BESTTIJ: laag of hoog: het getij waarbij het strand het best werkt voor golfsurf.
+#   DROOG:   ja als er bij laag water geen water staat om te varen.
+#   LUWTE:   [van, tot]: windrichtingen (graden, met de klok mee) waarvoor het strand achter een kaap ligt.
+# Voorbeeld:
+#   "osm/way/123456": {K: 0.3, BESTTIJ: laag, DROOG: ja, LUWTE: [330, 30]}
+{}
