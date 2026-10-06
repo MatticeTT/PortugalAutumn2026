@@ -1,5 +1,5 @@
 {
- "gemaakt": "2026-10-06T08:38Z",
+ "gemaakt": "2026-10-06T08:40Z",
  "jaar": 2026,
  "havens": [
   {
@@ -15,11 +15,9 @@
    "tijd_gemiddeld_min": -0.3,
    "tijd_binnen_3_min_pct": 64.2,
    "tijd_binnen_10_min_pct": 98.4,
-   "hoogte_gemiddeld_m_zh200": 0.045,
-   "hoogte_binnen_10cm_pct_zh200": 78.6,
+   "hoogte_gemiddeld_m": -0.0,
+   "hoogte_binnen_10cm_pct": 87.5,
    "nivel_medio_tabel": 2.0,
-   "hoogte_gemiddeld_m_nm": 0.045,
-   "hoogte_binnen_10cm_pct_nm": 78.5,
    "haalt_norm": false
   },
   {
@@ -36,11 +34,9 @@
    "tijd_gemiddeld_min": -2.2,
    "tijd_binnen_3_min_pct": 63.3,
    "tijd_binnen_10_min_pct": 98.4,
-   "hoogte_gemiddeld_m_zh200": 0.045,
-   "hoogte_binnen_10cm_pct_zh200": 80.6,
+   "hoogte_gemiddeld_m": 0.0,
+   "hoogte_binnen_10cm_pct": 90.5,
    "nivel_medio_tabel": 2.0,
-   "hoogte_gemiddeld_m_nm": 0.045,
-   "hoogte_binnen_10cm_pct_nm": 80.4,
    "haalt_norm": false
   },
   {
@@ -57,11 +53,9 @@
    "tijd_gemiddeld_min": -14.3,
    "tijd_binnen_3_min_pct": 12.1,
    "tijd_binnen_10_min_pct": 44.9,
-   "hoogte_gemiddeld_m_zh200": 0.05,
-   "hoogte_binnen_10cm_pct_zh200": 68.7,
+   "hoogte_gemiddeld_m": 0.005,
+   "hoogte_binnen_10cm_pct": 77.7,
    "nivel_medio_tabel": 2.0,
-   "hoogte_gemiddeld_m_nm": 0.05,
-   "hoogte_binnen_10cm_pct_nm": 68.6,
    "haalt_norm": false
   },
   {
@@ -78,11 +72,9 @@
    "tijd_gemiddeld_min": -5.9,
    "tijd_binnen_3_min_pct": 26.2,
    "tijd_binnen_10_min_pct": 87.5,
-   "hoogte_gemiddeld_m_zh200": 0.043,
-   "hoogte_binnen_10cm_pct_zh200": 79.0,
+   "hoogte_gemiddeld_m": -0.002,
+   "hoogte_binnen_10cm_pct": 87.5,
    "nivel_medio_tabel": 2.0,
-   "hoogte_gemiddeld_m_nm": 0.043,
-   "hoogte_binnen_10cm_pct_nm": 78.7,
    "haalt_norm": false
   },
   {
@@ -99,11 +91,9 @@
    "tijd_gemiddeld_min": -1.9,
    "tijd_binnen_3_min_pct": 63.9,
    "tijd_binnen_10_min_pct": 98.9,
-   "hoogte_gemiddeld_m_zh200": 0.045,
-   "hoogte_binnen_10cm_pct_zh200": 79.7,
+   "hoogte_gemiddeld_m": -0.0,
+   "hoogte_binnen_10cm_pct": 91.4,
    "nivel_medio_tabel": 2.0,
-   "hoogte_gemiddeld_m_nm": 0.045,
-   "hoogte_binnen_10cm_pct_nm": 79.4,
    "haalt_norm": false
   },
   {
@@ -120,12 +110,10 @@
    "tijd_gemiddeld_min": 1.4,
    "tijd_binnen_3_min_pct": 79.3,
    "tijd_binnen_10_min_pct": 100.0,
-   "hoogte_gemiddeld_m_zh200": -0.033,
-   "hoogte_binnen_10cm_pct_zh200": 90.1,
+   "hoogte_gemiddeld_m": 0.002,
+   "hoogte_binnen_10cm_pct": 96.2,
    "nivel_medio_tabel": 2.08,
-   "hoogte_gemiddeld_m_nm": 0.047,
-   "hoogte_binnen_10cm_pct_nm": 83.8,
-   "haalt_norm": false
+   "haalt_norm": true
   },
   {
    "haven": "LISBOA",
@@ -141,11 +129,9 @@
    "tijd_gemiddeld_min": -29.7,
    "tijd_binnen_3_min_pct": 0.0,
    "tijd_binnen_10_min_pct": 0.3,
-   "hoogte_gemiddeld_m_zh200": -0.15,
-   "hoogte_binnen_10cm_pct_zh200": 44.9,
+   "hoogte_gemiddeld_m": -0.115,
+   "hoogte_binnen_10cm_pct": 42.0,
    "nivel_medio_tabel": 2.2,
-   "hoogte_gemiddeld_m_nm": 0.05,
-   "hoogte_binnen_10cm_pct_nm": 27.7,
    "haalt_norm": false
   },
   {
@@ -162,11 +148,9 @@
    "tijd_gemiddeld_min": -13.7,
    "tijd_binnen_3_min_pct": 28.8,
    "tijd_binnen_10_min_pct": 41.3,
-   "hoogte_gemiddeld_m_zh200": 0.053,
-   "hoogte_binnen_10cm_pct_zh200": 70.6,
+   "hoogte_gemiddeld_m": 0.053,
+   "hoogte_binnen_10cm_pct": 69.8,
    "nivel_medio_tabel": 2.0,
-   "hoogte_gemiddeld_m_nm": 0.053,
-   "hoogte_binnen_10cm_pct_nm": 69.9,
    "haalt_norm": false
   },
   {
@@ -183,12 +167,10 @@
    "tijd_gemiddeld_min": -1.5,
    "tijd_binnen_3_min_pct": 79.6,
    "tijd_binnen_10_min_pct": 99.7,
-   "hoogte_gemiddeld_m_zh200": 0.046,
-   "hoogte_binnen_10cm_pct_zh200": 85.0,
+   "hoogte_gemiddeld_m": 0.001,
+   "hoogte_binnen_10cm_pct": 95.5,
    "nivel_medio_tabel": 2.0,
-   "hoogte_gemiddeld_m_nm": 0.046,
-   "hoogte_binnen_10cm_pct_nm": 84.8,
-   "haalt_norm": false
+   "haalt_norm": true
   },
   {
    "haven": "LAGOS",
@@ -204,51 +186,47 @@
    "tijd_gemiddeld_min": -4.1,
    "tijd_binnen_3_min_pct": 36.5,
    "tijd_binnen_10_min_pct": 99.1,
-   "hoogte_gemiddeld_m_zh200": 0.044,
-   "hoogte_binnen_10cm_pct_zh200": 85.5,
+   "hoogte_gemiddeld_m": -0.001,
+   "hoogte_binnen_10cm_pct": 96.2,
    "nivel_medio_tabel": 2.0,
-   "hoogte_gemiddeld_m_nm": 0.044,
-   "hoogte_binnen_10cm_pct_nm": 85.2,
    "haalt_norm": false
   },
   {
    "haven": "FARO-OLHÃO",
    "stations": [
-    "lagos"
+    "lagos",
+    "huelva"
    ],
-   "gewicht": 0.0,
+   "gewicht": 0.45,
    "km_langs_kust": 675,
    "extremen_tabel": 1411,
    "niet_gekoppeld": 1,
    "tijd_mediaan_abs_min": 13.0,
-   "tijd_gemiddeld_min": -13.5,
-   "tijd_binnen_3_min_pct": 5.5,
-   "tijd_binnen_10_min_pct": 34.8,
-   "hoogte_gemiddeld_m_zh200": 0.071,
-   "hoogte_binnen_10cm_pct_zh200": 67.9,
+   "tijd_gemiddeld_min": -13.6,
+   "tijd_binnen_3_min_pct": 3.1,
+   "tijd_binnen_10_min_pct": 30.9,
+   "hoogte_gemiddeld_m": 0.028,
+   "hoogte_binnen_10cm_pct": 85.0,
    "nivel_medio_tabel": 2.0,
-   "hoogte_gemiddeld_m_nm": 0.071,
-   "hoogte_binnen_10cm_pct_nm": 67.4,
    "haalt_norm": false
   },
   {
    "haven": "VILA REAL DE SANTO ANTÓNIO",
    "stations": [
-    "lagos"
+    "lagos",
+    "huelva"
    ],
-   "gewicht": 0.0,
+   "gewicht": 0.73,
    "km_langs_kust": 721,
    "extremen_tabel": 1411,
    "niet_gekoppeld": 1,
-   "tijd_mediaan_abs_min": 16.0,
-   "tijd_gemiddeld_min": -15.8,
-   "tijd_binnen_3_min_pct": 0.4,
-   "tijd_binnen_10_min_pct": 12.1,
-   "hoogte_gemiddeld_m_zh200": 0.041,
-   "hoogte_binnen_10cm_pct_zh200": 70.6,
+   "tijd_mediaan_abs_min": 15.0,
+   "tijd_gemiddeld_min": -15.9,
+   "tijd_binnen_3_min_pct": 0.1,
+   "tijd_binnen_10_min_pct": 12.3,
+   "hoogte_gemiddeld_m": -0.0,
+   "hoogte_binnen_10cm_pct": 68.7,
    "nivel_medio_tabel": 2.0,
-   "hoogte_gemiddeld_m_nm": 0.041,
-   "hoogte_binnen_10cm_pct_nm": 70.6,
    "haalt_norm": false
   }
  ]
