@@ -3,7 +3,7 @@
   "text": "Condições favoráveis para ocorrência de fenómenos meteorológicos localizados, como: trovoada; precipitação localmente forte, com acumulação entre 10 a 20 mm em 1 h; granizo com diâmetro inferior a 2 cm; rajadas entre 70 e 90 km/h.",
   "awarenessTypeName": "Trovoada",
   "idAreaAviso": "BGC",
-  "startTime": "2026-10-06T12:00:00",
+  "startTime": "2026-10-06T07:00:00",
   "awarenessLevelID": "yellow",
   "endTime": "2026-10-06T21:00:00"
  },
@@ -11,65 +11,65 @@
   "text": "",
   "awarenessTypeName": "Agitação Marítima",
   "idAreaAviso": "BGC",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Nevoeiro",
   "idAreaAviso": "BGC",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Tempo Quente",
   "idAreaAviso": "BGC",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Tempo Frio",
   "idAreaAviso": "BGC",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Precipitação",
   "idAreaAviso": "BGC",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Neve",
   "idAreaAviso": "BGC",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Trovoada",
   "idAreaAviso": "BGC",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Vento",
   "idAreaAviso": "BGC",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
@@ -139,7 +139,7 @@
   "text": "Condições favoráveis para ocorrência de fenómenos meteorológicos localizados, como: trovoada; precipitação localmente forte, com acumulação entre 10 a 20 mm em 1 h; granizo com diâmetro inferior a 2 cm; rajadas entre 70 e 90 km/h.",
   "awarenessTypeName": "Trovoada",
   "idAreaAviso": "VIS",
-  "startTime": "2026-10-06T12:00:00",
+  "startTime": "2026-10-06T07:00:00",
   "awarenessLevelID": "yellow",
   "endTime": "2026-10-06T21:00:00"
  },
@@ -147,65 +147,65 @@
   "text": "",
   "awarenessTypeName": "Agitação Marítima",
   "idAreaAviso": "VIS",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Nevoeiro",
   "idAreaAviso": "VIS",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Tempo Quente",
   "idAreaAviso": "VIS",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Tempo Frio",
   "idAreaAviso": "VIS",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Precipitação",
   "idAreaAviso": "VIS",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Neve",
   "idAreaAviso": "VIS",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Trovoada",
   "idAreaAviso": "VIS",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Vento",
   "idAreaAviso": "VIS",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "Condições favoráveis para ocorrência de fenómenos meteorológicos localizados, como: trovoada; precipitação localmente forte, com acumulação entre 10 a 20 mm em 1 h; granizo com diâmetro inferior a 2 cm; rajadas entre 70 e 90 km/h.",
@@ -219,71 +219,71 @@
   "text": "",
   "awarenessTypeName": "Agitação Marítima",
   "idAreaAviso": "EVR",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Nevoeiro",
   "idAreaAviso": "EVR",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Tempo Quente",
   "idAreaAviso": "EVR",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Tempo Frio",
   "idAreaAviso": "EVR",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Precipitação",
   "idAreaAviso": "EVR",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Neve",
   "idAreaAviso": "EVR",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Trovoada",
   "idAreaAviso": "EVR",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Vento",
   "idAreaAviso": "EVR",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "Condições favoráveis para ocorrência de fenómenos meteorológicos localizados, como: trovoada; precipitação localmente forte, com acumulação entre 10 a 20 mm em 1 h; granizo com diâmetro inferior a 2 cm; rajadas entre 70 e 90 km/h.",
   "awarenessTypeName": "Trovoada",
   "idAreaAviso": "PTO",
-  "startTime": "2026-10-06T09:00:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "yellow",
   "endTime": "2026-10-06T18:00:00"
  },
@@ -291,65 +291,65 @@
   "text": "",
   "awarenessTypeName": "Agitação Marítima",
   "idAreaAviso": "PTO",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Nevoeiro",
   "idAreaAviso": "PTO",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Tempo Quente",
   "idAreaAviso": "PTO",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Tempo Frio",
   "idAreaAviso": "PTO",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Precipitação",
   "idAreaAviso": "PTO",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Neve",
   "idAreaAviso": "PTO",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Trovoada",
   "idAreaAviso": "PTO",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Vento",
   "idAreaAviso": "PTO",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
@@ -419,7 +419,7 @@
   "text": "Condições favoráveis para ocorrência de fenómenos meteorológicos localizados, como: trovoada; precipitação localmente forte, com acumulação entre 10 a 20 mm em 1 h; granizo com diâmetro inferior a 2 cm; rajadas entre 70 e 90 km/h.",
   "awarenessTypeName": "Trovoada",
   "idAreaAviso": "GDA",
-  "startTime": "2026-10-06T12:00:00",
+  "startTime": "2026-10-06T07:00:00",
   "awarenessLevelID": "yellow",
   "endTime": "2026-10-06T21:00:00"
  },
@@ -427,129 +427,129 @@
   "text": "",
   "awarenessTypeName": "Agitação Marítima",
   "idAreaAviso": "GDA",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Nevoeiro",
   "idAreaAviso": "GDA",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Tempo Quente",
   "idAreaAviso": "GDA",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Tempo Frio",
   "idAreaAviso": "GDA",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Precipitação",
   "idAreaAviso": "GDA",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Neve",
   "idAreaAviso": "GDA",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Trovoada",
   "idAreaAviso": "GDA",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Vento",
   "idAreaAviso": "GDA",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Agitação Marítima",
   "idAreaAviso": "FAR",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Nevoeiro",
   "idAreaAviso": "FAR",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Tempo Quente",
   "idAreaAviso": "FAR",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Tempo Frio",
   "idAreaAviso": "FAR",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Precipitação",
   "idAreaAviso": "FAR",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Neve",
   "idAreaAviso": "FAR",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Trovoada",
   "idAreaAviso": "FAR",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Vento",
   "idAreaAviso": "FAR",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
@@ -619,7 +619,7 @@
   "text": "Condições favoráveis para ocorrência de fenómenos meteorológicos localizados, como: trovoada; precipitação localmente forte, com acumulação entre 10 a 20 mm em 1 h; granizo com diâmetro inferior a 2 cm; rajadas entre 70 e 90 km/h.",
   "awarenessTypeName": "Trovoada",
   "idAreaAviso": "VRL",
-  "startTime": "2026-10-06T12:00:00",
+  "startTime": "2026-10-06T07:00:00",
   "awarenessLevelID": "yellow",
   "endTime": "2026-10-06T21:00:00"
  },
@@ -627,193 +627,193 @@
   "text": "",
   "awarenessTypeName": "Agitação Marítima",
   "idAreaAviso": "VRL",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Nevoeiro",
   "idAreaAviso": "VRL",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Tempo Quente",
   "idAreaAviso": "VRL",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Tempo Frio",
   "idAreaAviso": "VRL",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Precipitação",
   "idAreaAviso": "VRL",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Neve",
   "idAreaAviso": "VRL",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Trovoada",
   "idAreaAviso": "VRL",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Vento",
   "idAreaAviso": "VRL",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Agitação Marítima",
   "idAreaAviso": "STB",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Nevoeiro",
   "idAreaAviso": "STB",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Tempo Quente",
   "idAreaAviso": "STB",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Tempo Frio",
   "idAreaAviso": "STB",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Precipitação",
   "idAreaAviso": "STB",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Neve",
   "idAreaAviso": "STB",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Trovoada",
   "idAreaAviso": "STB",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Vento",
   "idAreaAviso": "STB",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Agitação Marítima",
   "idAreaAviso": "STM",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Nevoeiro",
   "idAreaAviso": "STM",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Tempo Quente",
   "idAreaAviso": "STM",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Tempo Frio",
   "idAreaAviso": "STM",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Precipitação",
   "idAreaAviso": "STM",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Neve",
   "idAreaAviso": "STM",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Trovoada",
   "idAreaAviso": "STM",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Vento",
   "idAreaAviso": "STM",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
@@ -883,7 +883,7 @@
   "text": "Condições favoráveis para ocorrência de fenómenos meteorológicos localizados, como: trovoada; precipitação localmente forte, com acumulação entre 10 a 20 mm em 1 h; granizo com diâmetro inferior a 2 cm; rajadas entre 70 e 90 km/h.",
   "awarenessTypeName": "Trovoada",
   "idAreaAviso": "VCT",
-  "startTime": "2026-10-06T09:00:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "yellow",
   "endTime": "2026-10-06T18:00:00"
  },
@@ -891,193 +891,193 @@
   "text": "",
   "awarenessTypeName": "Agitação Marítima",
   "idAreaAviso": "VCT",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Nevoeiro",
   "idAreaAviso": "VCT",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Tempo Quente",
   "idAreaAviso": "VCT",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Tempo Frio",
   "idAreaAviso": "VCT",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Precipitação",
   "idAreaAviso": "VCT",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Neve",
   "idAreaAviso": "VCT",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Trovoada",
   "idAreaAviso": "VCT",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Vento",
   "idAreaAviso": "VCT",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Agitação Marítima",
   "idAreaAviso": "LSB",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Nevoeiro",
   "idAreaAviso": "LSB",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Tempo Quente",
   "idAreaAviso": "LSB",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Tempo Frio",
   "idAreaAviso": "LSB",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Precipitação",
   "idAreaAviso": "LSB",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Neve",
   "idAreaAviso": "LSB",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Trovoada",
   "idAreaAviso": "LSB",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Vento",
   "idAreaAviso": "LSB",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Agitação Marítima",
   "idAreaAviso": "LRA",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Nevoeiro",
   "idAreaAviso": "LRA",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Tempo Quente",
   "idAreaAviso": "LRA",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Tempo Frio",
   "idAreaAviso": "LRA",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Precipitação",
   "idAreaAviso": "LRA",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Neve",
   "idAreaAviso": "LRA",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Trovoada",
   "idAreaAviso": "LRA",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Vento",
   "idAreaAviso": "LRA",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
@@ -1155,71 +1155,71 @@
   "text": "",
   "awarenessTypeName": "Agitação Marítima",
   "idAreaAviso": "BJA",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Nevoeiro",
   "idAreaAviso": "BJA",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Tempo Quente",
   "idAreaAviso": "BJA",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Tempo Frio",
   "idAreaAviso": "BJA",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Precipitação",
   "idAreaAviso": "BJA",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Neve",
   "idAreaAviso": "BJA",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Trovoada",
   "idAreaAviso": "BJA",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Vento",
   "idAreaAviso": "BJA",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "Condições favoráveis para ocorrência de fenómenos meteorológicos localizados, como: trovoada; precipitação localmente forte, com acumulação entre 10 a 20 mm em 1 h; granizo com diâmetro inferior a 2 cm; rajadas entre 70 e 90 km/h.",
   "awarenessTypeName": "Trovoada",
   "idAreaAviso": "CBO",
-  "startTime": "2026-10-06T12:00:00",
+  "startTime": "2026-10-06T07:00:00",
   "awarenessLevelID": "yellow",
   "endTime": "2026-10-06T21:00:00"
  },
@@ -1227,71 +1227,71 @@
   "text": "",
   "awarenessTypeName": "Agitação Marítima",
   "idAreaAviso": "CBO",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Nevoeiro",
   "idAreaAviso": "CBO",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Tempo Quente",
   "idAreaAviso": "CBO",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Tempo Frio",
   "idAreaAviso": "CBO",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Precipitação",
   "idAreaAviso": "CBO",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Neve",
   "idAreaAviso": "CBO",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Trovoada",
   "idAreaAviso": "CBO",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Vento",
   "idAreaAviso": "CBO",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "Condições favoráveis para ocorrência de fenómenos meteorológicos localizados, como: trovoada; precipitação localmente forte, com acumulação entre 10 a 20 mm em 1 h; granizo com diâmetro inferior a 2 cm; rajadas entre 70 e 90 km/h.",
   "awarenessTypeName": "Trovoada",
   "idAreaAviso": "AVR",
-  "startTime": "2026-10-06T09:00:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "yellow",
   "endTime": "2026-10-06T18:00:00"
  },
@@ -1299,71 +1299,71 @@
   "text": "",
   "awarenessTypeName": "Agitação Marítima",
   "idAreaAviso": "AVR",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Nevoeiro",
   "idAreaAviso": "AVR",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Tempo Quente",
   "idAreaAviso": "AVR",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Tempo Frio",
   "idAreaAviso": "AVR",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Precipitação",
   "idAreaAviso": "AVR",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Neve",
   "idAreaAviso": "AVR",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Trovoada",
   "idAreaAviso": "AVR",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Vento",
   "idAreaAviso": "AVR",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "Condições favoráveis para ocorrência de fenómenos meteorológicos localizados, como: trovoada; precipitação localmente forte, com acumulação entre 10 a 20 mm em 1 h; granizo com diâmetro inferior a 2 cm; rajadas entre 70 e 90 km/h.",
   "awarenessTypeName": "Trovoada",
   "idAreaAviso": "CBR",
-  "startTime": "2026-10-06T09:00:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "yellow",
   "endTime": "2026-10-06T18:00:00"
  },
@@ -1371,65 +1371,65 @@
   "text": "",
   "awarenessTypeName": "Agitação Marítima",
   "idAreaAviso": "CBR",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Nevoeiro",
   "idAreaAviso": "CBR",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Tempo Quente",
   "idAreaAviso": "CBR",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Tempo Frio",
   "idAreaAviso": "CBR",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Precipitação",
   "idAreaAviso": "CBR",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Neve",
   "idAreaAviso": "CBR",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Trovoada",
   "idAreaAviso": "CBR",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Vento",
   "idAreaAviso": "CBR",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "Condições favoráveis para ocorrência de fenómenos meteorológicos localizados, como: trovoada; precipitação localmente forte, com acumulação entre 10 a 20 mm em 1 h; granizo com diâmetro inferior a 2 cm; rajadas entre 70 e 90 km/h.",
@@ -1443,65 +1443,65 @@
   "text": "",
   "awarenessTypeName": "Agitação Marítima",
   "idAreaAviso": "PTG",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Nevoeiro",
   "idAreaAviso": "PTG",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Tempo Quente",
   "idAreaAviso": "PTG",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Tempo Frio",
   "idAreaAviso": "PTG",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Precipitação",
   "idAreaAviso": "PTG",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Neve",
   "idAreaAviso": "PTG",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Trovoada",
   "idAreaAviso": "PTG",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Vento",
   "idAreaAviso": "PTG",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
@@ -1571,7 +1571,7 @@
   "text": "Condições favoráveis para ocorrência de fenómenos meteorológicos localizados, como: trovoada; precipitação localmente forte, com acumulação entre 10 a 20 mm em 1 h; granizo com diâmetro inferior a 2 cm; rajadas entre 70 e 90 km/h.",
   "awarenessTypeName": "Trovoada",
   "idAreaAviso": "BRG",
-  "startTime": "2026-10-06T09:00:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "yellow",
   "endTime": "2026-10-06T18:00:00"
  },
@@ -1579,65 +1579,65 @@
   "text": "",
   "awarenessTypeName": "Agitação Marítima",
   "idAreaAviso": "BRG",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Nevoeiro",
   "idAreaAviso": "BRG",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Tempo Quente",
   "idAreaAviso": "BRG",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Tempo Frio",
   "idAreaAviso": "BRG",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Precipitação",
   "idAreaAviso": "BRG",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Neve",
   "idAreaAviso": "BRG",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Trovoada",
   "idAreaAviso": "BRG",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
   "awarenessTypeName": "Vento",
   "idAreaAviso": "BRG",
-  "startTime": "2026-10-05T20:42:00",
+  "startTime": "2026-10-06T06:40:00",
   "awarenessLevelID": "green",
-  "endTime": "2026-10-08T20:00:00"
+  "endTime": "2026-10-09T06:00:00"
  },
  {
   "text": "",
