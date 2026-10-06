@@ -13,3 +13,4 @@ data/forecast/
 web/public/data/
 web/node_modules/
 web/dist/
+data/validate/insitu/
