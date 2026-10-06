@@ -37,9 +37,15 @@ if __name__ == "__main__":
     txt = to_text(download())
     lines = txt.read_text(errors="replace").splitlines()
     print(f"{len(lines)} regels")
-    # Alleen voor de ontwikkeling van de parser: de paginakoppen en een klein stuk van één pagina.
-    heads = [ln.strip() for ln in lines if ln.strip() and ln.strip().isupper() and len(ln.strip()) < 60]
-    print("koppen:", sorted(set(heads))[:80])
-    start = int(sys.argv[1]) if len(sys.argv) > 1 else 0
-    for ln in lines[start : start + 70]:
-        print("|" + ln)
+    # Alleen voor de ontwikkeling van de parser: de havenkoppen en een kort stuk van een tabelpagina.
+    def is_head(t: str) -> bool:
+        return t.isupper() and t.replace(" ", "").replace("-", "").isalpha()
+
+    heads = sorted({ln.strip() for ln in lines if is_head(ln.strip())})
+    print("koppen:", heads)
+    term = sys.argv[1] if len(sys.argv) > 1 else "CASCAIS"
+    hits = [i for i, ln in enumerate(lines) if ln.strip() == term]
+    print("regels met", term, hits[:20])
+    if len(hits) > 1:
+        for ln in lines[hits[1] - 5 : hits[1] + 45]:
+            print("|" + ln)
