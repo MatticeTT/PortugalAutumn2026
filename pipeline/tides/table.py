@@ -42,10 +42,11 @@ if __name__ == "__main__":
         return t.isupper() and t.replace(" ", "").replace("-", "").isalpha()
 
     heads = sorted({ln.strip() for ln in lines if is_head(ln.strip())})
-    print("koppen:", heads)
+    print("koppen:", len(heads))
     term = sys.argv[1] if len(sys.argv) > 1 else "PORTO DE CASCAIS"
     hits = [i for i, ln in enumerate(lines) if ln.strip() == term]
     print("regels met", term, hits[:20])
     if hits:
-        for ln in lines[hits[0] - 3 : hits[0] + 22]:
+        j = next(i for i in range(hits[0], len(lines)) if lines[i].strip().startswith("JANEIRO"))
+        for ln in lines[j - 4 : j + 16]:
             print("|" + ln)
