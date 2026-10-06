@@ -1,5 +1,5 @@
 {
- "gemaakt": "2026-10-06T10:02Z",
+ "gemaakt": "2026-10-06T10:04Z",
  "periode": [
   "2026-09-04",
   "2026-10-04"
@@ -125,11 +125,134 @@
  "copernicus_insitu_boeien": {
   "status": "ok",
   "resultaat": {
-   "datasets": [
-    "cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr"
-   ],
-   "cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr": {
-    "indexbestanden": []
+   "6201081": {
+    "aantal": 0,
+    "voorbeeld": [],
+    "recent": []
+   },
+   "6201077": {
+    "aantal": 18,
+    "voorbeeld": [
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260929/GL_TS_MO_6201077_20260929.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260930/GL_TS_MO_6201077_20260930.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261002/GL_TS_MO_6201077_20261002.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261003/GL_TS_MO_6201077_20261003.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261005/GL_TS_MO_6201077_20261005.nc"
+    ],
+    "recent": [
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260929/GL_TS_MO_6201077_20260929.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260930/GL_TS_MO_6201077_20260930.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261002/GL_TS_MO_6201077_20261002.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261003/GL_TS_MO_6201077_20261003.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261005/GL_TS_MO_6201077_20261005.nc"
+    ]
+   },
+   "6201079": {
+    "aantal": 12,
+    "voorbeeld": [
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260913/GL_TS_MO_6201079_20260913.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260914/GL_TS_MO_6201079_20260914.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260916/GL_TS_MO_6201079_20260916.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260917/GL_TS_MO_6201079_20260917.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260918/GL_TS_MO_6201079_20260918.nc"
+    ],
+    "recent": [
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260913/GL_TS_MO_6201079_20260913.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260914/GL_TS_MO_6201079_20260914.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260916/GL_TS_MO_6201079_20260916.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260917/GL_TS_MO_6201079_20260917.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260918/GL_TS_MO_6201079_20260918.nc"
+    ]
+   },
+   "Sines": {
+    "aantal": 51,
+    "voorbeeld": [
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261004/IR_TS_TG_SinesTG_20261004.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261005/IR_TS_MO_Sines-coast-buoy_20261005.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261005/IR_TS_TG_SinesTG_20261005.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261006/IR_TS_MO_Sines-coast-buoy_20261006.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261006/IR_TS_TG_SinesTG_20261006.nc"
+    ],
+    "recent": [
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261004/IR_TS_TG_SinesTG_20261004.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261005/IR_TS_MO_Sines-coast-buoy_20261005.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261005/IR_TS_TG_SinesTG_20261005.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261006/IR_TS_MO_Sines-coast-buoy_20261006.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261006/IR_TS_TG_SinesTG_20261006.nc"
+    ]
+   },
+   "Leixoes": {
+    "aantal": 61,
+    "voorbeeld": [
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261004/IR_TS_TG_LeixoesTG_20261004.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261005/IR_TS_MO_Leixoes-coast-buoy_20261005.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261005/IR_TS_TG_LeixoesTG_20261005.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261006/IR_TS_MO_Leixoes-coast-buoy_20261006.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261006/IR_TS_TG_LeixoesTG_20261006.nc"
+    ],
+    "recent": [
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261004/IR_TS_TG_LeixoesTG_20261004.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261005/IR_TS_MO_Leixoes-coast-buoy_20261005.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261005/IR_TS_TG_LeixoesTG_20261005.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261006/IR_TS_MO_Leixoes-coast-buoy_20261006.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261006/IR_TS_TG_LeixoesTG_20261006.nc"
+    ]
+   },
+   "Faro": {
+    "aantal": 16,
+    "voorbeeld": [
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260917/IR_TS_MO_Faro-coast-buoy_20260917.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260918/IR_TS_MO_Faro-coast-buoy_20260918.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260919/IR_TS_MO_Faro-coast-buoy_20260919.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260920/IR_TS_MO_Faro-coast-buoy_20260920.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260921/IR_TS_MO_Faro-coast-buoy_20260921.nc"
+    ],
+    "recent": [
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260917/IR_TS_MO_Faro-coast-buoy_20260917.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260918/IR_TS_MO_Faro-coast-buoy_20260918.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260919/IR_TS_MO_Faro-coast-buoy_20260919.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260920/IR_TS_MO_Faro-coast-buoy_20260920.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260921/IR_TS_MO_Faro-coast-buoy_20260921.nc"
+    ]
+   },
+   "Nazare": {
+    "aantal": 30,
+    "voorbeeld": [
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261002/IR_TS_TG_NazareTG_20261002.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261003/IR_TS_TG_NazareTG_20261003.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261004/IR_TS_TG_NazareTG_20261004.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261005/IR_TS_TG_NazareTG_20261005.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261006/IR_TS_TG_NazareTG_20261006.nc"
+    ],
+    "recent": [
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261002/IR_TS_TG_NazareTG_20261002.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261003/IR_TS_TG_NazareTG_20261003.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261004/IR_TS_TG_NazareTG_20261004.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261005/IR_TS_TG_NazareTG_20261005.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261006/IR_TS_TG_NazareTG_20261006.nc"
+    ]
+   },
+   "6200192": {
+    "aantal": 0,
+    "voorbeeld": [],
+    "recent": []
+   },
+   "6200199": {
+    "aantal": 31,
+    "voorbeeld": [
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261002/IR_TS_MO_6200199_20261002.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261003/IR_TS_MO_6200199_20261003.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261004/IR_TS_MO_6200199_20261004.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261005/IR_TS_MO_6200199_20261005.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261006/IR_TS_MO_6200199_20261006.nc"
+    ],
+    "recent": [
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261002/IR_TS_MO_6200199_20261002.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261003/IR_TS_MO_6200199_20261003.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261004/IR_TS_MO_6200199_20261004.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261005/IR_TS_MO_6200199_20261005.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261006/IR_TS_MO_6200199_20261006.nc"
+    ]
    }
   }
  },
@@ -141,5 +264,10 @@
    "recent": 0,
    "kolommen": "date,hour,temp,dwpt,rhum,prcp,snow,wdir,wspd,wpgt,pres,tsun,coco"
   }
+ },
+ "noaa_isd_wind": {
+  "status": "fout",
+  "reden": "HTTPError: HTTP Error 404: Not Found",
+  "spoor": "n\n    response = meth(req, response)\n               ^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/urllib/request.py\", line 630, in http_response\n    response = self.parent.error(\n               ^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/urllib/request.py\", line 559, in error\n    return self._call_chain(*args)\n           ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/urllib/request.py\", line 492, in _call_chain\n    result = func(*args)\n             ^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/urllib/request.py\", line 639, in http_error_default\n    raise HTTPError(req.full_url, code, msg, hdrs, fp)\nurllib.error.HTTPError: HTTP Error 404: Not Found\n"
  }
 }
