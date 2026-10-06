@@ -2,6 +2,8 @@
 name: validate
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "41 6 * * 1"   # elke maandag opnieuw meten
   push:
     paths:
       - pipeline/validate/**
@@ -21,10 +23,17 @@ jobs:
         with: { python-version: "3.12" }
       - run: pip install -e ".[copernicus]"
       - name: Proef van de historische bronnen
+        if: github.event_name != 'schedule'
+        continue-on-error: true
         run: python -m pipeline.validate.probe
       - name: Golfmodellen naast de boeien
         continue-on-error: true
         run: python -m pipeline.validate.waves
+      - name: Windmodellen naast de IPMA-stations (uit het archief)
+        continue-on-error: true
+        run: |
+          git fetch -q origin archief && git worktree add -q /tmp/archief FETCH_HEAD
+          python -m pipeline.validate.wind /tmp/archief
       - name: Commit resultaat
         run: |
           git config user.name "github-actions[bot]"
