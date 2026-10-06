@@ -1,0 +1,4 @@
+# Stranden en surfspots die niet (met naam) in OpenStreetMap of de officiële lijst staan.
+# Eigen invoer van de eigenaar (PLAN.md 3.3: eigen kennis en eigen invoer zijn vrij).
+# Per strand: naam, lat, lon (een punt op het strand). De rest rekent build.py zelf uit.
+- {naam: "Supertubos (Praia do Medão)", lat: 39.3443, lon: -9.3627}

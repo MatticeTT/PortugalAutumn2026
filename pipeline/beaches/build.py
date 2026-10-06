@@ -189,6 +189,20 @@ def load_osm_beaches():
     return out
 
 
+def load_own():
+    """Eigen invoer: data/beaches/eigen.yaml."""
+    import yaml
+
+    p = OUT / "eigen.yaml"
+    if not p.exists():
+        return []
+    out = []
+    for r in yaml.safe_load(p.read_text()) or []:
+        x, y = TO_M(float(r["lon"]), float(r["lat"]))
+        out.append({"osm_id": None, "naam": r["naam"], "tags": {}, "geom": Point(x, y), "bron": "eigen"})
+    return out
+
+
 def load_eea():
     """Officiële zwemwateren van het vasteland (kust- en overgangswater) uit de recentste EEA-dienst."""
     p = RAW / "eea_bathing_arcgis.json"
@@ -495,6 +509,8 @@ def build():
                 base |= {"osm_id": u["osm_id"], "geom": u["geom"], "bron": "eea+osm zonder naam"}
         added.append(base)
     beaches += added
+    own = load_own()
+    beaches += own
 
     features, uncertain = [], []
     for b in beaches:
@@ -510,7 +526,10 @@ def build():
             a["redenen"].append("overgangswater (monding of lagune) volgens EEA")
             a["onzeker"] = True
         osm_id = b.get("osm_id")
-        fid = osm_id or (f"eea/{e[0]['eea_id']}" if e else f"punt/{a['punt'][1]:.5f},{a['punt'][0]:.5f}")
+        if b.get("bron") == "eigen":
+            fid = "eigen/" + re.sub(r"[^a-z0-9]+", "-", norm_name(b["naam"])).strip("-")
+        else:
+            fid = osm_id or (f"eea/{e[0]['eea_id']}" if e else f"punt/{a['punt'][1]:.5f},{a['punt'][0]:.5f}")
         props = {
             "id": fid,
             "naam": b["naam"] or (e[0]["eea_naam"] if e else None),
@@ -553,6 +572,7 @@ def build():
         "eea_kustzwemwateren": len(eea),
         "eea_gekoppeld_aan_osm": len(eea) - len(added),
         "eea_toegevoegd": len(added),
+        "eigen_invoer": len(own),
         "eea_niet_teruggevonden": sorted(str(e["eea_id"]) for e in eea if e["eea_id"] not in eea_found),
         "stranden_totaal": len(features),
         "onzeker": len(uncertain),

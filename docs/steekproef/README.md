@@ -26,7 +26,7 @@ Klik op de link om het strand in satellietbeeld te zien.
 | 19 | Praia da Vigia | 293° (WNW) | 205–5° | nee | [kaart](https://www.google.com/maps/@38.919241,-9.425816,16z/data=!3m1!1e3) |
 | 20 | Praia de São Sebastião | 275° (W) | 200–355° | nee | [kaart](https://www.google.com/maps/@38.972676,-9.420428,16z/data=!3m1!1e3) |
 | 21 | Praia de Santa Rita Sul | 298° (WNW) | 210–360° | nee | [kaart](https://www.google.com/maps/@39.167624,-9.361812,16z/data=!3m1!1e3) |
-| 22 | Praia do Carreiro do Mosteiro | 147° (ZZO) | 140–225° | kustlijn kronkelt (zekerheid 0.35) | [kaart](https://www.google.com/maps/@39.415002,-9.507179,16z/data=!3m1!1e3) |
+| 22 | Barroca da Adela | 318° (NW) | 250–40° | nee | [kaart](https://www.google.com/maps/@39.412338,-9.258865,16z/data=!3m1!1e3) |
 | 23 | LÉGUA | 291° (WNW) | 210–15° | nee | [kaart](https://www.google.com/maps/@39.663969,-9.065762,16z/data=!3m1!1e3) |
 | 24 | Praia Naturistas da Costa Nova em Aveiro | 284° (WNW) | 195–360° | nee | [kaart](https://www.google.com/maps/@40.593289,-8.758429,16z/data=!3m1!1e3) |
 | 25 | Praia Torrão do Lameiro | 284° (WNW) | 200–15° | nee | [kaart](https://www.google.com/maps/@40.82885,-8.690823,16z/data=!3m1!1e3) |

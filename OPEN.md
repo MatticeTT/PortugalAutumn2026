@@ -185,3 +185,30 @@ Copernicus IBI geeft 207 uur (bijna 9 dagen) vanaf het lopende uur; GFS-Wave 240
 ### 20. IBI geeft lagere golven dan GFS-Wave aan de kust
 
 Op 6 oktober in het zeevak van Arrifana 0,7 m (IBI) tegen 0,95 m (GFS-Wave), in dat van Praia da Rocha 0,4 m tegen 0,8 m. IBI rekent fijner (3 km) en houdt beter rekening met de kust. Welke dichter bij de werkelijkheid ligt, meet M6 tegen boeien.
+
+## M5 (6 oktober 2026)
+
+### 21. Scores: alle acceptatietests slagen
+
+`pipeline/rules/rules.yaml` bevat elke drempel uit PLAN.md 2.4 tot 2.6, met bron en bewijsniveau. `pipeline/rules/score.py` is de pure functie; `tests/test_score.py` bevat de tests uit M5 (60 stuks): grenzen aan de juiste kant, de rekenvoorbeelden (1,66 m, 2,90 m, 0,72 m), aflandig vanaf 8 kn behalve op besloten water, IPMA-zeegang, korte periode, alle elf labelregels, getij zonder invloed, redenen in woorden.
+
+Twee eigen keuzes die erbij kwamen, allebei in rules.yaml of build.py en te ijken in M7:
+
+- Wat de deelgolven tekortkomen op de totale golfhoogte telt als windgolf (punt 10).
+- De blootstellingsfactor f rekent met een richtingsspreiding van de deining van 25 graden (standaardafwijking), in plaats van een harde sector van ±15 graden. Zonder die spreiding kreeg Arrifana bij 1 m noordwestendeining WAVE 1 (0,2 m op het strand). Nu is dat WAVE 3 (0,7 m).
+
+## M4 (6 oktober 2026)
+
+### 22. De site staat klaar, maar is nog niet online
+
+De workflow `forecast` bouwt de site elke 6 uur en zet ze op de tak `site`. Getest (`web/tests/smoke.mjs`) op 400 px breed, in licht en donker: geen horizontale scroll, fiche open binnen 0,4 s, `noindex` in de pagina, als header en in `robots.txt`, geen JavaScript-fouten.
+
+**Wat de eigenaar moet doen (eenmalig):** een Vercel-project aanmaken dat de tak `site` publiceert. Zie de stappen in het antwoord van Claude Code of in `docs/architectuur.md`.
+
+### 23. Ontbrekende surfspots: eigen invoer
+
+Supertubos (Peniche) staat niet als strand met naam in OpenStreetMap en ook niet in de officiële lijst. Het staat nu in `data/beaches/eigen.yaml`. Daar kan de eigenaar andere ontbrekende spots aan toevoegen (naam, lat, lon).
+
+### 24. IPMA-logo
+
+PLAN.md 9 vraagt het logo van IPMA. Nu staat er de naam met een link. Het logo van een externe site laden wordt bewust niet gedaan zolang de site besloten is.

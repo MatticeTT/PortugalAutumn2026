@@ -12,7 +12,9 @@ Gratis, niet-commercieel, voor een besloten kring.
 | M1 Stranden | Klaar: 681 stranden; zie OPEN.md punt 13 tot 16 |
 | M2 Getij | Klaar; norm gehaald op de open kust, niet in mondingen (OPEN.md punt 17) |
 | M3 Voorspelling | Elke 6 uur per strand (tak `data`); Windguru-stand klopt voor 2 van 5 spots (OPEN.md punt 18) |
-| M4 tot M7 | Nog niet begonnen |
+| M4 Site | Gebouwd en getest; wacht op Vercel (OPEN.md punt 22) |
+| M5 Scores | Klaar; alle acceptatietests (OPEN.md punt 21) |
+| M6, M7 | Nog niet begonnen |
 
 ## Lokaal
 

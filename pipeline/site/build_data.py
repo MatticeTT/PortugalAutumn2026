@@ -123,7 +123,9 @@ def main(fetch_ipma: bool = True):
         p = f["properties"]
         pid = p["id"]
         lon, lat = f["geometry"]["coordinates"]
-        pt = punten[pid]
+        pt = punten.get(pid)
+        if pt is None:  # nieuw strand: de voorspelling volgt bij de volgende run
+            continue
         strand = Strand(kijkrichting=p["kijkrichting"], blootstelling=p["blootstelling"],
                         richting_onzeker=p["onzeker"], besloten_water=p["besloten_water"])
         detail = {"id": pid, "naam": p["naam"], "lat": lat, "lon": lon, "kijkrichting": p["kijkrichting"],
