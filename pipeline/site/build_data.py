@@ -33,11 +33,12 @@ IPMA_URL = "https://api.ipma.pt/open-data/forecast/warnings/warnings_www.json"
 HOURS = 240
 
 STANDEN = {
+    "fijn": {"naam": "Nauwkeurigste model", "wind": "wind_ecmwf", "golf": ["golf_ibi", "golf_gfswave"],
+             "bron": "ECMWF IFS 9 km en Copernicus IBI 3 km"},
     "wg": {"naam": "Windguru-model", "wind": "wind_gfs", "golf": ["golf_gfswave"],
            "bron": "GFS 13 km en GFS-Wave 16 km"},
-    "fijn": {"naam": "Fijner model", "wind": "wind_ecmwf", "golf": ["golf_ibi", "golf_gfswave"],
-             "bron": "ECMWF IFS 9 km en Copernicus IBI 3 km"},
 }
+STANDAARD = "fijn"  # M6: IBI zit dichter bij de boeien dan GFS-Wave (data/validate/golven.json)
 WAVE_KEYS = [
     ("wave_height", "wave_period", "wave_direction"),
     ("swell_wave_height", "swell_wave_period", "swell_wave_direction"),
@@ -189,6 +190,9 @@ def main(fetch_ipma: bool = True):
         "gemaakt": datetime.now(UTC).strftime("%Y-%m-%dT%H:%MZ"),
         "opgehaald": {n: s.get("_opgehaald") for n, s in src.items()},
         "tijd": axis, "standen": {m: {"naam": c["naam"], "bron": c["bron"]} for m, c in STANDEN.items()},
+        "standaard": STANDAARD,
+        "nauwkeurigheid": json.loads((DATA / "validate" / "golven.json").read_text())
+        if (DATA / "validate" / "golven.json").exists() else None,
         "labels": labels, "notas": notas, "teksten": teksten, "ipma": warn,
         "regels": rules(),
     }

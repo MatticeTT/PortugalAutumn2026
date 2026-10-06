@@ -58,7 +58,7 @@ def read_obs(files: list[Path]):
         lat = float(np.nanmean(ds["LATITUDE"].values)) if "LATITUDE" in ds else lat
         lon = float(np.nanmean(ds["LONGITUDE"].values)) if "LONGITUDE" in ds else lon
         times = ds["TIME"].values
-        for v in ("VHM0", "VTPK", "VTM02"):
+        for v in ("VHM0", "VTPK", "VTM02", "VGHS"):
             if v not in ds:
                 continue
             vals = ds[v].values
@@ -70,7 +70,8 @@ def read_obs(files: list[Path]):
                 if not math.isfinite(x) or (qcv is not None and int(qcv[i]) not in (1, 2)):
                     continue
                 key = str(t)[:13] + ":00"
-                hourly.setdefault(key, {}).setdefault(v, []).append(x)
+                # Boeien in open zee geven de golfhoogte als VGHS (generic significant height).
+                hourly.setdefault(key, {}).setdefault("VHM0" if v == "VGHS" else v, []).append(x)
         ds.close()
     obs = {t: {v: sum(xs) / len(xs) for v, xs in d.items()} for t, d in hourly.items()}
     return obs, lat, lon, sorted(other)
@@ -83,7 +84,8 @@ def gfswave(lat: float, lon: float, start: str, end: str) -> dict[str, dict[str,
     with urllib.request.urlopen(req, timeout=120) as r:
         d = json.loads(r.read())
     h = d["hourly"]
-    return {t: {"VHM0": a, "VTM02": b} for t, a, b in zip(h["time"], h["wave_height"], h["wave_period"], strict=True)
+    # wave_period van GFS-Wave ligt dicht bij de gemeten piekperiode (VTPK), niet bij VTM02.
+    return {t: {"VHM0": a, "VTPK": b} for t, a, b in zip(h["time"], h["wave_height"], h["wave_period"], strict=True)
             if a is not None}, (d["longitude"], d["latitude"])
 
 

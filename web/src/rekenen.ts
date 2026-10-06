@@ -63,4 +63,25 @@ fetch('data/index.json').then((r) => r.json()).then((ix) => {
     <li>Allebei onder 3: Stille dag (sup, kayak, wakeboard)</li>
   </ol>`
   document.getElementById('inhoud')!.innerHTML = html
+
+  const N = ix.nauwkeurigheid
+  const nk = document.getElementById('nauwkeurigheid')!
+  if (!N) { nk.innerHTML = '<p>Nog geen meting.</p>'; return }
+  const rows: string[] = []
+  for (const [boei, r] of Object.entries<any>(N.boeien)) {
+    const v = r.vergelijking
+    if (!v) continue
+    const cel = (m: string, k: string) => {
+      const s = v[m]?.[k]
+      return s ? `${nl(s.rmse.toFixed(2))} (${s.afwijking >= 0 ? '+' : ''}${nl(s.afwijking.toFixed(2))})` : '–'
+    }
+    rows.push(`<tr><td>${boei}<br><span class="klein">${r.periode?.[0]?.slice(0, 10)} tot ${r.periode?.[1]?.slice(0, 10)}, ${r.uren_gemeten} uur</span></td>
+      <td>${cel('GFS-Wave', 'VHM0')}</td><td>${cel('IBI', 'VHM0')}</td><td>${cel('GFS-Wave', 'VTPK')}</td><td>${cel('IBI', 'VTPK')}</td></tr>`)
+  }
+  nk.innerHTML = `<p>Golfhoogte en piekperiode van de modellen naast de metingen van de boeien (Copernicus In-Situ).
+    Per cel: de gemiddelde fout (RMSE) en tussen haakjes de gemiddelde afwijking (+ = model te hoog).
+    Het gaat om de beste schatting van het model voor dat uur, nog niet om een voorspelling van dagen vooraf.</p>
+    <table><tr><th>Boei</th><th>Golfhoogte (m), Windguru-model</th><th>Golfhoogte (m), Copernicus IBI</th>
+    <th>Piekperiode (s), Windguru-model</th><th>Piekperiode (s), Copernicus IBI</th></tr>${rows.join('')}</table>
+    <p class="klein">Gemeten op ${N.gemaakt.slice(0, 10)}. Op basis hiervan is "Nauwkeurigste model" de standaard. De wind wordt gemeten zodra er genoeg IPMA-metingen gearchiveerd zijn.</p>`
 })

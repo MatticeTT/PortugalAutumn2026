@@ -134,7 +134,8 @@ async function start() {
     fetch('data/getij.json').then((r) => r.json()),
   ])
   Object.assign(staat, { index, stranden, getij })
-  try { staat.stand = (localStorage.getItem('stand') as Mode) || 'wg' } catch { /* geen opslag */ }
+  staat.stand = (index.standaard as Mode) || 'fijn'
+  try { staat.stand = (localStorage.getItem('stand') as Mode) || staat.stand } catch { /* geen opslag */ }
 
   const sel = document.getElementById('stand') as HTMLSelectElement
   for (const [m, s] of Object.entries(index.standen) as [Mode, { naam: string; bron: string }][]) {

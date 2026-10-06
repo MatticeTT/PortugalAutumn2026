@@ -10,6 +10,8 @@ export interface Index {
   teksten: string[]
   ipma: { area: string; level: string; start: string; end: string }[]
   regels: any
+  standaard?: Mode
+  nauwkeurigheid?: any
 }
 
 export interface KaartStrand {
