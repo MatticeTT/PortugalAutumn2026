@@ -1,5 +1,5 @@
 {
- "gemaakt": "2026-10-06T08:43Z",
+ "gemaakt": "2026-10-06T08:44Z",
  "jaar": 2026,
  "havens": [
   {
@@ -154,18 +154,18 @@
     "cascais",
     "sines"
    ],
-   "gewicht": 0.43,
-   "km_langs_kust": 414,
-   "extremen_tabel": 2820,
-   "niet_gekoppeld": 996,
-   "tijd_mediaan_abs_min": 16.0,
-   "tijd_gemiddeld_min": -13.7,
-   "tijd_binnen_3_min_pct": 28.8,
-   "tijd_binnen_10_min_pct": 41.3,
-   "hoogte_gemiddeld_m": 0.053,
-   "hoogte_binnen_10cm_pct": 69.8,
-   "hoogte_gemiddeld_hoogwater_m": -0.039,
-   "hoogte_gemiddeld_laagwater_m": 0.081,
+   "gewicht": 0.4,
+   "km_langs_kust": 411,
+   "extremen_tabel": 1411,
+   "niet_gekoppeld": 0,
+   "tijd_mediaan_abs_min": 2,
+   "tijd_gemiddeld_min": -0.1,
+   "tijd_binnen_3_min_pct": 77.0,
+   "tijd_binnen_10_min_pct": 99.5,
+   "hoogte_gemiddeld_m": 0.048,
+   "hoogte_binnen_10cm_pct": 85.6,
+   "hoogte_gemiddeld_hoogwater_m": 0.046,
+   "hoogte_gemiddeld_laagwater_m": 0.049,
    "nivel_medio_tabel": 2.0,
    "haalt_norm": false
   },
