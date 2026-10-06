@@ -415,7 +415,7 @@ def analyse(coast: Coast, districts, item: dict) -> dict:
     return {
         "punt": (round(lon, 6), round(lat, 6)),
         "afstand_kust_m": round(dist),
-        "kijkrichting": round(facing),
+        "kijkrichting": round(facing) % 360,
         "richting_zekerheid": round(conf, 2),
         "venster": win,
         "afstand_land_km": {str(d): round(v, 1) for d, v in dist_km.items()},
