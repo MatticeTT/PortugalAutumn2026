@@ -35,3 +35,14 @@ def test_kustvolgorde_stations():
     assert (a, b) == ("cascais", "sines") and 0 < w < 0.3
     a, b, w, _ = interp.weights(-7.92, 36.98, sts)  # Faro: tussen Lagos en Huelva
     assert (a, b) == ("lagos", "huelva") and 0.3 < w < 0.6
+
+
+def test_elk_strand_heeft_getijstations():
+    import json
+
+    root = Path(__file__).resolve().parents[1]
+    fc = json.loads((root / "data" / "beaches" / "stranden.geojson").read_text())
+    tg = json.loads((root / "data" / "tides" / "stranden_getij.json").read_text())
+    ids = {f["properties"]["id"] for f in fc["features"]}
+    assert ids == set(tg)
+    assert all(v["nauwkeurigheid"] in {"±5 min", "±15 min", "onzeker"} for v in tg.values())

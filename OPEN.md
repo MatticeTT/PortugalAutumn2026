@@ -129,3 +129,41 @@ De databank van het EEA (discodata) weigert de vraag naar haar tabellen ("system
 - Stranden zonder naam, tenzij ze bij een officieel zwemwater horen.
 - Stranden buiten Portugal. Het uitsnijden rond Portugal haalde enkele Spaanse stranden aan de Minho en de Douro binnen; die vallen in geen enkel Portugees district.
 - Land smaller dan 50 m (havendammen, pieren, strandhoofden) telt niet als afscherming. Zonder die regel leek de open zee bij onder meer Costa da Caparica dicht.
+
+## M2 (6 oktober 2026)
+
+### 17. Getij tegen de officiële tafel: wat de norm haalt en wat niet
+
+Gemeten over alle 1.411 hoog- en laagwaters van 2026 per hoofdhaven (`data/tides/controle.json`). Norm: helft binnen 3 min, 95 % binnen 10 min, hoogtes binnen 0,1 m.
+
+| Haven | Stations | Gem. verschil | Binnen 3 min | Binnen 10 min | Hoogte binnen 0,1 m |
+|---|---|---|---|---|---|
+| Viana do Castelo | Viana | −0,3 min | 64 % ✅ | 98 % ✅ | 88 % ❌ |
+| Leixões | Leixões | −2,2 min | 63 % ✅ | 98 % ✅ | 91 % ❌ |
+| Peniche | Peniche | −1,9 min | 64 % ✅ | 99 % ✅ | 91 % ❌ |
+| Cascais | Cascais | +1,4 min | 79 % ✅ | 100 % ✅ | 96 % ✅ |
+| Sesimbra | Cascais + Sines | −0,1 min | 77 % ✅ | 100 % ✅ | 86 % ❌ |
+| Sines | Sines | −1,5 min | 80 % ✅ | 100 % ✅ | 96 % ✅ |
+| Lagos | Lagos | −4,1 min | 37 % ❌ | 99 % ✅ | 96 % ✅ |
+| Figueira da Foz | Leixões + Nazaré | −5,9 min | 26 % ❌ | 88 % ❌ | 88 % ❌ |
+| Aveiro | Leixões + Nazaré | −14 min | 12 % ❌ | 45 % ❌ | 78 % ❌ |
+| Lisboa | Cascais | −30 min | 0 % ❌ | 0 % ❌ | 42 % ❌ |
+| Faro-Olhão | Lagos + Huelva | −14 min | 3 % ❌ | 31 % ❌ | 85 % ❌ |
+| Vila Real de Santo António | Lagos + Huelva | −16 min | 0 % ❌ | 12 % ❌ | 69 % ❌ |
+
+Een minteken betekent: onze voorspelling valt vroeger dan de tafel.
+
+Wat dit betekent:
+
+- **Open kust met een peilstation of tussen twee stations** (Viana tot Sines, en Sesimbra): de tijden halen de norm. De hoogtes zitten gemiddeld juist, maar de getijslag is 1 tot 4 cm te klein. Omdat de tafel op 0,1 m afrondt, valt 4 tot 14 % net buiten de 10 cm.
+- **Lagos:** 4 minuten te vroeg. De TICON-constanten van Lagos komen uit oudere metingen (UHSLC).
+- **Havens in een monding of lagune** (Aveiro, Lisboa, Faro-Olhão, Vila Real de Santo António, deels Figueira da Foz): het getij komt daar 6 tot 30 minuten later dan op de open kust. Interpolatie langs de kust kan dat niet weten (PLAN.md 3.2, stap 6).
+- **Oostelijke Algarve:** er is geen Portugees peilstation ten oosten van Lagos. Huelva (Spanje) is toegevoegd, maar Faro-Olhão blijft 14 minuten te vroeg.
+
+Bewust **niet** gedaan: de stations bijstellen op de tafel. Het plan staat de tafel alleen toe als controle (3.2). Wel gebruikt: het gemiddelde niveau van Cascais uit de notas van de tafel (2,08 m), en één vaste correctie van −4,5 cm op het gemiddelde niveau van TICON-4. Die 4,5 cm is gemeten tegen de tafel. Ze past bij de zeespiegelstijging sinds de referentieperiode van de tafel **[onbevestigd]**.
+
+Per strand staat de verwachte nauwkeurigheid in `data/tides/stranden_getij.json`: ±5 min (489 stranden), ±15 min (oostelijke Algarve, 133) of onzeker (monding, lagune of baai, 59). De fiche toont dat bij de getijtijden.
+
+**Voorstel:**
+1. Voor surfen is een kwartier verschil in het getij weinig. De fiche rondt de tijden af op 5 minuten en zet "±15 min" of "onzeker" erbij waar dat geldt.
+2. Wil de eigenaar de oostelijke Algarve en de mondingen toch exact, dan zijn er twee wegen: toestemming vragen aan het Instituto Hidrográfico om hun concordâncias te gebruiken, of FES2022 via een AVISO-account (PLAN.md 3.2) proberen.

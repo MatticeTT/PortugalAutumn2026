@@ -10,7 +10,8 @@ Gratis, niet-commercieel, voor een besloten kring.
 |---|---|
 | M0 Proeven en sleutels | Klaar; open punten in OPEN.md |
 | M1 Stranden | Klaar: 681 stranden; zie OPEN.md punt 13 tot 16 |
-| M2 tot M7 | Nog niet begonnen |
+| M2 Getij | Klaar; norm gehaald op de open kust, niet in mondingen (OPEN.md punt 17) |
+| M3 tot M7 | Nog niet begonnen |
 
 ## Lokaal
 
