@@ -167,3 +167,21 @@ Per strand staat de verwachte nauwkeurigheid in `data/tides/stranden_getij.json`
 **Voorstel:**
 1. Voor surfen is een kwartier verschil in het getij weinig. De fiche rondt de tijden af op 5 minuten en zet "±15 min" of "onzeker" erbij waar dat geldt.
 2. Wil de eigenaar de oostelijke Algarve en de mondingen toch exact, dan zijn er twee wegen: toestemming vragen aan het Instituto Hidrográfico om hun concordâncias te gebruiken, of FES2022 via een AVISO-account (PLAN.md 3.2) proberen.
+
+## M3 (6 oktober 2026)
+
+### 18. Windguru-vergelijking: 2 van de 5 spots gedaan
+
+Praia da Rocha (wind) en Arrifana (golven) halen de norm: 98 procent van de uren binnen 2 kn, 0,1 m en 1 s (`docs/m3_windguru.md`). Moledo, Peniche en Ericeira zijn nog niet vergeleken: de Windguru-nummers van die spots zijn niet bekend, en het Firecrawl-tegoed om ze op te zoeken is bijna op.
+
+**Voorstel:** de eigenaar zoekt de drie spots één keer op Windguru op en stuurt een schermafbeelding of de link; of het Firecrawl-tegoed wordt aangevuld.
+
+Vlagen: Windguru toont gemiddeld 2 kn hoger dan GFS via Open-Meteo. Voor de WIND-score (vlagen boven 30 kn geven minstens 4) betekent dat: onze vlagen zijn wat voorzichtiger laag. M6 meet welke vlagen beter kloppen met de IPMA-stations.
+
+### 19. IBI reikt minder ver vooruit
+
+Copernicus IBI geeft 207 uur (bijna 9 dagen) vanaf het lopende uur; GFS-Wave 240 uur. De site toont voor de laatste dag alleen GFS-Wave.
+
+### 20. IBI geeft lagere golven dan GFS-Wave aan de kust
+
+Op 6 oktober in het zeevak van Arrifana 0,7 m (IBI) tegen 0,95 m (GFS-Wave), in dat van Praia da Rocha 0,4 m tegen 0,8 m. IBI rekent fijner (3 km) en houdt beter rekening met de kust. Welke dichter bij de werkelijkheid ligt, meet M6 tegen boeien.
