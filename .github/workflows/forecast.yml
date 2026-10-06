@@ -9,6 +9,9 @@ on:
   push:
     paths:
       - pipeline/forecast/**
+      - pipeline/site/**
+      - pipeline/rules/**
+      - web/**
       - .github/workflows/forecast.yml
 permissions:
   contents: write
@@ -38,5 +41,19 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A && git commit -q -m "Voorspelling $(date -u +%FT%RZ)"
           git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" data
+      - uses: actions/setup-node@v4
+        with: { node-version: "22", cache: npm, cache-dependency-path: web/package-lock.json }
+      - name: Site bouwen
+        run: |
+          python -m pipeline.site.build_data
+          cd web && npm ci && npm run build
+      - name: Naar de tak site (Vercel publiceert die tak)
+        run: |
+          cd web/dist
+          git init -q -b site
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A && git commit -q -m "Site $(date -u +%FT%RZ)"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" site
       - if: steps.fetch.outcome == 'failure'
         run: echo "Een of meer bronnen faalden, zie 'Voorspelling ophalen'" && exit 1

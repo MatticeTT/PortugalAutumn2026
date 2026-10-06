@@ -53,7 +53,7 @@ PARAMS = {
     "straal_lengte_km": 300,
     "open_vanaf_km": 20,             # dichter land telt als afscherming
     "nauw_water_km": 3,              # land recht vooruit binnen deze afstand: baai, lagune of monding
-    "sector_halve_breedte_graden": 15,
+    "spreiding_graden": 25,          # richtingsspreiding van een deining (standaardafwijking)
     "samenvoegen_zelfde_naam_m": 150,
     "eea_koppel_m": 400,
     "zeevak_km": 5,                  # plan M3: golven opvragen 5 km uit de kust, nooit op land
@@ -289,20 +289,24 @@ class Coast:
 def exposure(dist_km: dict[float, float], facing: float) -> list[float]:
     """Blootstellingsfactor f per golfrichting 0, 10, ..., 350 graden (waar de golf vandaan komt).
 
-    f^2 = gemiddelde over de sector rond die richting van [straal open] x cos(hoek met de kijkrichting).
-    f^2 is een energiefactor: in de formule van 2.5 staat f^2 * H^2 * T. De cosinus is de
-    afname van de energiestroom bij een schuin invallende golf; afbuiging rond kapen telt niet mee.
+    f^2 = som over de richtingen phi van  D(phi - theta) x [phi is open zee] x cos(phi - kijkrichting),
+    met D een normale verdeling rond de golfrichting theta (spreiding_graden): een deining komt
+    nooit uit één scherpe richting en buigt om kapen. f^2 is een energiefactor: de WAVE-formule
+    (PLAN.md 2.5) gebruikt f^2 * H^2 * T. De cosinus is de afname van de energiestroom bij een
+    schuin invallende golf.
     """
     step = PARAMS["straal_stap_graden"]
-    half = PARAMS["sector_halve_breedte_graden"]
+    sd = PARAMS["spreiding_graden"]
+    dirs = list(range(0, 360, step))
     out = []
     for theta in range(0, 360, 10):
-        vals = []
-        for k in range(-half, half + 1, step):
-            phi = (theta + k) % 360
-            is_open = dist_km.get(phi, 0) >= PARAMS["open_vanaf_km"]
-            vals.append(is_open * max(0.0, math.cos(math.radians(angdiff(phi, facing)))))
-        out.append(round(math.sqrt(sum(vals) / len(vals)), 2))
+        num = den = 0.0
+        for phi in dirs:
+            wgt = math.exp(-0.5 * (angdiff(phi, theta) / sd) ** 2)
+            den += wgt
+            if dist_km.get(phi, 0) >= PARAMS["open_vanaf_km"]:
+                num += wgt * max(0.0, math.cos(math.radians(angdiff(phi, facing))))
+        out.append(round(math.sqrt(num / den), 2))
     return out
 
 

@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="robots" content="noindex, nofollow, noarchive" />
+  <meta name="color-scheme" content="light dark" />
+  <title>Surfkaart Portugal</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><path d='M16 2a14 14 0 0 0 0 28z' fill='%2312b5d3'/><path d='M16 2a14 14 0 0 1 0 28z' fill='%233a6fe0'/></svg>" />
+</head>
+<body>
+  <header class="balk">
+    <div class="balk-boven">
+      <h1>Surfkaart <span>Portugal</span></h1>
+      <label class="stand">
+        <span class="sr">Model</span>
+        <select id="stand"></select>
+      </label>
+      <button id="legende-knop" class="knop" aria-haspopup="dialog" aria-label="Legende">?</button>
+    </div>
+    <nav id="dagen" class="dagen" aria-label="Dag"></nav>
+    <div class="uurrij">
+      <input id="uur" type="range" min="0" max="23" step="1" aria-label="Uur" />
+      <output id="uurlabel" for="uur"></output>
+    </div>
+  </header>
+  <main>
+    <div id="kaart" role="application" aria-label="Kaart met stranden"></div>
+    <aside id="fiche" class="fiche" hidden aria-live="polite"></aside>
+  </main>
+  <dialog id="legende">
+    <form method="dialog"><button class="sluit" aria-label="Sluiten">×</button></form>
+    <h2>Zo lees je de kaart</h2>
+    <div class="leg-bol" id="leg-bol"></div>
+    <p>Elk bolletje is een strand. <b>Links (cyaan)</b> het WIND-cijfer voor kitesurf en windsurf, <b>rechts (blauw)</b> het WAVE-cijfer voor golfsurfen. Hoe feller, hoe meer. Een rode rand betekent: gevaarlijk.</p>
+    <table class="schaal">
+      <tr><th>1</th><td>De moeite niet</td></tr>
+      <tr><th>2</th><td>Je kan proberen, wellicht niets</td></tr>
+      <tr><th>3</th><td>Ideaal voor beginners</td></tr>
+      <tr><th>4</th><td>Sterk: voor gevorderden</td></tr>
+      <tr><th>5</th><td>Gevaarlijk</td></tr>
+    </table>
+    <p class="klein">De cijfers zeggen hoeveel wind en golf er is en voor wie. Ze zeggen niets over stroming, rotsen, drukte of je eigen niveau, en ze zijn <b>geen veiligheidsadvies</b>. Golfhoogte op het strand is een schatting: de zeebodem kan ze halveren of verdubbelen.</p>
+    <p><a href="rekenen.html">Hoe rekenen we?</a></p>
+  </dialog>
+  <footer class="bronnen">
+    <details>
+      <summary>Bronnen: Open-Meteo · Copernicus · OpenStreetMap · EEA/APA · TICON-4 · IPMA</summary>
+      <a href="https://open-meteo.com/">Weather data by Open-Meteo.com</a> ·
+      Generated using E.U. Copernicus Marine Service Information; DOI 10.48670/moi-00025 ·
+      <a href="https://openfreemap.org/">OpenFreeMap</a> © OpenMapTiles Data from <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> ·
+      Bathing water data: EEA / APA (CC BY 4.0) ·
+      Getijconstanten: TICON-4 (DOI 10.17882/109129) ·
+      Waarschuwingen: <a href="https://www.ipma.pt/">IPMA, Instituto Português do Mar e da Atmosfera</a> ·
+      <a href="rekenen.html">Hoe rekenen we</a>
+    </details>
+  </footer>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

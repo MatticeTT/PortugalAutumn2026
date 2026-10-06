@@ -6,14 +6,13 @@ Keuzes die het plan aan Claude Code overlaat, met de reden.
 
 De pijplijn draait elke 6 uur. Elke run bewaren in `main` zou de geschiedenis snel laten vollopen (honderden stranden × 10 dagen × uren, vier keer per dag).
 
-Keuze:
+Keuze (bijgewerkt in M4):
 
-1. `main` bevat alleen code, `rules.yaml`, de strandentabel (GeoJSON, ODbL) en de jaarlijkse getijbestanden.
-2. De geplande workflow rekent de voorspelling uit, bouwt de site en publiceert ze met `vercel deploy --prebuilt --prod`. De voorspellingsdata gaan zo rechtstreeks naar Vercel en komen niet in git.
-3. Dezelfde workflow zet de laatste data ook op een tak `data` als één weescommit die telkens met `--force` wordt overschreven. Dat geeft een controleerbare kopie van de laatste run zonder geschiedenis.
-4. Automatische publicatie van Vercel bij elke push wordt voor de tak `data` uitgezet (`vercel.json` → `git.deploymentEnabled`), zodat er niet twee keer gepubliceerd wordt.
+1. De hoofdtak bevat alleen code, `rules.yaml`, de strandentabel (GeoJSON, ODbL) en de getijbestanden.
+2. De workflow `forecast` draait elke 6 uur. Hij haalt de voorspelling op en zet die op de tak `data`. Daarna rekent hij de scores uit, bouwt hij de site (`web/dist`) en zet die op de tak `site`. Beide takken bestaan uit één commit die telkens met `--force` wordt overschreven, zodat er geen geschiedenis vol data ontstaat.
+3. Vercel publiceert alleen de tak `site` (`vercel.json` in de hoofdtak: `git.deploymentEnabled`). In de instellingen van het Vercel-project staat `site` als productietak, met framework "Other" en zonder buildcommando: de tak bevat al de gebouwde site.
 
-Nodig: de geheimen `VERCEL_TOKEN`, `VERCEL_ORG_ID` en `VERCEL_PROJECT_ID` (zie `.env.example`). Wordt ingericht in M4.
+Zo is er geen Vercel-sleutel nodig in GitHub; Vercel volgt de tak `site` zelf.
 
 ## Talen
 

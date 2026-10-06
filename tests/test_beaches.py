@@ -1,7 +1,6 @@
 """M1: de meetkunde van de strandentabel, en de acceptatie op de gebouwde tabel."""
 
 import json
-import math
 from pathlib import Path
 
 import pytest
@@ -39,10 +38,16 @@ def test_stralen_land_en_zee():
 def test_blootstelling_recht_en_schuin():
     dist = {d: (300.0 if 180 < d < 360 else 0.0) for d in range(0, 360, 5)}  # zee in het westen
     f = build.exposure(dist, 270)
-    assert f[27] == pytest.approx(math.sqrt(sum(math.cos(math.radians(k)) for k in range(-15, 16, 5)) / 7), abs=0.01)
-    assert f[27] > 0.95
-    assert f[9] == 0  # golven uit het oosten komen van over land
-    assert f[18] < f[22] < f[27]  # schuiner invallend: minder energie
+    assert f[27] > 0.9                # recht uit zee
+    assert f[9] < 0.05                # golven uit het oosten komen van over land
+    assert f[18] < f[22] < f[27]      # schuiner invallend: minder energie
+
+
+def test_beschut_strand_krijgt_deining_om_de_kaap():
+    # Open tussen 205 en 300 graden, kijkt naar 251 (zoals Arrifana); deining uit 323.
+    dist = {d: (300.0 if 205 <= d <= 300 else 1.0) for d in range(0, 360, 5)}
+    f = build.exposure(dist, 251)
+    assert 0.2 < f[32] < 0.6  # niet 0: door de spreiding komt er deining om de kaap
 
 
 def test_venster():
