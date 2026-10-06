@@ -106,33 +106,33 @@ def ibi_past():
 
 
 def insitu_buoys():
-    """Copernicus In-Situ (IBI): welke golfboeien in Portugal hebben recente metingen?"""
+    """Copernicus In-Situ (IBI): bestanden van de Portugese golfboeien zoeken op hun code."""
     if not os.environ.get("COPERNICUSMARINE_SERVICE_USERNAME"):
         raise RuntimeError("geen Copernicus-account")
     import copernicusmarine
 
-    desc = copernicusmarine.describe(product_id="INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033")
-    datasets = []
-    for prod in desc.products:
-        for ds in prod.datasets:
-            datasets.append(ds.dataset_id)
-    out = {"datasets": datasets}
-    # De lijst met platformen staat in een indexbestand; zoek boeien bij Portugal.
-    for ds_id in datasets:
-        if "nrt" not in ds_id and "mynrt" not in ds_id:
-            continue
+    ds_id = "cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr"
+    out = {}
+    for code in ("6201081", "6201077", "6201079", "Sines", "Leixoes", "Faro", "Nazare", "6200192", "6200199"):
         try:
-            res = copernicusmarine.get(dataset_id=ds_id, filter="*index_platform*",
-                                       output_directory=str(OUT / "insitu"), disable_progress_bar=True)
-            files = [str(f.file_path) for f in getattr(res, "files", [])]
-            out[ds_id] = {"indexbestanden": files}
-            for f in files:
-                txt = Path(f).read_text(errors="replace").splitlines()
-                pt = [ln for ln in txt if any(k in ln for k in ("Sines", "Leixoes", "Leixões", "Faro", "Nazare",
-                                                                  "6201081", "6201077", "6201079"))]
-                out[ds_id]["portugal"] = pt[:30]
+            res = copernicusmarine.get(dataset_id=ds_id, filter=f"*{code}*", dry_run=True, disable_progress_bar=True)
+            files = [getattr(f, "s3_url", None) or getattr(f, "https_url", None) or str(f) for f in res.files]
+            recent = [f for f in files if "/latest/" in f or "/monthly/" in f]
+            out[code] = {"aantal": len(files), "voorbeeld": sorted(files)[-5:], "recent": sorted(recent)[-5:]}
         except Exception as e:  # noqa: BLE001
-            out[ds_id] = f"fout: {type(e).__name__}: {e}"[:300]
+            out[code] = f"fout: {type(e).__name__}: {e}"[:300]
+    return out
+
+
+def noaa_isd():
+    """NOAA Global Hourly (ISD), publiek domein: Portugese stations en één station dit jaar."""
+    hist = get("https://www.ncei.noaa.gov/pub/data/noaa/isd-history.csv", timeout=300).decode(errors="replace")
+    rows = [r for r in hist.splitlines() if ',"PO",' in r]
+    recent = [r for r in rows if r.rstrip().split(",")[-1].strip('"') >= "20260901"]
+    out = {"stations_po": len(rows), "met_recente_data": [r[:120] for r in recent][:60]}
+    csv = get("https://www.ncei.noaa.gov/data/global-hourly/access/2026/08554099999.csv", timeout=300).decode()
+    lines = csv.splitlines()
+    out["faro_2026"] = {"regels": len(lines), "kop": lines[0][:300], "laatste": lines[-1][:200]}
     return out
 
 
@@ -152,6 +152,7 @@ PROBES = {
     "copernicus_ibi_verleden": ibi_past,
     "copernicus_insitu_boeien": insitu_buoys,
     "meteostat_wind_faro": meteostat,
+    "noaa_isd_wind": noaa_isd,
 }
 
 
