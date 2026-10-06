@@ -44,6 +44,9 @@ jobs:
       - name: Archief bijwerken (voor de meting per vooruitzicht, M6)
         continue-on-error: true
         run: |
+          # Twee keer per dag (de runs van 00 en 12 UTC, opgehaald rond 04 en 16 UTC) volstaat.
+          h=$(date -u +%H)
+          if [ "${{ github.event_name }}" = "schedule" ] && [ "$h" != "04" ] && [ "$h" != "16" ]; then exit 0; fi
           if git fetch -q origin archief; then
             git worktree add -q -B archief /tmp/archief FETCH_HEAD
           else
