@@ -58,7 +58,8 @@ def osm() -> None:
     ]:
         flt = RAW / f"{name}.osm.pbf"
         run("osmium", "tags-filter", "--overwrite", "-o", str(flt), str(pbf), expr)
-        run("osmium", "export", "--overwrite", "-f", "geojsonseq", "-o", str(RAW / f"{name}.geojsonseq"), str(flt))
+        out = str(RAW / f"{name}.geojsonseq")
+        run("osmium", "export", "--overwrite", "-u", "type_id", "-f", "geojsonseq", "-o", out, str(flt))
     simplify_districts()
 
 
@@ -72,8 +73,8 @@ def simplify_districts() -> None:
         if p.get("boundary") != "administrative" or f["geometry"]["type"] not in ("Polygon", "MultiPolygon"):
             continue
         g = shape(f["geometry"]).simplify(0.0005, preserve_topology=True)
-        out.append({"type": "Feature", "geometry": mapping(g),
-                    "properties": {k: p.get(k) for k in ("name", "ref", "dicofre", "ISO3166-2", "@id")}})
+        props = {k: p.get(k) for k in ("name", "ref", "dicofre", "ISO3166-2")} | {"osm_id": f.get("id")}
+        out.append({"type": "Feature", "geometry": mapping(g), "properties": props})
     (RAW / "osm_districts.geojson").write_text(json.dumps({"type": "FeatureCollection", "features": out}))
     print(f"distritos: {len(out)}")
 
