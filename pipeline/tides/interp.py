@@ -11,14 +11,11 @@ from __future__ import annotations
 
 import json
 from bisect import bisect_left
+from functools import cache
 from pathlib import Path
-
-from pyproj import Transformer
-from shapely.geometry import LineString, Point
 
 ROOT = Path(__file__).resolve().parents[2]
 STATIONS_FILE = ROOT / "data" / "tides" / "stations.json"
-TO_M = Transformer.from_crs(4326, 3763, always_xy=True).transform
 
 # Lijn langs de kust, van noord naar zuid en dan oost (lon, lat). Grof; dient alleen
 # om stranden en stations te ordenen.
@@ -27,13 +24,25 @@ SPINE = [
     (-9.40, 39.36), (-9.50, 38.78), (-9.42, 38.69), (-9.21, 38.41), (-8.89, 37.95), (-8.99, 37.02),
     (-8.94, 37.00), (-8.67, 37.10), (-7.92, 36.98), (-7.41, 37.17), (-6.93, 37.20),
 ]
-SPINE_M = LineString([TO_M(x, y) for x, y in SPINE])
 PAIR_WINDOW_MIN = 180  # zelfde hoog- of laagwater bij het buurstation: binnen 3 uur
+
+
+@cache
+def _spine():
+    # pyproj en shapely pas hier laden: interpolate() heeft ze niet nodig (de site-bouw ook niet).
+    from pyproj import Transformer
+    from shapely.geometry import LineString
+
+    to_m = Transformer.from_crs(4326, 3763, always_xy=True).transform
+    return to_m, LineString([to_m(x, y) for x, y in SPINE])
 
 
 def chainage(lon: float, lat: float) -> float:
     """Afstand langs de kust in km, vanaf Caminha."""
-    return SPINE_M.project(Point(TO_M(lon, lat))) / 1000
+    from shapely.geometry import Point
+
+    to_m, spine = _spine()
+    return spine.project(Point(to_m(lon, lat))) / 1000
 
 
 def load_stations(path: Path = STATIONS_FILE):
