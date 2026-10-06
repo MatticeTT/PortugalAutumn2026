@@ -1,0 +1,26 @@
+# Mijlpaal 2: getij. Rekent hoog- en laagwater per station met Neaps en vergelijkt
+# met de officiële getijtafel 2026 (alleen ter controle, de tafel zelf komt niet in git).
+name: tides
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - pipeline/tides/**
+      - .github/workflows/tides.yml
+permissions:
+  contents: write
+concurrency: { group: tides, cancel-in-progress: false }
+jobs:
+  tides:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - uses: actions/setup-node@v4
+        with: { node-version: "22", cache: npm }
+      - run: sudo apt-get update -q && sudo apt-get install -y -q poppler-utils
+      - run: pip install -e ".[geo]"
+      - run: npm ci
+      - name: Getijtafel inlezen
+        run: python -m pipeline.tides.table
