@@ -56,6 +56,7 @@ PARAMS = {
     "sector_halve_breedte_graden": 15,
     "samenvoegen_zelfde_naam_m": 150,
     "eea_koppel_m": 400,
+    "zeevak_km": 5,                  # plan M3: golven opvragen 5 km uit de kust, nooit op land
 }
 
 # District (naam in OSM) -> code van de IPMA-waarschuwingen (OPEN.md punt 6).
@@ -412,7 +413,9 @@ def analyse(coast: Coast, districts, item: dict) -> dict:
         if dists and (dists[0][0] < 300 or item.get("eea")):
             district = dists[0][1]
     lon, lat = TO_LL(p.x, p.y)
+    sea = sea_point(origin, facing, dist_km)
     return {
+        "zeevak": [round(v, 5) for v in TO_LL(sea.x, sea.y)],
         "punt": (round(lon, 6), round(lat, 6)),
         "afstand_kust_m": round(dist),
         "kijkrichting": round(facing) % 360,
@@ -426,6 +429,28 @@ def analyse(coast: Coast, districts, item: dict) -> dict:
         "onzeker": bool(reasons),
         "redenen": reasons,
     }
+
+
+def sea_point(origin: Point, facing: float, dist_km: dict) -> Point:
+    """Punt voor de golfvoorspelling: zeevak_km uit de kust, in open water.
+
+    Eerst de kijkrichting; botst die straal op land voor zeevak_km, dan de dichtste richting
+    (tot 90 graden ernaast) die wel zo ver open is. Lukt dat niet, dan zo ver als het gaat
+    in de meest open richting, met 20 procent marge tot het land.
+    """
+    want = PARAMS["zeevak_km"]
+    step = PARAMS["straal_stap_graden"]
+    base = round(facing / step) * step
+    order = sorted(range(-90, 91, step), key=abs)
+    for k in order:
+        d = (base + k) % 360
+        if dist_km.get(d, 0) >= want:
+            a = math.radians(d)
+            return Point(origin.x + want * 1000 * math.sin(a), origin.y + want * 1000 * math.cos(a))
+    d = max(((base + k) % 360 for k in order), key=lambda x: dist_km.get(x, 0))
+    km = 0.8 * dist_km.get(d, 0)
+    a = math.radians(d)
+    return Point(origin.x + km * 1000 * math.sin(a), origin.y + km * 1000 * math.cos(a))
 
 
 def build():

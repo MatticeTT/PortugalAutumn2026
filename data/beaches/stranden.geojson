@@ -15,7 +15,8 @@
 "nauw_water_km": 3,
 "sector_halve_breedte_graden": 15,
 "samenvoegen_zelfde_naam_m": 150,
-"eea_koppel_m": 400
+"eea_koppel_m": 400,
+"zeevak_km": 5
 },
 "features": [
 {
@@ -41,6 +42,10 @@
 "Transitional"
 ],
 "bron": "eea",
+"zeevak": [
+-8.93325,
+41.91409
+],
 "afstand_kust_m": 4187,
 "kijkrichting": 270,
 "richting_zekerheid": 0.32,
@@ -205,6 +210,10 @@
 "Transitional"
 ],
 "bron": "osm",
+"zeevak": [
+-8.92996,
+41.85003
+],
 "afstand_kust_m": 0,
 "kijkrichting": 256,
 "richting_zekerheid": 0.85,
@@ -366,6 +375,10 @@
 "Transitional"
 ],
 "bron": "osm",
+"zeevak": [
+-8.92869,
+41.85465
+],
 "afstand_kust_m": 0,
 "kijkrichting": 275,
 "richting_zekerheid": 0.97,
@@ -521,6 +534,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.91253,
+41.78294
+],
 "afstand_kust_m": 0,
 "kijkrichting": 228,
 "richting_zekerheid": 0.64,
@@ -676,6 +693,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.9249,
+41.82238
+],
 "afstand_kust_m": 0,
 "kijkrichting": 288,
 "richting_zekerheid": 0.99,
@@ -831,6 +852,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.91864,
+41.83014
+],
 "afstand_kust_m": 0,
 "kijkrichting": 308,
 "richting_zekerheid": 0.83,
@@ -986,6 +1011,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.93379,
+41.78488
+],
 "afstand_kust_m": 39,
 "kijkrichting": 270,
 "richting_zekerheid": 0.94,
@@ -1143,6 +1172,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.93319,
+41.78476
+],
 "afstand_kust_m": 0,
 "kijkrichting": 286,
 "richting_zekerheid": 0.99,
@@ -1298,6 +1331,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.9398,
+41.75848
+],
 "afstand_kust_m": 0,
 "kijkrichting": 272,
 "richting_zekerheid": 0.91,
@@ -1453,6 +1490,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.93434,
+41.7243
+],
 "afstand_kust_m": 0,
 "kijkrichting": 253,
 "richting_zekerheid": 0.93,
@@ -1606,6 +1647,10 @@
 "Coastal"
 ],
 "bron": "eea",
+"zeevak": [
+-8.90642,
+41.67611
+],
 "afstand_kust_m": 26,
 "kijkrichting": 246,
 "richting_zekerheid": 0.95,
@@ -1755,6 +1800,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.86594,
+41.63905
+],
 "afstand_kust_m": 0,
 "kijkrichting": 201,
 "richting_zekerheid": 0.57,
@@ -1910,6 +1959,10 @@
 "Transitional"
 ],
 "bron": "osm",
+"zeevak": [
+-8.8801,
+41.64799
+],
 "afstand_kust_m": 299,
 "kijkrichting": 223,
 "richting_zekerheid": 0.89,
@@ -2075,6 +2128,10 @@
 "Transitional"
 ],
 "bron": "osm",
+"zeevak": [
+-8.88636,
+41.66544
+],
 "afstand_kust_m": 0,
 "kijkrichting": 274,
 "richting_zekerheid": 1.0,
@@ -2226,6 +2283,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.88637,
+41.66528
+],
 "afstand_kust_m": 0,
 "kijkrichting": 274,
 "richting_zekerheid": 1.0,
@@ -2381,6 +2442,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.883,
+41.62957
+],
 "afstand_kust_m": 0,
 "kijkrichting": 252,
 "richting_zekerheid": 0.97,
@@ -2530,6 +2595,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.8825,
+41.63259
+],
 "afstand_kust_m": 0,
 "kijkrichting": 265,
 "richting_zekerheid": 0.98,
@@ -2686,6 +2755,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.88134,
+41.61767
+],
 "afstand_kust_m": 0,
 "kijkrichting": 257,
 "richting_zekerheid": 0.81,
@@ -2835,6 +2908,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.85635,
+41.55709
+],
 "afstand_kust_m": 0,
 "kijkrichting": 251,
 "richting_zekerheid": 0.96,
@@ -2990,6 +3067,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.85761,
+41.5574
+],
 "afstand_kust_m": 0,
 "kijkrichting": 262,
 "richting_zekerheid": 0.96,
@@ -3145,6 +3226,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.85293,
+41.5416
+],
 "afstand_kust_m": 0,
 "kijkrichting": 256,
 "richting_zekerheid": 0.99,
@@ -3294,6 +3379,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.85406,
+41.54794
+],
 "afstand_kust_m": 0,
 "kijkrichting": 272,
 "richting_zekerheid": 0.99,
@@ -3443,6 +3532,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.8541,
+41.5503
+],
 "afstand_kust_m": 0,
 "kijkrichting": 275,
 "richting_zekerheid": 0.99,
@@ -3598,6 +3691,10 @@
 "Transitional"
 ],
 "bron": "osm",
+"zeevak": [
+-8.85455,
+41.54461
+],
 "afstand_kust_m": 0,
 "kijkrichting": 269,
 "richting_zekerheid": 0.89,
@@ -3755,6 +3852,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.84751,
+41.50601
+],
 "afstand_kust_m": 0,
 "kijkrichting": 253,
 "richting_zekerheid": 0.92,
@@ -3904,6 +4005,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.84855,
+41.49235
+],
 "afstand_kust_m": 0,
 "kijkrichting": 261,
 "richting_zekerheid": 0.96,
@@ -4053,6 +4158,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.84506,
+41.48349
+],
 "afstand_kust_m": 0,
 "kijkrichting": 256,
 "richting_zekerheid": 0.98,
@@ -4208,6 +4317,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.83399,
+41.46277
+],
 "afstand_kust_m": 0,
 "kijkrichting": 243,
 "richting_zekerheid": 0.91,
@@ -4363,6 +4476,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.83752,
+41.47481
+],
 "afstand_kust_m": 0,
 "kijkrichting": 268,
 "richting_zekerheid": 0.99,
@@ -4518,6 +4635,10 @@
 "Coastal"
 ],
 "bron": "eea+osm zonder naam",
+"zeevak": [
+-8.83851,
+41.46636
+],
 "afstand_kust_m": 0,
 "kijkrichting": 279,
 "richting_zekerheid": 0.99,
@@ -4667,6 +4788,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.83953,
+41.45763
+],
 "afstand_kust_m": 7,
 "kijkrichting": 273,
 "richting_zekerheid": 1.0,
@@ -4822,6 +4947,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.83918,
+41.45447
+],
 "afstand_kust_m": 19,
 "kijkrichting": 290,
 "richting_zekerheid": 0.99,
@@ -4977,6 +5106,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.84507,
+41.44106
+],
 "afstand_kust_m": 52,
 "kijkrichting": 282,
 "richting_zekerheid": 0.97,
@@ -5130,6 +5263,10 @@
 "Coastal"
 ],
 "bron": "eea",
+"zeevak": [
+-8.84865,
+41.42419
+],
 "afstand_kust_m": 52,
 "kijkrichting": 282,
 "richting_zekerheid": 0.88,
@@ -5285,6 +5422,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.84067,
+41.39333
+],
 "afstand_kust_m": 0,
 "kijkrichting": 267,
 "richting_zekerheid": 0.79,
@@ -5434,6 +5575,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.83373,
+41.37476
+],
 "afstand_kust_m": 0,
 "kijkrichting": 245,
 "richting_zekerheid": 0.8,
@@ -5583,6 +5728,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.82714,
+41.36654
+],
 "afstand_kust_m": 0,
 "kijkrichting": 234,
 "richting_zekerheid": 0.89,
@@ -5732,6 +5881,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.83158,
+41.37267
+],
 "afstand_kust_m": 0,
 "kijkrichting": 245,
 "richting_zekerheid": 0.93,
@@ -5881,6 +6034,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.83279,
+41.37542
+],
 "afstand_kust_m": 0,
 "kijkrichting": 252,
 "richting_zekerheid": 0.92,
@@ -6030,6 +6187,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.83411,
+41.37855
+],
 "afstand_kust_m": 0,
 "kijkrichting": 257,
 "richting_zekerheid": 0.93,
@@ -6185,6 +6346,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.83527,
+41.38134
+],
 "afstand_kust_m": 0,
 "kijkrichting": 259,
 "richting_zekerheid": 0.93,
@@ -6334,6 +6499,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.83556,
+41.38024
+],
 "afstand_kust_m": 0,
 "kijkrichting": 258,
 "richting_zekerheid": 0.91,
@@ -6489,6 +6658,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.83462,
+41.37531
+],
 "afstand_kust_m": 0,
 "kijkrichting": 255,
 "richting_zekerheid": 0.89,
@@ -6638,6 +6811,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.8326,
+41.37028
+],
 "afstand_kust_m": 0,
 "kijkrichting": 252,
 "richting_zekerheid": 0.89,
@@ -6793,6 +6970,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.82841,
+41.36506
+],
 "afstand_kust_m": 0,
 "kijkrichting": 245,
 "richting_zekerheid": 0.92,
@@ -6942,6 +7123,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.82471,
+41.35989
+],
 "afstand_kust_m": 0,
 "kijkrichting": 238,
 "richting_zekerheid": 0.95,
@@ -7095,6 +7280,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.82672,
+41.36171
+],
 "afstand_kust_m": 0,
 "kijkrichting": 247,
 "richting_zekerheid": 0.98,
@@ -7248,6 +7437,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.82757,
+41.36417
+],
 "afstand_kust_m": 0,
 "kijkrichting": 252,
 "richting_zekerheid": 0.97,
@@ -7407,6 +7600,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.82234,
+41.35564
+],
 "afstand_kust_m": 0,
 "kijkrichting": 242,
 "richting_zekerheid": 0.65,
@@ -7560,6 +7757,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.8121,
+41.34429
+],
 "afstand_kust_m": 0,
 "kijkrichting": 226,
 "richting_zekerheid": 0.44,
@@ -7715,6 +7916,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.82198,
+41.3624
+],
 "afstand_kust_m": 0,
 "kijkrichting": 256,
 "richting_zekerheid": 0.64,
@@ -7876,6 +8081,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.81494,
+41.34406
+],
 "afstand_kust_m": 20,
 "kijkrichting": 253,
 "richting_zekerheid": 0.97,
@@ -8035,6 +8244,10 @@
 "Coastal"
 ],
 "bron": "eea+osm zonder naam",
+"zeevak": [
+-8.81525,
+41.34552
+],
 "afstand_kust_m": 0,
 "kijkrichting": 259,
 "richting_zekerheid": 0.94,
@@ -8190,6 +8403,10 @@
 "Transitional"
 ],
 "bron": "osm",
+"zeevak": [
+-8.80069,
+41.32564
+],
 "afstand_kust_m": 32,
 "kijkrichting": 264,
 "richting_zekerheid": 0.99,
@@ -8347,6 +8564,10 @@
 "Coastal"
 ],
 "bron": "eea+osm zonder naam",
+"zeevak": [
+-8.80071,
+41.32483
+],
 "afstand_kust_m": 0,
 "kijkrichting": 271,
 "richting_zekerheid": 0.99,
@@ -8502,6 +8723,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.79074,
+41.27388
+],
 "afstand_kust_m": 21,
 "kijkrichting": 250,
 "richting_zekerheid": 0.96,
@@ -8651,6 +8876,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.79197,
+41.27671
+],
 "afstand_kust_m": 9,
 "kijkrichting": 257,
 "richting_zekerheid": 0.98,
@@ -8800,6 +9029,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.78818,
+41.2648
+],
 "afstand_kust_m": 0,
 "kijkrichting": 252,
 "richting_zekerheid": 0.91,
@@ -8957,6 +9190,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.78914,
+41.26413
+],
 "afstand_kust_m": 0,
 "kijkrichting": 260,
 "richting_zekerheid": 0.97,
@@ -9112,6 +9349,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.78855,
+41.26339
+],
 "afstand_kust_m": 37,
 "kijkrichting": 267,
 "richting_zekerheid": 0.94,
@@ -9267,6 +9508,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.78135,
+41.24171
+],
 "afstand_kust_m": 0,
 "kijkrichting": 247,
 "richting_zekerheid": 0.94,
@@ -9422,6 +9667,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.78559,
+41.25566
+],
 "afstand_kust_m": 0,
 "kijkrichting": 270,
 "richting_zekerheid": 0.98,
@@ -9577,6 +9826,10 @@
 "Coastal"
 ],
 "bron": "eea+osm zonder naam",
+"zeevak": [
+-8.78593,
+41.25796
+],
 "afstand_kust_m": 0,
 "kijkrichting": 278,
 "richting_zekerheid": 0.98,
@@ -9734,6 +9987,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.78668,
+41.22896
+],
 "afstand_kust_m": 0,
 "kijkrichting": 257,
 "richting_zekerheid": 0.71,
@@ -9883,6 +10140,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.78189,
+41.2213
+],
 "afstand_kust_m": 0,
 "kijkrichting": 251,
 "richting_zekerheid": 0.8,
@@ -10038,6 +10299,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.78295,
+41.22246
+],
 "afstand_kust_m": 0,
 "kijkrichting": 255,
 "richting_zekerheid": 0.83,
@@ -10193,6 +10458,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.7812,
+41.21839
+],
 "afstand_kust_m": 0,
 "kijkrichting": 253,
 "richting_zekerheid": 0.9,
@@ -10342,6 +10611,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.77346,
+41.20362
+],
 "afstand_kust_m": 25,
 "kijkrichting": 240,
 "richting_zekerheid": 0.75,
@@ -10497,6 +10770,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.77571,
+41.21055
+],
 "afstand_kust_m": 0,
 "kijkrichting": 257,
 "richting_zekerheid": 0.81,
@@ -10646,6 +10923,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.77682,
+41.21465
+],
 "afstand_kust_m": 0,
 "kijkrichting": 265,
 "richting_zekerheid": 0.93,
@@ -10803,6 +11084,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.7761,
+41.2185
+],
 "afstand_kust_m": 0,
 "kijkrichting": 279,
 "richting_zekerheid": 0.99,
@@ -10952,6 +11237,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.77263,
+41.18799
+],
 "afstand_kust_m": 0,
 "kijkrichting": 250,
 "richting_zekerheid": 0.76,
@@ -11107,6 +11396,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.76703,
+41.17856
+],
 "afstand_kust_m": 0,
 "kijkrichting": 239,
 "richting_zekerheid": 0.78,
@@ -11262,6 +11555,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.76875,
+41.18061
+],
 "afstand_kust_m": 0,
 "kijkrichting": 248,
 "richting_zekerheid": 0.81,
@@ -11411,6 +11708,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.76464,
+41.17501
+],
 "afstand_kust_m": 0,
 "kijkrichting": 244,
 "richting_zekerheid": 0.7,
@@ -11566,6 +11867,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.76818,
+41.18934
+],
 "afstand_kust_m": 0,
 "kijkrichting": 269,
 "richting_zekerheid": 0.93,
@@ -11721,6 +12026,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.73676,
+41.14291
+],
 "afstand_kust_m": 0,
 "kijkrichting": 223,
 "richting_zekerheid": 0.99,
@@ -11870,6 +12179,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.74959,
+41.16306
+],
 "afstand_kust_m": 0,
 "kijkrichting": 262,
 "richting_zekerheid": 0.76,
@@ -12025,6 +12338,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.7514,
+41.16314
+],
 "afstand_kust_m": 0,
 "kijkrichting": 264,
 "richting_zekerheid": 0.72,
@@ -12174,6 +12491,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.74372,
+41.14632
+],
 "afstand_kust_m": 0,
 "kijkrichting": 249,
 "richting_zekerheid": 0.9,
@@ -12329,6 +12650,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.74176,
+41.13999
+],
 "afstand_kust_m": 0,
 "kijkrichting": 246,
 "richting_zekerheid": 0.84,
@@ -12478,6 +12803,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.73382,
+41.13091
+],
 "afstand_kust_m": 0,
 "kijkrichting": 236,
 "richting_zekerheid": 0.83,
@@ -12633,6 +12962,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.7318,
+41.12924
+],
 "afstand_kust_m": 0,
 "kijkrichting": 234,
 "richting_zekerheid": 0.86,
@@ -12782,6 +13115,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.73321,
+41.13004
+],
 "afstand_kust_m": 2,
 "kijkrichting": 238,
 "richting_zekerheid": 0.91,
@@ -12931,6 +13268,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.7314,
+41.12831
+],
 "afstand_kust_m": 0,
 "kijkrichting": 241,
 "richting_zekerheid": 0.94,
@@ -13086,6 +13427,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.73455,
+41.13385
+],
 "afstand_kust_m": 0,
 "kijkrichting": 250,
 "richting_zekerheid": 0.79,
@@ -13235,6 +13580,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.73363,
+41.1323
+],
 "afstand_kust_m": 0,
 "kijkrichting": 252,
 "richting_zekerheid": 0.81,
@@ -13384,6 +13733,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.73427,
+41.13514
+],
 "afstand_kust_m": 0,
 "kijkrichting": 255,
 "richting_zekerheid": 0.8,
@@ -13533,6 +13886,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.7272,
+41.12767
+],
 "afstand_kust_m": 0,
 "kijkrichting": 257,
 "richting_zekerheid": 0.81,
@@ -13688,6 +14045,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.72737,
+41.11596
+],
 "afstand_kust_m": 0,
 "kijkrichting": 254,
 "richting_zekerheid": 0.93,
@@ -13843,6 +14204,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.72342,
+41.10495
+],
 "afstand_kust_m": 0,
 "kijkrichting": 250,
 "richting_zekerheid": 0.86,
@@ -13992,6 +14357,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.72189,
+41.10291
+],
 "afstand_kust_m": 0,
 "kijkrichting": 250,
 "richting_zekerheid": 0.9,
@@ -14147,6 +14516,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.72553,
+41.11657
+],
 "afstand_kust_m": 0,
 "kijkrichting": 268,
 "richting_zekerheid": 0.97,
@@ -14302,6 +14675,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.7258,
+41.11006
+],
 "afstand_kust_m": 0,
 "kijkrichting": 266,
 "richting_zekerheid": 0.89,
@@ -14451,6 +14828,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.72428,
+41.09921
+],
 "afstand_kust_m": 0,
 "kijkrichting": 262,
 "richting_zekerheid": 0.85,
@@ -14606,6 +14987,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.72112,
+41.0914
+],
 "afstand_kust_m": 0,
 "kijkrichting": 253,
 "richting_zekerheid": 0.91,
@@ -14761,6 +15146,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.71974,
+41.08747
+],
 "afstand_kust_m": 0,
 "kijkrichting": 254,
 "richting_zekerheid": 0.96,
@@ -14910,6 +15299,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.71854,
+41.08357
+],
 "afstand_kust_m": 0,
 "kijkrichting": 256,
 "richting_zekerheid": 0.95,
@@ -15065,6 +15458,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.71723,
+41.0802
+],
 "afstand_kust_m": 0,
 "kijkrichting": 257,
 "richting_zekerheid": 0.97,
@@ -15220,6 +15617,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.71804,
+41.08367
+],
 "afstand_kust_m": 0,
 "kijkrichting": 265,
 "richting_zekerheid": 0.97,
@@ -15369,6 +15770,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.71834,
+41.08474
+],
 "afstand_kust_m": 0,
 "kijkrichting": 270,
 "richting_zekerheid": 0.98,
@@ -15524,6 +15929,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.71803,
+41.08698
+],
 "afstand_kust_m": 0,
 "kijkrichting": 273,
 "richting_zekerheid": 0.98,
@@ -15679,6 +16088,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.71847,
+41.08364
+],
 "afstand_kust_m": 0,
 "kijkrichting": 275,
 "richting_zekerheid": 0.99,
@@ -15834,6 +16247,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.71867,
+41.08041
+],
 "afstand_kust_m": 0,
 "kijkrichting": 277,
 "richting_zekerheid": 0.99,
@@ -15989,6 +16406,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.71935,
+41.07642
+],
 "afstand_kust_m": 0,
 "kijkrichting": 277,
 "richting_zekerheid": 0.98,
@@ -16144,6 +16565,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.71931,
+41.0642
+],
 "afstand_kust_m": 0,
 "kijkrichting": 265,
 "richting_zekerheid": 0.93,
@@ -16299,6 +16724,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.71802,
+41.06145
+],
 "afstand_kust_m": 0,
 "kijkrichting": 263,
 "richting_zekerheid": 0.94,
@@ -16456,6 +16885,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.71724,
+41.05645
+],
 "afstand_kust_m": 0,
 "kijkrichting": 275,
 "richting_zekerheid": 0.99,
@@ -16605,6 +17038,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.69974,
+41.01662
+],
 "afstand_kust_m": 0,
 "kijkrichting": 232,
 "richting_zekerheid": 0.89,
@@ -16761,6 +17198,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.70729,
+41.02262
+],
 "afstand_kust_m": 0,
 "kijkrichting": 251,
 "richting_zekerheid": 0.96,
@@ -16910,6 +17351,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.70646,
+41.02432
+],
 "afstand_kust_m": 0,
 "kijkrichting": 258,
 "richting_zekerheid": 0.96,
@@ -17065,6 +17510,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.70727,
+41.02477
+],
 "afstand_kust_m": 0,
 "kijkrichting": 266,
 "richting_zekerheid": 0.98,
@@ -17220,6 +17669,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.7055,
+41.01621
+],
 "afstand_kust_m": 0,
 "kijkrichting": 261,
 "richting_zekerheid": 0.98,
@@ -17377,6 +17830,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.70627,
+41.02369
+],
 "afstand_kust_m": 0,
 "kijkrichting": 281,
 "richting_zekerheid": 0.88,
@@ -17532,6 +17989,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.70711,
+41.00268
+],
 "afstand_kust_m": 0,
 "kijkrichting": 264,
 "richting_zekerheid": 0.89,
@@ -17681,6 +18142,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.70616,
+41.01478
+],
 "afstand_kust_m": 22,
 "kijkrichting": 283,
 "richting_zekerheid": 1.0,
@@ -17836,6 +18301,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.70842,
+41.00536
+],
 "afstand_kust_m": 0,
 "kijkrichting": 276,
 "richting_zekerheid": 0.89,
@@ -17985,6 +18454,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.70722,
+40.9893
+],
 "afstand_kust_m": 0,
 "kijkrichting": 262,
 "richting_zekerheid": 0.87,
@@ -18140,6 +18613,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.70733,
+40.99518
+],
 "afstand_kust_m": 0,
 "kijkrichting": 278,
 "richting_zekerheid": 0.9,
@@ -18296,6 +18773,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.71077,
+40.98124
+],
 "afstand_kust_m": 0,
 "kijkrichting": 281,
 "richting_zekerheid": 0.92,
@@ -18446,6 +18927,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.71091,
+40.97956
+],
 "afstand_kust_m": 0,
 "kijkrichting": 290,
 "richting_zekerheid": 0.98,
@@ -18595,6 +19080,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.71659,
+40.96074
+],
 "afstand_kust_m": 0,
 "kijkrichting": 277,
 "richting_zekerheid": 0.87,
@@ -18744,6 +19233,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.71698,
+40.95898
+],
 "afstand_kust_m": 0,
 "kijkrichting": 276,
 "richting_zekerheid": 0.87,
@@ -18901,6 +19394,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.71809,
+40.95562
+],
 "afstand_kust_m": 0,
 "kijkrichting": 277,
 "richting_zekerheid": 0.89,
@@ -19050,6 +19547,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.71691,
+40.95696
+],
 "afstand_kust_m": 0,
 "kijkrichting": 286,
 "richting_zekerheid": 0.96,
@@ -19208,6 +19709,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.7202,
+40.94453
+],
 "afstand_kust_m": 0,
 "kijkrichting": 275,
 "richting_zekerheid": 0.89,
@@ -19363,6 +19868,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.7226,
+40.92853
+],
 "afstand_kust_m": 0,
 "kijkrichting": 282,
 "richting_zekerheid": 0.99,
@@ -19512,6 +20021,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.73155,
+40.89706
+],
 "afstand_kust_m": 0,
 "kijkrichting": 286,
 "richting_zekerheid": 0.99,
@@ -19668,6 +20181,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.73463,
+40.89077
+],
 "afstand_kust_m": 0,
 "kijkrichting": 288,
 "richting_zekerheid": 0.93,
@@ -19823,6 +20340,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.73888,
+40.87301
+],
 "afstand_kust_m": 0,
 "kijkrichting": 284,
 "richting_zekerheid": 1.0,
@@ -19976,6 +20497,10 @@
 "Transitional"
 ],
 "bron": "eea",
+"zeevak": [
+-8.7432,
+40.86053
+],
 "afstand_kust_m": 1898,
 "kijkrichting": 284,
 "richting_zekerheid": 1.0,
@@ -20134,6 +20659,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.74991,
+40.84053
+],
 "afstand_kust_m": 20,
 "kijkrichting": 284,
 "richting_zekerheid": 1.0,
@@ -20287,6 +20816,10 @@
 "Transitional"
 ],
 "bron": "eea",
+"zeevak": [
+-8.77518,
+40.76739
+],
 "afstand_kust_m": 1263,
 "kijkrichting": 284,
 "richting_zekerheid": 0.96,
@@ -20443,6 +20976,10 @@
 "Transitional"
 ],
 "bron": "eea",
+"zeevak": [
+-8.77813,
+40.75895
+],
 "afstand_kust_m": 6148,
 "kijkrichting": 285,
 "richting_zekerheid": 0.99,
@@ -20601,6 +21138,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.78222,
+40.74898
+],
 "afstand_kust_m": 0,
 "kijkrichting": 286,
 "richting_zekerheid": 0.99,
@@ -20756,6 +21297,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.80461,
+40.68807
+],
 "afstand_kust_m": 0,
 "kijkrichting": 287,
 "richting_zekerheid": 1.0,
@@ -20915,6 +21460,10 @@
 "Transitional"
 ],
 "bron": "osm",
+"zeevak": [
+-8.79599,
+40.61035
+],
 "afstand_kust_m": 0,
 "kijkrichting": 232,
 "richting_zekerheid": 0.81,
@@ -21072,6 +21621,10 @@
 "Transitional"
 ],
 "bron": "eea+osm zonder naam",
+"zeevak": [
+-8.79916,
+40.61303
+],
 "afstand_kust_m": 1803,
 "kijkrichting": 236,
 "richting_zekerheid": 0.81,
@@ -21229,6 +21782,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.81242,
+40.63198
+],
 "afstand_kust_m": 0,
 "kijkrichting": 284,
 "richting_zekerheid": 0.96,
@@ -21378,6 +21935,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.81732,
+40.60493
+],
 "afstand_kust_m": 35,
 "kijkrichting": 284,
 "richting_zekerheid": 0.99,
@@ -21533,6 +22094,10 @@
 "Coastal"
 ],
 "bron": "eea+osm zonder naam",
+"zeevak": [
+-8.82758,
+40.57715
+],
 "afstand_kust_m": 0,
 "kijkrichting": 287,
 "richting_zekerheid": 0.99,
@@ -21690,6 +22255,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.83706,
+40.54155
+],
 "afstand_kust_m": 0,
 "kijkrichting": 282,
 "richting_zekerheid": 0.93,
@@ -21839,6 +22408,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.84319,
+40.52104
+],
 "afstand_kust_m": 2,
 "kijkrichting": 277,
 "richting_zekerheid": 0.85,
@@ -21994,6 +22567,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.85252,
+40.49985
+],
 "afstand_kust_m": 0,
 "kijkrichting": 280,
 "richting_zekerheid": 0.86,
@@ -22149,6 +22726,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.86657,
+40.45881
+],
 "afstand_kust_m": 0,
 "kijkrichting": 280,
 "richting_zekerheid": 0.85,
@@ -22304,6 +22885,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.88122,
+40.4075
+],
 "afstand_kust_m": 0,
 "kijkrichting": 283,
 "richting_zekerheid": 1.0,
@@ -22459,6 +23044,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.90053,
+40.35093
+],
 "afstand_kust_m": 0,
 "kijkrichting": 289,
 "richting_zekerheid": 0.99,
@@ -22614,6 +23203,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.94928,
+40.236
+],
 "afstand_kust_m": 0,
 "kijkrichting": 291,
 "richting_zekerheid": 1.0,
@@ -22769,6 +23362,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.95678,
+40.22108
+],
 "afstand_kust_m": 0,
 "kijkrichting": 292,
 "richting_zekerheid": 1.0,
@@ -22922,6 +23519,10 @@
 "Coastal"
 ],
 "bron": "eea",
+"zeevak": [
+-8.93868,
+40.14228
+],
 "afstand_kust_m": 46,
 "kijkrichting": 223,
 "richting_zekerheid": 0.94,
@@ -23084,6 +23685,10 @@
 "Transitional"
 ],
 "bron": "osm",
+"zeevak": [
+-8.93381,
+40.14754
+],
 "afstand_kust_m": 0,
 "kijkrichting": 258,
 "richting_zekerheid": 0.98,
@@ -23241,6 +23846,10 @@
 "Transitional"
 ],
 "bron": "osm",
+"zeevak": [
+-8.89209,
+40.09894
+],
 "afstand_kust_m": 25,
 "kijkrichting": 204,
 "richting_zekerheid": 0.94,
@@ -23398,6 +24007,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.92331,
+40.13957
+],
 "afstand_kust_m": 0,
 "kijkrichting": 273,
 "richting_zekerheid": 1.0,
@@ -23553,6 +24166,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.92354,
+40.13341
+],
 "afstand_kust_m": 0,
 "kijkrichting": 276,
 "richting_zekerheid": 0.97,
@@ -23702,6 +24319,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.92393,
+40.12704
+],
 "afstand_kust_m": 0,
 "kijkrichting": 275,
 "richting_zekerheid": 0.92,
@@ -23857,6 +24478,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.93485,
+40.10405
+],
 "afstand_kust_m": 0,
 "kijkrichting": 283,
 "richting_zekerheid": 0.88,
@@ -24012,6 +24637,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.94888,
+40.07079
+],
 "afstand_kust_m": 0,
 "kijkrichting": 286,
 "richting_zekerheid": 0.89,
@@ -24167,6 +24796,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.97114,
+40.01865
+],
 "afstand_kust_m": 14,
 "kijkrichting": 288,
 "richting_zekerheid": 0.98,
@@ -24324,6 +24957,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.00894,
+39.93851
+],
 "afstand_kust_m": 0,
 "kijkrichting": 291,
 "richting_zekerheid": 0.98,
@@ -24473,6 +25110,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.0145,
+39.92145
+],
 "afstand_kust_m": 0,
 "kijkrichting": 278,
 "richting_zekerheid": 0.9,
@@ -24622,6 +25263,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.0185,
+39.91489
+],
 "afstand_kust_m": 0,
 "kijkrichting": 290,
 "richting_zekerheid": 0.97,
@@ -24771,6 +25416,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.02618,
+39.89914
+],
 "afstand_kust_m": 0,
 "kijkrichting": 290,
 "richting_zekerheid": 0.98,
@@ -24926,6 +25575,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.02982,
+39.89001
+],
 "afstand_kust_m": 0,
 "kijkrichting": 291,
 "richting_zekerheid": 0.98,
@@ -25083,6 +25736,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.08103,
+39.79331
+],
 "afstand_kust_m": 0,
 "kijkrichting": 297,
 "richting_zekerheid": 1.0,
@@ -25238,6 +25895,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.09057,
+39.76933
+],
 "afstand_kust_m": 0,
 "kijkrichting": 288,
 "richting_zekerheid": 0.96,
@@ -25387,6 +26048,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.09517,
+39.76015
+],
 "afstand_kust_m": 0,
 "kijkrichting": 291,
 "richting_zekerheid": 0.98,
@@ -25542,6 +26207,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.09645,
+39.75683
+],
 "afstand_kust_m": 0,
 "kijkrichting": 293,
 "richting_zekerheid": 1.0,
@@ -25697,6 +26366,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.10235,
+39.74488
+],
 "afstand_kust_m": 0,
 "kijkrichting": 290,
 "richting_zekerheid": 1.0,
@@ -25852,6 +26525,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.10917,
+39.71114
+],
 "afstand_kust_m": 0,
 "kijkrichting": 263,
 "richting_zekerheid": 0.89,
@@ -26007,6 +26684,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.11077,
+39.70541
+],
 "afstand_kust_m": 0,
 "kijkrichting": 277,
 "richting_zekerheid": 0.99,
@@ -26156,6 +26837,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.10928,
+39.71304
+],
 "afstand_kust_m": 0,
 "kijkrichting": 294,
 "richting_zekerheid": 0.99,
@@ -26305,6 +26990,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.1172,
+39.69733
+],
 "afstand_kust_m": 0,
 "kijkrichting": 285,
 "richting_zekerheid": 0.97,
@@ -26460,6 +27149,10 @@
 "Coastal"
 ],
 "bron": "eea+osm zonder naam",
+"zeevak": [
+-9.12236,
+39.67939
+],
 "afstand_kust_m": 0,
 "kijkrichting": 291,
 "richting_zekerheid": 1.0,
@@ -26609,6 +27302,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.13075,
+39.66042
+],
 "afstand_kust_m": 0,
 "kijkrichting": 291,
 "richting_zekerheid": 1.0,
@@ -26764,6 +27461,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.14199,
+39.63439
+],
 "afstand_kust_m": 0,
 "kijkrichting": 284,
 "richting_zekerheid": 0.99,
@@ -26919,6 +27620,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.13408,
+39.59673
+],
 "afstand_kust_m": 0,
 "kijkrichting": 269,
 "richting_zekerheid": 0.97,
@@ -27074,6 +27779,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.15095,
+39.58618
+],
 "afstand_kust_m": 0,
 "kijkrichting": 305,
 "richting_zekerheid": 1.0,
@@ -27223,6 +27932,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.1648,
+39.57162
+],
 "afstand_kust_m": 0,
 "kijkrichting": 316,
 "richting_zekerheid": 0.94,
@@ -27372,6 +28085,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.17409,
+39.55862
+],
 "afstand_kust_m": 0,
 "kijkrichting": 314,
 "richting_zekerheid": 0.99,
@@ -27527,6 +28244,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.19373,
+39.51891
+],
 "afstand_kust_m": 0,
 "kijkrichting": 285,
 "richting_zekerheid": 0.95,
@@ -27676,6 +28397,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.14307,
+39.51388
+],
 "afstand_kust_m": 0,
 "kijkrichting": 77,
 "richting_zekerheid": 0.65,
@@ -27823,6 +28548,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.27305,
+39.46665
+],
 "afstand_kust_m": 0,
 "kijkrichting": 303,
 "richting_zekerheid": 0.87,
@@ -27980,6 +28709,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.27403,
+39.46515
+],
 "afstand_kust_m": 0,
 "kijkrichting": 317,
 "richting_zekerheid": 0.99,
@@ -28135,6 +28868,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.27972,
+39.46078
+],
 "afstand_kust_m": 0,
 "kijkrichting": 314,
 "richting_zekerheid": 0.99,
@@ -28284,6 +29021,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.28294,
+39.45845
+],
 "afstand_kust_m": 0,
 "kijkrichting": 318,
 "richting_zekerheid": 0.99,
@@ -28433,6 +29174,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.28909,
+39.45374
+],
 "afstand_kust_m": 0,
 "kijkrichting": 317,
 "richting_zekerheid": 1.0,
@@ -28588,6 +29333,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.28675,
+39.45549
+],
 "afstand_kust_m": 0,
 "kijkrichting": 318,
 "richting_zekerheid": 1.0,
@@ -28737,6 +29486,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.29538,
+39.44929
+],
 "afstand_kust_m": 31,
 "kijkrichting": 317,
 "richting_zekerheid": 1.0,
@@ -28886,6 +29639,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.47221,
+39.37739
+],
 "afstand_kust_m": 0,
 "kijkrichting": 147,
 "richting_zekerheid": 0.35,
@@ -29037,6 +29794,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.29794,
+39.44745
+],
 "afstand_kust_m": 25,
 "kijkrichting": 318,
 "richting_zekerheid": 1.0,
@@ -29186,6 +29947,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.30119,
+39.44498
+],
 "afstand_kust_m": 19,
 "kijkrichting": 318,
 "richting_zekerheid": 1.0,
@@ -29335,6 +30100,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.30635,
+39.44164
+],
 "afstand_kust_m": 19,
 "kijkrichting": 320,
 "richting_zekerheid": 1.0,
@@ -29490,6 +30259,10 @@
 "Coastal"
 ],
 "bron": "eea+osm zonder naam",
+"zeevak": [
+-9.3171,
+39.43469
+],
 "afstand_kust_m": 0,
 "kijkrichting": 322,
 "richting_zekerheid": 1.0,
@@ -29643,6 +30416,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.33228,
+39.4256
+],
 "afstand_kust_m": 53,
 "kijkrichting": 325,
 "richting_zekerheid": 1.0,
@@ -29796,6 +30573,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.34122,
+39.42316
+],
 "afstand_kust_m": 0,
 "kijkrichting": 357,
 "richting_zekerheid": 0.13,
@@ -29948,6 +30729,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.34739,
+39.41777
+],
 "afstand_kust_m": 0,
 "kijkrichting": 335,
 "richting_zekerheid": 0.99,
@@ -30107,6 +30892,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.34081,
+39.37702
+],
 "afstand_kust_m": 0,
 "kijkrichting": 310,
 "richting_zekerheid": 0.17,
@@ -30260,6 +31049,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.34467,
+39.4186
+],
 "afstand_kust_m": 0,
 "kijkrichting": 347,
 "richting_zekerheid": 0.96,
@@ -30419,6 +31212,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.34068,
+39.37657
+],
 "afstand_kust_m": 0,
 "kijkrichting": 296,
 "richting_zekerheid": 0.34,
@@ -30568,6 +31365,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.38114,
+39.41661
+],
 "afstand_kust_m": 0,
 "kijkrichting": 7,
 "richting_zekerheid": 0.66,
@@ -30721,6 +31522,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.4088,
+39.40894
+],
 "afstand_kust_m": 0,
 "kijkrichting": 330,
 "richting_zekerheid": 0.58,
@@ -30890,6 +31695,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.38123,
+39.40092
+],
 "afstand_kust_m": 0,
 "kijkrichting": 320,
 "richting_zekerheid": 0.98,
@@ -31045,6 +31854,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.38805,
+39.30728
+],
 "afstand_kust_m": 0,
 "kijkrichting": 179,
 "richting_zekerheid": 0.8,
@@ -31208,6 +32021,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.41923,
+39.32903
+],
 "afstand_kust_m": 0,
 "kijkrichting": 260,
 "richting_zekerheid": 1.0,
@@ -31357,6 +32174,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.41998,
+39.31529
+],
 "afstand_kust_m": 0,
 "kijkrichting": 261,
 "richting_zekerheid": 0.65,
@@ -31516,6 +32337,10 @@
 "Coastal"
 ],
 "bron": "eea+osm zonder naam",
+"zeevak": [
+-9.40416,
+39.29845
+],
 "afstand_kust_m": 0,
 "kijkrichting": 254,
 "richting_zekerheid": 0.8,
@@ -31669,6 +32494,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.38596,
+39.25799
+],
 "afstand_kust_m": 0,
 "kijkrichting": 233,
 "richting_zekerheid": 0.78,
@@ -31818,6 +32647,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.3959,
+39.27612
+],
 "afstand_kust_m": 0,
 "kijkrichting": 265,
 "richting_zekerheid": 0.85,
@@ -31967,6 +32800,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.39514,
+39.26992
+],
 "afstand_kust_m": 0,
 "kijkrichting": 263,
 "richting_zekerheid": 0.91,
@@ -32124,6 +32961,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.39575,
+39.26986
+],
 "afstand_kust_m": 0,
 "kijkrichting": 275,
 "richting_zekerheid": 1.0,
@@ -32279,6 +33120,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.39629,
+39.26803
+],
 "afstand_kust_m": 0,
 "kijkrichting": 286,
 "richting_zekerheid": 1.0,
@@ -32434,6 +33279,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.39861,
+39.25837
+],
 "afstand_kust_m": 0,
 "kijkrichting": 285,
 "richting_zekerheid": 1.0,
@@ -32583,6 +33432,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.3983,
+39.23671
+],
 "afstand_kust_m": 0,
 "kijkrichting": 283,
 "richting_zekerheid": 0.94,
@@ -32739,6 +33592,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.39996,
+39.23228
+],
 "afstand_kust_m": 0,
 "kijkrichting": 292,
 "richting_zekerheid": 0.98,
@@ -32894,6 +33751,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.40688,
+39.2096
+],
 "afstand_kust_m": 0,
 "kijkrichting": 290,
 "richting_zekerheid": 1.0,
@@ -33049,6 +33910,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.41604,
+39.1775
+],
 "afstand_kust_m": 0,
 "kijkrichting": 268,
 "richting_zekerheid": 0.84,
@@ -33206,6 +34071,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.41493,
+39.18755
+],
 "afstand_kust_m": 0,
 "kijkrichting": 289,
 "richting_zekerheid": 0.96,
@@ -33355,6 +34224,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.41385,
+39.19023
+],
 "afstand_kust_m": 0,
 "kijkrichting": 298,
 "richting_zekerheid": 0.99,
@@ -33504,6 +34377,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.42256,
+39.17547
+],
 "afstand_kust_m": 0,
 "kijkrichting": 295,
 "richting_zekerheid": 0.97,
@@ -33659,6 +34536,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.42536,
+39.17088
+],
 "afstand_kust_m": 0,
 "kijkrichting": 298,
 "richting_zekerheid": 0.99,
@@ -33814,6 +34695,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.42703,
+39.16837
+],
 "afstand_kust_m": 0,
 "kijkrichting": 300,
 "richting_zekerheid": 0.99,
@@ -33969,6 +34854,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.42929,
+39.16522
+],
 "afstand_kust_m": 0,
 "kijkrichting": 301,
 "richting_zekerheid": 0.98,
@@ -34124,6 +35013,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.42846,
+39.16613
+],
 "afstand_kust_m": 0,
 "kijkrichting": 303,
 "richting_zekerheid": 0.99,
@@ -34280,6 +35173,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.42997,
+39.16453
+],
 "afstand_kust_m": 0,
 "kijkrichting": 304,
 "richting_zekerheid": 0.98,
@@ -34429,6 +35326,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.43061,
+39.16367
+],
 "afstand_kust_m": 0,
 "kijkrichting": 304,
 "richting_zekerheid": 0.98,
@@ -34586,6 +35487,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.4322,
+39.16207
+],
 "afstand_kust_m": 0,
 "kijkrichting": 303,
 "richting_zekerheid": 0.95,
@@ -34735,6 +35640,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.43661,
+39.15626
+],
 "afstand_kust_m": 0,
 "kijkrichting": 298,
 "richting_zekerheid": 0.84,
@@ -34890,6 +35799,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.43973,
+39.15059
+],
 "afstand_kust_m": 0,
 "kijkrichting": 297,
 "richting_zekerheid": 0.85,
@@ -35039,6 +35952,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.43777,
+39.15359
+],
 "afstand_kust_m": 0,
 "kijkrichting": 304,
 "richting_zekerheid": 0.98,
@@ -35196,6 +36113,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.44837,
+39.1323
+],
 "afstand_kust_m": 0,
 "kijkrichting": 301,
 "richting_zekerheid": 0.99,
@@ -35351,6 +36272,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.47737,
+39.04028
+],
 "afstand_kust_m": 0,
 "kijkrichting": 282,
 "richting_zekerheid": 0.87,
@@ -35506,6 +36431,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.47618,
+39.03093
+],
 "afstand_kust_m": 0,
 "kijkrichting": 294,
 "richting_zekerheid": 0.69,
@@ -35661,6 +36590,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.42723,
+39.00366
+],
 "afstand_kust_m": 0,
 "kijkrichting": 270,
 "richting_zekerheid": 0.71,
@@ -35813,6 +36746,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.47736,
+38.97265
+],
 "afstand_kust_m": 0,
 "kijkrichting": 244,
 "richting_zekerheid": 0.9,
@@ -35968,6 +36905,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.47677,
+38.97491
+],
 "afstand_kust_m": 0,
 "kijkrichting": 256,
 "richting_zekerheid": 0.8,
@@ -36117,6 +37058,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.47707,
+38.99577
+],
 "afstand_kust_m": 0,
 "kijkrichting": 283,
 "richting_zekerheid": 0.83,
@@ -36266,6 +37211,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.48108,
+38.98421
+],
 "afstand_kust_m": 0,
 "kijkrichting": 276,
 "richting_zekerheid": 0.78,
@@ -36415,6 +37364,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.48152,
+38.97495
+],
 "afstand_kust_m": 0,
 "kijkrichting": 265,
 "richting_zekerheid": 0.85,
@@ -36564,6 +37517,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.48058,
+38.97038
+],
 "afstand_kust_m": 0,
 "kijkrichting": 262,
 "richting_zekerheid": 0.87,
@@ -36713,6 +37670,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.48021,
+38.96994
+],
 "afstand_kust_m": 0,
 "kijkrichting": 261,
 "richting_zekerheid": 0.89,
@@ -36862,6 +37823,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.47872,
+38.96687
+],
 "afstand_kust_m": 4,
 "kijkrichting": 261,
 "richting_zekerheid": 0.95,
@@ -37011,6 +37976,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.47969,
+38.97605
+],
 "afstand_kust_m": 0,
 "kijkrichting": 275,
 "richting_zekerheid": 0.95,
@@ -37166,6 +38135,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.47869,
+38.95839
+],
 "afstand_kust_m": 0,
 "kijkrichting": 258,
 "richting_zekerheid": 0.79,
@@ -37321,6 +38294,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.47842,
+38.96352
+],
 "afstand_kust_m": 0,
 "kijkrichting": 269,
 "richting_zekerheid": 0.64,
@@ -37481,6 +38458,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.47581,
+38.95831
+],
 "afstand_kust_m": 0,
 "kijkrichting": 276,
 "richting_zekerheid": 0.95,
@@ -37640,6 +38621,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.47036,
+38.96102
+],
 "afstand_kust_m": 0,
 "kijkrichting": 294,
 "richting_zekerheid": 0.87,
@@ -37795,6 +38780,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.47744,
+38.94476
+],
 "afstand_kust_m": 0,
 "kijkrichting": 292,
 "richting_zekerheid": 0.97,
@@ -37944,6 +38933,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.48001,
+38.93819
+],
 "afstand_kust_m": 0,
 "kijkrichting": 293,
 "richting_zekerheid": 0.96,
@@ -38094,6 +39087,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.48915,
+38.91585
+],
 "afstand_kust_m": 0,
 "kijkrichting": 293,
 "richting_zekerheid": 0.67,
@@ -38243,6 +39240,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.50048,
+38.88982
+],
 "afstand_kust_m": 0,
 "kijkrichting": 291,
 "richting_zekerheid": 0.9,
@@ -38398,6 +39399,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.50474,
+38.8794
+],
 "afstand_kust_m": 0,
 "kijkrichting": 293,
 "richting_zekerheid": 0.96,
@@ -38547,6 +39552,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.50964,
+38.87097
+],
 "afstand_kust_m": 0,
 "kijkrichting": 293,
 "richting_zekerheid": 0.96,
@@ -38700,6 +39709,10 @@
 "Coastal"
 ],
 "bron": "eea",
+"zeevak": [
+-9.51437,
+38.86308
+],
 "afstand_kust_m": 2,
 "kijkrichting": 300,
 "richting_zekerheid": 0.9,
@@ -38855,6 +39868,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.5269,
+38.84071
+],
 "afstand_kust_m": 0,
 "kijkrichting": 292,
 "richting_zekerheid": 0.88,
@@ -39004,6 +40021,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.53032,
+38.83493
+],
 "afstand_kust_m": 0,
 "kijkrichting": 290,
 "richting_zekerheid": 0.96,
@@ -39159,6 +40180,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.53044,
+38.83551
+],
 "afstand_kust_m": 0,
 "kijkrichting": 301,
 "richting_zekerheid": 0.99,
@@ -39314,6 +40339,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.53693,
+38.82634
+],
 "afstand_kust_m": 0,
 "kijkrichting": 299,
 "richting_zekerheid": 0.86,
@@ -39463,6 +40492,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.5359,
+38.82786
+],
 "afstand_kust_m": 0,
 "kijkrichting": 304,
 "richting_zekerheid": 0.8,
@@ -39612,6 +40645,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.5459,
+38.8106
+],
 "afstand_kust_m": 0,
 "kijkrichting": 289,
 "richting_zekerheid": 0.54,
@@ -39761,6 +40798,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.54656,
+38.80958
+],
 "afstand_kust_m": 0,
 "kijkrichting": 297,
 "richting_zekerheid": 0.61,
@@ -39910,6 +40951,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.54749,
+38.80878
+],
 "afstand_kust_m": 0,
 "kijkrichting": 300,
 "richting_zekerheid": 0.88,
@@ -40059,6 +41104,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.54177,
+38.7463
+],
 "afstand_kust_m": 0,
 "kijkrichting": 232,
 "richting_zekerheid": 0.67,
@@ -40208,6 +41257,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.54661,
+38.75521
+],
 "afstand_kust_m": 0,
 "kijkrichting": 243,
 "richting_zekerheid": 0.63,
@@ -40357,6 +41410,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.52348,
+38.72453
+],
 "afstand_kust_m": 0,
 "kijkrichting": 225,
 "richting_zekerheid": 0.6,
@@ -40506,6 +41563,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.52887,
+38.73722
+],
 "afstand_kust_m": 27,
 "kijkrichting": 254,
 "richting_zekerheid": 0.65,
@@ -40655,6 +41716,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.0061,
+38.78672
+],
 "afstand_kust_m": 0,
 "kijkrichting": 324,
 "richting_zekerheid": 0.95,
@@ -40806,6 +41871,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.53133,
+38.74484
+],
 "afstand_kust_m": 0,
 "kijkrichting": 274,
 "richting_zekerheid": 0.79,
@@ -40961,6 +42030,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.5296,
+38.7486
+],
 "afstand_kust_m": 0,
 "kijkrichting": 290,
 "richting_zekerheid": 0.98,
@@ -41110,6 +42183,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.05763,
+38.75801
+],
 "afstand_kust_m": 0,
 "kijkrichting": 308,
 "richting_zekerheid": 0.49,
@@ -41268,6 +42345,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.53442,
+38.73662
+],
 "afstand_kust_m": 0,
 "kijkrichting": 286,
 "richting_zekerheid": 0.78,
@@ -41417,6 +42498,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.53083,
+38.74279
+],
 "afstand_kust_m": 0,
 "kijkrichting": 299,
 "richting_zekerheid": 0.7,
@@ -41572,6 +42657,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.41381,
+38.65753
+],
 "afstand_kust_m": 0,
 "kijkrichting": 193,
 "richting_zekerheid": 0.93,
@@ -41728,6 +42817,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.38347,
+38.66005
+],
 "afstand_kust_m": 0,
 "kijkrichting": 156,
 "richting_zekerheid": 0.92,
@@ -41883,6 +42976,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.4157,
+38.65934
+],
 "afstand_kust_m": 0,
 "kijkrichting": 204,
 "richting_zekerheid": 0.85,
@@ -42038,6 +43135,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.41809,
+38.66005
+],
 "afstand_kust_m": 0,
 "kijkrichting": 208,
 "richting_zekerheid": 0.87,
@@ -42193,6 +43294,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.38455,
+38.66072
+],
 "afstand_kust_m": 0,
 "kijkrichting": 149,
 "richting_zekerheid": 0.87,
@@ -42348,6 +43453,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.37773,
+38.66473
+],
 "afstand_kust_m": 0,
 "kijkrichting": 142,
 "richting_zekerheid": 0.83,
@@ -42501,6 +43610,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.26588,
+38.65431
+],
 "afstand_kust_m": 0,
 "kijkrichting": 187,
 "richting_zekerheid": 0.91,
@@ -42660,6 +43773,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.36911,
+38.67279
+],
 "afstand_kust_m": 0,
 "kijkrichting": 125,
 "richting_zekerheid": 0.76,
@@ -42814,6 +43931,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.2649,
+38.65612
+],
 "afstand_kust_m": 0,
 "kijkrichting": 202,
 "richting_zekerheid": 0.96,
@@ -42963,6 +44084,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.27651,
+38.65165
+],
 "afstand_kust_m": 0,
 "kijkrichting": 181,
 "richting_zekerheid": 0.92,
@@ -43123,6 +44248,10 @@
 "Transitional"
 ],
 "bron": "osm",
+"zeevak": [
+-9.27651,
+38.65165
+],
 "afstand_kust_m": 0,
 "kijkrichting": 181,
 "richting_zekerheid": 0.92,
@@ -43278,6 +44407,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.27994,
+38.65145
+],
 "afstand_kust_m": 0,
 "kijkrichting": 185,
 "richting_zekerheid": 0.93,
@@ -43427,6 +44560,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.26356,
+38.65358
+],
 "afstand_kust_m": 0,
 "kijkrichting": 159,
 "richting_zekerheid": 0.96,
@@ -43580,6 +44717,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.36214,
+38.6853
+],
 "afstand_kust_m": 0,
 "kijkrichting": 99,
 "richting_zekerheid": 0.67,
@@ -43733,6 +44874,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.26718,
+38.65937
+],
 "afstand_kust_m": 0,
 "kijkrichting": 182,
 "richting_zekerheid": 0.75,
@@ -43884,6 +45029,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.2566,
+38.65572
+],
 "afstand_kust_m": 0,
 "kijkrichting": 140,
 "richting_zekerheid": 0.82,
@@ -44041,6 +45190,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.38857,
+38.64935
+],
 "afstand_kust_m": 0,
 "kijkrichting": 201,
 "richting_zekerheid": 0.75,
@@ -44196,6 +45349,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.39942,
+38.65368
+],
 "afstand_kust_m": 0,
 "kijkrichting": 216,
 "richting_zekerheid": 0.96,
@@ -44346,6 +45503,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.38701,
+38.65419
+],
 "afstand_kust_m": 0,
 "kijkrichting": 146,
 "richting_zekerheid": 0.47,
@@ -44503,6 +45664,10 @@
 "Transitional"
 ],
 "bron": "osm",
+"zeevak": [
+-9.26223,
+38.65246
+],
 "afstand_kust_m": 0,
 "kijkrichting": 147,
 "richting_zekerheid": 0.93,
@@ -44669,6 +45834,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.40367,
+38.65586
+],
 "afstand_kust_m": 0,
 "kijkrichting": 225,
 "richting_zekerheid": 0.98,
@@ -44818,6 +45987,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.26712,
+38.64936
+],
 "afstand_kust_m": 0,
 "kijkrichting": 143,
 "richting_zekerheid": 0.88,
@@ -44975,6 +46148,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.37332,
+38.64165
+],
 "afstand_kust_m": 0,
 "kijkrichting": 200,
 "richting_zekerheid": 0.87,
@@ -45130,6 +46307,10 @@
 "Transitional"
 ],
 "bron": "osm",
+"zeevak": [
+-9.27752,
+38.64648
+],
 "afstand_kust_m": 0,
 "kijkrichting": 145,
 "richting_zekerheid": 0.68,
@@ -45285,6 +46466,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.27155,
+38.65106
+],
 "afstand_kust_m": 0,
 "kijkrichting": 136,
 "richting_zekerheid": 0.68,
@@ -45450,6 +46635,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.3603,
+38.63634
+],
 "afstand_kust_m": 0,
 "kijkrichting": 206,
 "richting_zekerheid": 0.99,
@@ -45599,6 +46788,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.25993,
+38.6972
+],
 "afstand_kust_m": 0,
 "kijkrichting": 347,
 "richting_zekerheid": 0.86,
@@ -45750,6 +46943,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.35174,
+38.63378
+],
 "afstand_kust_m": 0,
 "kijkrichting": 203,
 "richting_zekerheid": 0.67,
@@ -45899,6 +47096,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.2723,
+38.6951
+],
 "afstand_kust_m": 0,
 "kijkrichting": 355,
 "richting_zekerheid": 0.87,
@@ -46060,6 +47261,10 @@
 "Transitional"
 ],
 "bron": "osm",
+"zeevak": [
+-9.32238,
+38.6286
+],
 "afstand_kust_m": 0,
 "kijkrichting": 180,
 "richting_zekerheid": 0.55,
@@ -46215,6 +47420,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.28526,
+38.69381
+],
 "afstand_kust_m": 0,
 "kijkrichting": 0,
 "richting_zekerheid": 0.88,
@@ -46366,6 +47575,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.09241,
+38.66159
+],
 "afstand_kust_m": 0,
 "kijkrichting": 103,
 "richting_zekerheid": 0.52,
@@ -46517,6 +47730,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.29946,
+38.68705
+],
 "afstand_kust_m": 0,
 "kijkrichting": 299,
 "richting_zekerheid": 0.99,
@@ -46672,6 +47889,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.06639,
+38.70271
+],
 "afstand_kust_m": 0,
 "kijkrichting": 330,
 "richting_zekerheid": 0.41,
@@ -46820,6 +48041,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.30266,
+38.68591
+],
 "afstand_kust_m": 0,
 "kijkrichting": 334,
 "richting_zekerheid": 0.93,
@@ -46975,6 +48200,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.31189,
+38.68318
+],
 "afstand_kust_m": 0,
 "kijkrichting": 302,
 "richting_zekerheid": 0.45,
@@ -47133,6 +48362,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.31612,
+38.64891
+],
 "afstand_kust_m": 0,
 "kijkrichting": 253,
 "richting_zekerheid": 0.64,
@@ -47286,6 +48519,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.1447,
+38.68115
+],
 "afstand_kust_m": 0,
 "kijkrichting": 275,
 "richting_zekerheid": 0.3,
@@ -47444,6 +48681,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.29608,
+38.62605
+],
 "afstand_kust_m": 0,
 "kijkrichting": 228,
 "richting_zekerheid": 1.0,
@@ -47593,6 +48834,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.06143,
+38.62887
+],
 "afstand_kust_m": 0,
 "kijkrichting": 189,
 "richting_zekerheid": 0.27,
@@ -47741,6 +48986,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.29641,
+38.62632
+],
 "afstand_kust_m": 0,
 "kijkrichting": 241,
 "richting_zekerheid": 0.98,
@@ -47890,6 +49139,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.09762,
+38.69389
+],
 "afstand_kust_m": 0,
 "kijkrichting": 358,
 "richting_zekerheid": 0.37,
@@ -48041,6 +49294,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.29697,
+38.62712
+],
 "afstand_kust_m": 0,
 "kijkrichting": 243,
 "richting_zekerheid": 0.98,
@@ -48190,6 +49447,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.10461,
+38.68972
+],
 "afstand_kust_m": 0,
 "kijkrichting": 17,
 "richting_zekerheid": 0.9,
@@ -48343,6 +49604,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.29287,
+38.6211
+],
 "afstand_kust_m": 0,
 "kijkrichting": 238,
 "richting_zekerheid": 0.96,
@@ -48492,6 +49757,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.13375,
+38.6431
+],
 "afstand_kust_m": 0,
 "kijkrichting": 315,
 "richting_zekerheid": 0.4,
@@ -48640,6 +49909,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.28869,
+38.61621
+],
 "afstand_kust_m": 0,
 "kijkrichting": 236,
 "richting_zekerheid": 0.95,
@@ -48789,6 +50062,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.1207,
+38.65661
+],
 "afstand_kust_m": 0,
 "kijkrichting": 271,
 "richting_zekerheid": 0.95,
@@ -48942,6 +50219,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.28705,
+38.61453
+],
 "afstand_kust_m": 0,
 "kijkrichting": 237,
 "richting_zekerheid": 0.95,
@@ -49091,6 +50372,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.28828,
+38.61626
+],
 "afstand_kust_m": 0,
 "kijkrichting": 238,
 "richting_zekerheid": 0.96,
@@ -49247,6 +50532,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.28001,
+38.60678
+],
 "afstand_kust_m": 0,
 "kijkrichting": 234,
 "richting_zekerheid": 0.99,
@@ -49402,6 +50691,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.27982,
+38.6064
+],
 "afstand_kust_m": 0,
 "kijkrichting": 240,
 "richting_zekerheid": 1.0,
@@ -49551,6 +50844,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.27795,
+38.60373
+],
 "afstand_kust_m": 0,
 "kijkrichting": 239,
 "richting_zekerheid": 1.0,
@@ -49700,6 +50997,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.27615,
+38.60158
+],
 "afstand_kust_m": 0,
 "kijkrichting": 238,
 "richting_zekerheid": 1.0,
@@ -49855,6 +51156,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.27384,
+38.59898
+],
 "afstand_kust_m": 0,
 "kijkrichting": 239,
 "richting_zekerheid": 1.0,
@@ -50010,6 +51315,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.27438,
+38.59975
+],
 "afstand_kust_m": 0,
 "kijkrichting": 243,
 "richting_zekerheid": 1.0,
@@ -50165,6 +51474,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.27186,
+38.59604
+],
 "afstand_kust_m": 0,
 "kijkrichting": 243,
 "richting_zekerheid": 1.0,
@@ -50320,6 +51633,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.2697,
+38.5929
+],
 "afstand_kust_m": 0,
 "kijkrichting": 244,
 "richting_zekerheid": 1.0,
@@ -50475,6 +51792,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.27003,
+38.59366
+],
 "afstand_kust_m": 0,
 "kijkrichting": 248,
 "richting_zekerheid": 1.0,
@@ -50630,6 +51951,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.26808,
+38.58978
+],
 "afstand_kust_m": 0,
 "kijkrichting": 249,
 "richting_zekerheid": 1.0,
@@ -50785,6 +52110,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.26641,
+38.58666
+],
 "afstand_kust_m": 0,
 "kijkrichting": 251,
 "richting_zekerheid": 1.0,
@@ -50940,6 +52269,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.2658,
+38.58512
+],
 "afstand_kust_m": 0,
 "kijkrichting": 251,
 "richting_zekerheid": 1.0,
@@ -51095,6 +52428,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.26682,
+38.58744
+],
 "afstand_kust_m": 0,
 "kijkrichting": 253,
 "richting_zekerheid": 1.0,
@@ -51244,6 +52581,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.26616,
+38.58579
+],
 "afstand_kust_m": 0,
 "kijkrichting": 254,
 "richting_zekerheid": 1.0,
@@ -51399,6 +52740,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.26507,
+38.58296
+],
 "afstand_kust_m": 0,
 "kijkrichting": 254,
 "richting_zekerheid": 1.0,
@@ -51548,6 +52893,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.26309,
+38.57757
+],
 "afstand_kust_m": 0,
 "kijkrichting": 253,
 "richting_zekerheid": 1.0,
@@ -51697,6 +53046,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.26002,
+38.57031
+],
 "afstand_kust_m": 0,
 "kijkrichting": 251,
 "richting_zekerheid": 1.0,
@@ -51846,6 +53199,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.25533,
+38.56125
+],
 "afstand_kust_m": 0,
 "kijkrichting": 247,
 "richting_zekerheid": 1.0,
@@ -52001,6 +53358,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.25185,
+38.55531
+],
 "afstand_kust_m": 0,
 "kijkrichting": 248,
 "richting_zekerheid": 1.0,
@@ -52150,6 +53511,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.24729,
+38.54569
+],
 "afstand_kust_m": 0,
 "kijkrichting": 254,
 "richting_zekerheid": 1.0,
@@ -52299,6 +53664,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.87176,
+38.47887
+],
 "afstand_kust_m": 0,
 "kijkrichting": 145,
 "richting_zekerheid": 0.98,
@@ -52460,6 +53829,10 @@
 "Transitional"
 ],
 "bron": "osm",
+"zeevak": [
+-8.90981,
+38.46459
+],
 "afstand_kust_m": 0,
 "kijkrichting": 163,
 "richting_zekerheid": 0.91,
@@ -52616,6 +53989,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.9078,
+38.46511
+],
 "afstand_kust_m": 0,
 "kijkrichting": 167,
 "richting_zekerheid": 0.93,
@@ -52771,6 +54148,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.90189,
+38.46527
+],
 "afstand_kust_m": 0,
 "kijkrichting": 143,
 "richting_zekerheid": 0.72,
@@ -52926,6 +54307,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.87262,
+38.48764
+],
 "afstand_kust_m": 0,
 "kijkrichting": 125,
 "richting_zekerheid": 0.69,
@@ -53089,6 +54474,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.2421,
+38.50415
+],
 "afstand_kust_m": 0,
 "kijkrichting": 271,
 "richting_zekerheid": 0.99,
@@ -53238,6 +54627,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.87156,
+38.4881
+],
 "afstand_kust_m": 0,
 "kijkrichting": 111,
 "richting_zekerheid": 0.75,
@@ -53389,6 +54782,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.90171,
+38.49451
+],
 "afstand_kust_m": 0,
 "kijkrichting": 241,
 "richting_zekerheid": 0.85,
@@ -53535,6 +54932,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.24268,
+38.49849
+],
 "afstand_kust_m": 0,
 "kijkrichting": 275,
 "richting_zekerheid": 1.0,
@@ -53690,6 +55091,10 @@
 "Transitional"
 ],
 "bron": "osm",
+"zeevak": [
+-8.96131,
+38.47783
+],
 "afstand_kust_m": 0,
 "kijkrichting": 339,
 "richting_zekerheid": 0.84,
@@ -53848,6 +55253,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.24282,
+38.49603
+],
 "afstand_kust_m": 0,
 "kijkrichting": 279,
 "richting_zekerheid": 1.0,
@@ -53997,6 +55406,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.88937,
+38.45856
+],
 "afstand_kust_m": 0,
 "kijkrichting": 132,
 "richting_zekerheid": 0.85,
@@ -54154,6 +55567,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.95347,
+38.45497
+],
 "afstand_kust_m": 0,
 "kijkrichting": 231,
 "richting_zekerheid": 0.96,
@@ -54309,6 +55726,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.95341,
+38.43864
+],
 "afstand_kust_m": 0,
 "kijkrichting": 169,
 "richting_zekerheid": 0.99,
@@ -54464,6 +55885,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.93438,
+38.43803
+],
 "afstand_kust_m": 0,
 "kijkrichting": 171,
 "richting_zekerheid": 0.82,
@@ -54613,6 +56038,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.93465,
+38.44556
+],
 "afstand_kust_m": 0,
 "kijkrichting": 144,
 "richting_zekerheid": 0.78,
@@ -54768,6 +56197,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.93518,
+38.44387
+],
 "afstand_kust_m": 0,
 "kijkrichting": 146,
 "richting_zekerheid": 0.78,
@@ -54917,6 +56350,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.94088,
+38.44037
+],
 "afstand_kust_m": 0,
 "kijkrichting": 150,
 "richting_zekerheid": 0.58,
@@ -55066,6 +56503,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.95175,
+38.43665
+],
 "afstand_kust_m": 0,
 "kijkrichting": 161,
 "richting_zekerheid": 0.63,
@@ -55221,6 +56662,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.95095,
+38.43919
+],
 "afstand_kust_m": 0,
 "kijkrichting": 148,
 "richting_zekerheid": 0.96,
@@ -55370,6 +56815,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.24438,
+38.48945
+],
 "afstand_kust_m": 0,
 "kijkrichting": 283,
 "richting_zekerheid": 1.0,
@@ -55519,6 +56968,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.92796,
+38.46151
+],
 "afstand_kust_m": 0,
 "kijkrichting": 110,
 "richting_zekerheid": 0.78,
@@ -55676,6 +57129,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.93492,
+38.43898
+],
 "afstand_kust_m": 0,
 "kijkrichting": 218,
 "richting_zekerheid": 0.98,
@@ -55825,6 +57282,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.92883,
+38.45731
+],
 "afstand_kust_m": 0,
 "kijkrichting": 109,
 "richting_zekerheid": 0.79,
@@ -55976,6 +57437,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.92755,
+38.4357
+],
 "afstand_kust_m": 0,
 "kijkrichting": 224,
 "richting_zekerheid": 1.0,
@@ -56125,6 +57590,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.24507,
+38.4874
+],
 "afstand_kust_m": 0,
 "kijkrichting": 293,
 "richting_zekerheid": 0.99,
@@ -56274,6 +57743,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.94158,
+38.44097
+],
 "afstand_kust_m": 0,
 "kijkrichting": 126,
 "richting_zekerheid": 0.85,
@@ -56431,6 +57904,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.24854,
+38.48024
+],
 "afstand_kust_m": 0,
 "kijkrichting": 289,
 "richting_zekerheid": 0.99,
@@ -56580,6 +58057,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.92069,
+38.42968
+],
 "afstand_kust_m": 0,
 "kijkrichting": 227,
 "richting_zekerheid": 0.99,
@@ -56729,6 +58210,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.2466,
+38.48292
+],
 "afstand_kust_m": 0,
 "kijkrichting": 299,
 "richting_zekerheid": 0.95,
@@ -56886,6 +58371,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.90678,
+38.42083
+],
 "afstand_kust_m": 0,
 "kijkrichting": 217,
 "richting_zekerheid": 1.0,
@@ -57035,6 +58524,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.25247,
+38.47336
+],
 "afstand_kust_m": 0,
 "kijkrichting": 295,
 "richting_zekerheid": 0.84,
@@ -57184,6 +58677,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.24364,
+38.4836
+],
 "afstand_kust_m": 0,
 "kijkrichting": 315,
 "richting_zekerheid": 0.82,
@@ -57333,6 +58830,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.04223,
+38.40199
+],
 "afstand_kust_m": 0,
 "kijkrichting": 188,
 "richting_zekerheid": 0.88,
@@ -57488,6 +58989,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.08347,
+38.40001
+],
 "afstand_kust_m": 0,
 "kijkrichting": 157,
 "richting_zekerheid": 0.71,
@@ -57643,6 +59148,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.11404,
+38.39731
+],
 "afstand_kust_m": 0,
 "kijkrichting": 201,
 "richting_zekerheid": 1.0,
@@ -57792,6 +59301,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.03927,
+38.39736
+],
 "afstand_kust_m": 0,
 "kijkrichting": 159,
 "richting_zekerheid": 0.85,
@@ -57941,6 +59454,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.11505,
+38.38718
+],
 "afstand_kust_m": 0,
 "kijkrichting": 172,
 "richting_zekerheid": 0.86,
@@ -58090,6 +59607,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.10477,
+38.39085
+],
 "afstand_kust_m": 0,
 "kijkrichting": 154,
 "richting_zekerheid": 0.76,
@@ -58239,6 +59760,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.14963,
+38.38427
+],
 "afstand_kust_m": 0,
 "kijkrichting": 183,
 "richting_zekerheid": 0.88,
@@ -58388,6 +59913,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.16295,
+38.38456
+],
 "afstand_kust_m": 0,
 "kijkrichting": 191,
 "richting_zekerheid": 0.87,
@@ -58537,6 +60066,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.14572,
+38.38664
+],
 "afstand_kust_m": 0,
 "kijkrichting": 161,
 "richting_zekerheid": 0.86,
@@ -58686,6 +60219,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.13513,
+38.39186
+],
 "afstand_kust_m": 0,
 "kijkrichting": 142,
 "richting_zekerheid": 0.79,
@@ -58835,6 +60372,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.27356,
+38.4271
+],
 "afstand_kust_m": 2,
 "kijkrichting": 275,
 "richting_zekerheid": 0.6,
@@ -58984,6 +60525,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.1451,
+38.38615
+],
 "afstand_kust_m": 0,
 "kijkrichting": 137,
 "richting_zekerheid": 0.78,
@@ -59133,6 +60678,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.13575,
+38.39694
+],
 "afstand_kust_m": 0,
 "kijkrichting": 115,
 "richting_zekerheid": 0.74,
@@ -59282,6 +60831,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.87639,
+38.39571
+],
 "afstand_kust_m": 0,
 "kijkrichting": 243,
 "richting_zekerheid": 1.0,
@@ -59437,6 +60990,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.85922,
+38.36483
+],
 "afstand_kust_m": 0,
 "kijkrichting": 251,
 "richting_zekerheid": 1.0,
@@ -59586,6 +61143,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.85282,
+38.34957
+],
 "afstand_kust_m": 0,
 "kijkrichting": 253,
 "richting_zekerheid": 0.99,
@@ -59735,6 +61296,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.84685,
+38.33292
+],
 "afstand_kust_m": 0,
 "kijkrichting": 257,
 "richting_zekerheid": 1.0,
@@ -59884,6 +61449,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.8418,
+38.31389
+],
 "afstand_kust_m": 0,
 "kijkrichting": 263,
 "richting_zekerheid": 1.0,
@@ -60039,6 +61608,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.84004,
+38.30132
+],
 "afstand_kust_m": 0,
 "kijkrichting": 264,
 "richting_zekerheid": 1.0,
@@ -60194,6 +61767,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.83815,
+38.28777
+],
 "afstand_kust_m": 0,
 "kijkrichting": 264,
 "richting_zekerheid": 1.0,
@@ -60343,6 +61920,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.83524,
+38.25809
+],
 "afstand_kust_m": 0,
 "kijkrichting": 269,
 "richting_zekerheid": 1.0,
@@ -60492,6 +62073,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.83444,
+38.22569
+],
 "afstand_kust_m": 0,
 "kijkrichting": 273,
 "richting_zekerheid": 1.0,
@@ -60647,6 +62232,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.83619,
+38.20881
+],
 "afstand_kust_m": 0,
 "kijkrichting": 277,
 "richting_zekerheid": 1.0,
@@ -60802,6 +62391,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.83956,
+38.18518
+],
 "afstand_kust_m": 0,
 "kijkrichting": 280,
 "richting_zekerheid": 1.0,
@@ -60951,6 +62544,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.84957,
+38.14571
+],
 "afstand_kust_m": 0,
 "kijkrichting": 284,
 "richting_zekerheid": 1.0,
@@ -61106,6 +62703,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.8509,
+38.1413
+],
 "afstand_kust_m": 0,
 "kijkrichting": 284,
 "richting_zekerheid": 1.0,
@@ -61255,6 +62856,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.85255,
+38.13597
+],
 "afstand_kust_m": 52,
 "kijkrichting": 285,
 "richting_zekerheid": 1.0,
@@ -61410,6 +63015,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.85562,
+38.12689
+],
 "afstand_kust_m": 0,
 "kijkrichting": 284,
 "richting_zekerheid": 1.0,
@@ -61565,6 +63174,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.86693,
+38.09677
+],
 "afstand_kust_m": 0,
 "kijkrichting": 288,
 "richting_zekerheid": 1.0,
@@ -61714,6 +63327,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.87213,
+38.08361
+],
 "afstand_kust_m": 0,
 "kijkrichting": 288,
 "richting_zekerheid": 1.0,
@@ -61869,6 +63486,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.87776,
+38.07068
+],
 "afstand_kust_m": 0,
 "kijkrichting": 290,
 "richting_zekerheid": 1.0,
@@ -62018,6 +63639,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.91575,
+38.00185
+],
 "afstand_kust_m": 0,
 "kijkrichting": 302,
 "richting_zekerheid": 1.0,
@@ -62167,6 +63792,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.92066,
+37.9954
+],
 "afstand_kust_m": 0,
 "kijkrichting": 301,
 "richting_zekerheid": 0.99,
@@ -62322,6 +63951,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.90953,
+37.92259
+],
 "afstand_kust_m": 0,
 "kijkrichting": 228,
 "richting_zekerheid": 0.79,
@@ -62477,6 +64110,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.86184,
+37.90735
+],
 "afstand_kust_m": 0,
 "kijkrichting": 253,
 "richting_zekerheid": 1.0,
@@ -62626,6 +64263,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.85516,
+37.89332
+],
 "afstand_kust_m": 0,
 "kijkrichting": 250,
 "richting_zekerheid": 0.85,
@@ -62781,6 +64422,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.85658,
+37.89471
+],
 "afstand_kust_m": 0,
 "kijkrichting": 255,
 "richting_zekerheid": 0.86,
@@ -62936,6 +64581,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.85558,
+37.88758
+],
 "afstand_kust_m": 0,
 "kijkrichting": 262,
 "richting_zekerheid": 0.77,
@@ -63085,6 +64734,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.85556,
+37.88822
+],
 "afstand_kust_m": 0,
 "kijkrichting": 263,
 "richting_zekerheid": 0.93,
@@ -63234,6 +64887,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.85406,
+37.88078
+],
 "afstand_kust_m": 0,
 "kijkrichting": 265,
 "richting_zekerheid": 0.92,
@@ -63383,6 +65040,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.85467,
+37.88185
+],
 "afstand_kust_m": 1,
 "kijkrichting": 272,
 "richting_zekerheid": 0.95,
@@ -63532,6 +65193,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.85192,
+37.86709
+],
 "afstand_kust_m": 0,
 "kijkrichting": 271,
 "richting_zekerheid": 0.76,
@@ -63681,6 +65346,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.85208,
+37.86738
+],
 "afstand_kust_m": 4,
 "kijkrichting": 277,
 "richting_zekerheid": 0.71,
@@ -63830,6 +65499,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.85191,
+37.87034
+],
 "afstand_kust_m": 0,
 "kijkrichting": 279,
 "richting_zekerheid": 0.73,
@@ -63979,6 +65652,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.85309,
+37.85998
+],
 "afstand_kust_m": 0,
 "kijkrichting": 271,
 "richting_zekerheid": 0.82,
@@ -64128,6 +65805,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.85271,
+37.86283
+],
 "afstand_kust_m": 0,
 "kijkrichting": 276,
 "richting_zekerheid": 0.78,
@@ -64277,6 +65958,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.85267,
+37.85688
+],
 "afstand_kust_m": 0,
 "kijkrichting": 270,
 "richting_zekerheid": 0.69,
@@ -64430,6 +66115,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.85171,
+37.8628
+],
 "afstand_kust_m": 0,
 "kijkrichting": 281,
 "richting_zekerheid": 0.67,
@@ -64579,6 +66268,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.85425,
+37.85261
+],
 "afstand_kust_m": 0,
 "kijkrichting": 272,
 "richting_zekerheid": 0.54,
@@ -64728,6 +66421,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.85449,
+37.84803
+],
 "afstand_kust_m": 0,
 "kijkrichting": 267,
 "richting_zekerheid": 0.52,
@@ -64877,6 +66574,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.8532,
+37.84334
+],
 "afstand_kust_m": 0,
 "kijkrichting": 259,
 "richting_zekerheid": 0.38,
@@ -65028,6 +66729,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.79443,
+37.85359
+],
 "afstand_kust_m": 0,
 "kijkrichting": 258,
 "richting_zekerheid": 0.39,
@@ -65181,6 +66886,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.85384,
+37.84521
+],
 "afstand_kust_m": 0,
 "kijkrichting": 266,
 "richting_zekerheid": 0.4,
@@ -65332,6 +67041,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.79493,
+37.84755
+],
 "afstand_kust_m": 0,
 "kijkrichting": 258,
 "richting_zekerheid": 0.44,
@@ -65485,6 +67198,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.84784,
+37.82783
+],
 "afstand_kust_m": 0,
 "kijkrichting": 254,
 "richting_zekerheid": 0.82,
@@ -65638,6 +67355,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.84874,
+37.83396
+],
 "afstand_kust_m": 0,
 "kijkrichting": 263,
 "richting_zekerheid": 0.81,
@@ -65799,6 +67520,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.85063,
+37.82418
+],
 "afstand_kust_m": 0,
 "kijkrichting": 273,
 "richting_zekerheid": 0.43,
@@ -65955,6 +67680,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.85158,
+37.82233
+],
 "afstand_kust_m": 0,
 "kijkrichting": 275,
 "richting_zekerheid": 0.91,
@@ -66104,6 +67833,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.85244,
+37.82176
+],
 "afstand_kust_m": 0,
 "kijkrichting": 287,
 "richting_zekerheid": 0.99,
@@ -66253,6 +67986,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.85958,
+37.80212
+],
 "afstand_kust_m": 0,
 "kijkrichting": 282,
 "richting_zekerheid": 0.98,
@@ -66402,6 +68139,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.8607,
+37.79111
+],
 "afstand_kust_m": 0,
 "kijkrichting": 269,
 "richting_zekerheid": 0.98,
@@ -66557,6 +68298,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.86021,
+37.78635
+],
 "afstand_kust_m": 0,
 "kijkrichting": 270,
 "richting_zekerheid": 0.98,
@@ -66706,6 +68451,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.85754,
+37.79575
+],
 "afstand_kust_m": 0,
 "kijkrichting": 290,
 "richting_zekerheid": 0.84,
@@ -66855,6 +68604,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.85366,
+37.8008
+],
 "afstand_kust_m": 0,
 "kijkrichting": 300,
 "richting_zekerheid": 0.79,
@@ -67004,6 +68757,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.80644,
+37.77025
+],
 "afstand_kust_m": 0,
 "kijkrichting": 266,
 "richting_zekerheid": 0.58,
@@ -67156,6 +68913,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.86441,
+37.77274
+],
 "afstand_kust_m": 0,
 "kijkrichting": 282,
 "richting_zekerheid": 0.83,
@@ -67305,6 +69066,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.86398,
+37.76745
+],
 "afstand_kust_m": 0,
 "kijkrichting": 280,
 "richting_zekerheid": 0.81,
@@ -67454,6 +69219,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.86539,
+37.7604
+],
 "afstand_kust_m": 0,
 "kijkrichting": 281,
 "richting_zekerheid": 0.74,
@@ -67607,6 +69376,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.84941,
+37.71347
+],
 "afstand_kust_m": 0,
 "kijkrichting": 253,
 "richting_zekerheid": 0.95,
@@ -67756,6 +69529,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.84959,
+37.71503
+],
 "afstand_kust_m": 0,
 "kijkrichting": 259,
 "richting_zekerheid": 0.93,
@@ -67905,6 +69682,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.81034,
+37.6796
+],
 "afstand_kust_m": 0,
 "kijkrichting": 144,
 "richting_zekerheid": 0.28,
@@ -68057,6 +69838,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.82838,
+37.68359
+],
 "afstand_kust_m": 0,
 "kijkrichting": 221,
 "richting_zekerheid": 0.33,
@@ -68220,6 +70005,10 @@
 "Transitional"
 ],
 "bron": "osm",
+"zeevak": [
+-8.84384,
+37.72826
+],
 "afstand_kust_m": 0,
 "kijkrichting": 283,
 "richting_zekerheid": 0.41,
@@ -68372,6 +70161,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.85281,
+37.68932
+],
 "afstand_kust_m": 0,
 "kijkrichting": 280,
 "richting_zekerheid": 0.78,
@@ -68521,6 +70314,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.85405,
+37.67893
+],
 "afstand_kust_m": 0,
 "kijkrichting": 277,
 "richting_zekerheid": 0.95,
@@ -68670,6 +70467,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.85364,
+37.68434
+],
 "afstand_kust_m": 0,
 "kijkrichting": 293,
 "richting_zekerheid": 0.86,
@@ -68819,6 +70620,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.86005,
+37.66146
+],
 "afstand_kust_m": 0,
 "kijkrichting": 272,
 "richting_zekerheid": 0.73,
@@ -68968,6 +70773,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.86071,
+37.65964
+],
 "afstand_kust_m": 2,
 "kijkrichting": 268,
 "richting_zekerheid": 0.76,
@@ -69117,6 +70926,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.85875,
+37.65313
+],
 "afstand_kust_m": 0,
 "kijkrichting": 264,
 "richting_zekerheid": 0.82,
@@ -69266,6 +71079,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.8566,
+37.66957
+],
 "afstand_kust_m": 0,
 "kijkrichting": 288,
 "richting_zekerheid": 0.88,
@@ -69421,6 +71238,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.85746,
+37.66765
+],
 "afstand_kust_m": 0,
 "kijkrichting": 290,
 "richting_zekerheid": 0.88,
@@ -69570,6 +71391,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.85863,
+37.66549
+],
 "afstand_kust_m": 0,
 "kijkrichting": 292,
 "richting_zekerheid": 0.9,
@@ -69719,6 +71544,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.86692,
+37.6261
+],
 "afstand_kust_m": 0,
 "kijkrichting": 290,
 "richting_zekerheid": 0.76,
@@ -69868,6 +71697,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.8669,
+37.62715
+],
 "afstand_kust_m": 0,
 "kijkrichting": 296,
 "richting_zekerheid": 0.67,
@@ -70017,6 +71850,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.86921,
+37.6252
+],
 "afstand_kust_m": 0,
 "kijkrichting": 295,
 "richting_zekerheid": 0.65,
@@ -70166,6 +72003,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.87201,
+37.61702
+],
 "afstand_kust_m": 0,
 "kijkrichting": 289,
 "richting_zekerheid": 0.62,
@@ -70315,6 +72156,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.8492,
+37.55071
+],
 "afstand_kust_m": 0,
 "kijkrichting": 260,
 "richting_zekerheid": 0.47,
@@ -70466,6 +72311,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.84654,
+37.53481
+],
 "afstand_kust_m": 0,
 "kijkrichting": 252,
 "richting_zekerheid": 0.63,
@@ -70615,6 +72464,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.84346,
+37.5273
+],
 "afstand_kust_m": 0,
 "kijkrichting": 259,
 "richting_zekerheid": 0.8,
@@ -70764,6 +72617,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.84362,
+37.54011
+],
 "afstand_kust_m": 0,
 "kijkrichting": 281,
 "richting_zekerheid": 0.91,
@@ -70913,6 +72770,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.84185,
+37.54563
+],
 "afstand_kust_m": 0,
 "kijkrichting": 288,
 "richting_zekerheid": 0.67,
@@ -71068,6 +72929,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.84675,
+37.52294
+],
 "afstand_kust_m": 0,
 "kijkrichting": 271,
 "richting_zekerheid": 0.7,
@@ -71223,6 +73088,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.84634,
+37.52633
+],
 "afstand_kust_m": 0,
 "kijkrichting": 282,
 "richting_zekerheid": 0.75,
@@ -71372,6 +73241,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.8472,
+37.52522
+],
 "afstand_kust_m": 0,
 "kijkrichting": 279,
 "richting_zekerheid": 0.79,
@@ -71521,6 +73394,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.84349,
+37.53586
+],
 "afstand_kust_m": 0,
 "kijkrichting": 294,
 "richting_zekerheid": 0.88,
@@ -71670,6 +73547,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.84369,
+37.53424
+],
 "afstand_kust_m": 0,
 "kijkrichting": 296,
 "richting_zekerheid": 0.88,
@@ -71819,6 +73700,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.84959,
+37.50785
+],
 "afstand_kust_m": 0,
 "kijkrichting": 277,
 "richting_zekerheid": 0.76,
@@ -71972,6 +73857,10 @@
 "Coastal"
 ],
 "bron": "eea",
+"zeevak": [
+-8.8489,
+37.52033
+],
 "afstand_kust_m": 317,
 "kijkrichting": 296,
 "richting_zekerheid": 0.47,
@@ -72124,6 +74013,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.84041,
+37.52693
+],
 "afstand_kust_m": 0,
 "kijkrichting": 306,
 "richting_zekerheid": 0.49,
@@ -72275,6 +74168,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.84866,
+37.50807
+],
 "afstand_kust_m": 0,
 "kijkrichting": 291,
 "richting_zekerheid": 0.57,
@@ -72424,6 +74321,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.85088,
+37.49421
+],
 "afstand_kust_m": 0,
 "kijkrichting": 287,
 "richting_zekerheid": 0.75,
@@ -72579,6 +74480,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.85699,
+37.44208
+],
 "afstand_kust_m": 0,
 "kijkrichting": 271,
 "richting_zekerheid": 0.64,
@@ -72728,6 +74633,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.84541,
+37.46892
+],
 "afstand_kust_m": 0,
 "kijkrichting": 311,
 "richting_zekerheid": 0.74,
@@ -72877,6 +74786,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.86237,
+37.4309
+],
 "afstand_kust_m": 0,
 "kijkrichting": 298,
 "richting_zekerheid": 0.81,
@@ -73026,6 +74939,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.87121,
+37.41383
+],
 "afstand_kust_m": 0,
 "kijkrichting": 289,
 "richting_zekerheid": 0.91,
@@ -73175,6 +75092,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.86938,
+37.41754
+],
 "afstand_kust_m": 0,
 "kijkrichting": 301,
 "richting_zekerheid": 0.93,
@@ -73330,6 +75251,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.87652,
+37.40467
+],
 "afstand_kust_m": 0,
 "kijkrichting": 297,
 "richting_zekerheid": 0.92,
@@ -73479,6 +75404,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.89235,
+37.38159
+],
 "afstand_kust_m": 0,
 "kijkrichting": 297,
 "richting_zekerheid": 0.97,
@@ -73634,6 +75563,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.88982,
+37.38025
+],
 "afstand_kust_m": 0,
 "kijkrichting": 310,
 "richting_zekerheid": 0.52,
@@ -73787,6 +75720,10 @@
 "Transitional"
 ],
 "bron": "eea",
+"zeevak": [
+-8.87945,
+37.3857
+],
 "afstand_kust_m": 657,
 "kijkrichting": 325,
 "richting_zekerheid": 0.51,
@@ -73945,6 +75882,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.90351,
+37.36562
+],
 "afstand_kust_m": 0,
 "kijkrichting": 302,
 "richting_zekerheid": 0.92,
@@ -74094,6 +76035,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.91074,
+37.35761
+],
 "afstand_kust_m": 0,
 "kijkrichting": 301,
 "richting_zekerheid": 0.91,
@@ -74243,6 +76188,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.91699,
+37.35088
+],
 "afstand_kust_m": 0,
 "kijkrichting": 306,
 "richting_zekerheid": 0.99,
@@ -74398,6 +76347,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.91942,
+37.27613
+],
 "afstand_kust_m": 0,
 "kijkrichting": 251,
 "richting_zekerheid": 0.92,
@@ -74547,6 +76500,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.91212,
+37.25118
+],
 "afstand_kust_m": 0,
 "kijkrichting": 238,
 "richting_zekerheid": 0.94,
@@ -74697,6 +76654,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.91818,
+37.26611
+],
 "afstand_kust_m": 0,
 "kijkrichting": 265,
 "richting_zekerheid": 0.95,
@@ -74846,6 +76807,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.92116,
+37.26803
+],
 "afstand_kust_m": 0,
 "kijkrichting": 290,
 "richting_zekerheid": 0.98,
@@ -75001,6 +76966,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.92211,
+37.26678
+],
 "afstand_kust_m": 0,
 "kijkrichting": 294,
 "richting_zekerheid": 0.99,
@@ -75150,6 +77119,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.92298,
+37.26382
+],
 "afstand_kust_m": 0,
 "kijkrichting": 304,
 "richting_zekerheid": 0.95,
@@ -75305,6 +77278,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.93975,
+37.23553
+],
 "afstand_kust_m": 0,
 "kijkrichting": 319,
 "richting_zekerheid": 0.83,
@@ -75454,6 +77431,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.95455,
+37.15981
+],
 "afstand_kust_m": 0,
 "kijkrichting": 223,
 "richting_zekerheid": 0.73,
@@ -75603,6 +77584,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-7.36186,
+37.13842
+],
 "afstand_kust_m": 0,
 "kijkrichting": 144,
 "richting_zekerheid": 0.59,
@@ -75759,6 +77744,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-7.44927,
+37.13034
+],
 "afstand_kust_m": 0,
 "kijkrichting": 184,
 "richting_zekerheid": 1.0,
@@ -75908,6 +77897,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-7.45636,
+37.1301
+],
 "afstand_kust_m": 40,
 "kijkrichting": 171,
 "richting_zekerheid": 1.0,
@@ -76063,6 +78056,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-7.46172,
+37.12931
+],
 "afstand_kust_m": 0,
 "kijkrichting": 168,
 "richting_zekerheid": 1.0,
@@ -76212,6 +78209,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.95517,
+37.1475
+],
 "afstand_kust_m": 0,
 "kijkrichting": 237,
 "richting_zekerheid": 0.62,
@@ -76367,6 +78368,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-7.46455,
+37.12863
+],
 "afstand_kust_m": 0,
 "kijkrichting": 166,
 "richting_zekerheid": 1.0,
@@ -76516,6 +78521,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-7.47161,
+37.12718
+],
 "afstand_kust_m": 0,
 "kijkrichting": 165,
 "richting_zekerheid": 1.0,
@@ -76671,6 +78680,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-7.43001,
+37.12707
+],
 "afstand_kust_m": 0,
 "kijkrichting": 195,
 "richting_zekerheid": 1.0,
@@ -76826,6 +78839,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-7.478,
+37.12569
+],
 "afstand_kust_m": 0,
 "kijkrichting": 162,
 "richting_zekerheid": 1.0,
@@ -76975,6 +78992,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-7.48387,
+37.12419
+],
 "afstand_kust_m": 50,
 "kijkrichting": 160,
 "richting_zekerheid": 1.0,
@@ -77131,6 +79152,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.95944,
+37.17754
+],
 "afstand_kust_m": 0,
 "kijkrichting": 285,
 "richting_zekerheid": 0.96,
@@ -77286,6 +79311,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-7.48736,
+37.12321
+],
 "afstand_kust_m": 0,
 "kijkrichting": 157,
 "richting_zekerheid": 1.0,
@@ -77441,6 +79470,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-7.4977,
+37.11942
+],
 "afstand_kust_m": 0,
 "kijkrichting": 154,
 "richting_zekerheid": 1.0,
@@ -77590,6 +79623,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.9596,
+37.17772
+],
 "afstand_kust_m": 0,
 "kijkrichting": 301,
 "richting_zekerheid": 0.64,
@@ -77745,6 +79782,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-7.54398,
+37.15293
+],
 "afstand_kust_m": 0,
 "kijkrichting": 151,
 "richting_zekerheid": 0.19,
@@ -77894,6 +79935,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.95691,
+37.17951
+],
 "afstand_kust_m": 0,
 "kijkrichting": 317,
 "richting_zekerheid": 0.64,
@@ -78043,6 +80088,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-7.51692,
+37.12584
+],
 "afstand_kust_m": 0,
 "kijkrichting": 112,
 "richting_zekerheid": 0.13,
@@ -78195,6 +80244,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.96771,
+37.16329
+],
 "afstand_kust_m": 0,
 "kijkrichting": 304,
 "richting_zekerheid": 0.88,
@@ -78350,6 +80403,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-7.56835,
+37.09021
+],
 "afstand_kust_m": 0,
 "kijkrichting": 153,
 "richting_zekerheid": 0.28,
@@ -78501,6 +80558,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.97555,
+37.14953
+],
 "afstand_kust_m": 0,
 "kijkrichting": 298,
 "richting_zekerheid": 0.92,
@@ -78656,6 +80717,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.60231,
+37.07605
+],
 "afstand_kust_m": 0,
 "kijkrichting": 185,
 "richting_zekerheid": 1.0,
@@ -78805,6 +80870,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.60354,
+37.07646
+],
 "afstand_kust_m": 0,
 "kijkrichting": 195,
 "richting_zekerheid": 1.0,
@@ -78954,6 +81023,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-7.62893,
+37.07498
+],
 "afstand_kust_m": 0,
 "kijkrichting": 197,
 "richting_zekerheid": 0.11,
@@ -79112,6 +81185,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.5641,
+37.07345
+],
 "afstand_kust_m": 0,
 "kijkrichting": 184,
 "richting_zekerheid": 0.98,
@@ -79261,6 +81338,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.55194,
+37.07402
+],
 "afstand_kust_m": 0,
 "kijkrichting": 168,
 "richting_zekerheid": 0.94,
@@ -79416,6 +81497,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.601,
+37.07573
+],
 "afstand_kust_m": 0,
 "kijkrichting": 202,
 "richting_zekerheid": 0.94,
@@ -79566,6 +81651,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.98121,
+37.14206
+],
 "afstand_kust_m": 0,
 "kijkrichting": 298,
 "richting_zekerheid": 0.93,
@@ -79721,6 +81810,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.53138,
+37.08116
+],
 "afstand_kust_m": 0,
 "kijkrichting": 143,
 "richting_zekerheid": 0.8,
@@ -79876,6 +81969,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.56957,
+37.07403
+],
 "afstand_kust_m": 0,
 "kijkrichting": 193,
 "richting_zekerheid": 0.98,
@@ -80025,6 +82122,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-7.58267,
+37.08553
+],
 "afstand_kust_m": 0,
 "kijkrichting": 139,
 "richting_zekerheid": 0.52,
@@ -80176,6 +82277,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.6073,
+37.07796
+],
 "afstand_kust_m": 0,
 "kijkrichting": 211,
 "richting_zekerheid": 0.85,
@@ -80325,6 +82430,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.53693,
+37.07815
+],
 "afstand_kust_m": 0,
 "kijkrichting": 151,
 "richting_zekerheid": 0.59,
@@ -80480,6 +82589,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.5616,
+37.07257
+],
 "afstand_kust_m": 0,
 "kijkrichting": 193,
 "richting_zekerheid": 0.93,
@@ -80631,6 +82744,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.55516,
+37.07167
+],
 "afstand_kust_m": 0,
 "kijkrichting": 164,
 "richting_zekerheid": 0.56,
@@ -80780,6 +82897,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.589,
+37.07126
+],
 "afstand_kust_m": 0,
 "kijkrichting": 193,
 "richting_zekerheid": 0.79,
@@ -80930,6 +83051,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.54321,
+37.07409
+],
 "afstand_kust_m": 0,
 "kijkrichting": 155,
 "richting_zekerheid": 0.55,
@@ -81079,6 +83204,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-7.60711,
+37.12816
+],
 "afstand_kust_m": 0,
 "kijkrichting": 9,
 "richting_zekerheid": 0.41,
@@ -81240,6 +83369,10 @@
 "Transitional"
 ],
 "bron": "osm",
+"zeevak": [
+-8.56568,
+37.07669
+],
 "afstand_kust_m": 0,
 "kijkrichting": 216,
 "richting_zekerheid": 0.91,
@@ -81395,6 +83528,10 @@
 "Transitional"
 ],
 "bron": "eea",
+"zeevak": [
+-8.58192,
+37.09332
+],
 "afstand_kust_m": 825,
 "kijkrichting": 243,
 "richting_zekerheid": 0.86,
@@ -81555,6 +83692,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.62084,
+37.07496
+],
 "afstand_kust_m": 0,
 "kijkrichting": 142,
 "richting_zekerheid": 1.0,
@@ -81704,6 +83845,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.55687,
+37.07401
+],
 "afstand_kust_m": 0,
 "kijkrichting": 221,
 "richting_zekerheid": 0.49,
@@ -81861,6 +84006,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-7.58794,
+37.07139
+],
 "afstand_kust_m": 0,
 "kijkrichting": 147,
 "richting_zekerheid": 1.0,
@@ -82016,6 +84165,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.98548,
+37.13575
+],
 "afstand_kust_m": 0,
 "kijkrichting": 304,
 "richting_zekerheid": 0.99,
@@ -82171,6 +84324,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.51799,
+37.10596
+],
 "afstand_kust_m": 0,
 "kijkrichting": 209,
 "richting_zekerheid": 0.55,
@@ -82323,6 +84480,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.54445,
+37.06549
+],
 "afstand_kust_m": 0,
 "kijkrichting": 210,
 "richting_zekerheid": 0.68,
@@ -82478,6 +84639,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.52857,
+37.05998
+],
 "afstand_kust_m": 0,
 "kijkrichting": 196,
 "richting_zekerheid": 0.86,
@@ -82627,6 +84792,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.53776,
+37.06301
+],
 "afstand_kust_m": 0,
 "kijkrichting": 209,
 "richting_zekerheid": 0.88,
@@ -82776,6 +84945,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.53206,
+37.06064
+],
 "afstand_kust_m": 0,
 "kijkrichting": 207,
 "richting_zekerheid": 0.89,
@@ -82925,6 +85098,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.53045,
+37.06001
+],
 "afstand_kust_m": 0,
 "kijkrichting": 207,
 "richting_zekerheid": 0.9,
@@ -83080,6 +85257,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.36502,
+37.05539
+],
 "afstand_kust_m": 0,
 "kijkrichting": 174,
 "richting_zekerheid": 0.93,
@@ -83229,6 +85410,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.34931,
+37.0586
+],
 "afstand_kust_m": 0,
 "kijkrichting": 157,
 "richting_zekerheid": 0.88,
@@ -83384,6 +85569,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.99057,
+37.12979
+],
 "afstand_kust_m": 0,
 "kijkrichting": 311,
 "richting_zekerheid": 0.93,
@@ -83541,6 +85730,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.37226,
+37.0552
+],
 "afstand_kust_m": 0,
 "kijkrichting": 196,
 "richting_zekerheid": 1.0,
@@ -83690,6 +85883,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.35749,
+37.05612
+],
 "afstand_kust_m": 0,
 "kijkrichting": 160,
 "richting_zekerheid": 0.81,
@@ -83839,6 +86036,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.50124,
+37.055
+],
 "afstand_kust_m": 0,
 "kijkrichting": 198,
 "richting_zekerheid": 0.78,
@@ -83994,6 +86195,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-7.58971,
+37.075
+],
 "afstand_kust_m": 0,
 "kijkrichting": 121,
 "richting_zekerheid": 0.18,
@@ -84151,6 +86356,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.35585,
+37.05643
+],
 "afstand_kust_m": 0,
 "kijkrichting": 155,
 "richting_zekerheid": 0.79,
@@ -84300,6 +86509,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.60946,
+37.09864
+],
 "afstand_kust_m": 31,
 "kijkrichting": 91,
 "richting_zekerheid": 0.73,
@@ -84457,6 +86670,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.60977,
+37.09792
+],
 "afstand_kust_m": 0,
 "kijkrichting": 91,
 "richting_zekerheid": 0.72,
@@ -84608,6 +86825,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.36357,
+37.05386
+],
 "afstand_kust_m": 0,
 "kijkrichting": 160,
 "richting_zekerheid": 0.87,
@@ -84757,6 +86978,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.3641,
+37.05353
+],
 "afstand_kust_m": 0,
 "kijkrichting": 160,
 "richting_zekerheid": 0.87,
@@ -84912,6 +87137,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.3609,
+37.05497
+],
 "afstand_kust_m": 0,
 "kijkrichting": 157,
 "richting_zekerheid": 0.87,
@@ -85061,6 +87290,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.49528,
+37.05326
+],
 "afstand_kust_m": 0,
 "kijkrichting": 201,
 "richting_zekerheid": 0.75,
@@ -85210,6 +87443,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.61033,
+37.08872
+],
 "afstand_kust_m": 0,
 "kijkrichting": 101,
 "richting_zekerheid": 0.81,
@@ -85359,6 +87596,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.61105,
+37.08437
+],
 "afstand_kust_m": 0,
 "kijkrichting": 105,
 "richting_zekerheid": 0.81,
@@ -85514,6 +87755,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.50078,
+37.05569
+],
 "afstand_kust_m": 0,
 "kijkrichting": 209,
 "richting_zekerheid": 0.83,
@@ -85663,6 +87908,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.35984,
+37.05559
+],
 "afstand_kust_m": 0,
 "kijkrichting": 149,
 "richting_zekerheid": 0.72,
@@ -85812,6 +88061,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.36197,
+37.05471
+],
 "afstand_kust_m": 0,
 "kijkrichting": 150,
 "richting_zekerheid": 0.74,
@@ -85961,6 +88214,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.612,
+37.08258
+],
 "afstand_kust_m": 0,
 "kijkrichting": 103,
 "richting_zekerheid": 0.86,
@@ -86118,6 +88375,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.36909,
+37.05351
+],
 "afstand_kust_m": 0,
 "kijkrichting": 210,
 "richting_zekerheid": 1.0,
@@ -86267,6 +88528,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.35514,
+37.05784
+],
 "afstand_kust_m": 0,
 "kijkrichting": 140,
 "richting_zekerheid": 0.69,
@@ -86417,6 +88682,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.46995,
+37.04756
+],
 "afstand_kust_m": 0,
 "kijkrichting": 190,
 "richting_zekerheid": 0.68,
@@ -86566,6 +88835,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.35681,
+37.05752
+],
 "afstand_kust_m": 0,
 "kijkrichting": 140,
 "richting_zekerheid": 0.66,
@@ -86721,6 +88994,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.61161,
+37.08422
+],
 "afstand_kust_m": 0,
 "kijkrichting": 99,
 "richting_zekerheid": 0.82,
@@ -86870,6 +89147,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.38043,
+37.04706
+],
 "afstand_kust_m": 0,
 "kijkrichting": 166,
 "richting_zekerheid": 0.69,
@@ -87025,6 +89306,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.48442,
+37.05102
+],
 "afstand_kust_m": 0,
 "kijkrichting": 208,
 "richting_zekerheid": 0.78,
@@ -87175,6 +89460,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.37991,
+37.04742
+],
 "afstand_kust_m": 0,
 "kijkrichting": 161,
 "richting_zekerheid": 0.7,
@@ -87324,6 +89613,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.396,
+37.04462
+],
 "afstand_kust_m": 0,
 "kijkrichting": 174,
 "richting_zekerheid": 0.73,
@@ -87473,6 +89766,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.4073,
+37.0435
+],
 "afstand_kust_m": 0,
 "kijkrichting": 181,
 "richting_zekerheid": 0.82,
@@ -87622,6 +89919,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.3954,
+37.04412
+],
 "afstand_kust_m": 0,
 "kijkrichting": 170,
 "richting_zekerheid": 0.75,
@@ -87777,6 +90078,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.19857,
+37.04616
+],
 "afstand_kust_m": 0,
 "kijkrichting": 198,
 "richting_zekerheid": 0.99,
@@ -87933,6 +90238,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.3928,
+37.04611
+],
 "afstand_kust_m": 0,
 "kijkrichting": 162,
 "richting_zekerheid": 0.8,
@@ -88088,6 +90397,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.17551,
+37.04481
+],
 "afstand_kust_m": 0,
 "kijkrichting": 167,
 "richting_zekerheid": 0.91,
@@ -88237,6 +90550,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.40527,
+37.04335
+],
 "afstand_kust_m": 0,
 "kijkrichting": 174,
 "richting_zekerheid": 0.88,
@@ -88386,6 +90703,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.40099,
+37.04376
+],
 "afstand_kust_m": 0,
 "kijkrichting": 171,
 "richting_zekerheid": 0.87,
@@ -88535,6 +90856,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.3906,
+37.04717
+],
 "afstand_kust_m": 0,
 "kijkrichting": 157,
 "richting_zekerheid": 0.76,
@@ -88684,6 +91009,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.61145,
+37.09713
+],
 "afstand_kust_m": 0,
 "kijkrichting": 81,
 "richting_zekerheid": 0.8,
@@ -88841,6 +91170,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.20422,
+37.04245
+],
 "afstand_kust_m": 0,
 "kijkrichting": 185,
 "richting_zekerheid": 0.96,
@@ -88990,6 +91323,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.45056,
+37.042
+],
 "afstand_kust_m": 0,
 "kijkrichting": 188,
 "richting_zekerheid": 0.65,
@@ -89145,6 +91482,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.19058,
+37.04553
+],
 "afstand_kust_m": 0,
 "kijkrichting": 156,
 "richting_zekerheid": 0.85,
@@ -89301,6 +91642,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.61246,
+37.09971
+],
 "afstand_kust_m": 0,
 "kijkrichting": 76,
 "richting_zekerheid": 0.8,
@@ -89452,6 +91797,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.42155,
+37.04106
+],
 "afstand_kust_m": 0,
 "kijkrichting": 180,
 "richting_zekerheid": 0.7,
@@ -89601,6 +91950,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.40297,
+37.0426
+],
 "afstand_kust_m": 0,
 "kijkrichting": 164,
 "richting_zekerheid": 0.66,
@@ -89756,6 +92109,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.41549,
+37.04154
+],
 "afstand_kust_m": 0,
 "kijkrichting": 171,
 "richting_zekerheid": 0.79,
@@ -89911,6 +92268,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.71509,
+37.04092
+],
 "afstand_kust_m": 0,
 "kijkrichting": 168,
 "richting_zekerheid": 0.92,
@@ -90060,6 +92421,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.43155,
+37.04012
+],
 "afstand_kust_m": 0,
 "kijkrichting": 182,
 "richting_zekerheid": 0.77,
@@ -90215,6 +92580,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.19437,
+37.04444
+],
 "afstand_kust_m": 0,
 "kijkrichting": 204,
 "richting_zekerheid": 1.0,
@@ -90370,6 +92739,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.25005,
+37.03974
+],
 "afstand_kust_m": 0,
 "kijkrichting": 180,
 "richting_zekerheid": 0.98,
@@ -90527,6 +92900,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.35835,
+37.04806
+],
 "afstand_kust_m": 0,
 "kijkrichting": 216,
 "richting_zekerheid": 1.0,
@@ -90682,6 +93059,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.23388,
+37.04238
+],
 "afstand_kust_m": 0,
 "kijkrichting": 161,
 "richting_zekerheid": 0.88,
@@ -90837,6 +93218,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.25504,
+37.0399
+],
 "afstand_kust_m": 0,
 "kijkrichting": 192,
 "richting_zekerheid": 0.99,
@@ -90994,6 +93379,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.22771,
+37.0389
+],
 "afstand_kust_m": 0,
 "kijkrichting": 187,
 "richting_zekerheid": 0.9,
@@ -91143,6 +93532,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.19857,
+37.04141
+],
 "afstand_kust_m": 0,
 "kijkrichting": 159,
 "richting_zekerheid": 0.77,
@@ -91292,6 +93685,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.70609,
+37.04289
+],
 "afstand_kust_m": 0,
 "kijkrichting": 157,
 "richting_zekerheid": 0.83,
@@ -91447,6 +93844,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.69436,
+37.03891
+],
 "afstand_kust_m": 0,
 "kijkrichting": 191,
 "richting_zekerheid": 0.99,
@@ -91596,6 +93997,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.60933,
+37.08456
+],
 "afstand_kust_m": 0,
 "kijkrichting": 90,
 "richting_zekerheid": 0.77,
@@ -91747,6 +94152,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.6983,
+37.04
+],
 "afstand_kust_m": 0,
 "kijkrichting": 200,
 "richting_zekerheid": 0.94,
@@ -91902,6 +94311,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.25246,
+37.03882
+],
 "afstand_kust_m": 0,
 "kijkrichting": 196,
 "richting_zekerheid": 0.94,
@@ -92057,6 +94470,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.21149,
+37.03981
+],
 "afstand_kust_m": 0,
 "kijkrichting": 158,
 "richting_zekerheid": 0.82,
@@ -92212,6 +94629,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.17768,
+37.03931
+],
 "afstand_kust_m": 0,
 "kijkrichting": 200,
 "richting_zekerheid": 1.0,
@@ -92361,6 +94782,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.26215,
+37.08025
+],
 "afstand_kust_m": 0,
 "kijkrichting": 148,
 "richting_zekerheid": 0.35,
@@ -92514,6 +94939,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.3552,
+37.04603
+],
 "afstand_kust_m": 0,
 "kijkrichting": 219,
 "richting_zekerheid": 1.0,
@@ -92663,6 +95092,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.16934,
+37.03668
+],
 "afstand_kust_m": 0,
 "kijkrichting": 200,
 "richting_zekerheid": 1.0,
@@ -92818,6 +95251,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.34881,
+37.04195
+],
 "afstand_kust_m": 0,
 "kijkrichting": 217,
 "richting_zekerheid": 0.97,
@@ -92967,6 +95404,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.21681,
+37.0531
+],
 "afstand_kust_m": 0,
 "kijkrichting": 123,
 "richting_zekerheid": 0.4,
@@ -93126,6 +95567,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-7.64631,
+37.03905
+],
 "afstand_kust_m": 0,
 "kijkrichting": 149,
 "richting_zekerheid": 1.0,
@@ -93275,6 +95720,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.34661,
+37.04083
+],
 "afstand_kust_m": 0,
 "kijkrichting": 217,
 "richting_zekerheid": 0.95,
@@ -93424,6 +95873,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.34568,
+37.04015
+],
 "afstand_kust_m": 0,
 "kijkrichting": 217,
 "richting_zekerheid": 0.94,
@@ -93579,6 +96032,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.16192,
+37.03449
+],
 "afstand_kust_m": 0,
 "kijkrichting": 201,
 "richting_zekerheid": 1.0,
@@ -93728,6 +96185,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.34484,
+37.03977
+],
 "afstand_kust_m": 0,
 "kijkrichting": 216,
 "richting_zekerheid": 0.93,
@@ -93877,6 +96338,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.3395,
+37.03687
+],
 "afstand_kust_m": 0,
 "kijkrichting": 211,
 "richting_zekerheid": 0.89,
@@ -94032,6 +96497,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.33363,
+37.03426
+],
 "afstand_kust_m": 0,
 "kijkrichting": 207,
 "richting_zekerheid": 0.9,
@@ -94187,6 +96656,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.25291,
+37.03388
+],
 "afstand_kust_m": 0,
 "kijkrichting": 154,
 "richting_zekerheid": 0.77,
@@ -94336,6 +96809,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.33449,
+37.03519
+],
 "afstand_kust_m": 0,
 "kijkrichting": 211,
 "richting_zekerheid": 0.87,
@@ -94485,6 +96962,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.24926,
+37.03495
+],
 "afstand_kust_m": 0,
 "kijkrichting": 148,
 "richting_zekerheid": 0.76,
@@ -94642,6 +97123,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.1561,
+37.03274
+],
 "afstand_kust_m": 0,
 "kijkrichting": 203,
 "richting_zekerheid": 1.0,
@@ -94797,6 +97282,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.2562,
+37.03257
+],
 "afstand_kust_m": 0,
 "kijkrichting": 157,
 "richting_zekerheid": 0.74,
@@ -94946,6 +97435,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.25746,
+37.03237
+],
 "afstand_kust_m": 0,
 "kijkrichting": 156,
 "richting_zekerheid": 0.73,
@@ -95101,6 +97594,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.32268,
+37.03042
+],
 "afstand_kust_m": 0,
 "kijkrichting": 202,
 "richting_zekerheid": 0.85,
@@ -95250,6 +97747,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.27363,
+37.02814
+],
 "afstand_kust_m": 0,
 "kijkrichting": 170,
 "richting_zekerheid": 0.82,
@@ -95405,6 +97906,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.28857,
+37.0274
+],
 "afstand_kust_m": 0,
 "kijkrichting": 177,
 "richting_zekerheid": 0.86,
@@ -95554,6 +98059,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.29565,
+37.02719
+],
 "afstand_kust_m": 0,
 "kijkrichting": 179,
 "richting_zekerheid": 0.85,
@@ -95703,6 +98212,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.27541,
+37.02787
+],
 "afstand_kust_m": 0,
 "kijkrichting": 169,
 "richting_zekerheid": 0.72,
@@ -95852,6 +98365,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.29672,
+37.02707
+],
 "afstand_kust_m": 0,
 "kijkrichting": 181,
 "richting_zekerheid": 0.85,
@@ -96001,6 +98518,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.28223,
+37.02704
+],
 "afstand_kust_m": 0,
 "kijkrichting": 175,
 "richting_zekerheid": 0.74,
@@ -96150,6 +98671,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.28971,
+37.02675
+],
 "afstand_kust_m": 0,
 "kijkrichting": 181,
 "richting_zekerheid": 0.74,
@@ -96299,6 +98824,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.28196,
+37.02684
+],
 "afstand_kust_m": 42,
 "kijkrichting": 176,
 "richting_zekerheid": 0.74,
@@ -96454,6 +98983,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.30372,
+37.02683
+],
 "afstand_kust_m": 0,
 "kijkrichting": 184,
 "richting_zekerheid": 0.8,
@@ -96609,6 +99142,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.76084,
+37.02637
+],
 "afstand_kust_m": 0,
 "kijkrichting": 164,
 "richting_zekerheid": 0.82,
@@ -96764,6 +99301,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.14036,
+37.0287
+],
 "afstand_kust_m": 0,
 "kijkrichting": 204,
 "richting_zekerheid": 0.99,
@@ -96913,6 +99454,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.0082,
+37.09846
+],
 "afstand_kust_m": 0,
 "kijkrichting": 309,
 "richting_zekerheid": 0.77,
@@ -97062,6 +99607,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.75367,
+37.0286
+],
 "afstand_kust_m": 0,
 "kijkrichting": 151,
 "richting_zekerheid": 0.87,
@@ -97217,6 +99766,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.80313,
+37.01999
+],
 "afstand_kust_m": 0,
 "kijkrichting": 175,
 "richting_zekerheid": 0.95,
@@ -97366,6 +99919,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.81874,
+37.02332
+],
 "afstand_kust_m": 0,
 "kijkrichting": 207,
 "richting_zekerheid": 0.85,
@@ -97521,6 +100078,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.12329,
+37.02308
+],
 "afstand_kust_m": 0,
 "kijkrichting": 206,
 "richting_zekerheid": 0.97,
@@ -97676,6 +100237,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.80907,
+37.02009
+],
 "afstand_kust_m": 0,
 "kijkrichting": 164,
 "richting_zekerheid": 0.99,
@@ -97831,6 +100396,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.81685,
+37.0225
+],
 "afstand_kust_m": 0,
 "kijkrichting": 204,
 "richting_zekerheid": 0.83,
@@ -97980,6 +100549,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.81414,
+37.01822
+],
 "afstand_kust_m": 0,
 "kijkrichting": 162,
 "richting_zekerheid": 0.94,
@@ -98129,6 +100702,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-7.67677,
+37.02335
+],
 "afstand_kust_m": 0,
 "kijkrichting": 144,
 "richting_zekerheid": 0.14,
@@ -98280,6 +100857,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.82137,
+37.01663
+],
 "afstand_kust_m": 0,
 "kijkrichting": 166,
 "richting_zekerheid": 0.93,
@@ -98435,6 +101016,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.11288,
+37.01913
+],
 "afstand_kust_m": 0,
 "kijkrichting": 207,
 "richting_zekerheid": 0.93,
@@ -98584,6 +101169,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.8245,
+37.01591
+],
 "afstand_kust_m": 0,
 "kijkrichting": 163,
 "richting_zekerheid": 0.94,
@@ -98739,6 +101328,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.11729,
+37.02087
+],
 "afstand_kust_m": 0,
 "kijkrichting": 214,
 "richting_zekerheid": 1.0,
@@ -98888,6 +101481,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.82113,
+37.01641
+],
 "afstand_kust_m": 0,
 "kijkrichting": 155,
 "richting_zekerheid": 0.99,
@@ -99037,6 +101634,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.1147,
+37.01952
+],
 "afstand_kust_m": 0,
 "kijkrichting": 214,
 "richting_zekerheid": 1.0,
@@ -99186,6 +101787,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.82577,
+37.01443
+],
 "afstand_kust_m": 0,
 "kijkrichting": 153,
 "richting_zekerheid": 0.99,
@@ -99341,6 +101946,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.81299,
+37.02231
+],
 "afstand_kust_m": 0,
 "kijkrichting": 134,
 "richting_zekerheid": 0.91,
@@ -99496,6 +102105,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.10884,
+37.01629
+],
 "afstand_kust_m": 0,
 "kijkrichting": 216,
 "richting_zekerheid": 1.0,
@@ -99651,6 +102264,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-7.70082,
+37.01961
+],
 "afstand_kust_m": 0,
 "kijkrichting": 142,
 "richting_zekerheid": 0.36,
@@ -99809,6 +102426,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.0993,
+37.01066
+],
 "afstand_kust_m": 0,
 "kijkrichting": 216,
 "richting_zekerheid": 1.0,
@@ -99964,6 +102585,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.87345,
+37.00009
+],
 "afstand_kust_m": 0,
 "kijkrichting": 174,
 "richting_zekerheid": 0.47,
@@ -100121,6 +102746,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.86613,
+37.0
+],
 "afstand_kust_m": 0,
 "kijkrichting": 177,
 "richting_zekerheid": 0.75,
@@ -100276,6 +102905,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-7.74876,
+37.00053
+],
 "afstand_kust_m": 0,
 "kijkrichting": 191,
 "richting_zekerheid": 0.03,
@@ -100428,6 +103061,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-9.0361,
+37.03705
+],
 "afstand_kust_m": 0,
 "kijkrichting": 259,
 "richting_zekerheid": 0.77,
@@ -100577,6 +103214,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.86488,
+37.0004
+],
 "afstand_kust_m": 0,
 "kijkrichting": 162,
 "richting_zekerheid": 0.67,
@@ -100726,6 +103367,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.88592,
+37.00013
+],
 "afstand_kust_m": 0,
 "kijkrichting": 199,
 "richting_zekerheid": 0.68,
@@ -100881,6 +103526,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.85377,
+37.00926
+],
 "afstand_kust_m": 0,
 "kijkrichting": 134,
 "richting_zekerheid": 0.61,
@@ -101038,6 +103687,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.08673,
+37.00335
+],
 "afstand_kust_m": 0,
 "kijkrichting": 216,
 "richting_zekerheid": 1.0,
@@ -101193,6 +103846,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-7.83099,
+37.00049
+],
 "afstand_kust_m": 0,
 "kijkrichting": 151,
 "richting_zekerheid": 0.94,
@@ -101346,6 +104003,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.05826,
+36.98876
+],
 "afstand_kust_m": 0,
 "kijkrichting": 200,
 "richting_zekerheid": 0.4,
@@ -101503,6 +104164,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.99695,
+36.98737
+],
 "afstand_kust_m": 0,
 "kijkrichting": 216,
 "richting_zekerheid": 0.69,
@@ -101658,6 +104323,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.0404,
+36.98011
+],
 "afstand_kust_m": 0,
 "kijkrichting": 195,
 "richting_zekerheid": 0.07,
@@ -101815,6 +104484,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-7.75407,
+37.04365
+],
 "afstand_kust_m": 0,
 "kijkrichting": 335,
 "richting_zekerheid": 0.31,
@@ -101963,6 +104636,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.90482,
+36.97738
+],
 "afstand_kust_m": 0,
 "kijkrichting": 165,
 "richting_zekerheid": 0.91,
@@ -102128,6 +104805,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.87894,
+36.992
+],
 "afstand_kust_m": 0,
 "kijkrichting": 124,
 "richting_zekerheid": 0.96,
@@ -102287,6 +104968,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-7.75474,
+36.97986
+],
 "afstand_kust_m": 0,
 "kijkrichting": 143,
 "richting_zekerheid": 0.98,
@@ -102436,6 +105121,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-8.87611,
+37.02753
+],
 "afstand_kust_m": 0,
 "kijkrichting": 72,
 "richting_zekerheid": 0.62,
@@ -102585,6 +105274,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-7.95209,
+37.02274
+],
 "afstand_kust_m": 0,
 "kijkrichting": 0,
 "richting_zekerheid": 0.0,
@@ -102743,6 +105436,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-9.00481,
+36.99733
+],
 "afstand_kust_m": 0,
 "kijkrichting": 261,
 "richting_zekerheid": 0.83,
@@ -102898,6 +105595,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-8.9161,
+36.96311
+],
 "afstand_kust_m": 0,
 "kijkrichting": 156,
 "richting_zekerheid": 0.91,
@@ -103053,6 +105754,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-7.98474,
+36.95768
+],
 "afstand_kust_m": 0,
 "kijkrichting": 176,
 "richting_zekerheid": 0.03,
@@ -103211,6 +105916,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-7.79347,
+36.95283
+],
 "afstand_kust_m": 0,
 "kijkrichting": 154,
 "richting_zekerheid": 0.68,
@@ -103360,6 +106069,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-7.91794,
+36.97827
+],
 "afstand_kust_m": 0,
 "kijkrichting": 312,
 "richting_zekerheid": 1.0,
@@ -103513,6 +106226,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-7.8234,
+36.94003
+],
 "afstand_kust_m": 0,
 "kijkrichting": 147,
 "richting_zekerheid": 1.0,
@@ -103662,6 +106379,10 @@
 "eea_namen": [],
 "eea_type": [],
 "bron": "osm",
+"zeevak": [
+-7.95813,
+36.92969
+],
 "afstand_kust_m": 0,
 "kijkrichting": 206,
 "richting_zekerheid": 1.0,
@@ -103817,6 +106538,10 @@
 "Coastal"
 ],
 "bron": "osm",
+"zeevak": [
+-7.86476,
+36.91804
+],
 "afstand_kust_m": 0,
 "kijkrichting": 165,
 "richting_zekerheid": 1.0,

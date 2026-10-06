@@ -1,0 +1,42 @@
+# Mijlpaal 3: elke 6 uur de voorspelling per strand ophalen. De data komen niet in de
+# hoofdtak maar op de tak `data`, als één commit die telkens wordt overschreven
+# (docs/architectuur.md).
+name: forecast
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "23 4,10,16,22 * * *"   # ongeveer 4 uur na elke modelrun van 00, 06, 12 en 18 UTC
+  push:
+    paths:
+      - pipeline/forecast/**
+      - .github/workflows/forecast.yml
+permissions:
+  contents: write
+concurrency: { group: forecast, cancel-in-progress: false }
+jobs:
+  forecast:
+    runs-on: ubuntu-latest
+    env:
+      COPERNICUSMARINE_SERVICE_USERNAME: ${{ secrets.COPERNICUSMARINE_SERVICE_USERNAME }}
+      COPERNICUSMARINE_SERVICE_PASSWORD: ${{ secrets.COPERNICUSMARINE_SERVICE_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install -e ".[copernicus]"
+      - name: Voorspelling ophalen
+        id: fetch
+        continue-on-error: true
+        run: python -m pipeline.forecast.fetch
+      - name: Naar de tak data
+        run: |
+          mkdir -p /tmp/data && cd /tmp/data
+          git init -q -b data
+          mkdir -p forecast && cp $GITHUB_WORKSPACE/data/forecast/*.json forecast/
+          ls -la forecast
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A && git commit -q -m "Voorspelling $(date -u +%FT%RZ)"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" data
+      - if: steps.fetch.outcome == 'failure'
+        run: echo "Een of meer bronnen faalden, zie 'Voorspelling ophalen'" && exit 1
