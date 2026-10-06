@@ -24,3 +24,16 @@ jobs:
       - run: npm ci
       - name: Getijtafel inlezen
         run: python -m pipeline.tides.table
+      - name: Hoog- en laagwater per station
+        run: node pipeline/tides/predict.mjs
+      - name: Vergelijken met de getijtafel
+        run: python -m pipeline.tides.validate
+      - name: Commit resultaat
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/tides
+          git diff --cached --quiet && exit 0
+          git commit -m "M2: getij en controle bijgewerkt vanuit GitHub Actions"
+          git pull --rebase --autostash origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
