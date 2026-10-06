@@ -1,0 +1,145 @@
+{
+ "gemaakt": "2026-10-06T10:02Z",
+ "periode": [
+  "2026-09-04",
+  "2026-10-04"
+ ],
+ "open_meteo_previous_runs_wind": {
+  "status": "ok",
+  "resultaat": {
+   "gfs_seamless": {
+    "tijd": [
+     "2026-09-04T00:00",
+     "2026-10-04T23:00"
+    ],
+    "uren": 744,
+    "wind_speed_10m": {
+     "n": 744,
+     "gemiddeld": 5.84
+    },
+    "wind_speed_10m_previous_day1": {
+     "n": 744,
+     "gemiddeld": 5.94
+    },
+    "wind_speed_10m_previous_day2": {
+     "n": 744,
+     "gemiddeld": 6.04
+    },
+    "wind_speed_10m_previous_day3": {
+     "n": 744,
+     "gemiddeld": 6.21
+    }
+   },
+   "ecmwf_ifs": {
+    "tijd": [
+     "2026-09-04T00:00",
+     "2026-10-04T23:00"
+    ],
+    "uren": 744,
+    "wind_speed_10m": {
+     "n": 744,
+     "gemiddeld": 5.32
+    },
+    "wind_speed_10m_previous_day1": {
+     "n": 744,
+     "gemiddeld": 5.36
+    },
+    "wind_speed_10m_previous_day2": {
+     "n": 744,
+     "gemiddeld": 5.3
+    },
+    "wind_speed_10m_previous_day3": {
+     "n": 744,
+     "gemiddeld": 5.37
+    }
+   }
+  }
+ },
+ "open_meteo_historical_forecast_wind": {
+  "status": "ok",
+  "resultaat": {
+   "gfs_seamless": {
+    "tijd": [
+     "2026-09-04T00:00",
+     "2026-10-04T23:00"
+    ],
+    "uren": 744,
+    "wind_speed_10m": {
+     "n": 744,
+     "gemiddeld": 5.84
+    },
+    "wind_gusts_10m": {
+     "n": 744,
+     "gemiddeld": 7.86
+    }
+   },
+   "ecmwf_ifs": {
+    "tijd": [
+     "2026-09-04T00:00",
+     "2026-10-04T23:00"
+    ],
+    "uren": 744,
+    "wind_speed_10m": {
+     "n": 744,
+     "gemiddeld": 5.32
+    },
+    "wind_gusts_10m": {
+     "n": 744,
+     "gemiddeld": 12.21
+    }
+   }
+  }
+ },
+ "open_meteo_golven_verleden": {
+  "status": "ok",
+  "resultaat": {
+   "marine_api": {
+    "tijd": [
+     "2026-09-04T00:00",
+     "2026-10-04T23:00"
+    ],
+    "uren": 744,
+    "wave_height": {
+     "n": 744,
+     "gemiddeld": 1.36
+    },
+    "wave_period": {
+     "n": 744,
+     "gemiddeld": 10.57
+    }
+   },
+   "previous_runs_marine": "fout: HTTP Error 404: Not Found"
+  }
+ },
+ "copernicus_ibi_verleden": {
+  "status": "ok",
+  "resultaat": {
+   "tijd": [
+    "2026-09-04T00:00",
+    "2026-10-04T23:00"
+   ],
+   "uren": 744,
+   "VHM0_gemiddeld": 1.35
+  }
+ },
+ "copernicus_insitu_boeien": {
+  "status": "ok",
+  "resultaat": {
+   "datasets": [
+    "cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr"
+   ],
+   "cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr": {
+    "indexbestanden": []
+   }
+  }
+ },
+ "meteostat_wind_faro": {
+  "status": "ok",
+  "resultaat": {
+   "regels": 422534,
+   "laatste": "2025-08-24,04,21.7,14.8,65,,,326,7.4,14.8,1015.2,,",
+   "recent": 0,
+   "kolommen": "date,hour,temp,dwpt,rhum,prcp,snow,wdir,wspd,wpgt,pres,tsun,coco"
+  }
+ }
+}
