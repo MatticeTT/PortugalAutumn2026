@@ -79,7 +79,8 @@ def simplify_districts() -> None:
             continue
         f = json.loads(line)
         p = f["properties"]
-        if p.get("boundary") != "administrative" or f["geometry"]["type"] not in ("Polygon", "MultiPolygon"):
+        if (p.get("boundary") != "administrative" or str(p.get("admin_level")) != "6"
+                or f["geometry"]["type"] not in ("Polygon", "MultiPolygon")):
             continue
         g = shape(f["geometry"]).simplify(0.0005, preserve_topology=True)
         props = {k: p.get(k) for k in ("name", "ref", "dicofre", "ISO3166-2")}
@@ -152,42 +153,59 @@ def sql(query: str, n: int = 5000):
         return json.loads(r.read())
 
 
+ARCGIS = "https://water.discomap.eea.europa.eu/arcgis/rest/services"
+PT_BBOX = (-10.0, 36.8, -6.0, 42.2)
+
+
+def get_json(url: str, params: dict | None = None):
+    if params:
+        url = f"{url}?{urllib.parse.urlencode(params)}"
+    req = urllib.request.Request(url, headers={"User-Agent": UA})
+    with urllib.request.urlopen(req, timeout=120) as r:
+        return json.loads(r.read())
+
+
 def eea() -> None:
-    """Zoek in WISE_BWD de tabel met zwemwateren en coördinaten, en haal Portugal op."""
-    tables = sql("SELECT TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME FROM [WISE_BWD].INFORMATION_SCHEMA.COLUMNS")
-    (RAW / "eea_antwoord.json").write_text(json.dumps(tables, ensure_ascii=False)[:20000])
-    rows = tables.get("results", tables) if isinstance(tables, dict) else tables
-    if not isinstance(rows, list) or (rows and not isinstance(rows[0], dict)):
-        raise RuntimeError(f"onverwacht antwoord van discodata: {json.dumps(tables)[:300]}")
-    schema: dict[str, list[str]] = {}
-    for r in rows:
-        schema.setdefault(f"[WISE_BWD].[{r['TABLE_SCHEMA']}].[{r['TABLE_NAME']}]", []).append(r["COLUMN_NAME"])
-    (RAW / "eea_schema.json").write_text(json.dumps(schema, indent=1))
+    """Zwemwateren van Portugal uit de kaartdiensten van het EEA.
 
-    def score(cols: list[str]) -> int:
-        lc = [c.lower() for c in cols]
-        has = lambda *ks: any(any(k in c for k in ks) for c in lc)  # noqa: E731
-        return (has("lat") and has("lon")) * 4 + has("country") + has("bathingwatername", "name") + has("type")
-
-    cands = sorted(((score(c), t) for t, c in schema.items() if ".[latest]." in t), reverse=True)
-    print("kandidaten:", cands[:6])
-    for s, t in cands[:6]:
-        if s < 4:
-            break
-        cols = schema[t]
-        country = next((c for c in cols if c.lower() in ("countrycode", "country_code", "cyear_countrycode")), None)
-        where = f"WHERE [{country}] = 'PT'" if country else ""
+    De discodata-databank laat geen lijst van tabellen opvragen. De kaartdiensten wel:
+    alle diensten in de map BathingWater aflopen, elke puntlaag bevragen binnen de
+    rechthoek van het vasteland, en alles bewaren. build.py kiest het recentste seizoen.
+    """
+    folder = get_json(f"{ARCGIS}/BathingWater", {"f": "json"})
+    services = [x for x in folder.get("services", []) if x["type"] in ("MapServer", "FeatureServer")]
+    found = {"diensten": [x["name"] for x in services], "lagen": []}
+    env = ",".join(map(str, PT_BBOX))
+    for svc in services:
+        base = f"{ARCGIS}/{svc['name']}/{svc['type']}"
         try:
-            res = sql(f"SELECT * FROM {t} {where}", n=20000)
+            info = get_json(base, {"f": "json"})
         except Exception as e:  # noqa: BLE001
-            print("fout", t, e)
+            print("fout", base, e)
             continue
-        data = res.get("results", res)
-        if data:
-            (RAW / "eea_bathing.json").write_text(json.dumps({"tabel": t, "rijen": data}, ensure_ascii=False))
-            print(f"EEA: {len(data)} rijen uit {t}")
-            return
-    raise RuntimeError("geen EEA-tabel met coördinaten gevonden; zie eea_schema.json")
+        for lyr in info.get("layers", []):
+            if lyr.get("geometryType") != "esriGeometryPoint" or lyr.get("subLayerIds"):
+                continue
+            try:
+                res = get_json(f"{base}/{lyr['id']}/query", {
+                    "where": "1=1", "geometry": env, "geometryType": "esriGeometryEnvelope", "inSR": 4326,
+                    "spatialRel": "esriSpatialRelIntersects", "outFields": "*", "outSR": 4326, "f": "json",
+                    "resultRecordCount": 5000,
+                })
+            except Exception as e:  # noqa: BLE001
+                print("fout", base, lyr["id"], e)
+                continue
+            feats = res.get("features", [])
+            print(f"{svc['name']} laag {lyr['id']} ({lyr['name']}): {len(feats)} punten")
+            if feats:
+                found["lagen"].append({"dienst": svc["name"], "laag": lyr["id"], "naam": lyr["name"],
+                                       "beschrijving": info.get("description", "")[:300],
+                                       "velden": [f["name"] for f in res.get("fields", [])],
+                                       "punten": [f["attributes"] | {"_x": f["geometry"]["x"], "_y": f["geometry"]["y"]}
+                                                  for f in feats if "geometry" in f]})
+    (RAW / "eea_bathing_arcgis.json").write_text(json.dumps(found, ensure_ascii=False))
+    if not found["lagen"]:
+        raise RuntimeError(f"geen zwemwaterpunten gevonden in {len(services)} diensten")
 
 
 STEPS = {"osm": osm, "land": land, "land_full": land_full, "eea": eea}
