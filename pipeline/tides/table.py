@@ -43,9 +43,9 @@ if __name__ == "__main__":
 
     heads = sorted({ln.strip() for ln in lines if is_head(ln.strip())})
     print("koppen:", heads)
-    term = sys.argv[1] if len(sys.argv) > 1 else "CASCAIS"
+    term = sys.argv[1] if len(sys.argv) > 1 else "PORTO DE CASCAIS"
     hits = [i for i, ln in enumerate(lines) if ln.strip() == term]
     print("regels met", term, hits[:20])
-    if len(hits) > 1:
-        for ln in lines[hits[1] - 5 : hits[1] + 45]:
+    if hits:
+        for ln in lines[hits[0] - 3 : hits[0] + 22]:
             print("|" + ln)
