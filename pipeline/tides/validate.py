@@ -30,7 +30,7 @@ def compare(port: table.Port, stations) -> dict:
     a, b, w, km = interp.weights(port.lon, port.lat, stations)
     pred = interp.predict_at(port.lon, port.lat, stations)
     pt = [e[0] for e in pred]
-    dts, dhs = [], []
+    dts, dhs, dh_hw, dh_lw = [], [], [], []
     signed = []
     unmatched = 0
     for t, h, hi in official:
@@ -48,6 +48,7 @@ def compare(port: table.Port, stations) -> dict:
         dts.append(abs(dt))
         signed.append(dt)
         dhs.append(e[1] / 100 - h)
+        (dh_hw if hi else dh_lw).append(e[1] / 100 - h)
     res = {
         "haven": port.name,
         "stations": [a, b] if a != b else [a],
@@ -62,6 +63,8 @@ def compare(port: table.Port, stations) -> dict:
         "hoogte_gemiddeld_m": round(statistics.mean(dhs), 3) if dhs else None,
         # De tabel rondt af op 0,1 m: daardoor is een fout tot 0,05 m onvermijdelijk.
         "hoogte_binnen_10cm_pct": pct(dhs, 0.1),
+        "hoogte_gemiddeld_hoogwater_m": round(statistics.mean(dh_hw), 3) if dh_hw else None,
+        "hoogte_gemiddeld_laagwater_m": round(statistics.mean(dh_lw), 3) if dh_lw else None,
         "nivel_medio_tabel": port.nivel_medio,
     }
     res["haalt_norm"] = bool(
@@ -72,6 +75,12 @@ def compare(port: table.Port, stations) -> dict:
 
 def main():
     ports = table.load()
+    # Controle van de lezer: twee extremen minder dan 2 uur na elkaar wijzen op een leesfout.
+    for p in ports.values():
+        close = [(a[0], b[0]) for a, b in zip(p.events, p.events[1:], strict=False)
+                 if (b[0] - a[0]).total_seconds() < 7200]
+        if close:
+            print(f"leesfout? {p.name}: {len(close)} paren dicht bij elkaar, bv. {close[0][0]:%m-%d %H:%M}")
     stations = interp.load_stations()
     results = []
     for name in table.PORTS:
