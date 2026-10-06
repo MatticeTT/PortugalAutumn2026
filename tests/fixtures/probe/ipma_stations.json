@@ -773,34 +773,6 @@
   "geometry": {
    "type": "Point",
    "coordinates": [
-    -8.3508,
-    39.27
-   ]
-  },
-  "type": "Feature",
-  "properties": {
-   "idEstacao": 1210735,
-   "localEstacao": "Chamusca / Chouto"
-  }
- },
- {
-  "geometry": {
-   "type": "Point",
-   "coordinates": [
-    -28.44137,
-    38.55219
-   ]
-  },
-  "type": "Feature",
-  "properties": {
-   "idEstacao": 1200504,
-   "localEstacao": "Pico (Aeródromo)"
-  }
- },
- {
-  "geometry": {
-   "type": "Point",
-   "coordinates": [
     -8.43398056,
     41.64686111
    ]
@@ -997,6 +969,20 @@
   "geometry": {
    "type": "Point",
    "coordinates": [
+    -8.20829722,
+    40.54575278
+   ]
+  },
+  "type": "Feature",
+  "properties": {
+   "idEstacao": 6213021,
+   "localEstacao": "Tondela, Caramulinho (CIM)"
+  }
+ },
+ {
+  "geometry": {
+   "type": "Point",
+   "coordinates": [
     -28.3534,
     38.489
    ]
@@ -1011,28 +997,28 @@
   "geometry": {
    "type": "Point",
    "coordinates": [
-    -28.63225,
-    38.540781
+    -9.3790388,
+    39.12594166
    ]
   },
   "type": "Feature",
   "properties": {
-   "idEstacao": 1200506,
-   "localEstacao": "Horta (Obs. Principe Alberto)"
+   "idEstacao": 1210746,
+   "localEstacao": "Santa Cruz (Aeródromo)"
   }
  },
  {
   "geometry": {
    "type": "Point",
    "coordinates": [
-    -28.02852,
-    39.09036
+    -9.46,
+    38.8126
    ]
   },
   "type": "Feature",
   "properties": {
-   "idEstacao": 1200507,
-   "localEstacao": "Graciosa (Aeródromo)"
+   "idEstacao": 1210747,
+   "localEstacao": "Sintra, Colares"
   }
  },
  {
@@ -1109,14 +1095,14 @@
   "geometry": {
    "type": "Point",
    "coordinates": [
-    -28.17,
-    38.66
+    -9.4975361,
+    38.78171
    ]
   },
   "type": "Feature",
   "properties": {
-   "idEstacao": 1200510,
-   "localEstacao": "São Jorge"
+   "idEstacao": 1210750,
+   "localEstacao": "Cabo da Roca"
   }
  },
  {
@@ -1299,20 +1285,6 @@
   "properties": {
    "idEstacao": 1210644,
    "localEstacao": "Carrazêda de Ansiães"
-  }
- },
- {
-  "geometry": {
-   "type": "Point",
-   "coordinates": [
-    -7.887472,
-    40.72645
-   ]
-  },
-  "type": "Feature",
-  "properties": {
-   "idEstacao": 1200559,
-   "localEstacao": "Viseu (Aeródromo)"
   }
  },
  {
@@ -1557,14 +1529,14 @@
   "geometry": {
    "type": "Point",
    "coordinates": [
-    -9.182825,
-    38.70956111
+    -7.85,
+    40.51666667
    ]
   },
   "type": "Feature",
   "properties": {
-   "idEstacao": 1210762,
-   "localEstacao": "Lisboa, Tapada da Ajuda"
+   "idEstacao": 1210685,
+   "localEstacao": "Nelas"
   }
  },
  {
@@ -1893,14 +1865,14 @@
   "geometry": {
    "type": "Point",
    "coordinates": [
-    -7.85,
-    40.51666667
+    -8.3508,
+    39.27
    ]
   },
   "type": "Feature",
   "properties": {
-   "idEstacao": 1210685,
-   "localEstacao": "Nelas"
+   "idEstacao": 1210735,
+   "localEstacao": "Chamusca / Chouto"
   }
  },
  {
@@ -1949,14 +1921,14 @@
   "geometry": {
    "type": "Point",
    "coordinates": [
-    -8.51073611,
-    38.94096667
+    -28.44137,
+    38.55219
    ]
   },
   "type": "Feature",
   "properties": {
-   "idEstacao": 1210744,
-   "localEstacao": "Coruche"
+   "idEstacao": 1200504,
+   "localEstacao": "Pico (Aeródromo)"
   }
  },
  {
@@ -1977,42 +1949,42 @@
   "geometry": {
    "type": "Point",
    "coordinates": [
-    -9.3790388,
-    39.12594166
+    -28.63225,
+    38.540781
    ]
   },
   "type": "Feature",
   "properties": {
-   "idEstacao": 1210746,
-   "localEstacao": "Santa Cruz (Aeródromo)"
+   "idEstacao": 1200506,
+   "localEstacao": "Horta (Obs. Principe Alberto)"
   }
  },
  {
   "geometry": {
    "type": "Point",
    "coordinates": [
-    -9.46,
-    38.8126
+    -28.02852,
+    39.09036
    ]
   },
   "type": "Feature",
   "properties": {
-   "idEstacao": 1210747,
-   "localEstacao": "Sintra, Colares"
+   "idEstacao": 1200507,
+   "localEstacao": "Graciosa (Aeródromo)"
   }
  },
  {
   "geometry": {
    "type": "Point",
    "coordinates": [
-    -9.4975361,
-    38.78171
+    -28.17,
+    38.66
    ]
   },
   "type": "Feature",
   "properties": {
-   "idEstacao": 1210750,
-   "localEstacao": "Cabo da Roca"
+   "idEstacao": 1200510,
+   "localEstacao": "São Jorge"
   }
  },
  {
@@ -2537,14 +2509,14 @@
   "geometry": {
    "type": "Point",
    "coordinates": [
-    -8.20829722,
-    40.54575278
+    -7.887472,
+    40.72645
    ]
   },
   "type": "Feature",
   "properties": {
-   "idEstacao": 6213021,
-   "localEstacao": "Tondela, Caramulinho (CIM)"
+   "idEstacao": 1200559,
+   "localEstacao": "Viseu (Aeródromo)"
   }
  },
  {
@@ -2845,6 +2817,20 @@
   "geometry": {
    "type": "Point",
    "coordinates": [
+    -8.504909,
+    40.02927
+   ]
+  },
+  "type": "Feature",
+  "properties": {
+   "idEstacao": 6213621,
+   "localEstacao": "Soure (CIM)"
+  }
+ },
+ {
+  "geometry": {
+   "type": "Point",
+   "coordinates": [
     -27.1031,
     38.7002
    ]
@@ -2895,6 +2881,20 @@
   "properties": {
    "idEstacao": 1210848,
    "localEstacao": "Portel, Oriola"
+  }
+ },
+ {
+  "geometry": {
+   "type": "Point",
+   "coordinates": [
+    -8.51073611,
+    38.94096667
+   ]
+  },
+  "type": "Feature",
+  "properties": {
+   "idEstacao": 1210744,
+   "localEstacao": "Coruche"
   }
  },
  {
@@ -3097,14 +3097,14 @@
   "geometry": {
    "type": "Point",
    "coordinates": [
-    -8.504909,
-    40.02927
+    -8.581389,
+    37.149167
    ]
   },
   "type": "Feature",
   "properties": {
-   "idEstacao": 6213621,
-   "localEstacao": "Soure (CIM)"
+   "idEstacao": 1210878,
+   "localEstacao": "Portimão (Aeródromo)"
   }
  },
  {
@@ -3167,14 +3167,14 @@
   "geometry": {
    "type": "Point",
    "coordinates": [
-    -8.581389,
-    37.149167
+    -9.182825,
+    38.70956111
    ]
   },
   "type": "Feature",
   "properties": {
-   "idEstacao": 1210878,
-   "localEstacao": "Portimão (Aeródromo)"
+   "idEstacao": 1210762,
+   "localEstacao": "Lisboa, Tapada da Ajuda"
   }
  }
 ]
