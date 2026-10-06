@@ -22,6 +22,9 @@ jobs:
       - run: pip install -e ".[copernicus]"
       - name: Proef van de historische bronnen
         run: python -m pipeline.validate.probe
+      - name: Golfmodellen naast de boeien
+        continue-on-error: true
+        run: python -m pipeline.validate.waves
       - name: Commit resultaat
         run: |
           git config user.name "github-actions[bot]"

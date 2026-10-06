@@ -6,8 +6,6 @@ en een korte samenvatting. Draait in GitHub Actions (netwerk open, Copernicus-ac
 
 from __future__ import annotations
 
-import gzip
-import io
 import json
 import os
 import traceback
@@ -125,24 +123,26 @@ def insitu_buoys():
 
 
 def noaa_isd():
-    """NOAA Global Hourly (ISD), publiek domein: Portugese stations en één station dit jaar."""
-    hist = get("https://www.ncei.noaa.gov/pub/data/noaa/isd-history.csv", timeout=300).decode(errors="replace")
-    rows = [r for r in hist.splitlines() if ',"PO",' in r]
-    recent = [r for r in rows if r.rstrip().split(",")[-1].strip('"') >= "20260901"]
-    out = {"stations_po": len(rows), "met_recente_data": [r[:120] for r in recent][:60]}
-    csv = get("https://www.ncei.noaa.gov/data/global-hourly/access/2026/08554099999.csv", timeout=300).decode()
-    lines = csv.splitlines()
-    out["faro_2026"] = {"regels": len(lines), "kop": lines[0][:300], "laatste": lines[-1][:200]}
+    """NOAA Global Hourly (ISD), publiek domein: welke Portugese stations, en Faro dit jaar."""
+    out = {}
+    for url in ("https://www.ncei.noaa.gov/pub/data/noaa/isd-history.csv",
+                "https://www1.ncdc.noaa.gov/pub/data/noaa/isd-history.csv"):
+        try:
+            hist = get(url, timeout=300).decode(errors="replace")
+            rows = [r for r in hist.splitlines() if ',"PO",' in r]
+            out["stations_po"] = len(rows)
+            out["recent"] = [r[:110] for r in rows if r.rstrip().split(",")[-1].strip('"') >= "20260901"][:60]
+            break
+        except Exception as e:  # noqa: BLE001
+            out[url] = str(e)
+    for sid in ("08554099999", "08554599999", "08536099999", "08545099999", "08533099999"):
+        url = f"https://www.ncei.noaa.gov/data/global-hourly/access/2026/{sid}.csv"
+        try:
+            lines = get(url, timeout=300).decode().splitlines()
+            out[sid] = {"regels": len(lines), "kop": lines[0][:200], "laatste": lines[-1][:160]}
+        except Exception as e:  # noqa: BLE001
+            out[sid] = str(e)
     return out
-
-
-def meteostat():
-    """Meteostat bulk: uurlijkse metingen van een kuststation (Faro, 08554)."""
-    raw = gzip.decompress(get("https://bulk.meteostat.net/v2/hourly/08554.csv.gz", timeout=300))
-    rows = list(io.StringIO(raw.decode()).read().splitlines())
-    recent = [r for r in rows if r[:10] >= START.isoformat()]
-    return {"regels": len(rows), "laatste": rows[-1][:80] if rows else None, "recent": len(recent),
-            "kolommen": "date,hour,temp,dwpt,rhum,prcp,snow,wdir,wspd,wpgt,pres,tsun,coco"}
 
 
 PROBES = {
@@ -151,7 +151,6 @@ PROBES = {
     "open_meteo_golven_verleden": marine_past,
     "copernicus_ibi_verleden": ibi_past,
     "copernicus_insitu_boeien": insitu_buoys,
-    "meteostat_wind_faro": meteostat,
     "noaa_isd_wind": noaa_isd,
 }
 
