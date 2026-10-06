@@ -1,5 +1,5 @@
 {
- "gemaakt": "2026-10-06T10:04Z",
+ "gemaakt": "2026-10-06T10:08Z",
  "periode": [
   "2026-09-04",
   "2026-10-04"
@@ -256,18 +256,16 @@
    }
   }
  },
- "meteostat_wind_faro": {
+ "noaa_isd_wind": {
   "status": "ok",
   "resultaat": {
-   "regels": 422534,
-   "laatste": "2025-08-24,04,21.7,14.8,65,,,326,7.4,14.8,1015.2,,",
-   "recent": 0,
-   "kolommen": "date,hour,temp,dwpt,rhum,prcp,snow,wdir,wspd,wpgt,pres,tsun,coco"
+   "stations_po": 64,
+   "recent": [],
+   "08554099999": "HTTP Error 404: Not Found",
+   "08554599999": "HTTP Error 404: Not Found",
+   "08536099999": "HTTP Error 404: Not Found",
+   "08545099999": "HTTP Error 404: Not Found",
+   "08533099999": "HTTP Error 404: Not Found"
   }
- },
- "noaa_isd_wind": {
-  "status": "fout",
-  "reden": "HTTPError: HTTP Error 404: Not Found",
-  "spoor": "n\n    response = meth(req, response)\n               ^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/urllib/request.py\", line 630, in http_response\n    response = self.parent.error(\n               ^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/urllib/request.py\", line 559, in error\n    return self._call_chain(*args)\n           ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/urllib/request.py\", line 492, in _call_chain\n    result = func(*args)\n             ^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/urllib/request.py\", line 639, in http_error_default\n    raise HTTPError(req.full_url, code, msg, hdrs, fp)\nurllib.error.HTTPError: HTTP Error 404: Not Found\n"
  }
 }
