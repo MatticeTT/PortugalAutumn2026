@@ -1,5 +1,5 @@
 {
- "gemaakt": "2026-10-06T08:40Z",
+ "gemaakt": "2026-10-06T08:43Z",
  "jaar": 2026,
  "havens": [
   {
@@ -17,6 +17,8 @@
    "tijd_binnen_10_min_pct": 98.4,
    "hoogte_gemiddeld_m": -0.0,
    "hoogte_binnen_10cm_pct": 87.5,
+   "hoogte_gemiddeld_hoogwater_m": -0.018,
+   "hoogte_gemiddeld_laagwater_m": 0.018,
    "nivel_medio_tabel": 2.0,
    "haalt_norm": false
   },
@@ -36,6 +38,8 @@
    "tijd_binnen_10_min_pct": 98.4,
    "hoogte_gemiddeld_m": 0.0,
    "hoogte_binnen_10cm_pct": 90.5,
+   "hoogte_gemiddeld_hoogwater_m": -0.011,
+   "hoogte_gemiddeld_laagwater_m": 0.012,
    "nivel_medio_tabel": 2.0,
    "haalt_norm": false
   },
@@ -55,6 +59,8 @@
    "tijd_binnen_10_min_pct": 44.9,
    "hoogte_gemiddeld_m": 0.005,
    "hoogte_binnen_10cm_pct": 77.7,
+   "hoogte_gemiddeld_hoogwater_m": 0.054,
+   "hoogte_gemiddeld_laagwater_m": -0.045,
    "nivel_medio_tabel": 2.0,
    "haalt_norm": false
   },
@@ -74,6 +80,8 @@
    "tijd_binnen_10_min_pct": 87.5,
    "hoogte_gemiddeld_m": -0.002,
    "hoogte_binnen_10cm_pct": 87.5,
+   "hoogte_gemiddeld_hoogwater_m": -0.033,
+   "hoogte_gemiddeld_laagwater_m": 0.028,
    "nivel_medio_tabel": 2.0,
    "haalt_norm": false
   },
@@ -93,6 +101,8 @@
    "tijd_binnen_10_min_pct": 98.9,
    "hoogte_gemiddeld_m": -0.0,
    "hoogte_binnen_10cm_pct": 91.4,
+   "hoogte_gemiddeld_hoogwater_m": -0.009,
+   "hoogte_gemiddeld_laagwater_m": 0.008,
    "nivel_medio_tabel": 2.0,
    "haalt_norm": false
   },
@@ -112,6 +122,8 @@
    "tijd_binnen_10_min_pct": 100.0,
    "hoogte_gemiddeld_m": 0.002,
    "hoogte_binnen_10cm_pct": 96.2,
+   "hoogte_gemiddeld_hoogwater_m": -0.015,
+   "hoogte_gemiddeld_laagwater_m": 0.018,
    "nivel_medio_tabel": 2.08,
    "haalt_norm": true
   },
@@ -131,6 +143,8 @@
    "tijd_binnen_10_min_pct": 0.3,
    "hoogte_gemiddeld_m": -0.115,
    "hoogte_binnen_10cm_pct": 42.0,
+   "hoogte_gemiddeld_hoogwater_m": -0.266,
+   "hoogte_gemiddeld_laagwater_m": 0.038,
    "nivel_medio_tabel": 2.2,
    "haalt_norm": false
   },
@@ -150,6 +164,8 @@
    "tijd_binnen_10_min_pct": 41.3,
    "hoogte_gemiddeld_m": 0.053,
    "hoogte_binnen_10cm_pct": 69.8,
+   "hoogte_gemiddeld_hoogwater_m": -0.039,
+   "hoogte_gemiddeld_laagwater_m": 0.081,
    "nivel_medio_tabel": 2.0,
    "haalt_norm": false
   },
@@ -169,6 +185,8 @@
    "tijd_binnen_10_min_pct": 99.7,
    "hoogte_gemiddeld_m": 0.001,
    "hoogte_binnen_10cm_pct": 95.5,
+   "hoogte_gemiddeld_hoogwater_m": 0.005,
+   "hoogte_gemiddeld_laagwater_m": -0.003,
    "nivel_medio_tabel": 2.0,
    "haalt_norm": true
   },
@@ -188,6 +206,8 @@
    "tijd_binnen_10_min_pct": 99.1,
    "hoogte_gemiddeld_m": -0.001,
    "hoogte_binnen_10cm_pct": 96.2,
+   "hoogte_gemiddeld_hoogwater_m": -0.003,
+   "hoogte_gemiddeld_laagwater_m": 0.001,
    "nivel_medio_tabel": 2.0,
    "haalt_norm": false
   },
@@ -207,6 +227,8 @@
    "tijd_binnen_10_min_pct": 30.9,
    "hoogte_gemiddeld_m": 0.028,
    "hoogte_binnen_10cm_pct": 85.0,
+   "hoogte_gemiddeld_hoogwater_m": 0.057,
+   "hoogte_gemiddeld_laagwater_m": 0.0,
    "nivel_medio_tabel": 2.0,
    "haalt_norm": false
   },
@@ -226,6 +248,8 @@
    "tijd_binnen_10_min_pct": 12.3,
    "hoogte_gemiddeld_m": -0.0,
    "hoogte_binnen_10cm_pct": 68.7,
+   "hoogte_gemiddeld_hoogwater_m": 0.056,
+   "hoogte_gemiddeld_laagwater_m": -0.056,
    "nivel_medio_tabel": 2.0,
    "haalt_norm": false
   }
