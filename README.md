@@ -9,7 +9,7 @@ Gratis, niet-commercieel, voor een besloten kring.
 | Mijlpaal | Stand |
 |---|---|
 | M0 Proeven en sleutels | Klaar; open punten in OPEN.md |
-| M1 Stranden | 681 stranden; wacht op de steekproef van de eigenaar |
+| M1 Stranden | Klaar: 681 stranden; zie OPEN.md punt 13 tot 16 |
 | M2 tot M7 | Nog niet begonnen |
 
 ## Lokaal

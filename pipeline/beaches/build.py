@@ -371,7 +371,10 @@ def merge_same_name(beaches):
 
 
 def analyse(coast: Coast, districts, item: dict) -> dict:
-    p, dist = coast.nearest(item["geom"])
+    # Het kustpunt bij het midden van het strand, niet het dichtste punt van de hele omtrek:
+    # dat laatste kan een uiteinde tegen een dam of rots zijn (zo kreeg Matosinhos eerst 183°).
+    _, dist = coast.nearest(item["geom"])
+    p, _ = coast.nearest(item["geom"].representative_point())
     facing, conf = coast.orientation(p)
     reasons = []
     if facing is None:

@@ -102,15 +102,22 @@ Het Firecrawl-account dat voor punt 1 gebruikt is, meldde bij elke aanroep dat h
 
 ## M1 (6 oktober 2026)
 
-### 13. Steekproef van 30 stranden: wacht op de eigenaar
+### 13. Steekproef: door Claude Code nagekeken in plaats van door de eigenaar
 
-`docs/steekproef/` toont 30 stranden, verspreid langs de kust, met de berekende kijkrichting en het deiningsvenster. Per strand staat er een link naar het satellietbeeld. De eigenaar kijkt na of de rode pijl klopt. Dit is de laatste voorwaarde van M1.
+De eigenaar vroeg om de controle zelf te doen. Satellietbeelden zijn vanuit de ontwikkelomgeving niet te openen, dus de controle gebeurde op twee andere manieren:
 
-### 14. 110 stranden met onzekere kijkrichting
+1. **Regiotoets voor alle stranden.** Per kuststuk (Minho, Costa de Prata, Peniche, Cascais, Caparica, Alentejo, Algarve) staat een verwachte richting; 577 stranden vallen in zo'n kuststuk. Wie meer dan 40 tot 60 graden afwijkt, is één voor één nagekeken. Bijna alle afwijkers kijken echt anders dan hun kust (Nazaré naar het zuidwesten, Baleal-Lagido naar het noorden, de baaien van Cascais en Lagos naar het oosten, de westelijke Algarve naar het zuiden).
+2. **De steekproef van 30** in `docs/steekproef/`, op het oog.
+
+Daarbij kwam één fout in de methode boven: het rekenpunt was het dichtste kustpunt bij de hele omtrek van het strand, en dat kan een uiteinde tegen een dam zijn. Matosinhos kreeg zo 183° (zuid) in plaats van ongeveer 230° (zuidwest). Nu is het het kustpunt bij het midden van het strand. Twintig stranden veranderden daardoor meer dan 30°, telkens naar een aannemelijker richting (bv. Culatra van 31° naar 154°).
+
+Wat niet nagekeken is: de kijkrichting op het satellietbeeld zelf. De eigenaar kan stranden die hij kent nog altijd nakijken via de links in `docs/steekproef/README.md` en `data/beaches/onzeker.csv`.
+
+### 14. 103 stranden met onzekere kijkrichting
 
 Staan in `data/beaches/onzeker.csv`, met de reden en een link. De meeste liggen in de Ria Formosa, het estuarium van de Sado en de Taag, de Ria de Aveiro, of in kleine baaien. Daar is de kijkrichting uit de kustlijn niet betrouwbaar. Ze krijgen voorlopig wel een score, maar de fiche zegt "richting niet beoordeeld" (PLAN.md 2.4).
 
-**Voorstel:** de eigenaar kijkt eerst de stranden na waar hij zelf komt, en vult `besloten_water` in waar dat past. 43 stranden zijn al aangeduid als kandidaat (`kandidaat_besloten_water`).
+**Voorstel:** de eigenaar kijkt eerst de stranden na waar hij zelf komt, en vult `besloten_water` in waar dat past. 38 stranden zijn al aangeduid als kandidaat (`kandidaat_besloten_water`).
 
 ### 15. Officiële lijst: via de kaartdienst, niet via de databank
 
