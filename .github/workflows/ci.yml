@@ -11,7 +11,7 @@ jobs:
         with: { python-version: "3.12" }
       - uses: actions/setup-node@v4
         with: { node-version: "22", cache: npm }
-      - run: pip install -e ".[dev]"
+      - run: pip install -e ".[dev,geo]"
       - run: npm ci
       - run: ruff check pipeline tests
       - run: pytest -q

@@ -99,3 +99,26 @@ In 48 uren GFS-Wave voor Arrifana ligt de wortel van de som van de kwadraten van
 ### 12. Firecrawl-tegoed
 
 Het Firecrawl-account dat voor punt 1 gebruikt is, meldde bij elke aanroep dat het tegoed bijna op is. Verdere proeven lopen daarom via GitHub Actions. Zodra de live proeven daar slagen, zijn de `firecrawl_*`-bestanden alleen nog een tweede steekproef.
+
+## M1 (6 oktober 2026)
+
+### 13. Steekproef van 30 stranden: wacht op de eigenaar
+
+`docs/steekproef/` toont 30 stranden, verspreid langs de kust, met de berekende kijkrichting en het deiningsvenster. Per strand staat er een link naar het satellietbeeld. De eigenaar kijkt na of de rode pijl klopt. Dit is de laatste voorwaarde van M1.
+
+### 14. 110 stranden met onzekere kijkrichting
+
+Staan in `data/beaches/onzeker.csv`, met de reden en een link. De meeste liggen in de Ria Formosa, het estuarium van de Sado en de Taag, de Ria de Aveiro, of in kleine baaien. Daar is de kijkrichting uit de kustlijn niet betrouwbaar. Ze krijgen voorlopig wel een score, maar de fiche zegt "richting niet beoordeeld" (PLAN.md 2.4).
+
+**Voorstel:** de eigenaar kijkt eerst de stranden na waar hij zelf komt, en vult `besloten_water` in waar dat past. 43 stranden zijn al aangeduid als kandidaat (`kandidaat_besloten_water`).
+
+### 15. Officiële lijst: via de kaartdienst, niet via de databank
+
+De databank van het EEA (discodata) weigert de vraag naar haar tabellen ("system tables are not allowed"). De kaartdienst `water.discomap.eea.europa.eu/arcgis/rest/services/BathingWater/BathingWater_Dyna_WM_2025` geeft wel alle zwemwateren met naam, code, soort water en coördinaten. Seizoen 2025: 366 kust- en overgangswateren op het vasteland. Alle 366 zijn teruggevonden: 346 bij een OSM-strand, 20 toegevoegd vanuit de officiële lijst.
+
+### 16. Wat werd weggelaten
+
+- Stranden met "fluvial" in de naam (rivierstranden).
+- Stranden zonder naam, tenzij ze bij een officieel zwemwater horen.
+- Stranden buiten Portugal. Het uitsnijden rond Portugal haalde enkele Spaanse stranden aan de Minho en de Douro binnen; die vallen in geen enkel Portugees district.
+- Land smaller dan 50 m (havendammen, pieren, strandhoofden) telt niet als afscherming. Zonder die regel leek de open zee bij onder meer Costa da Caparica dicht.
