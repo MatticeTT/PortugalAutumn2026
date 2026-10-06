@@ -17,11 +17,9 @@ Wat er gebeurd is:
 
 **Voorstel:** de eigenaar voegt die hosts toe aan de toegelaten domeinen van de omgeving (Network access → Custom). Anders werkt Claude Code verder via GitHub Actions, wat trager is maar volstaat.
 
-### 2. `copernicus_ibi`: nog geen account
+### 2. `copernicus_ibi`: opgelost op 6 oktober 2026
 
-De proef voor Copernicus IBI is geschreven maar overgeslagen: er zijn nog geen sleutels.
-
-**Voorstel:** de eigenaar maakt een gratis account op data.marine.copernicus.eu/register en zet `COPERNICUSMARINE_SERVICE_USERNAME` en `COPERNICUSMARINE_SERVICE_PASSWORD` als geheimen in GitHub (Settings → Secrets and variables → Actions). Daarna de workflow `probe` opnieuw starten.
+Het account staat als geheim in GitHub. De proef haalde 24 uur IBI-golven op voor het zeevak bij Arrifana. Anders dan GFS-Wave geeft IBI wel een piekperiode (`VTPK`), plus hoogte, periode en richting voor eerste deining, tweede deining en windgolf. Zie `docs/bronnen.md`.
 
 ### 3. `emodnet_buoy`: EMODnet heeft geen recente metingen van de Portugese boeien
 

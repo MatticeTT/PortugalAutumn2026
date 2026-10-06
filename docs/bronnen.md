@@ -37,7 +37,21 @@ De volledige lijst van sleutels per antwoord staat in `tests/fixtures/probe/FIEL
 
 ## Copernicus Marine IBI
 
-Dataset `cmems_mod_ibi_wav_anfc_0.027deg_PT1H-i`, via de Python-toolbox `copernicusmarine` (`open_dataset`, uitsnede rond één punt). Variabelen volgens de productbeschrijving, te bevestigen bij de eerste run: `VHM0`, `VTPK`, `VTM02`, `VMDR`, `VHM0_SW1`, `VTM01_SW1`, `VMDR_SW1`, `VHM0_SW2`, `VTM01_SW2`, `VMDR_SW2`, `VHM0_WW`, `VTM01_WW`, `VMDR_WW`. Nog niet aangeroepen: zie `OPEN.md` punt 2.
+Dataset `cmems_mod_ibi_wav_anfc_0.027deg_PT1H-i`, via de Python-toolbox `copernicusmarine` (`open_dataset`, uitsnede rond één punt). Bevestigd op 6 oktober 2026: uurwaarden, raster van ongeveer 3 km.
+
+| Variabele | Eenheid | Betekenis |
+|---|---|---|
+| `VHM0` | m | Significante golfhoogte, totale zee |
+| `VTPK` | s | Piekperiode, totale zee |
+| `VTM02`, `VTM10` | s | Gemiddelde periodes |
+| `VMDR`, `VPED` | ° | Gemiddelde richting en richting bij de piek (waar de golven vandaan komen) |
+| `VHM0_SW1`, `VTM01_SW1`, `VMDR_SW1` | m, s, ° | Eerste deining |
+| `VHM0_SW2`, `VTM01_SW2`, `VMDR_SW2` | m, s, ° | Tweede deining |
+| `VHM0_WW`, `VTM01_WW`, `VMDR_WW` | m, s, ° | Windgolf |
+| `VCMX`, `VMXL` | m | Hoogste golf en hoogste top |
+| `VSDX`, `VSDY` | m/s | Stokesdrift |
+
+Ook hier zijn de periodes per deelgolf gemiddelde periodes (`VTM01`), geen piekperiodes.
 
 ## Neaps (getij)
 
