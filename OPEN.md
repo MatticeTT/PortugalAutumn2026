@@ -212,3 +212,31 @@ Supertubos (Peniche) staat niet als strand met naam in OpenStreetMap en ook niet
 ### 24. IPMA-logo
 
 PLAN.md 9 vraagt het logo van IPMA. Nu staat er de naam met een link. Het logo van een externe site laden wordt bewust niet gedaan zolang de site besloten is.
+
+## M6 (6 oktober 2026)
+
+### 25. Golven: gemeten met de historiek, Copernicus IBI is de standaard
+
+Niet 30 dagen gewacht: Copernicus In-Situ bewaart de boeimetingen van de laatste ±30 dagen, en GFS-Wave en IBI geven hun waarden voor die dagen. Over 6 september tot 6 oktober 2026 (`data/validate/golven.json`):
+
+| Boei | Uren | GFS-Wave: fout (afwijking) | IBI: fout (afwijking) |
+|---|---|---|---|
+| Leixões (kustboei) | 680 | 0,38 m (−0,17) | **0,20 m** (−0,04) |
+| Sines (kustboei) | 726 | 0,30 m (+0,01) | **0,20 m** (−0,04) |
+| Faro (kustboei, tot 21 sept.) | 375 | 0,28 m (+0,20) | **0,20 m** (−0,12) |
+
+Fout = RMSE van de significante golfhoogte. IBI scoort bij alle drie beter; de norm van M6 ("de fout van de standaard niet groter dan die van GFS-Wave") is gehaald. De site toont daarom standaard het "Nauwkeurigste model" (ECMWF-wind en IBI-golven). De meting staat op de pagina "Hoe rekenen we" en wordt elke maandag herhaald.
+
+Beperkingen:
+- Dit meet de beste schatting van het model voor dat uur, niet een voorspelling van dagen vooraf. Daarvoor is er nu een archief (tak `archief`, twee keer per dag).
+- De boeien in open zee (6201077, 6201079) leveren in deze periode geen bruikbare golfhoogte.
+- De `wave_period` van GFS-Wave ligt dicht bij de gemeten piekperiode (Leixões −0,3 s, Sines −0,1 s, Faro +1,0 s), niet bij de gemiddelde periode.
+
+### 26. Wind: nog geen historische metingen
+
+- Meteostat (bulk): laatste meting augustus 2025. Valt af.
+- NOAA Global Hourly: de stationsbestanden voor Portugal geven 404 voor 2026.
+- IPMA geeft alleen de laatste 24 uur. Vanaf 6 oktober bewaart het archief die metingen voor 10 kuststations, samen met de GFS- en ECMWF-voorspelling. `pipeline/validate/wind.py` meet elke maandag de fout per model en per vooruitzicht (0 tot 4 dagen) zodra er 100 paren zijn.
+- Open-Meteo bewaart wel oude windvoorspellingen per vooruitzicht (Previous Runs API, bevestigd). Die worden gebruikt zodra er metingen tegenover staan.
+
+Tot die meting er is, gebruikt het "Nauwkeurigste model" ECMWF voor de wind, op basis van de eigen verklaring van ECMWF (PLAN.md 3.1), niet van een eigen meting.
