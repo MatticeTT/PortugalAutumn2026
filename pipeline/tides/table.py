@@ -74,10 +74,13 @@ def to_text(pdf: Path) -> Path:
 
 
 def port_name(line: str) -> str | None:
-    t = line.strip()
-    t = re.sub(r"^(PORTO D[AEO]|BARRA DE)\s+", "", t)
+    """Naam van een haven als de regel een havenkop is, "?" voor een onbekende havenkop."""
+    raw = line.strip()
+    t = re.sub(r"^(PORTO D[AEO]|BARRA DE)\s+", "", raw)
     if t in PORTS or t in ISLANDS:
         return t
+    if re.match(r"^(PORTO D[AEO]|BARRA DE)\s+\S", raw) and raw.upper() == raw:
+        return "?"
     return None
 
 
@@ -113,7 +116,7 @@ def parse(text: str) -> dict[str, Port]:
         name = port_name(line)
         if name:
             flush()
-            if name in ISLANDS:
+            if name in ISLANDS or name == "?":
                 cur = None
             else:
                 cur = ports.setdefault(name, Port(PORTS[name], name))

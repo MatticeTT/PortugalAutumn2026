@@ -22,10 +22,10 @@ jobs:
       - run: sudo apt-get update -q && sudo apt-get install -y -q poppler-utils
       - run: pip install -e ".[geo]"
       - run: npm ci
-      - name: Getijtafel inlezen
-        run: python -m pipeline.tides.table
       - name: Hoog- en laagwater per station
         run: node pipeline/tides/predict.mjs
+      - name: Stranden aan stations koppelen
+        run: python -m pipeline.tides.beaches
       - name: Vergelijken met de getijtafel
         run: python -m pipeline.tides.validate
       - name: Commit resultaat
