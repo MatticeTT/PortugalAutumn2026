@@ -178,7 +178,7 @@ def main(fetch_ipma: bool = True):
         venster = tuple(p["venster"][0]) if rekent else (0, 0)
 
         n = len(axis)
-        rij = {k: [None] * n for k in ("zee_h", "zee_t", "zee_r", "bereikt", "E", "periode", "H", "windhoek",
+        rij = {k: [None] * n for k in ("zee_h", "zee_t", "zee_r", "E_zee", "bereikt", "E", "periode", "H", "windhoek",
                                         "tij", "tijgewicht", "verval", "scores", "conclusie")}
         wave, wind, laag3, letter, licht = [], [], [], [], []
         for i in range(n):
@@ -199,6 +199,7 @@ def main(fetch_ipma: bool = True):
             wave.append(str(r["WAVE"]))
             wind.append(str(r["WIND"]))
             k = krachtigste(dein)
+            rij["E_zee"][i] = r["E_zee"]  # de krachtigste deining: daaruit komt het level WAVE
             if k is not None:
                 rij["zee_h"][i], rij["zee_t"][i], rij["zee_r"][i] = dein[k][0], dein[k][1], dein[k][2]
             if not (rekent and heeft_getij):

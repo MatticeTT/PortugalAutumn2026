@@ -59,6 +59,9 @@ jobs:
         with: { node-version: "22", cache: npm, cache-dependency-path: web/package-lock.json }
       - name: Site bouwen
         run: |
+          # Bouw met de nieuwste code van deze tak, niet die van het begin van deze (trage) run:
+          # anders overschrijft een oudere opmaak een publicatie van site.yml die intussen klaar was.
+          git fetch -q origin "${{ github.ref_name }}" && git checkout -q --detach FETCH_HEAD
           python -m pipeline.site.build_data
           cd web && npm ci && npm run build
       - name: Naar de tak site (Vercel publiceert die tak)

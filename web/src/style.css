@@ -374,3 +374,5 @@ details.meer[open] > summary { margin-bottom: 8px; }
 /* Richting tegenover het strand, in de vlakken WAVE en WIND */
 .tegel .tovstrand { flex-direction: column; align-items: stretch; gap: 4px; }
 .tegel svg.richting { width: 100%; height: auto; max-width: 220px; display: block; }
+.opstrand { margin: -4px 0 12px; padding: 8px 10px; border-radius: 12px; background: var(--zacht-vlak); font-size: 14px; line-height: 1.4; }
+.opstrand .lvl { display: inline-block; padding: 0 7px; border-radius: 6px; font-weight: 800; font-size: 13px; }

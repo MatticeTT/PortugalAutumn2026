@@ -52,6 +52,7 @@ export interface Detail {
   zee_h: (number | null)[] // krachtigste deining op zee
   zee_t: (number | null)[]
   zee_r: (number | null)[]
+  E_zee: (number | null)[] // kJ, 1,96 × hoogte² × periode² van die deining
   // laag 3
   WAVE_strand: string
   bereikt: (number | null)[]
