@@ -304,3 +304,10 @@ details.meer[open] > summary { margin-bottom: 8px; }
 .tegel .tovstrand { display: flex; align-items: center; gap: 8px; padding-top: 6px; border-top: 1px solid rgb(0 0 0 / 0.12); }
 .tegel .tovstrand small { font-size: 13px; font-weight: 700; line-height: 1.2; }
 .tegel .strand { flex: none; }
+
+.getijvak { display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto; column-gap: 14px; align-items: center;
+  margin: -4px 0 12px; padding: 10px 12px 12px; border-radius: 14px; background: var(--zacht-vlak); color: var(--tekst); }
+.getijvak .soort { grid-column: 1 / -1; font-size: 12px; font-weight: 800; letter-spacing: 0.12em; color: var(--zacht); margin-bottom: 4px; }
+.getijvak .tekst { display: flex; flex-direction: column; gap: 1px; font-size: 14px; }
+.getijvak .tekst b { font-size: 17px; }
+.getijvak small { color: var(--zacht); font-size: 12.5px; }
