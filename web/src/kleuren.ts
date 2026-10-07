@@ -1,7 +1,8 @@
-// Eén kleur per cijfer: 1 niets (grijs), 2 te licht, 3 ideaal (groen), 4 sterk (oranje), 5 te moeilijk (rood).
-export const KLEUR = ['#c3cad0', '#c4e6a8', '#1f9d55', '#f0932b', '#d0021b']
-export const DONKERE_TEKST = (n: number) => n === 1 || n === 2 || n === 4
-export const tekstKleur = (n: number) => (DONKERE_TEKST(n) ? '#14202b' : '#fff')
+// Eén kleur per cijfer, zoals de Watersportwijzer: 1 niets (grijs), 2 te licht (blauw),
+// 3 ideaal (groen), 4 sterk (oranjegeel), 5 te moeilijk (rood).
+export const KLEUR = ['#dfe7e9', '#2a78d6', '#0a8a0a', '#fab219', '#d03b3b']
+const TEKST = ['#40545d', '#ffffff', '#ffffff', '#2b1d00', '#ffffff']
+export const tekstKleur = (n: number) => TEKST[n - 1] ?? '#40545d'
 
 // Voor een groep stranden op de kaart: het interessantste cijfer (3, dan 4, 2, 5, 1).
 export const RANG = [0, 1, 3, 5, 4, 2] // cijfer -> rang
@@ -19,11 +20,11 @@ export function bolletje(n: number, size = 30, groep = false): ImageData {
     g.fillStyle = 'rgba(255,255,255,0.9)'; g.fill()
   }
   g.beginPath(); g.arc(cx, cx, groep ? r - 2.5 : r, 0, Math.PI * 2)
-  g.fillStyle = n ? KLEUR[n - 1] : '#e2e6e9'; g.fill()
-  g.lineWidth = 1.5; g.strokeStyle = 'rgba(20,32,43,0.55)'; g.stroke()
+  g.fillStyle = n ? KLEUR[n - 1] : '#eef1f2'; g.fill()
+  g.lineWidth = 1.5; g.strokeStyle = 'rgba(13,28,35,0.55)'; g.stroke()
   g.font = `700 ${Math.round(size * 0.5)}px system-ui, sans-serif`
   g.textAlign = 'center'; g.textBaseline = 'middle'
-  g.fillStyle = n ? tekstKleur(n) : '#4a545c'
+  g.fillStyle = n ? tekstKleur(n) : '#6f838b'
   g.fillText(n ? String(n) : '–', cx, cx + 1)
   return g.getImageData(0, 0, c.width, c.height)
 }

@@ -13,7 +13,6 @@ export interface Index {
   sporten: Sport[]
   groepen: Record<string, string>
   schaal: string[]
-  redenen: Record<string, string>
   ipma: { area: string; level: string; start: string; end: string }[]
   nauwkeurigheid?: any
 }
@@ -49,7 +48,6 @@ export interface Detail {
   tij: (number | null)[] // 0 laag, 1 opkomend, 2 hoog, 3 afgaand
   ipma: string[]
   cijfers: Record<string, string> // één teken per uur, 0 = geen cijfer
-  redenen: Record<string, string> // één teken per uur, 0 = geen reden
   [k: string]: any // de golfreeksen (wave_height, swell_wave_period, ...)
 }
 

@@ -1,6 +1,9 @@
 """Sportscore: de 41 testgevallen en de voorbeelden uit het document van de eigenaar."""
 
 import csv
+import json
+import shutil
+import subprocess
 from pathlib import Path
 
 import pytest
@@ -11,7 +14,7 @@ CASES = list(csv.DictReader((Path(__file__).parent / "fixtures" / "sport" / "cas
 TIJ = {"op": "opkomend", "af": "afgaand", "laag": "laag", "hoog": "hoog", "": None}
 
 
-def invoer(r: dict) -> Invoer:
+def invoer_van(r: dict) -> Invoer:
     luwte = (float(r["LUWTE_van"]), float(r["LUWTE_tot"])) if r["LUWTE_van"] and r["LUWTE_tot"] else None
     return Invoer(N=r["N"], K=r["K"] or None, H=r["H"], T=r["T"], GR=r["GR"], V=r["V"], G=r["G"], WR=r["WR"],
                   TIJ=TIJ[r["TIJ"]], BESTTIJ=r["BESTTIJ"] or None, DROOG=r["DROOG"] == "ja", LUWTE=luwte)
@@ -23,7 +26,7 @@ def test_41_gevallen():
 
 @pytest.mark.parametrize("r", CASES, ids=[f"{r['nr']} {r['omschrijving'][:30]}" for r in CASES])
 def test_geval(r):
-    uit = bereken(invoer(r))
+    uit = bereken(invoer_van(r))
     namen = list(sporten()["sporten"])
     if uit is None:
         assert all(r[s] == "" for s in namen)
@@ -87,3 +90,34 @@ def test_strandfactor():
     assert strandfactor([0.2] * 36, [])[0] == 0.1
     assert strandfactor([0.0] * 36, [])[0] == 0.0
     assert strandfactor([0.0] * 36, ["punt voor de kust ligt op land"])[0] == 1.0
+
+
+TIJ_WEB = {"opkomend": "op", "afgaand": "af"}
+
+
+@pytest.mark.skipif(shutil.which("node") is None, reason="geen node")
+def test_fiche_rekent_hetzelfde():
+    """De fiche (web/src/sportscore.ts) geeft voor de 41 gevallen dezelfde cijfers als Python."""
+    namen = list(sporten()["sporten"])
+    invoer = []
+    for r in CASES:
+        i = invoer_van(r)
+        invoer.append({"N": _f(i.N), "K": _f(i.K), "H": _f(i.H), "T": _f(i.T), "GR": _f(i.GR), "V": _f(i.V),
+                       "G": _f(i.G), "WR": _f(i.WR), "TIJ": TIJ_WEB.get(i.TIJ, i.TIJ), "BESTTIJ": i.BESTTIJ,
+                       "DROOG": i.DROOG, "LUWTE": list(i.LUWTE) if i.LUWTE else None})
+    cfg = [{"id": s, **c} for s, c in sporten()["sporten"].items()]
+    cli = Path(__file__).parents[1] / "web" / "tests" / "sportscore_cli.mjs"
+    out = subprocess.run(["node", str(cli)], input=json.dumps({"sporten": cfg, "invoer": invoer}),
+                         capture_output=True, text=True, check=True)
+    for r, web in zip(CASES, json.loads(out.stdout), strict=True):
+        py = bereken(invoer_van(r))
+        assert (web is None) == (py is None), r["nr"]
+        if py:
+            assert {s: web[s] for s in namen} == py.cijfers, r["nr"]
+
+
+def _f(x):
+    try:
+        return float(x)
+    except (TypeError, ValueError):
+        return None

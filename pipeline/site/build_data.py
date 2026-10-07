@@ -10,8 +10,9 @@ Schrijft web/public/data/:
 - kaart.json          per strand: id, naam, ligging
 - sport/<sport>.json  per strand (zelfde volgorde als kaart.json) een reeks cijfers, één per uur (0 = geen)
 - getij.json          hoog- en laagwaters per station
-- strand/<id>.json    alles voor de fiche: de voorspelling, GOLF, RUW, het getij en per sport
-                      de cijfers en de redenen (elk een reeks, één teken per uur; reden 0 = geen)
+- strand/<id>.json    alles voor de fiche: de voorspelling, GOLF, RUW, het getij en per sport de cijfers
+                      (een reeks, één teken per uur). De uitleg bij het cijfer rekent de fiche zelf
+                      (web/src/sportscore.ts, zelfde regels; tests/test_sport.py vergelijkt beide).
 """
 
 from __future__ import annotations
@@ -94,8 +95,8 @@ def warning_at(warn: list[dict], area: str | None, t: str) -> str:
     return lvl
 
 
-def r1(x):
-    return None if x is None else round(x, 1)
+def rnd(xs: list, nd: int) -> list:
+    return [None if x is None else round(x, nd) for x in xs]
 
 
 def eigen() -> dict:
@@ -160,17 +161,19 @@ def main(fetch_ipma: bool = True):
         gfs_t = (align(src["golf_gfswave"], pt["golf"], "wave_period", axis)
                  if "golf_gfswave" in src else [None] * len(axis))
         T = [a if a is not None else b for a, b in zip(piek, gfs_t, strict=True)]
+        # De invoer van de score, afgerond zoals ze in strand/<id>.json staat: de fiche rekent
+        # er opnieuw mee (uitleg bij het cijfer) en moet exact hetzelfde cijfer vinden.
+        ws, wg, T = rnd(ws, 2), rnd(wg, 2), rnd(T, 2)
+        wd, H, GR = rnd(wd, 1), rnd(waves["wave_height"], 2), rnd(waves["wave_direction"], 1)
 
         cijfers = {s: [] for s in namen}
-        redenen = {s: [] for s in namen}
         golf_s, ruw_s = [], []
         for i in range(len(axis)):
             uit = bereken(Invoer(N=p["kijkrichting"], K=K, BESTTIJ=besttij, DROOG=droog, LUWTE=luwte,
-                                 H=waves["wave_height"][i], T=T[i], GR=waves["wave_direction"][i],
+                                 H=H[i], T=T[i], GR=GR[i],
                                  V=ws[i], G=wg[i], WR=wd[i], TIJ=tij[i]))
             for s in namen:
                 cijfers[s].append(str(uit.cijfers[s]) if uit else "0")
-                redenen[s].append(str(uit.redenen[s]) if uit else "0")
             golf_s.append(None if uit is None else round(uit.GOLF, 2))
             ruw_s.append(None if uit is None else round(uit.RUW, 2))
         for s in namen:
@@ -180,16 +183,14 @@ def main(fetch_ipma: bool = True):
             "id": pid, "naam": p["naam"], "lat": lat, "lon": lon, "kijkrichting": p["kijkrichting"],
             "district": p["district"], "onzeker": p["onzeker"], "redenen_onzeker": p["redenen"],
             "getij": g, "K": K, "K_bron": k_bron, "BESTTIJ": besttij, "DROOG": droog, "LUWTE": luwte,
-            "wind": [r1(x) for x in ws], "vlagen": [r1(x) for x in wg],
-            "windrichting": [None if x is None else round(x) for x in wd],
+            "wind": ws, "vlagen": wg, "windrichting": wd,
             **{k: [None if x is None else (round(x) if "direction" in k else round(x, 1)) for x in v]
                for k, v in waves.items()},
-            "piekperiode": [r1(x) for x in T],
+            "wave_height": H, "wave_direction": GR, "piekperiode": T,
             "GOLF": golf_s, "RUW": ruw_s,
             "tij": [None if t is None else TIJ_CODE[t] for t in tij],
             "ipma": [warning_at(warn, p.get("ipma_area"), t) for t in axis],
             "cijfers": {s: "".join(v) for s, v in cijfers.items()},
-            "redenen": {s: "".join(v) for s, v in redenen.items()},
         }
         kaart.append({"id": pid, "n": p["naam"], "x": lon, "y": lat})
         (OUT / "strand" / f"{re.sub(r'[^A-Za-z0-9_.-]', '_', pid)}.json").write_text(
@@ -206,7 +207,6 @@ def main(fetch_ipma: bool = True):
         "tijd": axis, "bron": BRON,
         "sporten": [{"id": s, **c} for s, c in cfg["sporten"].items()],
         "groepen": cfg["groepen"], "schaal": cfg["schaal"],
-        "redenen": {str(k): v for k, v in cfg["redenen"].items()},
         "nauwkeurigheid": json.loads((DATA / "validate" / "golven.json").read_text())
         if (DATA / "validate" / "golven.json").exists() else None,
         "ipma": warn,

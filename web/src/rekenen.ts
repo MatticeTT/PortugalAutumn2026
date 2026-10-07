@@ -35,9 +35,8 @@ fetch('data/index.json').then((r) => r.json()).then((ix: Index) => {
   <p>Hoe kalmer, hoe beter: het cijfer begint bij 3 en gaat omhoog door ruw water of te veel wind.</p>
   <table><tr><th>Sport</th><th>RUW: 4 vanaf / 5 vanaf</th><th>Wind: 4 vanaf / 5 vanaf</th><th>Wind van land: 4 vanaf / 5 vanaf</th></tr>
     ${S('D').map((s: Sport) => rij(s.naam, [`${nl(s.ruw[0])} / ${nl(s.ruw[1])} m`, `${s.wind[0]} / ${s.wind[1]} kn`, `${s.land[0]} / ${s.land[1]} kn`])).join('')}</table>
-  <h2>Reden bij het cijfer</h2>
-  <p>De fiche toont de eerste reden die geldt, in deze volgorde:</p>
-  <ol>${Object.values(ix.redenen).map((r) => `<li>${r}</li>`).join('')}</ol>`
+  <h2>Uitleg bij het cijfer</h2>
+  <p>De fiche van een strand zegt per sport waarom het cijfer is wat het is: hoe groot de golf aan het strand is, hoeveel wind er telt, en welke regel het cijfer hoger of lager zette (ruw water, windrichting, vlagen, korte periode of getij).</p>`
   document.getElementById('inhoud')!.innerHTML = html
 
   const N = ix.nauwkeurigheid

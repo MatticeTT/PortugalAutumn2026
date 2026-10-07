@@ -253,9 +253,19 @@ Waar het punt voor de kust op land viel, is f niet te vertrouwen. Daar geldt K 1
 
 Eigen waarden (K, BESTTIJ, DROOG, LUWTE) gaan in `data/beaches/sport.yaml`; die gaan voor.
 
-### 28. Reden alleen als het cijfer verschoof
+### 28. Uitleg bij het cijfer: zoals de Watersportwijzer
 
-Het document geeft per reden een voorwaarde. Een reden wordt alleen getoond als het cijfer daardoor afwijkt van het basiscijfer, zoals deel 1 van het document vraagt ("de regel die het heeft verschoven"). Anders zou een kitesurf-1 door te weinig wind "ongunstige windrichting" krijgen. Dit verandert geen enkel cijfer.
+De fiche van een strand toont, zoals de Watersportwijzer van de eigenaar:
+- het cijfer van de gekozen sport, met de schaal en de uitleg waarom;
+- golven, wind, windrichting en getij met tekeningen;
+- "Over dit strand";
+- alle sporten op dat uur.
+
+Daaronder staan de dag, de getijcurve en de volledige voorspelling.
+
+De uitleg rekent de fiche zelf (`web/src/sportscore.ts`, zelfde regels). Twee controles houden die gelijk aan de kaart:
+- `tests/test_sport.py` vergelijkt beide op de 41 testgevallen;
+- `web/tests/vergelijk.mjs` rekent bij elke run alle stranden, uren en sporten na, ongeveer 3,4 miljoen cijfers. Bij één verschil wordt de site niet gepubliceerd.
 
 ### 29. T is de piekperiode
 
