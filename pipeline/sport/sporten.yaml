@@ -6,10 +6,10 @@
 schaal: [niets, te licht, ideaal, sterk, te moeilijk]
 
 groepen:
-  A: Golfsporten
-  B: Windsporten
-  C: Wind en golf
-  D: Rustig water
+  A: Surfweer
+  B: Windweer
+  C: Wind-golven
+  D: Stille waters
 
 redenen:  # volgorde telt: de eerste die geldt, wordt getoond
   1: geen water bij laag water
