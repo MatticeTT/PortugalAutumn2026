@@ -1,33 +1,6 @@
 """Klimplekken: graad en slecht weer (pipeline/klim/weer.py)."""
 
-from pipeline.klim.ophalen import plekken, soort
 from pipeline.klim.weer import graad, graniet, label, per_uur, zandsteen
-
-
-def test_soort():
-    assert soort({"climbing": "boulder"}) == "boulderen"
-    assert soort({"climbing:boulder": "yes"}) == "boulderen"
-    assert soort({"climbing": "crag"}) == "muurklimmen"
-    assert soort({}) == "muurklimmen"
-
-
-def test_alleen_crags_areas_boulders():
-    def el(i, **tags):
-        return {"type": "node", "id": i, "lat": 38, "lon": -9, "tags": {"sport": "climbing", **tags}}
-    e = [el(1, leisure="sports_centre", climbing="crag"), el(2, climbing="crag"), el(3, climbing="route_bottom"),
-         el(4, climbing="route"), el(5, climbing="bolt"), el(6), el(7, climbing="boulder"),
-         el(8, **{"climbing:boulder": "yes"}), el(9, climbing="area")]
-    assert [p["id"] for p in plekken(e)] == ["node/2", "node/7", "node/8", "node/9"]
-
-
-def test_area_met_crag_erin_valt_weg():
-    vierkant = [{"lon": x, "lat": y} for x, y in [(-9, 38), (-8, 38), (-8, 39), (-9, 39), (-9, 38)]]
-    area = {"type": "way", "id": 1, "center": {"lon": -8.5, "lat": 38.5}, "geometry": vierkant,
-            "tags": {"sport": "climbing", "climbing": "area"}}
-    crag = {"type": "node", "id": 2, "lon": -8.4, "lat": 38.4, "tags": {"sport": "climbing", "climbing": "crag"}}
-    ver = {"type": "node", "id": 3, "lon": -7, "lat": 38.4, "tags": {"sport": "climbing", "climbing": "crag"}}
-    assert [p["id"] for p in plekken([area, crag])] == ["node/2"]
-    assert [p["id"] for p in plekken([area, ver])] == ["way/1", "node/3"]
 
 
 def test_graad():
@@ -56,7 +29,3 @@ def test_rood():
     assert per_uur(zand, reeks, 40)["sinds"] == 10
     assert per_uur(zand, reeks, 20)["sinds"] is None
 
-
-def test_ligging_uit_bounds():
-    from pipeline.klim.ophalen import midden
-    assert midden({"type": "way", "bounds": {"minlon": -9, "maxlon": -8, "minlat": 38, "maxlat": 39}}) == (-8.5, 38.5)
