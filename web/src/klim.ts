@@ -7,12 +7,12 @@
 import type { GeoJSONSource, Map as Kaart } from 'maplibre-gl'
 import { data, staat, toonDag, toonTijd, utc, vliegNaar } from './main'
 
-interface Graad { min: string | null; max: string | null; soort: 'eigen' | 'bereik' | 'omgerekend'; gemiddeld?: string; romeins?: boolean }
+interface Graad { min: string | null; max: string | null; soort: 'eigen' | 'bereik' | 'omgerekend'; gemiddeld?: string; romeins?: boolean; toelichting?: string }
 interface Bron { bron: string; id: string; link: string | null; datum: string | null }
 export interface KlimPlek {
   id: string; naam: string | null; lat: number; lon: number; soort: string; disciplines: string[]
-  routes: number | null; schaal: 'frans' | 'font'; graad: Graad | null; frans: Graad | null; font: Graad | null
-  rots: string | null; richting: string | null; bronnen: Bron[]; w?: string | null; eigen?: boolean
+  routes: number | string | null; schaal: 'frans' | 'font'; graad: Graad | null; frans: Graad | null; font: Graad | null
+  rots: string | null; richting: string | null; bronnen: Bron[]; w?: string | null; eigen?: boolean; lokaal?: boolean
 }
 interface Weer {
   neerslag: (number | null)[]; vocht: (number | null)[]; temp: (number | null)[]; wind: (number | null)[]
@@ -65,19 +65,25 @@ function eigenPlek(r: Record<string, string>, nr: number): KlimPlek | null {
   if (!Number.isFinite(lat) || !Number.isFinite(lon)) return null
   let disc = (r.discipline ?? '').toLowerCase().split(/[;,/ ]+/).filter((d) => ['sport', 'boulder', 'trad'].includes(d))
   if (!disc.length) disc = ['onbekend']
-  const boulder = disc.length === 1 && disc[0] === 'boulder'
+  // Schaal uit de kolom "schaal" (Frans/Font), anders: Font als het alleen boulderen is.
+  const schaal = (r.schaal ?? '').trim().toLowerCase()
+  const boulder = schaal === 'font' || (!schaal && disc.length === 1 && disc[0] === 'boulder')
   const lees = (v?: string) => {
     const x = (v ?? '').trim().replace(/\s/g, '')
     if (!x) return null
     return boulder ? (FONT.test(x.toUpperCase()) ? x.toUpperCase() : null) : (FRANS.test(x.toLowerCase()) ? x.toLowerCase() : null)
   }
   const lo = lees(r.graad_min), hi = lees(r.graad_max)
-  const g: Graad | null = lo || hi ? { min: lo, max: hi, soort: 'eigen' } : null
+  const om = (r.omgerekend ?? '').trim().toLowerCase().startsWith('ja')
+  const g: Graad | null = lo || hi ? { min: lo, max: hi, soort: om ? 'omgerekend' : 'eigen', ...(om ? { toelichting: r.omgerekend.trim() } : {}) } : null
+  const routes = (r.aantal_routes ?? '').trim()
   return {
     id: `eigen/${Date.now()}-${nr}`, naam: (r.naam ?? '').trim() || null, lat, lon, soort: 'onbekend', disciplines: disc,
-    routes: null, schaal: boulder ? 'font' : 'frans', graad: g, frans: boulder ? null : g, font: boulder ? g : null,
-    rots: null, richting: null, eigen: true,
-    bronnen: [{ bron: `eigen invoer${r.bron ? ` (${r.bron})` : ''}`, id: 'eigen', link: null, datum: new Date().toISOString().slice(0, 10) }],
+    routes: routes ? (/^\d+$/.test(routes) ? Number(routes) : routes) : null,
+    schaal: boulder ? 'font' : 'frans', graad: g, frans: boulder ? null : g, font: boulder ? g : null,
+    rots: null, richting: null, eigen: true, lokaal: true,
+    bronnen: [{ bron: `eigen invoer${r.bron ? ` (${r.bron})` : ''}`, id: 'eigen', link: (r.bron_url ?? '').trim() || null,
+      datum: new Date().toISOString().slice(0, 10) }],
   }
 }
 function afstand(a: { lat: number; lon: number }, b: { lat: number; lon: number }) {
@@ -99,10 +105,13 @@ function gelijkeNaam(a: string | null, b: string | null) {
 // Eigen invoer gaat voor: een overeenkomende plek (150 m en gelijke naam) krijgt de eigen gegevens.
 function samen() {
   plekken = server.map((p) => ({ ...p, bronnen: [...p.bronnen] }))
+  const vrij = [...plekken] // eigen plekken worden niet met elkaar samengevoegd; één eigen rij per plek
   for (const e of leesEigen()) {
-    const q = plekken.find((q) => afstand(e, q) <= 150 && gelijkeNaam(e.naam, q.naam))
+    const q = vrij.find((q) => afstand(e, q) <= 150 && gelijkeNaam(e.naam, q.naam))
     if (!q) { plekken.push({ ...e }); continue }
-    for (const k of ['naam', 'lat', 'lon', 'disciplines', 'schaal', 'graad', 'frans', 'font'] as const)
+    q.lokaal = !q.w
+    vrij.splice(vrij.indexOf(q), 1)
+    for (const k of ['naam', 'lat', 'lon', 'disciplines', 'schaal', 'graad', 'frans', 'font', 'routes'] as const)
       if (e[k] != null && !(k === 'disciplines' && e.disciplines[0] === 'onbekend')) (q as any)[k] = e[k]
     q.bronnen = [...e.bronnen, ...q.bronnen]
     q.eigen = true
@@ -250,7 +259,7 @@ function paneel() {
         <label class="knop bestand">Importeer CSV of GeoJSON<input type="file" accept=".csv,.geojson,.json" hidden></label>
         <button class="knop" data-a="nieuw">Plek toevoegen</button>
         <button class="knop" data-a="export" ${leesEigen().length ? '' : 'disabled'}>Exporteer eigen plekken (CSV)</button>
-        <p class="klein">Kolommen: naam, lat, lon, discipline (sport/boulder/trad), graad_min, graad_max, bron.
+        <p class="klein">Kolommen: naam, lat, lon, discipline (sport/boulder/trad), graad_min, graad_max, bron; mag ook: schaal, aantal_routes, omgerekend, bron_url.
           Eigen plekken staan alleen in deze browser; stuur de export door om ze voor iedereen op de kaart te zetten.</p>
       </fieldset>`
     p.querySelectorAll<HTMLInputElement>('input[data-f]').forEach((i) => i.onchange = () => { (filter as any)[i.dataset.f!] = i.checked; ververs() })
@@ -380,7 +389,7 @@ async function render() {
   const sindsTekst = weer == null || weer.neerslag[i] == null ? '–' : sinds == null ? `meer dan ${weer.terug + i} uur`
     : sinds === 0 ? 'regent nu' : `${sinds} uur`
   const g = p.graad
-  const label = !g ? '<span class="label">graad onbekend</span>' : g.soort === 'omgerekend' ? '<span class="label">omgerekend</span>'
+  const label = !g ? '<span class="label">graad onbekend</span>' : g.soort === 'omgerekend' ? `<span class="label">omgerekend${g.toelichting ? ` – ${esc(g.toelichting)}` : ''}</span>`
     : g.romeins ? '<span class="label">Romeins cijfer zoals in de bron, niet omgerekend</span>' : ''
   const ander = isBoulder(p) ? null : p.disciplines.includes('boulder') ? p.font : null // boulders in een gebied: Font apart
   const rij = (a: string, b: string) => `<tr><th>${a}</th><td>${b}</td></tr>`
@@ -408,7 +417,7 @@ async function render() {
       ${rij('Wind', `${getal(weer.wind[i])} kn`)}
     </table>
     ${nota.length ? `<ul class="klimnota">${nota.map((n) => `<li>${n}</li>`).join('')}</ul>` : ''}`
-    : `<p class="klein">${p.eigen && !p.w ? 'Nog geen weer: deze plek staat alleen in deze browser.' : 'Nog geen weer voor deze plek.'}</p>`}
+    : `<p class="klein">${p.lokaal ? 'Nog geen weer: deze plek staat alleen in deze browser.' : 'Nog geen weer voor deze plek.'}</p>`}
     <h3 class="kop">Bron</h3>
     <ul class="klimbronnen">${p.bronnen.map((b) => `<li>${b.link ? `<a href="${esc(b.link)}" target="_blank" rel="noopener">${esc(b.bron)}</a>` : esc(b.bron)}
       ${b.datum ? `<small>opgehaald ${esc(b.datum.slice(0, 10))}</small>` : ''}</li>`).join('')}</ul>

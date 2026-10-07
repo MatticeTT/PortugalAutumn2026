@@ -242,6 +242,8 @@ def alle() -> list[dict]:
 # ---- bron 3: eigen invoer --------------------------------------------------------------------------------
 
 EIGEN_KOLOMMEN = ["naam", "lat", "lon", "discipline", "graad_min", "graad_max", "bron"]
+# Mag er ook in staan: schaal (Frans/Font), aantal_routes (getal of tekst zoals "25-50"),
+# omgerekend ("ja ..." = de bron gaf een andere schaal), bron_url.
 
 
 def eigen_plek(r: dict, nr: int) -> dict | None:
@@ -252,22 +254,35 @@ def eigen_plek(r: dict, nr: int) -> dict | None:
         return None
     disc = [d.strip() for d in re.split(r"[;,/ ]+", (r.get("discipline") or "").lower()) if d.strip()]
     disc = [d for d in disc if d in ("sport", "boulder", "trad")] or ["onbekend"]
-    lees = G.font if disc == ["boulder"] else G.frans
+    schaal = (r.get("schaal") or "").strip().lower()
+    font = schaal == "font" or (not schaal and disc == ["boulder"])
+    lees = G.font if font else G.frans
     lo, hi = lees(r.get("graad_min")), lees(r.get("graad_max"))
     graad = None
     if lo or hi:
-        graad = {"min": lo[0][0] if lo else None, "max": hi[0][-1] if hi else None, "soort": "eigen"}
-    p = plek(naam=r.get("naam") or None, lat=lat, lon=lon, soort="onbekend", disciplines=disc, routes=None,
-             frans=None if disc == ["boulder"] else graad, font=graad if disc == ["boulder"] else None,
-             bron={"bron": "eigen invoer" + (f" ({r['bron']})" if r.get("bron") else ""), "id": f"eigen/{nr}",
-                   "link": None, "datum": None})
+        om = (r.get("omgerekend") or "").strip().lower().startswith("ja")
+        graad = {"min": lo[0][0] if lo else None, "max": hi[0][-1] if hi else None,
+                 "soort": "omgerekend" if om else "eigen"}
+        if om:
+            graad["toelichting"] = r["omgerekend"].strip()
+    routes = (r.get("aantal_routes") or "").strip() or None
+    if routes and routes.isdigit():
+        routes = int(routes)
+    bron = (r.get("bron") or "").strip()
+    p = plek(naam=r.get("naam") or None, lat=lat, lon=lon, soort="onbekend", disciplines=disc, routes=routes,
+             frans=None if font else graad, font=graad if font else None,
+             bron={"bron": "eigen invoer" + (f" ({bron})" if bron else ""), "id": f"eigen/{nr}",
+                   "link": (r.get("bron_url") or "").strip() or None, "datum": None})
+    p["schaal"] = "font" if font else "frans"
+    p["graad"] = graad
+    p["eigen"] = True
     return p
 
 
 def eigen() -> list[dict]:
     rijen = []
     if (MAP / "eigen.csv").exists():
-        with open(MAP / "eigen.csv", newline="", encoding="utf-8") as f:
+        with open(MAP / "eigen.csv", newline="", encoding="utf-8-sig") as f:
             rijen += list(csv.DictReader(f))
     if (MAP / "eigen.geojson").exists():
         for ft in json.loads((MAP / "eigen.geojson").read_text()).get("features", []):
@@ -277,15 +292,19 @@ def eigen() -> list[dict]:
 
 
 def eigen_voor(plekken: list[dict], eigen_lijst: list[dict]) -> list[dict]:
-    """Eigen invoer gaat altijd voor: een overeenkomende plek (150 m en gelijke naam) krijgt de eigen
-    gegevens; de andere bronnen blijven vermeld. Anders komt de eigen plek erbij."""
+    """Eigen invoer gaat altijd voor: een overeenkomende plek uit bron 1 of 2 (150 m en gelijke naam) krijgt
+    de eigen gegevens; die bronnen blijven vermeld. Anders komt de eigen plek erbij. Eigen plekken worden
+    niet met elkaar samengevoegd (bv. "Santo Tirso (boulder)" en "Santo Tirso (routes)" blijven twee)."""
+    bronnen = list(plekken)
     for e in eigen_lijst:
-        q = next((q for q in plekken if afstand_m(e, q) <= 150 and gelijke_naam(e["naam"], q["naam"])), None)
+        q = next((q for q in bronnen if afstand_m(e, q) <= 150 and gelijke_naam(e["naam"], q["naam"])), None)
         if q is None:
             plekken.append(e)
             continue
-        for k in ("naam", "lat", "lon", "disciplines", "schaal", "graad", "frans", "font"):
+        for k in ("naam", "lat", "lon", "disciplines", "schaal", "graad", "frans", "font", "routes"):
             if e[k] not in (None, ["onbekend"]):
                 q[k] = e[k]
         q["bronnen"] = e["bronnen"] + q["bronnen"]
+        q["eigen"] = True
+        bronnen.remove(q)  # één eigen rij per plek uit de bronnen
     return plekken

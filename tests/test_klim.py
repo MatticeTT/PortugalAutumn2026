@@ -50,3 +50,16 @@ def test_omrekenen():
     assert yds("5.10a") == (["6a"], True)
     assert vschaal("V4") == (["6B"], True)
     assert yds("5.11c") is None                     # geen eenduidige waarde in de tabel
+
+
+def test_eigen_import_met_extra_kolommen():
+    from pipeline.klim.plekken import eigen_plek, eigen_voor
+    b = eigen_plek({"naam": "Santo Tirso (boulder)", "lat": "41.327158", "lon": "-8.446501", "discipline": "boulder",
+                    "graad_min": "3", "graad_max": "7B+", "schaal": "Font", "aantal_routes": "50-100",
+                    "omgerekend": "ja (bron: VB-V8)", "bron": "Climbing Away", "bron_url": "https://x"}, 0)
+    assert b["schaal"] == "font" and b["graad"]["min"] == "3" and b["graad"]["max"] == "7B+"
+    assert b["graad"]["soort"] == "omgerekend" and b["routes"] == "50-100" and b["bronnen"][0]["link"] == "https://x"
+    r = eigen_plek({"naam": "Santo Tirso (routes)", "lat": "41.327158", "lon": "-8.446501", "discipline": "sport",
+                    "graad_min": "4c", "graad_max": "7a", "schaal": "Frans"}, 1)
+    assert r["schaal"] == "frans" and r["graad"]["soort"] == "eigen"
+    assert len(eigen_voor([], [b, r])) == 2   # eigen plekken worden niet met elkaar samengevoegd
