@@ -26,6 +26,7 @@ import urllib.request
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
+from pipeline.klim import bouw as klim
 from pipeline.rules import controle as stranddata
 from pipeline.rules.hulp import controle, krachtigste
 from pipeline.rules.model import NAAM, VOLGORDE, bereken, hoek
@@ -224,7 +225,8 @@ def main(fetch_ipma: bool = True):
             "id": pid, "naam": p["naam"], "lat": lat, "lon": lon, "kust": p["kijkrichting"],
             "venster": p["venster"], "district": p["district"], "getij": g, "controle": c, "piekperiode": piek,
             "wind": ws, "vlagen": wg, "windrichting": wd, "WAVE": "".join(wave), "WIND": "".join(wind),
-            "WAVE_strand": "".join(laag3), "letter": "".join(letter), "rood": "".join(rood), "licht": "".join(licht), **rij,
+            "WAVE_strand": "".join(laag3), "letter": "".join(letter), "rood": "".join(rood),
+            "licht": "".join(licht), **rij,
             "ipma": [warning_at(warn, p.get("ipma_area"), t) for t in axis],
         }
         kaart.append({"id": pid, "n": p["naam"], "d": p["district"], "x": lon, "y": lat})
@@ -241,6 +243,7 @@ def main(fetch_ipma: bool = True):
         "tijd": axis, "bron": BRON, "namen": NAAM, "ipma": warn, "meldingen": meldingen(vlaag_paren),
     }
     stranddata.main()
+    klim.main(axis, OUT)
     (OUT / "index.json").write_text(json.dumps(index, ensure_ascii=False, separators=(",", ":")))
     print(f"{len(kaart)} stranden, {len(axis)} uur")
 

@@ -14,6 +14,8 @@ Schrijft data/forecast/:
 - punten.json        per strand het windpunt en het golfpunt
 - wind_<model>.json  per windpunt de uurreeksen
 - golf_<model>.json  per golfpunt de uurreeksen
+- klim_punten.json   per klimplek het weerpunt
+- klim_weer.json     per weerpunt neerslag, luchtvochtigheid, temperatuur en wind, vanaf 2 dagen terug
 """
 
 from __future__ import annotations
@@ -123,6 +125,26 @@ def golf_met_piek(pts: dict) -> dict:
         return open_meteo(url, pts, "ncep_gfswave016", WAVE_VARS)
 
 
+KLIM = ROOT / "data" / "klim" / "plekken.json"
+KLIM_VARS = ["precipitation", "relative_humidity_2m", "temperature_2m", "wind_speed_10m"]
+
+
+def klim_weer() -> dict:
+    """Weer per uur bij de klimplekken (Open-Meteo, zelfde model als de wind). Twee dagen terug erbij:
+    nodig voor "geregend in de 24 uur ervoor" en "uren sinds de laatste regen"."""
+    plekken = json.loads(KLIM.read_text())["plekken"]
+    per_plek, pts = {}, {}
+    for q in plekken:
+        lon = round(round(q["lon"] / PUNT_RASTER) * PUNT_RASTER, 3)
+        lat = round(round(q["lat"] / PUNT_RASTER) * PUNT_RASTER, 3)
+        k = f"{lat:.3f},{lon:.3f}"
+        per_plek[q["id"]] = k
+        pts[k] = (lon, lat)
+    (OUT / "klim_punten.json").write_text(json.dumps(per_plek) + "\n")
+    return open_meteo("https://api.open-meteo.com/v1/forecast", pts, "gfs_seamless", KLIM_VARS,
+                      {"wind_speed_unit": "kn", "past_days": 2})
+
+
 def ibi(pts: dict) -> dict:
     """IBI-golven per punt. Kustcellen zonder data (NaN) krijgen de dichtste cel met data."""
     if not os.environ.get("COPERNICUSMARINE_SERVICE_USERNAME"):
@@ -172,10 +194,14 @@ def main(argv: list[str]) -> int:
                                          WIND_VARS, {"wind_speed_unit": "kn"}),
         "golf_gfswave": lambda: golf_met_piek(wave_pts),
         "golf_ibi": lambda: ibi(wave_pts),
+        "klim_weer": klim_weer,
     }
     failed = []
     stamp = datetime.now(UTC).strftime("%Y-%m-%dT%H:%MZ")
     for name in argv or list(jobs):
+        if name == "klim_weer" and not KLIM.exists():
+            print("klim_weer: nog geen data/klim/plekken.json", flush=True)
+            continue
         try:
             data = jobs[name]()
             data["_opgehaald"] = stamp

@@ -9,6 +9,8 @@ on:
       - pipeline/rules/**
       - web/**
       - data/beaches/**
+      - data/klim/**
+      - pipeline/klim/**
       - .github/workflows/site.yml
 permissions:
   contents: write

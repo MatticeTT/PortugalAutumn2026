@@ -44,6 +44,19 @@ for (const scheme of ['light', 'dark']) {
     await page.screenshot({ path: `${shots}/zoek-${scheme}.png` })
     await page.fill('#zoek', '')
   }
+  // Een klimplek openen (als er klimdata is): soort, graad, rotssoort, wandrichting.
+  const klimId = await page.evaluate(async () => {
+    const g = await (await fetch('data/index.json')).json()
+    const r = await fetch(`data/klim/kaart.json?v=${encodeURIComponent(g.gemaakt)}`)
+    return r.ok ? (await r.json())[0]?.id : null
+  })
+  if (klimId) {
+    await page.goto(base + '/#' + encodeURIComponent('klim:' + klimId))
+    await page.waitForSelector('#fiche .klimtabel', { timeout: 10000 })
+    const kop = await page.$$eval('#fiche .klimtabel th', (els) => els.map((e) => e.textContent))
+    check(`[${scheme}] klimplek: soort, graden, rotssoort, wandrichting`,
+      ['Soort', 'Graad Frans', 'Graad Font', 'Rotssoort', 'Wandrichting'].every((k) => kop.includes(k)))
+  }
   // Een strand bij Ferragudo openen.
   const id = await page.evaluate(async () => (await (await fetch('data/kaart.json')).json()).find((s) => s.n === 'Praia dos Caneiros')?.id)
   await page.goto(base + '/#' + encodeURIComponent(id))

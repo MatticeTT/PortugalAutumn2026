@@ -382,3 +382,15 @@ details.meer[open] > summary { margin-bottom: 8px; }
 .tegel .tovstrand { margin-top: auto; }
 .tegel .tovstrand small { min-height: 2.4em; }
 .tegel.verkeerd { box-shadow: 0 0 0 3px #e0242f; }
+
+/* Klimplekken */
+.klimkop { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 4px 0 10px; }
+.klimkop .graadpil { background: var(--kleur); color: #fff; font-weight: 800; font-size: 17px; padding: 4px 14px; border-radius: 999px;
+  box-shadow: 0 0 0 2px rgb(20 32 43 / 0.4); }
+.klimkop .graadpil.rood { box-shadow: 0 0 0 3px #e0242f; }
+.klimkop .reden { color: #e0242f; }
+.klimtabel { border-collapse: collapse; width: 100%; font-size: 14px; margin-bottom: 8px; }
+.klimtabel th { text-align: left; font-weight: 600; color: var(--zacht); padding: 4px 8px 4px 0; width: 45%; }
+.klimtabel td { padding: 4px 0; font-variant-numeric: tabular-nums; }
+.klimtabel tr + tr { border-top: 1px solid var(--lijn); }
+.klimnota { margin: 0 0 10px; padding-left: 18px; font-size: 14px; }

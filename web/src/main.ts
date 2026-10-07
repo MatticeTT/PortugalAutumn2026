@@ -4,6 +4,7 @@ import './style.css'
 import { bolletjeWW } from './kleuren'
 import { openFiche, sluitFiche, toonUur } from './fiche'
 import { zoekveld } from './zoek'
+import { laadKlim, openKlim, ververs as klimVervers } from './klim'
 import type { Getij, Index, KaartStrand } from './types'
 
 const TZ = 'Europe/Lisbon'
@@ -83,6 +84,7 @@ function ververs() {
   const ms = utc(staat.index.tijd[staat.i])
   ;(document.getElementById('uurlabel') as HTMLOutputElement).value = toonTijd(ms)
   toonUur()
+  klimVervers()
 }
 
 function zetDag(k: string) {
@@ -194,6 +196,7 @@ async function start() {
       kaart.on('mouseenter', l, () => (kaart.getCanvas().style.cursor = 'pointer'))
       kaart.on('mouseleave', l, () => (kaart.getCanvas().style.cursor = ''))
     }
+    await laadKlim(kaart)
     dagen()
     zoekveld()
     const hash = decodeURIComponent(location.hash.slice(1))
@@ -203,7 +206,8 @@ async function start() {
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') sluitFiche() })
   window.addEventListener('hashchange', () => {
     const id = decodeURIComponent(location.hash.slice(1))
-    if (id && id !== staat.open && staat.stranden.some((s) => s.id === id)) openFiche(id)
+    if (id.startsWith('klim:') && id !== staat.open) openKlim(id.slice(5))
+    else if (id && id !== staat.open && staat.stranden.some((s) => s.id === id)) openFiche(id)
   })
 }
 
