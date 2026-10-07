@@ -152,14 +152,49 @@ function tegel(soortNaam: 'WAVE' | 'WIND', n: number, gegevens: string) {
     <span class="gegevens">${gegevens}</span></div>`
 }
 
+// ---- Icoontjes voor de WAVE- en WIND-vakken (lijnen in de tekstkleur) ----
+
+const svg = (inhoud: string) =>
+  `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${inhoud}</svg>`
+const ICOON = {
+  golf: svg('<path d="M2 15c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2 2-2 4-2"/><path d="M2 20c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2 2-2 4-2"/><path d="M4 9c2-4 7-5 10-2"/>'),
+  periode: svg('<circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2"/><path d="M9 3h6"/>'),
+  wind: svg('<path d="M3 8h11a3 3 0 1 0-3-3"/><path d="M3 12h16a3 3 0 1 1-3 3"/><path d="M3 16h7"/>'),
+  vlaag: svg('<path d="M3 9h9a3 3 0 1 0-3-3"/><path d="M3 14h13a3 3 0 1 1-3 3"/><path d="M18 3l-2 4h3l-2 4"/>'),
+}
+// Pijl die wijst waar wind of golven naartoe gaan (ze komen "uit" de richting r).
+const pijl = (r: number) => `<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+  <g transform="rotate(${r + 180} 12 12)"><path d="M12 3 L18 15 L12 12 L6 15 Z" fill="currentColor"/></g></svg>`
+
+// Tekening: zee boven, strand onder, de pijl toont waar de wind naartoe waait tegenover het strand.
+function strandTekening(wind: number, kust: number) {
+  let rel = ((wind - kust) % 360 + 540) % 360 - 180 // -180..180: 0 = recht van zee
+  rel = -rel
+  return `<svg class="strand" viewBox="0 0 48 32" width="48" height="32" aria-hidden="true">
+    <rect width="48" height="20" rx="3" fill="rgb(255 255 255 / 0.35)"/><rect y="20" width="48" height="12" rx="3" fill="#e8d9b0"/>
+    <g transform="rotate(${rel} 24 16)"><path d="M24 4 V25 M18 19 L24 26 L30 19" stroke="currentColor" stroke-width="2.6"
+      fill="none" stroke-linecap="round" stroke-linejoin="round"/></g></svg>`
+}
+
+const rijtje = (icoon: string, waarde: string, woord: string) =>
+  `<span class="rijtje">${icoon}<b>${waarde}</b><small>${woord}</small></span>`
+
 function waveGegevens(d: Detail, i: number) {
   const r = d.wave_direction?.[i]
-  return `${getal(d.wave_height?.[i], 1)} m · ${getal(d.wave_period?.[i])} s${r == null ? '' : ` · uit ${kompas(r)}`}`
+  return `<span class="rijtjes">
+    ${rijtje(ICOON.golf, `${getal(d.wave_height?.[i], 1)} m`, 'hoogte')}
+    ${rijtje(ICOON.periode, `${getal(d.wave_period?.[i])} s`, 'periode')}
+    ${r == null ? '' : rijtje(pijl(r), kompas(r), 'richting')}</span>`
 }
 
 function windGegevens(d: Detail, i: number) {
   const r = d.windrichting[i]
-  return `${getal(d.wind[i])} kn · vlagen ${getal(d.vlagen[i])} kn${r == null ? '' : `<br>uit ${kompas(r)} · ${tovStrand(r, d.kust)}`}`
+  return `<span class="rijtjes">
+    ${rijtje(ICOON.wind, `${getal(d.wind[i])} kn`, 'wind')}
+    ${rijtje(ICOON.vlaag, `${getal(d.vlagen[i])} kn`, 'vlagen')}
+    ${r == null ? '' : rijtje(pijl(r), kompas(r), 'richting')}</span>
+    ${r == null ? '' : `<span class="tovstrand">${strandTekening(r, d.kust)}<small>${tovStrand(r, d.kust)}</small></span>`}`
 }
 
 function render() {
