@@ -315,3 +315,19 @@ details.meer[open] > summary { margin-bottom: 8px; }
 .tegel .tovstrand small span { white-space: nowrap; }
 .getijregel { font-weight: 600; }
 .getijregel.uit { opacity: .7; }
+
+/* Zoeken naar een strand */
+.zoek { position: relative; flex: 0 1 230px; min-width: 0; }
+.zoek input {
+  width: 100%; font: inherit; font-size: 16px; color: var(--tekst); background: var(--bg);
+  border: 1px solid var(--lijn); border-radius: 8px; padding: 5px 10px; min-height: 34px;
+}
+#zoeklijst {
+  position: absolute; right: 0; top: calc(100% + 4px); width: max(100%, 260px); max-width: calc(100vw - 24px);
+  margin: 0; padding: 4px; list-style: none; z-index: 20;
+  background: var(--vlak); border: 1px solid var(--lijn); border-radius: 10px; box-shadow: 0 8px 24px rgb(0 0 0 / 0.18);
+}
+#zoeklijst li { display: flex; flex-direction: column; padding: 7px 10px; border-radius: 7px; cursor: pointer; }
+#zoeklijst li small { color: var(--zacht); font-size: 12px; }
+#zoeklijst li[aria-selected="true"], #zoeklijst li[data-k]:hover { background: var(--zacht-vlak); }
+#zoeklijst li.niets { color: var(--zacht); cursor: default; }

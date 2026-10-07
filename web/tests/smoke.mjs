@@ -32,6 +32,18 @@ for (const scheme of ['light', 'dark']) {
   const breed = await page.evaluate(() => document.documentElement.scrollWidth)
   check(`[${scheme}] geen horizontale scroll op 400 px`, breed <= 400, `(${breed}px)`)
   if (shots) await page.screenshot({ path: `${shots}/kaart-${scheme}.png` })
+  // Zoeken: "rocha" vindt Praia da Rocha; kiezen opent de fiche.
+  await page.fill('#zoek', 'rocha')
+  const gevonden = await page.$$eval('#zoeklijst li b', (els) => els.map((e) => e.textContent))
+  check(`[${scheme}] zoeken vindt Praia da Rocha`, gevonden.includes('Praia da Rocha'), `(${gevonden.join(', ')})`)
+  await page.locator('#zoeklijst li b', { hasText: /^Praia da Rocha$/ }).first().dispatchEvent('pointerdown')
+  await page.waitForSelector('#fiche h2')
+  check(`[${scheme}] zoeken opent de fiche`, (await page.textContent('#fiche h2')) === 'Praia da Rocha')
+  if (shots) {
+    await page.fill('#zoek', 'sao')
+    await page.screenshot({ path: `${shots}/zoek-${scheme}.png` })
+    await page.fill('#zoek', '')
+  }
   // Een strand bij Ferragudo openen.
   const id = await page.evaluate(async () => (await (await fetch('data/kaart.json')).json()).find((s) => s.n === 'Praia dos Caneiros')?.id)
   await page.goto(base + '/#' + encodeURIComponent(id))

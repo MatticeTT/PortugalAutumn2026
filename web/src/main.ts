@@ -3,6 +3,7 @@ import 'maplibre-gl/dist/maplibre-gl.css'
 import './style.css'
 import { bolletjeWW } from './kleuren'
 import { openFiche, sluitFiche, toonUur } from './fiche'
+import { zoekveld } from './zoek'
 import type { Getij, Index, KaartStrand } from './types'
 
 const TZ = 'Europe/Lisbon'
@@ -52,8 +53,8 @@ async function stijl(): Promise<StyleSpecification | string> {
   return reserveStijl()
 }
 
-// Waar de kaart opent (voorlopig Ferragudo, op vraag van de eigenaar).
-const START = { center: [-8.52, 37.11] as [number, number], zoom: 13 }
+// Waar de kaart opent: Praia da Rocha (Portimão), op vraag van de eigenaar.
+const START = { center: [-8.5326, 37.1148] as [number, number], zoom: 13 }
 
 // Per strand (volgorde van kaart.json) per uur twee cijfers: WIND en WAVE (level 1–4).
 function features() {
@@ -193,6 +194,7 @@ async function start() {
       kaart.on('mouseleave', l, () => (kaart.getCanvas().style.cursor = ''))
     }
     dagen()
+    zoekveld()
     const hash = decodeURIComponent(location.hash.slice(1))
     if (hash && stranden.some((s: KaartStrand) => s.id === hash)) openFiche(hash)
     document.body.dataset.klaar = '1'
@@ -205,8 +207,9 @@ async function start() {
 }
 
 
-export function vliegNaar(lon: number, lat: number) {
-  if (kaart.getZoom() < 10) kaart.easeTo({ center: [lon, lat], zoom: 11 })
+export function vliegNaar(lon: number, lat: number, dichtbij = false) {
+  if (dichtbij) kaart.easeTo({ center: [lon, lat], zoom: Math.max(kaart.getZoom(), 13) })
+  else if (kaart.getZoom() < 10) kaart.easeTo({ center: [lon, lat], zoom: 11 })
 }
 
 start()

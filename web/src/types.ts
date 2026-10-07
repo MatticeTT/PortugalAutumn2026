@@ -27,6 +27,7 @@ export interface Index {
 export interface KaartStrand {
   id: string
   n: string
+  d?: string // district
   x: number
   y: number
 }

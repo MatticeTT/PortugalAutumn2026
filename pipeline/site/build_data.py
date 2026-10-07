@@ -176,7 +176,7 @@ def main(fetch_ipma: bool = True):
             "licht": "".join(licht), "reden": reden, "H": Hs, "verval": vervallen, "getijregel": "".join(regel),
             "ipma": [warning_at(warn, p.get("ipma_area"), t) for t in axis],
         }
-        kaart.append({"id": pid, "n": p["naam"], "x": lon, "y": lat})
+        kaart.append({"id": pid, "n": p["naam"], "d": p["district"], "x": lon, "y": lat})
         (OUT / "strand" / f"{re.sub(r'[^A-Za-z0-9_.-]', '_', pid)}.json").write_text(
             json.dumps(detail, ensure_ascii=False, separators=(",", ":")))
     (OUT / "sport" / "ww.json").write_text(json.dumps(ww_rijen, separators=(",", ":")))

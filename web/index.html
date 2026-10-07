@@ -10,7 +10,14 @@
 </head>
 <body>
   <header class="balk">
-    <h1>Surfkaart <span>Portugal</span></h1>
+    <div class="balk-boven">
+      <h1>Surfkaart <span>Portugal</span></h1>
+      <div class="zoek">
+        <input id="zoek" type="search" placeholder="Zoek een strand" autocomplete="off" aria-label="Zoek een strand"
+          role="combobox" aria-expanded="false" aria-controls="zoeklijst" aria-autocomplete="list" />
+        <ul id="zoeklijst" role="listbox" hidden></ul>
+      </div>
+    </div>
     <div class="uurrij">
       <label><span class="sr">Dag</span><select id="datum"></select></label>
       <input id="uur" type="range" min="0" max="23" step="1" aria-label="Uur" />
