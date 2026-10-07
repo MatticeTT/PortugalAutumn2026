@@ -186,14 +186,48 @@ const ICOON = {
 const pijl = (r: number) => `<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
   <g transform="rotate(${r + 180} 12 12)"><path d="M12 3 L18 15 L12 12 L6 15 Z" fill="currentColor"/></g></svg>`
 
-// Tekening: zee boven, strand onder, de pijl toont waar de wind naartoe waait tegenover het strand.
-function strandTekening(wind: number, kust: number) {
-  let rel = ((wind - kust) % 360 + 540) % 360 - 180 // -180..180: 0 = recht van zee
-  rel = -rel
-  return `<svg class="strand" viewBox="0 0 48 32" width="48" height="32" aria-hidden="true">
-    <rect width="48" height="20" rx="3" fill="rgb(255 255 255 / 0.35)"/><rect y="20" width="48" height="12" rx="3" fill="#e8d9b0"/>
-    <g transform="rotate(${rel} 24 16)"><path d="M24 4 V25 M18 19 L24 26 L30 19" stroke="currentColor" stroke-width="2.6"
-      fill="none" stroke-linecap="round" stroke-linejoin="round"/></g></svg>`
+// Tekening van een richting tegenover het strand: zee boven, strand onder, alsof je op het strand
+// staat en naar zee kijkt (rechts = met de klok mee vanaf de kustrichting). De pijl komt uit de richting
+// waar golf of wind vandaan komt en wijst naar het strand. Bij golven toont een lichte waaier het
+// swell-venster: de richtingen waaruit deining dit strand kan bereiken. Rechtsboven wijst N naar het noorden.
+const rel = (richting: number, kust: number) => ((richting - kust) % 360 + 540) % 360 - 180 // 0 = recht van zee
+const op = (a: number, r: number, cx = 60, cy = 50) => {
+  const t = (a * Math.PI) / 180
+  return [cx + r * Math.sin(t), cy - r * Math.cos(t)].map((x) => x.toFixed(1))
+}
+let tekeningNr = 0
+function richtingTekening(soort: 'golf' | 'wind', richting: number, kust: number, venster?: number[] | null) {
+  const clip = `zee${++tekeningNr}`
+  const a = rel(richting, kust)
+  const [x0, y0] = op(a, 44)
+  const [x1, y1] = op(a, 10)
+  const hoek = Math.atan2(Number(y1) - Number(y0), Number(x1) - Number(x0)) * 180 / Math.PI
+  let waaier = ''
+  if (venster) {
+    const v0 = rel(venster[0], kust)
+    let v1 = rel(venster[1], kust)
+    if (v1 < v0) v1 += 360
+    const [ax, ay] = op(v0, 60), [bx, by] = op(v1, 60)
+    waaier = `<path d="M60 50 L${ax} ${ay} A60 60 0 ${v1 - v0 > 180 ? 1 : 0} 1 ${bx} ${by} Z" fill="currentColor" opacity=".16" clip-path="url(#${clip})"/>`
+  }
+  // Golven: twee kammen dwars op de pijl; wind: drie streepjes langs de pijl.
+  const teken = soort === 'golf'
+    ? `<g transform="translate(${x0} ${y0}) rotate(${hoek})"><path d="M4 -9 Q8 0 4 9 M11 -7 Q15 0 11 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></g>`
+    : `<g transform="translate(${x0} ${y0}) rotate(${hoek})" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M-2 -6 H8 M-6 0 H6 M-2 6 H8"/></g>`
+  const [nx, ny] = op(rel(0, kust), 9, 108, 12)
+  return `<svg class="richting" viewBox="0 0 120 72" aria-hidden="true">
+    <defs><clipPath id="${clip}"><rect width="120" height="50"/></clipPath></defs>
+    <rect width="120" height="50" rx="6" fill="#4f9fd0" opacity=".28"/>
+    <path d="M0 50 H120 V66 a6 6 0 0 1 -6 6 H6 a6 6 0 0 1 -6 -6 Z" fill="#e8d9b0"/>
+    <path d="M0 50 H120" stroke="#c9b27a" stroke-width="1.5"/>
+    ${waaier}
+    ${teken}
+    <path d="M${x0} ${y0} L${x1} ${y1}" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+    <g transform="translate(${x1} ${y1}) rotate(${hoek})"><path d="M2 0 L-8 -6 L-8 6 Z" fill="currentColor"/></g>
+    <circle cx="60" cy="50" r="2.5" fill="currentColor"/>
+    <g font-size="8" font-weight="700" fill="currentColor" opacity=".75">
+      <text x="${nx}" y="${ny}" text-anchor="middle" dominant-baseline="middle">N</text>
+      <text x="6" y="64">strand</text><text x="6" y="11">zee</text></g></svg>`
 }
 
 // Getij: strand dat schuin oploopt, het water op de juiste hoogte, en een pijl omhoog of omlaag.
@@ -210,46 +244,43 @@ function getijTekening(p: number, stijgt: boolean) {
 const rijtje = (icoon: string, waarde: string, woord: string) =>
   `<span class="rijtje">${icoon}<b>${waarde}</b><small>${woord}</small></span>`
 
-// WAVE: de krachtigste deining op zee (hoogte, periode, richting).
+// WAVE: de krachtigste deining op zee (hoogte, periode, richting). "Bereikt" is 100 × E / E_zee over alle
+// deiningen samen (model v2), dus niet alleen die van de pijl.
 function waveGegevens(d: Detail, i: number) {
   const r = d.zee_r?.[i]
   return `<span class="rijtjes">
     ${rijtje(ICOON.golf, `${getal(d.zee_h?.[i], 1)} m`, 'hoogte')}
     ${rijtje(ICOON.periode, `${getal(d.zee_t?.[i])} s`, 'periode')}
-    ${r == null ? '' : rijtje(pijl(r), kompas(r), 'richting')}</span>`
+    ${r == null ? '' : rijtje(pijl(r), kompas(r), 'richting')}</span>
+    ${r == null ? '' : `<span class="tovstrand">${richtingTekening('golf', r, d.kust, d.venster.length === 1 ? d.venster[0] : null)}
+      <small>${d.bereikt?.[i] == null ? 'golf uit ' + kompas(r)
+        : `golf uit ${kompas(r)}<span>de zee bereikt dit strand voor ${d.bereikt[i]}%: op het strand ${LEVEL[Number(d.WAVE_strand[i])]}</span>`}</small></span>`}`
 }
 
-// WIND: wind en vlaag.
-const windGegevens = (d: Detail, i: number) => `<span class="rijtjes">
+// WIND: wind en vlaag, en de windrichting tegenover het strand.
+function windGegevens(d: Detail, i: number) {
+  const r = d.windrichting[i]
+  const phi = d.windhoek?.[i]
+  return `<span class="rijtjes">
     ${rijtje(ICOON.wind, `${getal(d.wind[i])} kn`, 'wind')}
-    ${rijtje(ICOON.vlaag, `${getal(d.vlagen[i])} kn`, 'vlaag')}</span>`
+    ${rijtje(ICOON.vlaag, `${getal(d.vlagen[i])} kn`, 'vlaag')}
+    ${r == null ? '' : rijtje(pijl(r), kompas(r), 'richting')}</span>
+    ${r == null ? '' : `<span class="tovstrand">${richtingTekening('wind', r, d.kust)}
+      <small>wind uit ${kompas(r)}${phi == null ? '' : `<span>${windNaam(phi)}</span>`}</small></span>`}`
+}
 
 // ---- Laag 3: de extra's per strand ----
 
 function extras(d: Detail, i: number) {
-  if (d.bereikt?.[i] == null) return ''
-  const r = d.zee_r?.[i]
-  const golf = `golf uit ${r == null ? '–' : kompas(r)} bereikt dit strand voor ${d.bereikt[i]}%: op het strand ${LEVEL[Number(d.WAVE_strand[i])]}`
-  const wr = d.windrichting[i]
-  const phi = d.windhoek?.[i]
-  // Getij: opkomend of afgaand uit de getijtabel van het strand.
-  let tij = ''
-  if (d.getij) {
-    const ex = extremen(staat.getij, d.getij.a, d.getij.b, d.getij.w)
-    const t = utc(staat.index.tijd[i]) / 60000
-    const k = ex.findIndex((e) => e.t > t)
-    const stijgt = k > 0 ? ex[k].hoog : null
-    const p = (d.tij[i] ?? 0) / 100
-    tij = `<li>${stijgt == null ? '' : getijTekening(p, stijgt)}<span><b>Getij</b> ${d.tij[i]}%${stijgt == null ? '' : `, ${stijgt ? 'opkomend' : 'afgaand'}`}
+  if (!d.getij || d.tij?.[i] == null) return ''
+  const ex = extremen(staat.getij, d.getij.a, d.getij.b, d.getij.w)
+  const t = utc(staat.index.tijd[i]) / 60000
+  const k = ex.findIndex((e) => e.t > t)
+  const stijgt = k > 0 ? ex[k].hoog : null
+  return `<h3 class="kop">Getij op dit strand</h3><ul class="extras">
+    <li>${stijgt == null ? '' : getijTekening(d.tij[i]! / 100, stijgt)}<span><b>${d.tij[i]}%</b>${stijgt == null ? '' : `, ${stijgt ? 'opkomend' : 'afgaand'}`}
       · verval ${getal(d.verval[i], 1)} m · tijgewicht ${getal(d.tijgewicht[i], 2)}
-      ${k > 0 ? `<small>${ex[k].hoog ? 'hoog' : 'laag'} om ${toonTijd(ex[k].t * 60000)}</small>` : ''}</span></li>`
-  }
-  return `<h3 class="kop">Op dit strand</h3><ul class="extras">
-    <li>${r == null ? '' : pijl(r)}<span><b>Golfrichting</b> ${golf}
-      <small>E ${d.E[i]} kJ · H op het strand ${getal(d.H[i], 2)} m · periode ${getal(d.periode[i], 1)} s</small></span></li>
-    <li>${wr == null ? '' : strandTekening(wr, d.kust)}<span><b>Windrichting</b> wind uit ${wr == null ? '–' : kompas(wr)}: ${phi == null ? '–' : windNaam(phi)}
-      <small>windhoek ${getal(phi)}°</small></span></li>
-    ${tij}</ul>`
+      <small>${k > 0 ? `${ex[k].hoog ? 'hoog' : 'laag'} om ${toonTijd(ex[k].t * 60000)} · ` : ''}E ${d.E[i]} kJ · H op het strand ${getal(d.H[i], 2)} m · periode ${getal(d.periode[i], 1)} s</small></span></li></ul>`
 }
 
 function render() {

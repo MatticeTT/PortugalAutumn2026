@@ -312,7 +312,7 @@ details.meer[open] > summary { margin-bottom: 8px; }
 .getijvak .tekst b { font-size: 17px; }
 .getijvak small { color: var(--zacht); font-size: 12.5px; }
 .tegel .tovstrand small span { display: block; font-weight: 600; opacity: 0.8; }
-.tegel .tovstrand small span { white-space: nowrap; }
+.tegel .tovstrand small span { white-space: normal; }
 .getijregel { font-weight: 600; }
 .getijregel.uit { opacity: .7; }
 
@@ -370,3 +370,7 @@ details.meer[open] > summary { margin-bottom: 8px; }
   background: color-mix(in srgb, #2a6fdb calc(var(--a) * 70%), transparent); }
 #lijst tr.blok td:first-child { box-shadow: inset 4px 0 var(--gevaar); }
 #lijst tr.kijk td:first-child { box-shadow: inset 4px 0 #f5c400; }
+
+/* Richting tegenover het strand, in de vlakken WAVE en WIND */
+.tegel .tovstrand { flex-direction: column; align-items: stretch; gap: 4px; }
+.tegel svg.richting { width: 100%; height: auto; max-width: 220px; display: block; }
