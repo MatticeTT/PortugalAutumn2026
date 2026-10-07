@@ -176,8 +176,7 @@ def main(fetch_ipma: bool = True):
                 for v in (*TOTAAL, *(x for d in DEININGEN for x in d))}
         piek = any(x is not None for _h, _t, tp, _r in DEININGEN for x in golf[tp])
         c = controle(p["kijkrichting"], p["venster"])
-        rekent = not c["blokkerend"]
-        venster = tuple(p["venster"][0]) if rekent else (0, 0)
+        vensters = [tuple(v) for v in p["venster"]]  # 0 tot 3 vensters; geen venster: factor 0 (rekenchat)
 
         n = len(axis)
         rij = {k: [None] * n for k in ("zee_h", "zee_t", "zee_r", "E_zee", "bereikt", "E", "periode", "H", "windhoek",
@@ -195,21 +194,20 @@ def main(fetch_ipma: bool = True):
             tij, verval = getij_stand(ext, minuten[i])
             # Zonder getij rekent het model met zijn standaardwaarden niet: dan geen laag 3 en 4.
             heeft_getij = tij is not None
-            r = bereken(p["kijkrichting"], venster, ws[i], wg[i], wd[i] or 0, dein,
-                        tij_pct=tij if heeft_getij else 50, verval=verval if heeft_getij else 2.4,
-                        golfdata_in_baai=not rekent)  # niet rekenbaar: alleen laag 1 en 2 gebruiken
+            r = bereken(p["kijkrichting"], vensters, ws[i], wg[i], wd[i] or 0, dein,
+                        tij_pct=tij if heeft_getij else 50, verval=verval if heeft_getij else 2.4)
             wave.append(str(r["WAVE"]))
             wind.append(str(r["WIND"]))
             # Rood omkaderd (eigenaar): WIND bij wind van land (windhoek vanaf 112,5°: schuin of recht aflandig);
             # WAVE als er op zee golf staat (WAVE 2 of meer) maar op het strand te weinig aankomt (WAVE_strand 1).
             rood_wind = hoek(wd[i] or 0, p["kijkrichting"]) >= 112.5
-            rood_wave = rekent and heeft_getij and r["WAVE"] >= 2 and r["WAVE_strand"] == 1
+            rood_wave = heeft_getij and r["WAVE"] >= 2 and r["WAVE_strand"] == 1
             rood.append(str(rood_wind + 2 * rood_wave))
             k = krachtigste(dein)
             rij["E_zee"][i] = r["E_zee"]  # de krachtigste deining: daaruit komt het level WAVE
             if k is not None:
                 rij["zee_h"][i], rij["zee_t"][i], rij["zee_r"][i] = dein[k][0], dein[k][1], dein[k][2]
-            if not (rekent and heeft_getij):
+            if not heeft_getij:
                 laag3.append("0"), letter.append(".")
                 continue
             laag3.append(str(r["WAVE_strand"]))

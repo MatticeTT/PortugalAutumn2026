@@ -25,39 +25,36 @@ def krachtigste(deiningen: list[tuple[float, float, float]]) -> int | None:
     return idx
 
 
-def aandeel(richting: float, kust: float, venster: tuple[float, float], golfdata_in_baai: bool = False) -> float:
+def aandeel(richting: float, kust: float, vensters: list, golfdata_in_baai: bool = False) -> float:
     """Zelfde berekening als in model.bereken: cos θ (0 vanaf 90°) × vensterfactor."""
     theta = hoek(richting, kust)
     a = math.cos(math.radians(theta)) if theta < 90 else 0.0
     if not golfdata_in_baai:
-        a *= vensterfactor(richting, *venster)
+        a *= vensterfactor(richting, vensters)
     return a
 
 
-def binnen(richting: float, venster: tuple[float, float]) -> bool:
-    van, tot = venster
-    return ((richting - van) % 360) <= ((tot - van) % 360)
+def binnen(richting: float, vensters: list) -> bool:
+    return any(((richting - van) % 360) <= ((tot - van) % 360) for van, tot in vensters)
 
 
 def controle(kust: float, vensters: list[list[float]]) -> dict:
-    """De controles op één strand.
+    """De controles op één strand (het model rekent altijd; dit is wat nagekeken moet worden).
 
-    blokkerend: het model kan niet rekenen (het kent precies één venster, van–tot).
-    nakijken:   het model rekent wel, maar de data is verdacht; volgens het document kan een kaap een
-                aanlandige richting echt afschermen, dus dit is geen zekere fout.
+    Volgens het document kan een kaap een aanlandige richting echt afschermen: dit zijn geen zekere fouten.
     """
     uit: dict = {"blokkerend": [], "nakijken": []}
-    if len(vensters) != 1:
-        uit["blokkerend"].append("geen venster" if not vensters else f"{len(vensters)} vensters, het model kent er één")
-        return uit
-    v = (vensters[0][0], vensters[0][1])
-    if not binnen(kust, v):
+    v = [tuple(x) for x in vensters]
+    if not v:
+        uit["nakijken"].append("geen swell-venster: deining van zee bereikt dit strand niet")
+    elif not binnen(kust, v):
         uit["nakijken"].append("kustrichting ligt buiten het venster")
     # Een deining uit een richting waarvan de wind recht of schuin aanlandig heet (φ < 67,5°)
     # moet een aandeel boven 0 hebben.
-    nul = [r for r in range(360) if hoek(r, kust) < 67.5 and aandeel(r, kust, v) <= 0]
-    if nul:
-        uit["nakijken"].append(f"aandeel 0 bij aanlandige richtingen: {_reeksen(nul)}")
+    if v:
+        nul = [r for r in range(360) if hoek(r, kust) < 67.5 and aandeel(r, kust, v) <= 0]
+        if nul:
+            uit["nakijken"].append(f"aandeel 0 bij aanlandige richtingen: {_reeksen(nul)}")
     uit["aandeel16"] = [round(aandeel(k * 22.5, kust, v), 2) for k in range(16)]
     return uit
 

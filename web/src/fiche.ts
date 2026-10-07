@@ -198,7 +198,7 @@ const op = (a: number, r: number, cx = 60, cy = 50) => {
   return [cx + r * Math.sin(t), cy - r * Math.cos(t)].map((x) => x.toFixed(1))
 }
 let tekeningNr = 0
-function richtingTekening(soort: 'golf' | 'wind', richting: number, kust: number, venster?: number[] | null) {
+function richtingTekening(soort: 'golf' | 'wind', richting: number, kust: number, vensters?: number[][] | null) {
   const clip = `zee${++tekeningNr}`
   const a = rel(richting, kust)
   // Van land: de pijl begint in het strand (onder de kustlijn is maar 22 hoog), dus korter.
@@ -206,14 +206,14 @@ function richtingTekening(soort: 'golf' | 'wind', richting: number, kust: number
   const [x0, y0] = op(a, c < 0 ? Math.min(44, 16 / -c) : 44)
   const [x1, y1] = op(a, 10)
   const hoek = Math.atan2(Number(y1) - Number(y0), Number(x1) - Number(x0)) * 180 / Math.PI
-  let waaier = ''
-  if (venster) {
-    const v0 = rel(venster[0], kust)
-    let v1 = rel(venster[1], kust)
-    if (v1 < v0) v1 += 360
+  // Elk swell-venster als een lichte waaier.
+  const waaier = (vensters ?? []).map((v) => {
+    const v0 = rel(v[0], kust)
+    let v1 = rel(v[1], kust)
+    if (v1 <= v0) v1 += 360
     const [ax, ay] = op(v0, 60), [bx, by] = op(v1, 60)
-    waaier = `<path d="M60 50 L${ax} ${ay} A60 60 0 ${v1 - v0 > 180 ? 1 : 0} 1 ${bx} ${by} Z" fill="currentColor" opacity=".16" clip-path="url(#${clip})"/>`
-  }
+    return `<path d="M60 50 L${ax} ${ay} A60 60 0 ${v1 - v0 > 180 ? 1 : 0} 1 ${bx} ${by} Z" fill="currentColor" opacity=".16" clip-path="url(#${clip})"/>`
+  }).join('')
   // Golven: twee kammen dwars op de pijl; wind: drie streepjes langs de pijl.
   const teken = soort === 'golf'
     ? `<g transform="translate(${x0} ${y0}) rotate(${hoek})"><path d="M4 -9 Q8 0 4 9 M11 -7 Q15 0 11 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></g>`
@@ -257,7 +257,7 @@ function waveGegevens(d: Detail, i: number) {
     ${rijtje(ICOON.golf, `${getal(d.zee_h?.[i], 1)} m`, 'hoogte')}
     ${rijtje(ICOON.periode, `${getal(d.zee_t?.[i], 1)} s`, 'periode')}
     ${r == null ? '' : rijtje(pijl(r), kompas(r), 'richting')}</span>
-    ${r == null ? '' : `<span class="tovstrand">${richtingTekening('golf', r, d.kust, d.venster.length === 1 ? d.venster[0] : null)}
+    ${r == null ? '' : `<span class="tovstrand">${richtingTekening('golf', r, d.kust, d.venster)}
       <small>golf uit ${kompas(r)}</small></span>`}`
 }
 

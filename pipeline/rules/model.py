@@ -1,6 +1,8 @@
 """Surfkaart rekenmodel v2 (eigenaar, 7 oktober 2026).
 
-De code hieronder is de referentiecode uit het document "Surfkaart rekenmodel v2", letterlijk overgenomen:
+De code hieronder is de referentiecode uit het document "Surfkaart rekenmodel v2", letterlijk overgenomen.
+Aanpassing van de rekenchat (antwoord c, 7 oktober 2026): vensterfactor krijgt een lijst vensters (0 tot 3)
+en geeft het deel van de 45 graden rond de golfrichting dat binnen een venster valt.
 bij twijfel geldt deze code. Niets eigens toegevoegd of weggelaten. De 27 testgevallen van het document
 staan in tests/test_model.py. Alles wat de site extra nodig heeft (welke deining het krachtigst is, de
 controles op de stranddata), staat in pipeline/rules/hulp.py, niet hier.
@@ -27,13 +29,28 @@ def hoek(a, b):
     x = abs(a - b) % 360
     return 360 - x if x > 180 else x
 
-def vensterfactor(richting, van, tot):
-    """0 op 22,5 graden buiten de rand, 0,5 op de rand, 1 vanaf 22,5 graden erbinnen."""
-    rand = min(hoek(richting, van), hoek(richting, tot))
-    binnen = ((richting - van) % 360) <= ((tot - van) % 360)
-    return max(0.0, min(1.0, 0.5 + (rand if binnen else -rand) / 45.0))
+def vensterfactor(richting, vensters):
+    """Deel van de 45 graden rond de golfrichting (22,5 links en
+    rechts) dat binnen een venster valt."""
+    start = richting - 22.5
+    stukken = []
+    for (van, tot) in vensters:
+        s = (van - start) % 360
+        L = (tot - van) % 360
+        if L == 0 and tot != van: L = 360
+        for a in (s, s - 360):
+            lo, hi = max(0.0, a), min(45.0, a + L)
+            if hi > lo: stukken.append((lo, hi))
+    stukken.sort()
+    totaal, einde = 0.0, 0.0
+    for lo, hi in stukken:
+        lo = max(lo, einde)
+        if hi > lo:
+            totaal += hi - lo
+            einde = hi
+    return totaal / 45.0
 
-def bereken(kust, venster, wind, vlaag, windrichting, deiningen,
+def bereken(kust, vensters, wind, vlaag, windrichting, deiningen,
             tij_pct=50, verval=2.4, golfdata_in_baai=False):
     # ---- hulpgetallen ----
     E, E_zee, som_e, som_et, h2 = 0.0, 0.0, 0.0, 0.0, 0.0
@@ -41,7 +58,7 @@ def bereken(kust, venster, wind, vlaag, windrichting, deiningen,
         theta = hoek(richting, kust)
         aandeel = math.cos(math.radians(theta)) if theta < 90 else 0.0
         if not golfdata_in_baai:
-            aandeel *= vensterfactor(richting, *venster)
+            aandeel *= vensterfactor(richting, vensters)
         e_zee = 1.96 * H * H * periode * periode      # kracht op zee: alleen hoogte en periode
         e = e_zee * aandeel                           # wat daarvan dit strand bereikt
         E_zee = max(E_zee, e_zee)

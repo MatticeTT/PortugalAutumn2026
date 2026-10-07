@@ -8,7 +8,7 @@ WAVE, bereikt %, E, golfsurfen, windsurfen op golven, windsurfen, stille waters,
 
 import pytest
 
-from pipeline.rules.model import bereken
+from pipeline.rules.model import bereken, vensterfactor
 
 GEVALLEN = [
     (1, 12.0, 17.0, 230.0, [(2.2, 14.0, 292.5)], 50, 4, 0, 0, 0, 0, 79, 0, 0, 'ideaal windsurfen'),
@@ -44,8 +44,21 @@ GEVALLEN = [
 @pytest.mark.parametrize("g", GEVALLEN, ids=[f"geval {g[0]}" for g in GEVALLEN])
 def test_geval(g):
     nr, wind, vlaag, richting, deiningen, tij, WAVE, bereikt, E, G, WG, W, S, TW, conclusie = g
-    r = bereken(142, (100, 200), wind, vlaag, richting, deiningen, tij_pct=tij, verval=2.4)
+    r = bereken(142, [(100, 200)], wind, vlaag, richting, deiningen, tij_pct=tij, verval=2.4)
     assert (r["WAVE"], r["bereikt_pct"], r["E"]) == (WAVE, bereikt, E)
     assert (r["golfsurfen"], r["windsurfen_op_golven"], r["windsurfen"], r["stille_waters"], r["te_wild"]) == \
         (G, WG, W, S, TW)
     assert r["conclusie"] == conclusie
+
+
+# Controle van de rekenchat bij de nieuwe vensterfactor (vensters 85–160, 165–170, 180–200).
+REBOLINHOS = [(85, 160), (165, 170), (180, 200)]
+
+
+@pytest.mark.parametrize("richting,factor", [(120, 1.00), (150, 0.83), (165, 0.67), (190, 0.50), (210, 0.28), (60, 0.00)])
+def test_vensterfactor_meerdere_vensters(richting, factor):
+    assert round(vensterfactor(richting, REBOLINHOS), 2) == factor
+
+
+def test_vensterfactor_geen_venster():
+    assert vensterfactor(150, []) == 0.0
