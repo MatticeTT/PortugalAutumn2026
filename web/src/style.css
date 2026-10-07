@@ -262,3 +262,28 @@ details.meer[open] > summary { margin-bottom: 8px; }
 .wanneer li.kan .uren { color: #b07800; }
 .wanneer li.niet .uren, .wanneer li.niet .naam { color: var(--zacht); font-weight: 500; }
 .wanneer small { font-weight: 400; }
+
+/* ---- Wat kan je vandaag doen ---- */
+.held { position: relative; margin: 10px 0 8px; border-radius: 16px; overflow: hidden; aspect-ratio: 16 / 9; background: var(--zacht-vlak); }
+.held img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.held figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 40px 14px 12px; color: #fff;
+  background: linear-gradient(transparent, rgb(0 0 0 / 0.72)); display: flex; flex-direction: column; gap: 2px; }
+.held .zin { font-size: 21px; font-weight: 800; line-height: 1.15; text-shadow: 0 1px 3px rgb(0 0 0 / 0.4); }
+.held .uren { font-size: 24px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.held .uren small { font-size: 13px; font-weight: 500; }
+.held::after { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; background: var(--kleur); }
+.held.leeg { aspect-ratio: auto; padding: 18px 14px; }
+.held.leeg .zin { color: var(--zacht); }
+.rest { list-style: none; margin: 0 0 14px; padding: 0; }
+.rest li { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 10px; align-items: center;
+  padding: 7px 0; border-bottom: 1px solid var(--lijn); }
+.rest img { width: 44px; height: 44px; border-radius: 10px; object-fit: cover; box-shadow: inset 0 0 0 3px var(--kleur); outline: 3px solid var(--kleur); outline-offset: -3px; }
+.rest .kort { font-weight: 700; }
+.rest .uren { font-weight: 800; font-variant-numeric: tabular-nums; color: var(--kleur); text-align: right; }
+.rest .uren small { font-weight: 500; color: var(--zacht); }
+.rest li.niet img { filter: grayscale(1); opacity: 0.45; outline-color: transparent; }
+.rest li.niet .kort { color: var(--zacht); font-weight: 600; }
+.rest li.niet .uren { color: var(--zacht); font-weight: 500; }
+.fiche h3.kop { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--zacht); margin: 10px 0 4px; }
+.dag .wat { display: block; height: 8px; border-radius: 4px; background: var(--zacht-vlak); }
+.dag tr.r-wat td { padding: 0 1px; }

@@ -45,8 +45,9 @@ for (const scheme of ['light', 'dark']) {
   const rijen = await page.$$eval('#fiche .dag th', (els) => els.map((e) => e.textContent))
   const uren = await page.$$eval('#fiche .dag a[data-i]', (els) => els.length)
   check(`[${scheme}] fiche: de dag met WAVE, WIND en getij`, ['WAVE', 'WIND', 'getij'].every((r) => rijen.includes(r)) && uren >= 20, `(${uren} uren)`)
-  const plan = await page.$$eval('#fiche .wanneer li', (els) => els.map((e) => e.textContent.replace(/\s+/g, ' ').trim()))
-  check(`[${scheme}] fiche: golfsurfen, windsurfen, wind-golven, stille waters`, plan.length === 4, `(${plan.join(' | ')})`)
+  const held = await page.textContent('#fiche .held .zin')
+  const rest = await page.$$eval('#fiche .rest li', (els) => els.length)
+  check(`[${scheme}] fiche: bovenaan wat je vandaag kan, met de andere eronder`, !!held && rest >= 3, `(${held}; ${rest} andere)`)
   if (shots) {
     await page.screenshot({ path: `${shots}/fiche-${scheme}.png` })
     await page.locator('#fiche').screenshot({ path: `${shots}/fiche-vol-${scheme}.png` }).catch(() => {})
