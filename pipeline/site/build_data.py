@@ -11,7 +11,9 @@ Schrijft web/public/data/:
 - getij.json        hoog- en laagwaters per station
 - strand/<id>.json  alles voor de fiche: de voorspelling per uur, het getij, en per uur
                     "uitkomst" (W, G, O, S, R; "." = past niets echt; "-" = geen voorspelling),
-                    "straf" (strafpunten van de winnaar), "WAVE", "WIND" (level) en "licht" (1 = daglicht)
+                    "straf" (strafpunten van de winnaar), "reden" (waarvoor dat strafpunt is, zie REDENEN),
+                    "WAVE", "WIND" (level), "licht" (1 = daglicht), "H" (H_strand, m), "verval" (m) en
+                    "getijregel" (1 = de getijregels tellen: verval > H_strand / 0,78)
 """
 
 from __future__ import annotations
@@ -24,7 +26,7 @@ from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 from pipeline.rules.dagplan import daglicht, getij_fractie
-from pipeline.rules.uitkomst import UITKOMSTEN, Deining, Strand, Uur, bereken, getoond
+from pipeline.rules.uitkomst import REDENEN, UITKOMSTEN, Deining, Strand, Uur, bereken, getoond
 from pipeline.tides.interp import interpolate
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -141,10 +143,15 @@ def main(fetch_ipma: bool = True):
                 for trio in (TOTAAL, *DEININGEN) for v in trio}
 
         uitk, straf, wave, wind, licht = [], [], [], [], []
+        reden: list[str] = []
+        Hs: list[float | None] = []
+        vervallen: list[float | None] = []
+        regel: list[str] = []
         for i in range(len(axis)):
             licht.append("1" if daglicht(lat, lon, minuten[i]) else "0")
             if ws[i] is None or golf["wave_height"][i] is None:
-                for lijst, leeg in ((uitk, "-"), (straf, "0"), (wave, "0"), (wind, "0")):
+                for lijst, leeg in ((uitk, "-"), (straf, "0"), (wave, "0"), (wind, "0"), (reden, ""),
+                                    (Hs, None), (vervallen, None), (regel, "0")):
                     lijst.append(leeg)
                 continue
             deiningen = [Deining(golf[h][i] or 0, golf[t][i] or 0, golf[r][i] or 0) for h, t, r in DEININGEN]
@@ -155,6 +162,10 @@ def main(fetch_ipma: bool = True):
             straf.append(str(min(r.strafpunten, 9)))
             wave.append(str(r.wave))
             wind.append(str(r.wind))
+            reden.append(",".join(r.redenen) if getoond(r) else "")
+            Hs.append(round(r.H_strand, 2))
+            vervallen.append(None if verval is None else round(verval, 2))
+            regel.append("1" if r.getij_telt else "0")
         ww_rijen.append("".join(a + b for a, b in zip(wind, wave, strict=True)))
 
         detail = {
@@ -162,7 +173,7 @@ def main(fetch_ipma: bool = True):
             "venster": p["venster"], "district": p["district"], "getij": g,
             "wind": ws, "vlagen": wg, "windrichting": wd, **golf,
             "uitkomst": "".join(uitk), "straf": "".join(straf), "WAVE": "".join(wave), "WIND": "".join(wind),
-            "licht": "".join(licht),
+            "licht": "".join(licht), "reden": reden, "H": Hs, "verval": vervallen, "getijregel": "".join(regel),
             "ipma": [warning_at(warn, p.get("ipma_area"), t) for t in axis],
         }
         kaart.append({"id": pid, "n": p["naam"], "x": lon, "y": lat})
@@ -176,7 +187,7 @@ def main(fetch_ipma: bool = True):
     index = {
         "gemaakt": datetime.now(UTC).strftime("%Y-%m-%dT%H:%MZ"),
         "opgehaald": {WIND: wsrc.get("_opgehaald"), GOLF: gsrc.get("_opgehaald")},
-        "tijd": axis, "bron": BRON, "uitkomsten": UITKOMSTEN, "ipma": warn,
+        "tijd": axis, "bron": BRON, "uitkomsten": UITKOMSTEN, "redenen": REDENEN, "ipma": warn,
     }
     (OUT / "index.json").write_text(json.dumps(index, ensure_ascii=False, separators=(",", ":")))
     print(f"{len(kaart)} stranden, {len(axis)} uur")

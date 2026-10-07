@@ -109,3 +109,15 @@ def test_getoond_alleen_bij_0_of_1_strafpunt():
 def test_alles_valt_af_is_niets():
     r = bereken(uur(18, 22, 322, GOLF_WNW), MEIA)
     assert r.uitkomst == GEEN and getoond(r) is None
+
+
+def test_golfsurfen_wind_van_zee_5_tot_15_is_1_strafpunt_met_reden():
+    r = bereken(uur(8, 8, 142, GOLF_160), MEIA)
+    assert r.uitkomst == GOLFSURF and r.strafpunten == 1 and r.redenen == ["zeewind"]
+
+
+def test_getijregel():
+    # verval 2,4 m; H_strand 1,2 m → 2,4 > 1,2/0,78 = 1,54: de getijregels tellen
+    assert bereken(uur(3, 3, 0, GOLF_160), MEIA).getij_telt
+    # H_strand 2,2 m (golf binnen het venster): 2,4 < 2,2/0,78 = 2,82: niet
+    assert not bereken(uur(3, 3, 0, [(2.2, 9, 142)]), MEIA).getij_telt

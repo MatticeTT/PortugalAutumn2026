@@ -13,11 +13,20 @@ Getij: tij% (0 = laagwater, 100 = hoogwater) en het verval (m) van die getijslag
 from __future__ import annotations
 
 import math
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 # Uitkomsten, met een letter voor de databestanden.
 TE_WILD, GOLFSURF, WINDGOLF, WINDSURF, STIL = "W", "G", "O", "S", "R"
 GEEN = "."  # alles valt af: er staat niets (eigenaar, 7 oktober 2026)
+# Waarvoor een strafpunt is, in gewone taal (de fiche toont dit in plaats van "goed").
+REDENEN = {
+    "klein": "kleine golven", "periode": "korte periode", "zeewind": "wind van zee of opzij",
+    "landwind": "harde wind van land", "laagwater": "laag water", "hoogwater": "hoog water",
+    "weinigwind": "weinig wind", "vlagerig": "vlagerig", "rechtaan": "wind recht van zee",
+    "schuinaf": "wind schuin van land", "lichtewind": "lichte wind", "aanlandiggolf": "golven en wind van zee",
+    "golfslag": "golfslag", "branding": "branding bij hoog water", "watwind": "wat wind",
+    "afdrijven": "wind van land: je drijft af", "muistroom": "muistromen bij laag water",
+}
 UITKOMSTEN = {
     GOLFSURF: "Golfsurfen", WINDGOLF: "Windsurfen op golven", WINDSURF: "Windsurfen",
     STIL: "Stille waters", TE_WILD: "Te wild",
@@ -72,6 +81,8 @@ class Uitkomst:
     E: float             # kJ, de grootste deining
     H_strand: float      # m
     punten: dict[str, int | None]  # per sport de strafpunten, None = valt af
+    redenen: list[str] = field(default_factory=list)  # waarvoor de winnaar strafpunten kreeg (codes)
+    getij_telt: bool = False  # verval > H_strand / 0,78: de getijregels tellen mee
 
 
 def energie(d: Deining, s: Strand) -> float:
@@ -121,67 +132,71 @@ def bereken(u: Uur, s: Strand) -> Uitkomst:
     lvl_wave, lvl_wind = wave_level(E), wind_level(w, u.vlaag)
     # Te wild
     if w > 25 or u.vlaag > 35 or E >= 1000:
-        return Uitkomst(TE_WILD, 0, lvl_wave, lvl_wind, E, H, {})
+        return Uitkomst(TE_WILD, 0, lvl_wave, lvl_wind, E, H, {}, getij_telt=getij_telt)
 
-    punten: dict[str, int | None] = {}
+    # Per sport de strafpunten, als lijst van redenen (codes, zie REDENEN); None = valt af.
+    waarom: dict[str, list[str] | None] = {}
+
+    def straf(*paren: tuple[bool, str]) -> list[str]:
+        return [code for voorwaarde, code in paren if voorwaarde]
 
     # Ideaal golfsurfen
     if E < 100 or (zee_of_opzij and w >= 15):
-        punten[GOLFSURF] = None
+        waarom[GOLFSURF] = None
     else:
-        p = 0
-        p += 1 if E < 200 else 0
-        p += 1 if T < 9 else 0
-        if zee_of_opzij:
-            p += 1 if 5 <= w < 15 else 0
-        else:
-            p += 1 if 15 < w <= 25 else 0
-        p += 1 if tij_extreem else 0
-        punten[GOLFSURF] = p
+        waarom[GOLFSURF] = straf(
+            (E < 200, "klein"),
+            (T < 9, "periode"),
+            (zee_of_opzij and 5 <= w < 15, "zeewind"),
+            (not zee_of_opzij and 15 < w <= 25, "landwind"),
+            (tij_extreem, "laagwater" if tij_extreem and u.tij <= 15 else "hoogwater"),
+        )
 
     # Windsurfen op golven
     if E < 100 or w < 12 or recht_af:
-        punten[WINDGOLF] = None
+        waarom[WINDGOLF] = None
     else:
-        p = 0
-        p += 1 if w < 15 else 0
-        p += 1 if vlagerig else 0
-        p += 1 if recht_aan or schuin_af else 0
-        p += 1 if E < 200 else 0
-        p += 1 if tij_extreem else 0
-        punten[WINDGOLF] = p
+        waarom[WINDGOLF] = straf(
+            (w < 15, "weinigwind"),
+            (vlagerig, "vlagerig"),
+            (recht_aan, "rechtaan"),
+            (schuin_af, "schuinaf"),
+            (E < 200, "klein"),
+            (tij_extreem, "laagwater" if tij_extreem and u.tij <= 15 else "hoogwater"),
+        )
 
     # Ideaal windsurfen
     if w < 5 or E >= 300 or (E >= 100 and w < 12) or recht_af or (schuin_af and w < 12):
-        punten[WINDSURF] = None
+        waarom[WINDSURF] = None
     else:
-        p = 0
-        p += 1 if w < 12 else 0
-        p += 1 if vlagerig else 0
-        p += 1 if schuin_af else 0
-        p += 1 if recht_aan and H >= 0.5 else 0
-        p += 1 if 100 <= E < 300 else 0
-        p += 1 if getij_telt and u.tij >= 90 and H >= 0.5 else 0
-        punten[WINDSURF] = p
+        waarom[WINDSURF] = straf(
+            (w < 12, "lichtewind"),
+            (vlagerig, "vlagerig"),
+            (schuin_af, "schuinaf"),
+            (recht_aan and H >= 0.5, "aanlandiggolf"),
+            (100 <= E < 300, "golfslag"),
+            (getij_telt and u.tij >= 90 and H >= 0.5, "branding"),
+        )
 
     # Stille waters
     if w >= 12 or E >= 200:
-        punten[STIL] = None
+        waarom[STIL] = None
     else:
-        p = 0
-        p += 1 if 5 <= w < 12 else 0
-        p += 1 if vlagerig else 0
-        p += 1 if not zee_of_opzij and w >= 5 else 0  # wind van land
-        p += 1 if H >= 0.5 else 0
-        p += 1 if getij_telt and u.tij <= 15 and H >= 0.5 else 0
-        punten[STIL] = p
+        waarom[STIL] = straf(
+            (5 <= w < 12, "watwind"),
+            (vlagerig, "vlagerig"),
+            (not zee_of_opzij and w >= 5, "afdrijven"),  # wind van land
+            (H >= 0.5, "golfslag"),
+            (getij_telt and u.tij <= 15 and H >= 0.5, "muistroom"),
+        )
 
+    punten = {k: (None if v is None else len(v)) for k, v in waarom.items()}
     kandidaten = [(punten[k], VOLGORDE.index(k), k) for k in VOLGORDE if punten[k] is not None]
     if not kandidaten:
         # Te wild geldt alleen bij wind > 25 kn, vlagen > 35 kn of E ≥ 1000; valt alles af, dan niets.
-        return Uitkomst(GEEN, 0, lvl_wave, lvl_wind, E, H, punten)
+        return Uitkomst(GEEN, 0, lvl_wave, lvl_wind, E, H, punten, getij_telt=getij_telt)
     p, _, k = min(kandidaten)
-    return Uitkomst(k, p, lvl_wave, lvl_wind, E, H, punten)
+    return Uitkomst(k, p, lvl_wave, lvl_wind, E, H, punten, waarom[k], getij_telt)
 
 
 def getoond(r: Uitkomst) -> str | None:

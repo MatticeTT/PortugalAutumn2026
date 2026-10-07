@@ -14,6 +14,7 @@ export interface Index {
   groepen: Record<string, string>
   schaal: string[]
   ipma: { area: string; level: string; start: string; end: string }[]
+  redenen: Record<string, string> // code -> tekst
   nauwkeurigheid?: any
   // WIND en WAVE (M5)
   labels: string[]
@@ -43,10 +44,14 @@ export interface Detail {
   vlagen: (number | null)[]
   windrichting: (number | null)[]
   uitkomst: string // per uur: W te wild, G golfsurfen, O windsurfen op golven, S windsurfen, R stille waters, - geen
-  straf: string // per uur: strafpunten van de uitkomst (0 ideaal, 1 goed, 2+ kan)
+  straf: string // per uur: strafpunten van de uitkomst (0 ideaal, 1 = zie reden)
   WAVE: string // per uur level 1–4 (0 = geen)
   WIND: string
   licht: string // per uur 1 = daglicht
+  reden: string[] // per uur: waarvoor het strafpunt is (codes, komma's; "" = ideaal of niets getoond)
+  H: (number | null)[] // per uur H_strand (m)
+  verval: (number | null)[] // per uur verval van de getijslag (m)
+  getijregel: string // per uur 1 = de getijregels tellen (verval > H_strand / 0,78)
   ipma: string[]
   [k: string]: any // de golfreeksen (wave_height, swell_wave_period, ...)
 }

@@ -313,3 +313,5 @@ details.meer[open] > summary { margin-bottom: 8px; }
 .getijvak small { color: var(--zacht); font-size: 12.5px; }
 .tegel .tovstrand small span { display: block; font-weight: 600; opacity: 0.8; }
 .tegel .tovstrand small span { white-space: nowrap; }
+.getijregel { font-weight: 600; }
+.getijregel.uit { opacity: .7; }

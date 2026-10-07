@@ -28,10 +28,15 @@ const SOORTEN: Soort[] = [
 const soort = (l: string) => SOORTEN.find((s) => s.letter === l)
 const SPORT = ['G', 'O', 'S']
 
-// Strafpunten van de uitkomst: 0 ideaal, 1 goed. Bij 2 of meer toont de app geen uitkomst ("."),
-// behalve "te wild" (pipeline/rules/uitkomst.py, getoond()).
-const KWALITEIT = ['ideaal', 'goed']
+// Strafpunten van de uitkomst: 0 = "ideaal"; bij 1 strafpunt staat er waarvoor (bv. "wind van zee of opzij").
+// Bij 2 of meer toont de app geen uitkomst ("."), behalve "te wild" (pipeline/rules/uitkomst.py, getoond()).
 const kwaliteit = (straf: string) => Math.min(1, Number(straf || 0))
+function label(d: Detail, i: number) {
+  if (d.uitkomst[i] === 'W' || !soort(d.uitkomst[i])) return ''
+  if (kwaliteit(d.straf[i]) === 0) return 'ideaal'
+  const codes = (d.reden?.[i] ?? '').split(',').filter(Boolean)
+  return codes.map((c: string) => staat.index.redenen?.[c] ?? c).join(', ')
+}
 const kompas = (d: number) => ['N', 'NNO', 'NO', 'ONO', 'O', 'OZO', 'ZO', 'ZZO', 'Z', 'ZZW', 'ZW', 'WZW', 'W', 'WNW', 'NW', 'NNW'][Math.round(d / 22.5) % 16]
 const hoek = (a: number, b: number) => { const x = Math.abs(a - b) % 360; return x > 180 ? 360 - x : x }
 // Windrichting tegenover het strand, met dezelfde grenzen als de berekening.
@@ -75,38 +80,40 @@ export function toonUur() {
 
 // ---- 1. Wat kan je vandaag? ----
 
-// Uren na elkaar met dezelfde uitkomst en kwaliteit, dag en nacht: [eerste, laatste, kwaliteit].
-function vensters(d: Detail, idx: number[], letter: string): [number, number, number][] {
-  const out: [number, number, number][] = []
+// Uren na elkaar met dezelfde uitkomst en dezelfde uitleg (ideaal of waarvoor het strafpunt is), dag en nacht:
+// [eerste, laatste, kwaliteit, uitleg].
+type Venster = [number, number, number, string]
+function vensters(d: Detail, idx: number[], letter: string): Venster[] {
+  const out: Venster[] = []
   for (const i of idx) {
     if (d.uitkomst[i] !== letter) continue
     const k = kwaliteit(d.straf[i])
+    const l = label(d, i)
     const laatste = out[out.length - 1]
-    if (laatste && laatste[1] === i - 1 && (letter === 'W' || laatste[2] === k)) laatste[1] = i
-    else out.push([i, i, k])
+    if (laatste && laatste[1] === i - 1 && laatste[3] === l) laatste[1] = i
+    else out.push([i, i, letter === 'W' ? 0 : k, l])
   }
   return out
 }
 
 function overzicht(d: Detail, idx: number[]) {
   const uur = (i: number) => lisUur(utc(staat.index.tijd[i]))
-  // Ideaal / goed / kan geldt voor de vier activiteiten, niet voor "te wild".
-  const uren = (v: [number, number, number][], letter: string) => v.map(([a, b, k]) =>
-    `<span class="venster k${letter === 'W' ? 0 : k}">${uur(a)}–${uur(b) + 1}u${letter === 'W' ? '' : ` <small>${KWALITEIT[k]}</small>`}</span>`).join('')
+  const uren = (v: Venster[]) => v.map(([a, b, k, l]) =>
+    `<span class="venster k${k}">${uur(a)}–${uur(b) + 1}u${l ? ` <small>${esc(l)}</small>` : ''}</span>`).join('')
   const lijst = SOORTEN.map((s) => ({ s, v: vensters(d, idx, s.letter) }))
-  const telUren = (v: [number, number, number][]) => v.reduce((n, [a, b]) => n + b - a + 1, 0)
+  const telUren = (v: Venster[]) => v.reduce((n, [a, b]) => n + b - a + 1, 0)
   // Bovenaan: de sport met de meeste uren; geen sport, dan stille waters; anders te wild.
   const sporten = lijst.filter((x) => SPORT.includes(x.s.letter) && x.v.length)
   const hoofd = sporten.sort((a, b) => telUren(b.v) - telUren(a.v))[0]
     ?? lijst.find((x) => x.s.letter === 'R' && x.v.length) ?? lijst.find((x) => x.s.letter === 'W' && x.v.length)
   const held = hoofd
     ? `<figure class="held" style="--kleur:${hoofd.s.kleur}"><img src="foto/${hoofd.s.foto}.webp" alt="">
-        <figcaption><span class="zin">${hoofd.s.zin}</span><span class="uren">${uren(hoofd.v, hoofd.s.letter)}</span></figcaption></figure>`
+        <figcaption><span class="zin">${hoofd.s.zin}</span><span class="uren">${uren(hoofd.v)}</span></figcaption></figure>`
     : '<div class="held leeg"><span class="zin">Geen voorspelling voor vandaag</span></div>'
   const rest = lijst.filter((x) => x !== hoofd).map((x) => `
     <li class="${x.v.length ? '' : 'niet'}" style="--kleur:${x.s.kleur};--uren:${x.s.tekst}">
       <img src="foto/${x.s.foto}.webp" alt=""><span class="kort">${x.s.kort}</span>
-      <span class="uren">${x.v.length ? uren(x.v, x.s.letter) : 'niet vandaag'}</span></li>`).join('')
+      <span class="uren">${x.v.length ? uren(x.v) : 'niet vandaag'}</span></li>`).join('')
   return `${held}<ul class="rest">${rest}</ul>`
 }
 
@@ -120,7 +127,7 @@ function dag(d: Detail, idx: number[]) {
     const s = soort(d.uitkomst[i])
     const k = s?.letter === 'W' ? 0 : kwaliteit(d.straf[i])
     return `<td class="${kol(i)}"><span class="wat" style="${s ? `background:${s.kleur};opacity:${[1, 0.6][k]}` : ''}"
-      title="${s ? (s.letter === 'W' ? s.kort : `${s.kort}, ${KWALITEIT[k]}`) : ''}"></span></td>`
+      title="${s ? esc([s.kort, label(d, i)].filter(Boolean).join(', ')) : ''}"></span></td>`
   }
   const level = (i: number, reeks: string, pal: string[]) => {
     const n = Number(reeks[i] ?? 0)
@@ -201,8 +208,12 @@ function getijRegel(d: Detail, i: number) {
   const p = volgend.hoog ? x : 1 - x // 0 laagwater, 1 hoogwater
   const stijgt = volgend.hoog
   const tijd = (m: number) => toonTijd(m * 60000)
+  const verval = d.verval?.[i]
+  const regel = d.getijregel?.[i] === '1'
   return `<span class="tovstrand">${getijTekening(p, stijgt)}<small>${stijgt ? 'opkomend' : 'afgaand'}
-    <span>${volgend.hoog ? 'hoog' : 'laag'} ${tijd(volgend.t)}</span></small></span>`
+    <span>${volgend.hoog ? 'hoog' : 'laag'} ${tijd(volgend.t)}</span>
+    ${verval == null ? '' : `<span>verval ${getal(verval, 1)} m</span>
+    <span class="getijregel ${regel ? 'aan' : 'uit'}">getijregel ${regel ? 'aan' : 'uit'}</span>`}</small></span>`
 }
 
 const rijtje = (icoon: string, waarde: string, woord: string) =>
@@ -240,7 +251,7 @@ function render() {
     ${overzicht(d, idx)}
     <h3 class="kop">Per uur</h3>
     ${dag(d, idx)}
-    ${wave && wind ? `<h3 class="kop">Om ${toonTijd(ms)}${nu ? `: ${nu.kort.toLowerCase()}${nu.letter === 'W' ? '' : `, ${KWALITEIT[kwaliteit(d.straf[i])]}`}` : ''}</h3>
+    ${wave && wind ? `<h3 class="kop">Om ${toonTijd(ms)}${nu ? `: ${esc([nu.kort.toLowerCase(), label(d, i)].filter(Boolean).join(', '))}` : ''}</h3>
       <div class="tegels">${tegel('WAVE', wave, waveGegevens(d, i))}${tegel('WIND', wind, windGegevens(d, i))}</div>` : ''}
     <p class="klein"><a href="rekenen.html">Hoe berekend?</a> · Geen veiligheidsadvies: volg de redders en de vlaggen.</p>`
   bind()
