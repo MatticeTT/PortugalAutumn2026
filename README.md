@@ -1,6 +1,6 @@
 # Surfkaart Portugal
 
-Webkaart van de stranden van het Portugese vasteland met per uur wind, golven, getij en per sport een cijfer van 1 tot 5 (21 sporten; regels in `pipeline/sport/sporten.yaml`). Het plan staat in [PLAN.md](PLAN.md), de open punten in [OPEN.md](OPEN.md).
+Webkaart van de stranden van het Portugese vasteland met per uur wind, golven, getij WIND en WAVE, en per sport een cijfer van 1 tot 5 (21 sporten; regels in `pipeline/sport/sporten.yaml`). Het plan staat in [PLAN.md](PLAN.md), de open punten in [OPEN.md](OPEN.md).
 
 Gratis, niet-commercieel, voor een besloten kring.
 
@@ -13,7 +13,7 @@ Gratis, niet-commercieel, voor een besloten kring.
 | M2 Getij | Klaar; norm gehaald op de open kust, niet in mondingen (OPEN.md punt 17) |
 | M3 Voorspelling | Elke 6 uur per strand (tak `data`); Windguru-stand klopt voor 2 van 5 spots (OPEN.md punt 18) |
 | M4 Site | Online via Vercel (tak `site`); keuze van datum, sport en uur |
-| M5 Scores | Vervangen door de sportscore: 41 testgevallen kloppen (OPEN.md punt 27 tot 29) |
+| M5 Scores | WIND en WAVE klaar; daarnaast de sportscore per sport (41 testgevallen kloppen, OPEN.md punt 27 tot 29) |
 | M6 Nauwkeurigheid | Golven gemeten: IBI is standaard; wind loopt (OPEN.md punt 25, 26) |
 | M7 IJken | Nog niet begonnen |
 

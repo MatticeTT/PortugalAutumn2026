@@ -15,6 +15,11 @@ export interface Index {
   schaal: string[]
   ipma: { area: string; level: string; start: string; end: string }[]
   nauwkeurigheid?: any
+  // WIND en WAVE (M5)
+  labels: string[]
+  notas: string[]
+  teksten: string[]
+  regels: any
 }
 
 export interface KaartStrand {
@@ -48,9 +53,13 @@ export interface Detail {
   tij: (number | null)[] // 0 laag, 1 opkomend, 2 hoog, 3 afgaand
   ipma: string[]
   cijfers: Record<string, string> // één teken per uur, 0 = geen cijfer
+  score: (ScoreRij | null)[] // WIND en WAVE (M5)
   [k: string]: any // de golfreeksen (wave_height, swell_wave_period, ...)
 }
 
 export interface Getij {
   stations: Record<string, { naam: string; lat: number; lon: number; e: [number, number, number][] }>
 }
+
+// WIND en WAVE (M5): [WIND, WAVE, label, [nota's], [redenen], Hb, [laag, hoog], windsurf, waarschuwing, windklasse]
+export type ScoreRij = [number, number, number, number[], number[], number, [number, number], number | null, number | null, string | null]

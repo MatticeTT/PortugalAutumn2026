@@ -9,10 +9,14 @@ Schrijft web/public/data/:
 - index.json          tijdas, sporten, schaal, redenen, bronvermelding
 - kaart.json          per strand: id, naam, ligging
 - sport/<sport>.json  per strand (zelfde volgorde als kaart.json) een reeks cijfers, één per uur (0 = geen)
+- sport/ww.json       per strand een reeks "WIND WAVE"-cijfers, twee per uur (00 = geen) (M5)
 - getij.json          hoog- en laagwaters per station
 - strand/<id>.json    alles voor de fiche: de voorspelling, GOLF, RUW, het getij en per sport de cijfers
                       (een reeks, één teken per uur). De uitleg bij het cijfer rekent de fiche zelf
                       (web/src/sportscore.ts, zelfde regels; tests/test_sport.py vergelijkt beide).
+                      Per uur ook WIND en WAVE (M5) in "score":
+                      [WIND, WAVE, label, [nota's], [redenen], Hb, [bereik], windsurf, waarschuwing, windklasse]
+                      (label, nota's, redenen, windsurf en waarschuwing als nummer in index.json)
 """
 
 from __future__ import annotations
@@ -26,6 +30,7 @@ from pathlib import Path
 
 import yaml
 
+from pipeline.rules.score import Strand, Uur, rules, score
 from pipeline.sport.score import Invoer, bereken, sporten, strandfactor, tij_op
 from pipeline.tides.interp import interpolate
 
@@ -117,11 +122,19 @@ def main(fetch_ipma: bool = True):
     cfg = sporten()
     namen = list(cfg["sporten"])
     eigen_k = eigen()
+    labels: list[str] = []
+    notas: list[str] = []
+    teksten: list[str] = []   # redenen, windsurfregels en waarschuwingen: één keer bewaard, per uur een nummer
+
+    def code(lst, x):
+        if x not in lst:
+            lst.append(x)
+        return lst.index(x)
 
     (OUT / "strand").mkdir(parents=True, exist_ok=True)
     (OUT / "sport").mkdir(parents=True, exist_ok=True)
     kaart = []
-    per_sport: dict[str, list[str]] = {s: [] for s in namen}
+    per_sport: dict[str, list[str]] = {s: [] for s in [*namen, "ww"]}
     for f in fc["features"]:
         p = f["properties"]
         pid = p["id"]
@@ -166,6 +179,27 @@ def main(fetch_ipma: bool = True):
         ws, wg, T = rnd(ws, 2), rnd(wg, 2), rnd(T, 2)
         wd, H, GR = rnd(wd, 1), rnd(waves["wave_height"], 2), rnd(waves["wave_direction"], 1)
 
+        # WIND en WAVE (M5), met dezelfde invoer.
+        strand = Strand(kijkrichting=p["kijkrichting"], blootstelling=p["blootstelling"],
+                        richting_onzeker=p["onzeker"], besloten_water=p["besloten_water"])
+        ipma = [warning_at(warn, p.get("ipma_area"), t) for t in axis]
+        rows, ww = [], []
+        for i in range(len(axis)):
+            if ws[i] is None or H[i] is None:
+                rows.append(None)
+                ww.append("00")
+                continue
+            parts = [tuple(waves[k][i] or 0 for k in trio) for trio in WAVE_KEYS[1:]]
+            sc = score(Uur(wind_kn=ws[i], vlagen_kn=wg[i] or ws[i], windrichting=wd[i] or 0, deelgolven=parts,
+                           golfhoogte_totaal=H[i], golfperiode_totaal=waves["wave_period"][i],
+                           golfrichting_totaal=GR[i], ipma_zeegang=ipma[i]), strand)
+            ww.append(f"{sc.wind}{sc.wave}")
+            rows.append([sc.wind, sc.wave, code(labels, sc.label), [code(notas, n) for n in sc.notas],
+                         [code(teksten, r) for r in sc.redenen], sc.hb, list(sc.hb_bereik),
+                         code(teksten, sc.windsurf) if sc.windsurf else None,
+                         code(teksten, sc.waarschuwing) if sc.waarschuwing else None, sc.windklasse])
+        per_sport["ww"].append("".join(ww))
+
         cijfers = {s: [] for s in namen}
         golf_s, ruw_s = [], []
         for i in range(len(axis)):
@@ -189,7 +223,7 @@ def main(fetch_ipma: bool = True):
             "wave_height": H, "wave_direction": GR, "piekperiode": T,
             "GOLF": golf_s, "RUW": ruw_s,
             "tij": [None if t is None else TIJ_CODE[t] for t in tij],
-            "ipma": [warning_at(warn, p.get("ipma_area"), t) for t in axis],
+            "ipma": ipma, "score": rows,
             "cijfers": {s: "".join(v) for s, v in cijfers.items()},
         }
         kaart.append({"id": pid, "n": p["naam"], "x": lon, "y": lat})
@@ -210,6 +244,7 @@ def main(fetch_ipma: bool = True):
         "nauwkeurigheid": json.loads((DATA / "validate" / "golven.json").read_text())
         if (DATA / "validate" / "golven.json").exists() else None,
         "ipma": warn,
+        "labels": labels, "notas": notas, "teksten": teksten, "regels": rules(),
     }
     (OUT / "index.json").write_text(json.dumps(index, ensure_ascii=False, separators=(",", ":")))
     print(f"{len(kaart)} stranden, {len(axis)} uur, {len(namen)} sporten, {len(warn)} IPMA-waarschuwingen")

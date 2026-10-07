@@ -243,7 +243,7 @@ Tot die meting er is, gebruikt het "Nauwkeurigste model" ECMWF voor de wind, op 
 
 ## Sportscore (6 oktober 2026)
 
-De site toont nu per sport één cijfer van 1 tot 5 (21 sporten), volgens het document "Sportscore 1 tot 5: rekenregels per sport" van de eigenaar. Bovenaan: datum, sport en uur. De grenzen staan in `pipeline/sport/sporten.yaml`, de rekenwijze in `pipeline/sport/score.py`. De 41 testgevallen van het document geven exact dezelfde cijfers (`tests/test_sport.py`). WIND en WAVE (M5) staan niet meer op de site; de code in `pipeline/rules` blijft. De keuze tussen twee modellen is weg: altijd ECMWF-wind en IBI-golven (GFS-Wave waar IBI ophoudt).
+De site toont nu per sport één cijfer van 1 tot 5 (21 sporten), volgens het document "Sportscore 1 tot 5: rekenregels per sport" van de eigenaar. Bovenaan: datum, sport en uur. De grenzen staan in `pipeline/sport/sporten.yaml`, de rekenwijze in `pipeline/sport/score.py`. De 41 testgevallen van het document geven exact dezelfde cijfers (`tests/test_sport.py`). WIND en WAVE (M5) blijven: eerste keuze in de lijst (de oude halve bolletjes op de kaart), en in elke fiche met label, uitleg, golf op het strand, windpijl en het uurverloop van de dag. De keuze tussen twee modellen is weg: altijd ECMWF-wind en IBI-golven (GFS-Wave waar IBI ophoudt).
 
 ### 27. Strandfactor K: uit de blootstelling, nog na te kijken
 

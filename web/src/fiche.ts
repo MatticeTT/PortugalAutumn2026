@@ -1,8 +1,8 @@
-import { KLEUR, tekstKleur } from './kleuren'
+import { BLAUW, CYAAN, KLEUR, LICHT, tekstKleur } from './kleuren'
 import { extremen, hoogte, vensters, zon, type Extreem } from './getij'
-import { kiesSport, kiesUur, lisDag, lisUur, sportNaam, staat, toonDag, toonTijd, utc, vliegNaar } from './main'
+import { kiesSport, kiesUur, lisDag, lisUur, sportNaam, staat, toonDag, toonTijd, utc, vliegNaar, WW } from './main'
 import { bereken, k1, k2, kant, NAMEN, type Tij } from './sportscore'
-import type { Detail } from './types'
+import type { Detail, ScoreRij } from './types'
 
 const cache = new Map<string, Promise<Detail>>()
 let huidig: Detail | null = null
@@ -99,6 +99,52 @@ function rekenUur(d: Detail, i: number) {
   })
 }
 
+// ---- WIND en WAVE (M5) ----
+
+// Windpijl: wijst waar de wind naartoe waait.
+function windpijl(dir: number | null, kn: number | null) {
+  if (dir == null) return ''
+  return `<svg width="58" height="58" viewBox="-29 -29 58 58" role="img" aria-label="wind uit ${kompas(dir)}">
+    <circle r="27" fill="none" stroke="var(--lijn)"/>
+    <g transform="rotate(${dir + 180})"><path d="M0 -22 L9 6 L0 0 L-9 6 Z" fill="var(--wind)"/></g>
+    <text y="24" text-anchor="middle" font-size="9" fill="var(--zacht)">${Math.round(kn ?? 0)} kn</text></svg>`
+}
+
+// Golfje: groter en feller naarmate de golven groter zijn.
+function golfje(hb: number, wave: number) {
+  const s = Math.min(1, 0.25 + hb / 3)
+  const kleur = BLAUW[Math.max(0, wave - 1)]
+  const h = 10 + 34 * s
+  return `<svg width="84" height="58" viewBox="0 0 84 58" role="img" aria-label="golf ${fmt(hb)} m">
+    <path d="M2 56 C 20 56, 26 ${56 - h}, 46 ${56 - h} C 60 ${56 - h}, 66 ${56 - h * 0.55}, 58 ${56 - h * 0.35}
+      C 70 ${56 - h * 0.5}, 76 52, 82 56 Z" fill="${kleur}" stroke="var(--golf)" stroke-width="1.2"/></svg>`
+}
+
+function wwScore(soort: 'WIND' | 'WAVE', n: number, reden: string) {
+  const kleur = (soort === 'WIND' ? CYAAN : BLAUW)[n - 1] ?? '#ccc'
+  return `<div class="ww-score ${LICHT(n) ? 'licht' : ''} ${n === 5 ? 'gevaar' : ''}" style="background:${kleur}">
+    <b>${soort} ${n}</b><small>${esc(reden.replace(/^(WIND|WAVE) \d: /, ''))}</small></div>`
+}
+
+function wwBlok(d: Detail, i: number) {
+  const row = d.score?.[i]
+  if (!row) return ''
+  const I = staat.index
+  const [wind, wave, li, notas, red, hb, bereik, ws, warn] = row
+  return `<div class="blok ww"><h3>WIND en WAVE</h3>
+    <div class="label">${esc(I.labels[li])}</div>
+    ${warn != null ? `<div class="waarschuwing">⚠ ${esc(I.teksten[warn])}</div>` : ''}
+    <div class="ww-scores">${wwScore('WIND', wind, I.teksten[red[0]])}${wwScore('WAVE', wave, I.teksten[red[1]])}</div>
+    <div class="beeld">
+      <figure>${golfje(hb, wave)}<figcaption>op het strand<br>${fmt(bereik[0])}–${fmt(bereik[1])} m</figcaption></figure>
+      <figure>${windpijl(d.windrichting[i], d.wind[i])}<figcaption>wind ${d.windrichting[i] != null ? 'uit ' + kompas(d.windrichting[i]!) : ''}</figcaption></figure>
+    </div>
+    ${ws != null ? `<p>${esc(I.teksten[ws])}</p>` : ''}
+    ${notas.length ? `<ul class="notas">${notas.map((n) => `<li>${esc(I.notas[n])}</li>`).join('')}</ul>` : ''}</div>`
+}
+
+// ---- Sportscore ----
+
 function scoreBlok(r: NonNullable<ReturnType<typeof rekenUur>>) {
   const u = r.d[staat.sport]
   const s = u.s
@@ -156,6 +202,15 @@ function alleSporten(r: NonNullable<ReturnType<typeof rekenUur>>) {
     }).join('')}`).join('')
 }
 
+// Bovenaan de lijst: WIND en WAVE, om de kaart weer daarop te zetten.
+function wwRij(d: Detail, i: number) {
+  const row = d.score?.[i]
+  if (!row) return ''
+  const half = (n: number, pal: string[]) => `<b class="pil" style="background:${pal[n - 1]};color:${LICHT(n) ? '#0d2530' : '#fff'}">${n}</b>`
+  return `<button class="rij" data-ww aria-pressed="${staat.sport === WW}"><span class="nm">WIND en WAVE</span><span></span>
+    <span class="lab">${half(row[0], CYAAN)}${half(row[1], BLAUW)}<span>WIND · WAVE</span></span></button>`
+}
+
 function getijBlok(d: Detail, dagStart: number, dagEind: number, nu: number) {
   if (!d.getij) return ''
   const ex = extremen(staat.getij, d.getij.a, d.getij.b, d.getij.w)
@@ -198,13 +253,21 @@ function getijBlok(d: Detail, dagStart: number, dagEind: number, nu: number) {
     <p class="klein">Surfvenster (midden tussen eb en vloed, bij daglicht): ${vtxt}. Hoogtes tegenover het Zero Hidrográfico.</p>${nauw}</div>`
 }
 
+// Het uurverloop van de dag: de gekozen sport, WIND en WAVE.
 function dagstrook(d: Detail, idx: number[]) {
   const c = d.cijfers[staat.sport] ?? ''
   const cel = (n: number, nu: boolean) =>
     `<td class="cijfer ${nu ? 'nu' : ''}" style="background:${n ? KLEUR[n - 1] : 'transparent'};color:${n ? tekstKleur(n) : 'inherit'}">${n || '–'}</td>`
+  const wwCel = (n: number, pal: string[], nu: boolean) =>
+    `<td class="cijfer ${nu ? 'nu' : ''}" style="background:${pal[n - 1] ?? 'transparent'};color:${LICHT(n) ? '#0d2530' : '#fff'}">${n || '–'}</td>`
+  const rows: (ScoreRij | null)[] = d.score ?? []
+  const sport = staat.sport === WW ? ''
+    : `<tr><td>${esc(sportNaam(staat.sport))}</td>${idx.map((i) => cel(Number(c[i] ?? 0), i === staat.i)).join('')}</tr>`
   return `<div class="tabel"><table>
     <tr><th>uur</th>${idx.map((i) => `<th class="${i === staat.i ? 'nu' : ''}"><a href="#" data-i="${i}">${lisUur(utc(staat.index.tijd[i]))}</a></th>`).join('')}</tr>
-    <tr><td>${esc(sportNaam(staat.sport))}</td>${idx.map((i) => cel(Number(c[i] ?? 0), i === staat.i)).join('')}</tr></table></div>`
+    ${sport}
+    <tr><td>WIND</td>${idx.map((i) => wwCel(rows[i]?.[0] ?? 0, CYAAN, i === staat.i)).join('')}</tr>
+    <tr><td>WAVE</td>${idx.map((i) => wwCel(rows[i]?.[1] ?? 0, BLAUW, i === staat.i)).join('')}</tr></table></div>`
 }
 
 function ruweTabel(d: Detail, idx: number[]) {
@@ -225,7 +288,8 @@ function ruweTabel(d: Detail, idx: number[]) {
     ${rij('Deining 1 (m)', n('swell_wave_height'))}${rij('· periode (s)', n('swell_wave_period', 0))}${rij('· richting', p('swell_wave_direction'))}
     ${rij('Deining 2 (m)', n('secondary_swell_wave_height'))}${rij('· periode (s)', n('secondary_swell_wave_period', 0))}${rij('· richting', p('secondary_swell_wave_direction'))}
     ${rij('Windgolf (m)', n('wind_wave_height'))}${rij('· periode (s)', n('wind_wave_period', 0))}${rij('· richting', p('wind_wave_direction'))}
-    ${rij('Golf aan het strand (m)', n('GOLF'))}${rij('Ruwheid (m)', n('RUW'))}
+    ${rij('Op het strand, WAVE (m)', (i) => fmt(d.score?.[i]?.[5]))}
+    ${rij('Golf aan het strand, sport (m)', n('GOLF'))}${rij('Ruwheid (m)', n('RUW'))}
     ${rij('Getij', (i) => (d.tij[i] == null ? '–' : tij[d.tij[i]!]))}
   </table></div>`
 }
@@ -244,8 +308,8 @@ function render() {
     <h2>${esc(d.naam)}</h2>
     <div class="sub">${esc(d.district)} · ${toonDag(ms)} ${toonTijd(ms)}</div>${warn}`
   const midden = r
-    ? `${scoreBlok(r)}${omstandigheden(d, i, r)}${overStrand(d)}
-       <div class="blok"><h3>Alle sporten om ${toonTijd(ms)}</h3><div class="lijst">${alleSporten(r)}</div></div>`
+    ? `${staat.sport === WW ? '' : scoreBlok(r)}${wwBlok(d, i)}${omstandigheden(d, i, r)}${overStrand(d)}
+       <div class="blok"><h3>Alle sporten om ${toonTijd(ms)}</h3><div class="lijst">${wwRij(d, i)}${alleSporten(r)}</div></div>`
     : '<p>Voor dit uur is er geen voorspelling.</p>'
   el().innerHTML = `${kop}${midden}
     <div class="blok"><h3>Deze dag</h3>${dagstrook(d, idx)}</div>
@@ -263,4 +327,5 @@ function bind() {
     a.addEventListener('click', (e) => { e.preventDefault(); kiesUur(Number(a.dataset.i)) }))
   el().querySelectorAll<HTMLButtonElement>('button[data-sport]').forEach((b) =>
     b.addEventListener('click', () => kiesSport(b.dataset.sport!)))
+  el().querySelector<HTMLButtonElement>('button[data-ww]')?.addEventListener('click', () => kiesSport(WW))
 }
