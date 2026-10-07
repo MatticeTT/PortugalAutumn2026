@@ -1,19 +1,19 @@
-"""De databestanden voor de site maken.
+"""De databestanden voor de site maken, met het rekenmodel v2 (pipeline/rules/model.py).
 
-Per strand en per uur: WAVE en WIND (level 1 tot 4) en precies één uitkomst (te wild, golfsurfen,
-windsurfen op golven, windsurfen, stille waters), met de regels van pipeline/rules/uitkomst.py.
+Per strand en per uur de vier lagen van het model:
+1. WAVE  (level uit E_zee: hoogte en periode)
+2. WIND  (level uit wind en vlaag)
+3. de extra's per strand (bereikt %, E, WAVE_strand, periode, H_strand, windhoek, tij_pct, tijgewicht, verval)
+4. de vijf scores en de conclusie
 Gegevens zoals Windguru: wind van GFS, golven van GFS-Wave (open zee, per deining apart).
 
 Schrijft web/public/data/:
-- index.json        tijdas, uitkomsten, bronvermelding
-- kaart.json        per strand: id, naam, ligging
+- index.json        tijdas, bron, meldingen over de data
+- kaart.json        per strand: id, naam, district, ligging
 - sport/ww.json     per strand (zelfde volgorde als kaart.json) per uur twee cijfers: WIND en WAVE (00 = geen)
 - getij.json        hoog- en laagwaters per station
-- strand/<id>.json  alles voor de fiche: de voorspelling per uur, het getij, en per uur
-                    "uitkomst" (W, G, O, S, R; "." = past niets echt; "-" = geen voorspelling),
-                    "straf" (strafpunten van de winnaar), "reden" (waarvoor dat strafpunt is, zie REDENEN),
-                    "WAVE", "WIND" (level), "licht" (1 = daglicht), "H" (H_strand, m), "verval" (m) en
-                    "getijregel" (1 = de getijregels tellen: verval > H_strand / 0,78)
+- controle.json     de controles op de stranddata (pipeline/rules/controle.py)
+- strand/<id>.json  alles voor de fiche (zie main())
 """
 
 from __future__ import annotations
@@ -25,8 +25,10 @@ import urllib.request
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
-from pipeline.rules.dagplan import daglicht, getij_fractie
-from pipeline.rules.uitkomst import REDENEN, UITKOMSTEN, Deining, Strand, Uur, bereken, getoond
+from pipeline.rules import controle as stranddata
+from pipeline.rules.hulp import controle, krachtigste
+from pipeline.rules.model import NAAM, VOLGORDE, bereken
+from pipeline.site.zon_getij import daglicht, getij_fractie
 from pipeline.tides.interp import interpolate
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -37,11 +39,15 @@ HOURS = 240
 WIND = "wind_gfs"
 GOLF = "golf_gfswave"
 BRON = "GFS 13 km (wind) en GFS-Wave 16 km (golven), zoals Windguru"
+# Per deining: hoogte, periode, piekperiode (telt als de bron ze geeft), richting.
 DEININGEN = [
-    ("swell_wave_height", "swell_wave_period", "swell_wave_direction"),
-    ("secondary_swell_wave_height", "secondary_swell_wave_period", "secondary_swell_wave_direction"),
-    ("wind_wave_height", "wind_wave_period", "wind_wave_direction"),
+    ("swell_wave_height", "swell_wave_period", "swell_wave_peak_period", "swell_wave_direction"),
+    ("secondary_swell_wave_height", "secondary_swell_wave_period", "secondary_swell_wave_peak_period",
+     "secondary_swell_wave_direction"),
+    ("wind_wave_height", "wind_wave_period", "wind_wave_peak_period", "wind_wave_direction"),
 ]
+# Letter per conclusie voor de kaartkleuren: hoofdletter = ideaal, kleine letter = andere, W = te wild.
+LETTER = {"golfsurfen": "G", "windsurfen_op_golven": "O", "windsurfen": "S", "stille_waters": "R"}
 TOTAAL = ("wave_height", "wave_period", "wave_direction")
 
 
@@ -109,6 +115,30 @@ def getij_stand(ext: list[list], t_min: float) -> tuple[float | None, float | No
     return None, None
 
 
+def conclusie_letter(tekst: str) -> str:
+    """De conclusie van model.conclusie() als één letter (W te wild, hoofdletter ideaal, kleine letter andere)."""
+    if tekst.startswith("te wild"):
+        return "W"
+    for naam, letter in LETTER.items():
+        if tekst == "ideaal " + NAAM[naam]:
+            return letter
+        if tekst.startswith(f"andere: {NAAM[naam]} "):
+            return letter.lower()
+    raise ValueError(f"onbekende conclusie: {tekst}")
+
+
+def meldingen(paren: list[tuple[float, float]]) -> list[str]:
+    """Model v2: is de vlaag in de data elk uur exact gelijk aan de wind, dan klopt de vlagenbron niet."""
+    uit = []
+    if paren and all(v == w for v, w in paren):
+        uit.append("De vlaag is elk uur exact gelijk aan de wind: de vlagenbron klopt niet.")
+    lager = sum(1 for v, w in paren if v < w)
+    if lager:
+        uit.append(f"In {round(100 * lager / len(paren))}% van de uren is de vlaag in de data lager dan de wind; "
+                   "daar rekent het model met de wind.")
+    return uit
+
+
 def main(fetch_ipma: bool = True):
     fc = json.loads((DATA / "beaches" / "stranden.geojson").read_text())
     punten = load("punten")
@@ -123,6 +153,7 @@ def main(fetch_ipma: bool = True):
     (OUT / "strand").mkdir(parents=True, exist_ok=True)
     (OUT / "sport").mkdir(parents=True, exist_ok=True)
     kaart, ww_rijen = [], []
+    vlaag_paren: list[tuple[float, float]] = []
     for f in fc["features"]:
         p = f["properties"]
         pid = p["id"]
@@ -130,50 +161,63 @@ def main(fetch_ipma: bool = True):
         pt = punten.get(pid)
         if pt is None:  # nieuw strand: de voorspelling volgt bij de volgende run
             continue
-        strand = Strand(kust=p["kijkrichting"], venster=p["venster"])
         g = getij.get(pid)
         ext = interpolate(ext_by[g["a"]], ext_by[g["b"]], g["w"]) if g else []
 
         ws = rnd(align(wsrc, pt["wind"], "wind_speed_10m", axis), 1)
-        wg = rnd(align(wsrc, pt["wind"], "wind_gusts_10m", axis), 1)
+        wg_ruw = rnd(align(wsrc, pt["wind"], "wind_gusts_10m", axis), 1)
         wd = rnd(align(wsrc, pt["wind"], "wind_direction_10m", axis), 0)
-        # Een vlaag is nooit zwakker dan de gemiddelde wind; GFS geeft er soms een lagere.
-        wg = [None if v is None else max(v, w or 0) for v, w in zip(wg, ws, strict=True)]
+        vlaag_paren += [(v, w) for v, w in zip(wg_ruw, ws, strict=True) if v is not None and w is not None]
+        # Model v2, invoer: is de vlaag lager dan de wind, reken dan met de wind.
+        wg = [None if v is None else max(v, w or 0) for v, w in zip(wg_ruw, ws, strict=True)]
         golf = {v: rnd(align(gsrc, pt["golf"], v, axis), 2 if "height" in v else 1 if "period" in v else 0)
-                for trio in (TOTAAL, *DEININGEN) for v in trio}
+                for v in (*TOTAAL, *(x for d in DEININGEN for x in d))}
+        piek = any(x is not None for _h, _t, tp, _r in DEININGEN for x in golf[tp])
+        c = controle(p["kijkrichting"], p["venster"])
+        rekent = not c["blokkerend"]
+        venster = tuple(p["venster"][0]) if rekent else (0, 0)
 
-        uitk, straf, wave, wind, licht = [], [], [], [], []
-        reden: list[str] = []
-        Hs: list[float | None] = []
-        vervallen: list[float | None] = []
-        regel: list[str] = []
-        for i in range(len(axis)):
+        n = len(axis)
+        rij = {k: [None] * n for k in ("zee_h", "zee_t", "zee_r", "bereikt", "E", "periode", "H", "windhoek",
+                                        "tij", "tijgewicht", "verval", "scores", "conclusie")}
+        wave, wind, laag3, letter, licht = [], [], [], [], []
+        for i in range(n):
             licht.append("1" if daglicht(lat, lon, minuten[i]) else "0")
-            if ws[i] is None or golf["wave_height"][i] is None:
-                for lijst, leeg in ((uitk, "-"), (straf, "0"), (wave, "0"), (wind, "0"), (reden, ""),
-                                    (Hs, None), (vervallen, None), (regel, "0")):
-                    lijst.append(leeg)
+            dein = [(golf[h][i], golf[tp][i] if golf[tp][i] is not None else golf[t][i], golf[r][i])
+                    for h, t, tp, r in DEININGEN]
+            if ws[i] is None or golf["wave_height"][i] is None:  # geen voorspelling voor dit uur
+                wave.append("0"), wind.append("0"), laag3.append("0"), letter.append("-")
                 continue
-            deiningen = [Deining(golf[h][i] or 0, golf[t][i] or 0, golf[r][i] or 0) for h, t, r in DEININGEN]
+            # Een deining zonder hoogte, periode of richting bestaat op dit uur niet.
+            dein = [d for d in dein if None not in d and d[0] > 0 and d[1] > 0]
             tij, verval = getij_stand(ext, minuten[i])
-            r = bereken(Uur(wind=ws[i], vlaag=wg[i] if wg[i] is not None else ws[i], windrichting=wd[i] or 0,
-                            deiningen=deiningen, tij=tij, verval=verval), strand)
-            uitk.append(getoond(r) or ".")  # "." = geen uitkomst die echt past
-            straf.append(str(min(r.strafpunten, 9)))
-            wave.append(str(r.wave))
-            wind.append(str(r.wind))
-            reden.append(",".join(r.redenen) if getoond(r) else "")
-            Hs.append(round(r.H_strand, 2))
-            vervallen.append(None if verval is None else round(verval, 2))
-            regel.append("1" if r.getij_telt else "0")
+            # Zonder getij rekent het model met zijn standaardwaarden niet: dan geen laag 3 en 4.
+            heeft_getij = tij is not None
+            r = bereken(p["kijkrichting"], venster, ws[i], wg[i], wd[i] or 0, dein,
+                        tij_pct=tij if heeft_getij else 50, verval=verval if heeft_getij else 2.4,
+                        golfdata_in_baai=not rekent)  # niet rekenbaar: alleen laag 1 en 2 gebruiken
+            wave.append(str(r["WAVE"]))
+            wind.append(str(r["WIND"]))
+            k = krachtigste(dein)
+            if k is not None:
+                rij["zee_h"][i], rij["zee_t"][i], rij["zee_r"][i] = dein[k][0], dein[k][1], dein[k][2]
+            if not (rekent and heeft_getij):
+                laag3.append("0"), letter.append(".")
+                continue
+            laag3.append(str(r["WAVE_strand"]))
+            rij["bereikt"][i], rij["E"][i], rij["periode"][i] = r["bereikt_pct"], r["E"], r["periode"]
+            rij["H"][i], rij["windhoek"][i] = r["H_strand"], r["windhoek"]
+            rij["tij"][i], rij["tijgewicht"][i], rij["verval"][i] = round(tij), r["tijgewicht"], round(verval, 2)
+            rij["scores"][i] = [r[x] for x in (*VOLGORDE, "te_wild")]
+            rij["conclusie"][i] = r["conclusie"]
+            letter.append(conclusie_letter(r["conclusie"]))
         ww_rijen.append("".join(a + b for a, b in zip(wind, wave, strict=True)))
 
         detail = {
             "id": pid, "naam": p["naam"], "lat": lat, "lon": lon, "kust": p["kijkrichting"],
-            "venster": p["venster"], "district": p["district"], "getij": g,
-            "wind": ws, "vlagen": wg, "windrichting": wd, **golf,
-            "uitkomst": "".join(uitk), "straf": "".join(straf), "WAVE": "".join(wave), "WIND": "".join(wind),
-            "licht": "".join(licht), "reden": reden, "H": Hs, "verval": vervallen, "getijregel": "".join(regel),
+            "venster": p["venster"], "district": p["district"], "getij": g, "controle": c, "piekperiode": piek,
+            "wind": ws, "vlagen": wg, "windrichting": wd, "WAVE": "".join(wave), "WIND": "".join(wind),
+            "WAVE_strand": "".join(laag3), "letter": "".join(letter), "licht": "".join(licht), **rij,
             "ipma": [warning_at(warn, p.get("ipma_area"), t) for t in axis],
         }
         kaart.append({"id": pid, "n": p["naam"], "d": p["district"], "x": lon, "y": lat})
@@ -187,8 +231,9 @@ def main(fetch_ipma: bool = True):
     index = {
         "gemaakt": datetime.now(UTC).strftime("%Y-%m-%dT%H:%MZ"),
         "opgehaald": {WIND: wsrc.get("_opgehaald"), GOLF: gsrc.get("_opgehaald")},
-        "tijd": axis, "bron": BRON, "uitkomsten": UITKOMSTEN, "redenen": REDENEN, "ipma": warn,
+        "tijd": axis, "bron": BRON, "namen": NAAM, "ipma": warn, "meldingen": meldingen(vlaag_paren),
     }
+    stranddata.main()
     (OUT / "index.json").write_text(json.dumps(index, ensure_ascii=False, separators=(",", ":")))
     print(f"{len(kaart)} stranden, {len(axis)} uur")
 

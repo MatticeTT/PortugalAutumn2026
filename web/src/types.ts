@@ -38,23 +38,36 @@ export interface Detail {
   lat: number
   lon: number
   kust: number // kustrichting
-  venster: [number, number][] // swell-venster
+  venster: [number, number][] // swell-venster(s) uit de stranddata
   district: string
   getij: { a: string; b: string; w: number; nauwkeurigheid: string; nota: string | null } | null
+  controle: { blokkerend: string[]; nakijken: string[]; aandeel16?: number[] }
+  piekperiode: boolean
   wind: (number | null)[]
   vlagen: (number | null)[]
   windrichting: (number | null)[]
-  uitkomst: string // per uur: W te wild, G golfsurfen, O windsurfen op golven, S windsurfen, R stille waters, - geen
-  straf: string // per uur: strafpunten van de uitkomst (0 ideaal, 1 = zie reden)
+  // laag 1 en 2
   WAVE: string // per uur level 1–4 (0 = geen)
   WIND: string
+  zee_h: (number | null)[] // krachtigste deining op zee
+  zee_t: (number | null)[]
+  zee_r: (number | null)[]
+  // laag 3
+  WAVE_strand: string
+  bereikt: (number | null)[]
+  E: (number | null)[]
+  periode: (number | null)[]
+  H: (number | null)[]
+  windhoek: (number | null)[]
+  tij: (number | null)[]
+  tijgewicht: (number | null)[]
+  verval: (number | null)[]
+  // laag 4
+  scores: (number[] | null)[] // golfsurfen, windsurfen op golven, windsurfen, stille waters, te wild
+  conclusie: (string | null)[]
+  letter: string // per uur: G O S R ideaal, g o s r andere, W te wild, "." niet berekend, "-" geen data
   licht: string // per uur 1 = daglicht
-  reden: string[] // per uur: waarvoor het strafpunt is (codes, komma's; "" = ideaal of niets getoond)
-  H: (number | null)[] // per uur H_strand (m)
-  verval: (number | null)[] // per uur verval van de getijslag (m)
-  getijregel: string // per uur 1 = de getijregels tellen (verval > H_strand / 0,78)
   ipma: string[]
-  [k: string]: any // de golfreeksen (wave_height, swell_wave_period, ...)
 }
 
 export interface Getij {

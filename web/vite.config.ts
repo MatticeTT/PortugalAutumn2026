@@ -5,7 +5,7 @@ export default defineConfig({
   build: {
     chunkSizeWarningLimit: 1500,
     rollupOptions: {
-      input: { main: resolve(__dirname, 'index.html'), rekenen: resolve(__dirname, 'rekenen.html') },
+      input: { main: resolve(__dirname, 'index.html'), rekenen: resolve(__dirname, 'rekenen.html'), controle: resolve(__dirname, 'controle.html') },
     },
   },
 })

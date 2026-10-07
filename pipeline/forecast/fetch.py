@@ -109,6 +109,20 @@ def open_meteo(url: str, pts: dict, model: str, variables: list[str], extra: dic
     return out
 
 
+# Rekenmodel v2: heeft een bron per deining een piekperiode, dan telt die. Weigert de bron die
+# variabelen, dan zonder (de gemiddelde periode blijft dan staan).
+PIEK_VARS = ["swell_wave_peak_period", "secondary_swell_wave_peak_period", "wind_wave_peak_period"]
+
+
+def golf_met_piek(pts: dict) -> dict:
+    url = "https://marine-api.open-meteo.com/v1/marine"
+    try:
+        return open_meteo(url, pts, "ncep_gfswave016", WAVE_VARS + PIEK_VARS)
+    except Exception as e:  # noqa: BLE001
+        print("piekperiode niet beschikbaar:", e)
+        return open_meteo(url, pts, "ncep_gfswave016", WAVE_VARS)
+
+
 def ibi(pts: dict) -> dict:
     """IBI-golven per punt. Kustcellen zonder data (NaN) krijgen de dichtste cel met data."""
     if not os.environ.get("COPERNICUSMARINE_SERVICE_USERNAME"):
@@ -156,8 +170,7 @@ def main(argv: list[str]) -> int:
                                        WIND_VARS, {"wind_speed_unit": "kn"}),
         "wind_ecmwf": lambda: open_meteo("https://api.open-meteo.com/v1/forecast", wind_pts, "ecmwf_ifs",
                                          WIND_VARS, {"wind_speed_unit": "kn"}),
-        "golf_gfswave": lambda: open_meteo("https://marine-api.open-meteo.com/v1/marine", wave_pts,
-                                           "ncep_gfswave016", WAVE_VARS),
+        "golf_gfswave": lambda: golf_met_piek(wave_pts),
         "golf_ibi": lambda: ibi(wave_pts),
     }
     failed = []
