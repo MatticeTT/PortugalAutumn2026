@@ -120,10 +120,14 @@ function golfje(hb: number, wave: number) {
       C 70 ${56 - h * 0.5}, 76 52, 82 56 Z" fill="${kleur}" stroke="var(--golf)" stroke-width="1.2"/></svg>`
 }
 
+// Zelfde betekenis als in de legende.
+const WW_SCHAAL = ['', 'de moeite niet', 'je kan proberen', 'ideaal voor beginners', 'sterk: voor gevorderden', 'gevaarlijk']
+
 function wwScore(soort: 'WIND' | 'WAVE', n: number, reden: string) {
   const kleur = (soort === 'WIND' ? CYAAN : BLAUW)[n - 1] ?? '#ccc'
   return `<div class="ww-score ${LICHT(n) ? 'licht' : ''} ${n === 5 ? 'gevaar' : ''}" style="background:${kleur}">
-    <b>${soort} ${n}</b><small>${esc(reden.replace(/^(WIND|WAVE) \d: /, ''))}</small></div>`
+    <span class="soort">${soort}</span><b>${n}</b><strong>${WW_SCHAAL[n]}</strong>
+    <small>${esc(reden.replace(/^(WIND|WAVE) \d: /, ''))}</small></div>`
 }
 
 function wwBlok(d: Detail, i: number) {
@@ -131,7 +135,7 @@ function wwBlok(d: Detail, i: number) {
   if (!row) return ''
   const I = staat.index
   const [wind, wave, li, notas, red, hb, bereik, ws, warn] = row
-  return `<div class="blok ww"><h3>WIND en WAVE</h3>
+  return `<div class="ww">
     <div class="label">${esc(I.labels[li])}</div>
     ${warn != null ? `<div class="waarschuwing">⚠ ${esc(I.teksten[warn])}</div>` : ''}
     <div class="ww-scores">${wwScore('WIND', wind, I.teksten[red[0]])}${wwScore('WAVE', wave, I.teksten[red[1]])}</div>
@@ -163,17 +167,17 @@ function omstandigheden(d: Detail, i: number, r: NonNullable<ReturnType<typeof r
   const x = r.x
   const wd = d.windrichting[i]
   const tij = d.tij[i]
-  return `<div class="blok"><h3>Golven</h3>
+  return `<div class="deel"><h4>Golven</h4>
       <p class="waarde">${fmt(d.wave_height?.[i])} m · ${fmt(d.piekperiode[i], 0)} s${d.wave_direction?.[i] != null ? ` · uit ${kompas(d.wave_direction[i])}` : ''}
         <span class="klein">aan het strand ${k2(x.GOLF)} m</span></p>
       ${x.K === 0 ? '<p class="klein">Lagune: hier breken geen golven.</p>' : rij(GOLVEN.map((g, k) => ({ naam: g.naam, svg: svgGolf(g.a, k) })), golfSoort(x.theta))}
     </div>
-    <div class="blok"><h3>Wind</h3>
-      <p class="waarde">${fmt(d.wind[i], 0)} kn · stoten ${fmt(d.vlagen[i], 0)} kn${wd != null ? ` · uit ${kompas(wd)} (${wd}°)` : ''}
+    <div class="deel"><h4>Wind</h4>
+      <p class="waarde">${fmt(d.wind[i], 0)} kn · stoten ${fmt(d.vlagen[i], 0)} kn${wd != null ? ` · uit ${kompas(wd)} (${Math.round(wd)}°)` : ''}
         <span class="klein">${kant(x.a)}${x.luw ? ', in de luwte telt de helft' : ''}</span></p>
       ${rij(RICHTINGEN, sector(x.a))}
     </div>
-    <div class="blok"><h3>Getij</h3>
+    <div class="deel"><h4>Getij</h4>
       ${tij == null ? '<p class="klein">Geen getij voor dit uur.</p>' : rij(GETIJ, tij)}
     </div>`
 }
@@ -187,28 +191,25 @@ function overStrand(d: Detail) {
     d.LUWTE ? `<li>In de luwte bij wind uit ${d.LUWTE[0]}° tot ${d.LUWTE[1]}°.</li>` : '',
   ]
   const onzeker = d.onzeker ? `<p class="klein">Waarom onzeker: ${esc(d.redenen_onzeker.join('; '))}.</p>` : ''
-  return `<details class="blok strand"><summary>Over dit strand</summary><ul class="uitleg">${delen.join('')}</ul>${onzeker}</details>`
+  return `<details class="blok meer"><summary>Over dit strand</summary><ul class="uitleg">${delen.join('')}</ul>${onzeker}</details>`
 }
 
+// Per groep (Surfweer, Windweer, Wind-golven, Stille waters) ingeklapt; open je een groep,
+// dan zie je de cijfers van de sporten. Tik op een sport om die op de kaart te zetten.
 function alleSporten(r: NonNullable<ReturnType<typeof rekenUur>>) {
   const I = staat.index
   const meter = (s: number) => `<span class="meter" aria-hidden="true">${[1, 2, 3, 4, 5].map((k) =>
     `<i style="${k === s ? `background:${KLEUR[s - 1]};border-color:transparent` : ''}"></i>`).join('')}</span>`
-  return Object.entries(I.groepen).map(([g, naam]) => `<div class="grp">${esc(naam)}</div>
-    ${I.sporten.filter((s) => s.groep === g).map((sp) => {
-      const s = r.d[sp.id].s
-      return `<button class="rij" data-sport="${sp.id}" aria-pressed="${sp.id === staat.sport}">
-        <span class="nm">${esc(sp.naam)}</span>${meter(s)}<span class="lab">${pil(s)}<span>${NAMEN[s]}</span></span></button>`
-    }).join('')}`).join('')
-}
-
-// Bovenaan de lijst: WIND en WAVE, om de kaart weer daarop te zetten.
-function wwRij(d: Detail, i: number) {
-  const row = d.score?.[i]
-  if (!row) return ''
-  const half = (n: number, pal: string[]) => `<b class="pil" style="background:${pal[n - 1]};color:${LICHT(n) ? '#0d2530' : '#fff'}">${n}</b>`
-  return `<button class="rij" data-ww aria-pressed="${staat.sport === WW}"><span class="nm">WIND en WAVE</span><span></span>
-    <span class="lab">${half(row[0], CYAAN)}${half(row[1], BLAUW)}<span>WIND · WAVE</span></span></button>`
+  return Object.entries(I.groepen).map(([g, naam]) => {
+    const sp = I.sporten.filter((x) => x.groep === g)
+    const open = sp.some((x) => x.id === staat.sport) ? 'open' : ''
+    return `<details class="groep" ${open}><summary>${esc(naam)}</summary>
+      ${sp.map((x) => {
+        const s = r.d[x.id].s
+        return `<button class="rij" data-sport="${x.id}" aria-pressed="${x.id === staat.sport}">
+          <span class="nm">${esc(x.naam)}</span>${meter(s)}<span class="lab">${pil(s)}<span>${NAMEN[s]}</span></span></button>`
+      }).join('')}</details>`
+  }).join('')
 }
 
 function getijBlok(d: Detail, dagStart: number, dagEind: number, nu: number) {
@@ -246,28 +247,60 @@ function getijBlok(d: Detail, dagStart: number, dagEind: number, nu: number) {
   const tijden = dag.map((e) => `<span>${e.hoog ? 'Hoogwater' : 'Laagwater'} ${toonTijd(e.t * 60000)} · ${fmt(e.h)} m</span>`).join('')
   const vtxt = ven.length ? ven.map(([a, b]) => `${toonTijd(a * 60000)}–${toonTijd(b * 60000)}`).join(', ') : 'geen bij daglicht'
   const nauw = d.getij.nauwkeurigheid !== '±5 min' ? `<p class="klein">Getijtijden ${esc(d.getij.nauwkeurigheid)}${d.getij.nota ? ': ' + esc(d.getij.nota) : ''}.</p>` : ''
-  return `<div class="blok getij"><h3>Getij vandaag</h3>
+  return `<div class="getij">
     <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="getijcurve">${nacht}${vensterRect}
       <polyline points="${pts.join(' ')}" fill="none" stroke="var(--golf)" stroke-width="2"/>${labels}${nuLijn}${uren}</svg>
     <div class="tijden">${tijden}</div>
     <p class="klein">Surfvenster (midden tussen eb en vloed, bij daglicht): ${vtxt}. Hoogtes tegenover het Zero Hidrográfico.</p>${nauw}</div>`
 }
 
-// Het uurverloop van de dag: de gekozen sport, WIND en WAVE.
-function dagstrook(d: Detail, idx: number[]) {
-  const c = d.cijfers[staat.sport] ?? ''
-  const cel = (n: number, nu: boolean) =>
-    `<td class="cijfer ${nu ? 'nu' : ''}" style="background:${n ? KLEUR[n - 1] : 'transparent'};color:${n ? tekstKleur(n) : 'inherit'}">${n || '–'}</td>`
-  const wwCel = (n: number, pal: string[], nu: boolean) =>
-    `<td class="cijfer ${nu ? 'nu' : ''}" style="background:${pal[n - 1] ?? 'transparent'};color:${LICHT(n) ? '#0d2530' : '#fff'}">${n || '–'}</td>`
+// De dag in één oogopslag: per uur WIND, wind, WAVE, golf en het waterpeil, op één tijdlijn.
+// De nacht is gedimd; het gekozen uur is omkaderd. Tik op een uur om het te kiezen.
+function dagverloop(d: Detail, idx: number[], dagStart: number) {
+  const T = staat.index.tijd
   const rows: (ScoreRij | null)[] = d.score ?? []
-  const sport = staat.sport === WW ? ''
-    : `<tr><td>${esc(sportNaam(staat.sport))}</td>${idx.map((i) => cel(Number(c[i] ?? 0), i === staat.i)).join('')}</tr>`
-  return `<div class="tabel"><table>
-    <tr><th>uur</th>${idx.map((i) => `<th class="${i === staat.i ? 'nu' : ''}"><a href="#" data-i="${i}">${lisUur(utc(staat.index.tijd[i]))}</a></th>`).join('')}</tr>
+  const licht = zon(d.lat, d.lon, dagStart / 60000 + 720)
+  const ex = d.getij ? extremen(staat.getij, d.getij.a, d.getij.b, d.getij.w) : []
+  const peil = (i: number) => (ex.length ? hoogte(ex, utc(T[i]) / 60000) : null)
+  const piek = (i: number) => {
+    const t = utc(T[i]) / 60000
+    const e = ex.find((x) => x.t >= t - 30 && x.t < t + 30)
+    return e ? (e.hoog ? 'HW' : 'LW') : ''
+  }
+  const kol = (i: number) => {
+    const t = utc(T[i]) / 60000
+    const nacht = licht && (t + 30 < licht[0] || t - 30 > licht[1])
+    return `${nacht ? 'nacht' : ''} ${i === staat.i ? 'nu' : ''}`
+  }
+  const cel = (i: number, html: string, stijl = '') => `<td class="${kol(i)}" style="${stijl}">${html}</td>`
+  const ww = (i: number, k: 0 | 1) => {
+    const n = rows[i]?.[k] ?? 0
+    const pal = k === 0 ? CYAAN : BLAUW
+    return cel(i, `<b>${n || '–'}</b>`, n ? `background:${pal[n - 1]};color:${LICHT(n) ? '#0d2530' : '#fff'}` : '')
+  }
+  const pijl = (i: number) => {
+    const r = d.windrichting[i]
+    return r == null ? '–' : `<span class="pijl" style="transform:rotate(${r + 180}deg)" title="uit ${kompas(r)}">↑</span>`
+  }
+  const balk = (i: number) => {
+    const h = peil(i)
+    if (h == null) return '–'
+    const pct = Math.max(4, Math.min(100, (h / 4) * 100))
+    return `<span class="peil" title="${fmt(h)} m"><i style="height:${pct}%"></i></span><small>${piek(i)}</small>`
+  }
+  const sport = staat.sport === WW ? '' : `<tr class="r-cijfer"><th>${esc(sportNaam(staat.sport))}</th>${idx.map((i) => {
+    const n = Number(d.cijfers[staat.sport]?.[i] ?? 0)
+    return cel(i, `<b>${n || '–'}</b>`, n ? `background:${KLEUR[n - 1]};color:${tekstKleur(n)}` : '')
+  }).join('')}</tr>`
+  return `<div class="tabel verloop"><table>
+    <tr><th></th>${idx.map((i) => `<td class="${kol(i)}"><a href="#" data-i="${i}">${lisUur(utc(T[i]))}u</a></td>`).join('')}</tr>
     ${sport}
-    <tr><td>WIND</td>${idx.map((i) => wwCel(rows[i]?.[0] ?? 0, CYAAN, i === staat.i)).join('')}</tr>
-    <tr><td>WAVE</td>${idx.map((i) => wwCel(rows[i]?.[1] ?? 0, BLAUW, i === staat.i)).join('')}</tr></table></div>`
+    <tr class="r-cijfer"><th>WIND</th>${idx.map((i) => ww(i, 0)).join('')}</tr>
+    <tr><th>wind <small>kn</small></th>${idx.map((i) => cel(i, `${pijl(i)}<span>${fmt(d.wind[i], 0)}</span>`)).join('')}</tr>
+    <tr class="r-cijfer"><th>WAVE</th>${idx.map((i) => ww(i, 1)).join('')}</tr>
+    <tr><th>golf <small>m</small></th>${idx.map((i) => cel(i, `<span>${fmt(d.wave_height?.[i])}</span><small>${fmt(d.piekperiode[i], 0)} s</small>`)).join('')}</tr>
+    <tr class="r-getij"><th>getij</th>${idx.map((i) => cel(i, balk(i))).join('')}</tr>
+  </table></div>`
 }
 
 function ruweTabel(d: Detail, idx: number[]) {
@@ -306,26 +339,36 @@ function render() {
   const warn = d.ipma[i] && d.ipma[i] !== 'green' ? `<div class="waarschuwing">⚠ IPMA: waarschuwing zeegang (${IPMA[d.ipma[i]] ?? d.ipma[i]})</div>` : ''
   const kop = `<button class="sluit" aria-label="Sluiten">×</button>
     <h2>${esc(d.naam)}</h2>
-    <div class="sub">${esc(d.district)} · ${toonDag(ms)} ${toonTijd(ms)}</div>${warn}`
-  const midden = r
-    ? `${staat.sport === WW ? '' : scoreBlok(r)}${wwBlok(d, i)}${omstandigheden(d, i, r)}${overStrand(d)}
-       <div class="blok"><h3>Alle sporten om ${toonTijd(ms)}</h3><div class="lijst">${wwRij(d, i)}${alleSporten(r)}</div></div>`
-    : '<p>Voor dit uur is er geen voorspelling.</p>'
-  el().innerHTML = `${kop}${midden}
-    <div class="blok"><h3>Deze dag</h3>${dagstrook(d, idx)}</div>
-    ${getijBlok(d, dagStart, dagStart + 24 * 3600e3, ms / 60000)}
-    <div class="blok"><h3>Voorspelling</h3>${ruweTabel(d, idx)}<p class="klein">${esc(I.bron)}.</p></div>
-    <div class="blok klein">Het cijfer zegt of de omstandigheden bij een sport passen. Het kent het strand zelf niet:
+    <div class="sub">${esc(d.district)} · ${toonDag(ms)} om ${toonTijd(ms)}</div>${warn}`
+  if (!r) {
+    el().innerHTML = `${kop}<p>Voor dit uur is er geen voorspelling.</p>`
+    bind()
+    return
+  }
+  el().innerHTML = `${kop}
+    ${staat.sport === WW ? '' : scoreBlok(r)}
+    ${wwBlok(d, i)}
+    <section class="blok"><h3>${esc(toonDag(ms))} per uur</h3>${dagverloop(d, idx, dagStart)}
+      <p class="klein">Tik op een uur. De nacht is grijs. Getij: het waterpeil, HW hoog water, LW laag water.</p></section>
+    <section class="blok"><h3>Om ${toonTijd(ms)}</h3>${omstandigheden(d, i, r)}</section>
+    <section class="blok"><h3>Per sport om ${toonTijd(ms)}</h3><div class="lijst">${alleSporten(r)}</div></section>
+    <details class="blok meer"><summary>Getij in detail</summary>${getijBlok(d, dagStart, dagStart + 24 * 3600e3, ms / 60000)}</details>
+    <details class="blok meer"><summary>Volledige voorspelling</summary>${ruweTabel(d, idx)}<p class="klein">${esc(I.bron)}.</p></details>
+    ${overStrand(d)}
+    <p class="blok klein">De cijfers zeggen of wind en golven passen. Ze kennen het strand zelf niet:
       stroming, rotsen, watertemperatuur, drukte en plaatselijke regels zitten er niet in. Volg altijd de redders en de vlaggen.
-      Surf, kite en windsurf zijn verboden in zones voor baders.</div>`
+      Surf, kite en windsurf zijn verboden in zones voor baders.</p>`
   bind()
 }
 
 function bind() {
   el().querySelector('.sluit')?.addEventListener('click', sluitFiche)
+  // De uurtabel naar het gekozen uur schuiven.
+  const v = el().querySelector<HTMLElement>('.verloop')
+  const nu = v?.querySelector<HTMLElement>('td.nu')
+  if (v && nu) v.scrollLeft = Math.max(0, nu.offsetLeft - v.clientWidth / 2)
   el().querySelectorAll<HTMLAnchorElement>('a[data-i]').forEach((a) =>
     a.addEventListener('click', (e) => { e.preventDefault(); kiesUur(Number(a.dataset.i)) }))
   el().querySelectorAll<HTMLButtonElement>('button[data-sport]').forEach((b) =>
     b.addEventListener('click', () => kiesSport(b.dataset.sport!)))
-  el().querySelector<HTMLButtonElement>('button[data-ww]')?.addEventListener('click', () => kiesSport(WW))
 }

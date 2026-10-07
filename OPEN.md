@@ -270,3 +270,14 @@ De uitleg rekent de fiche zelf (`web/src/sportscore.ts`, zelfde regels). Twee co
 ### 29. T is de piekperiode
 
 IBI geeft de piekperiode (VTPK). Waar IBI ophoudt, wordt de `wave_period` van GFS-Wave gebruikt; die ligt dicht bij de gemeten piekperiode (punt 25). Geeft geen enkel model een periode, dan is er voor dat uur geen cijfer (document, stap 0).
+
+### 30. Fiche: eerst wat iemand wil weten
+
+Volgorde in de fiche van een strand:
+1. Het label en WIND en WAVE groot, met wat het cijfer betekent en waarom.
+2. De dag per uur, op één tijdlijn: WIND, wind (pijl en knopen), WAVE, golf (meter en seconden) en het waterpeil, met HW en LW. De nacht is gedimd en het gekozen uur is aangeduid.
+3. Om dit uur: golven, wind en getij met tekeningen.
+4. Per sport: de 4 groepen, ingeklapt.
+5. Ingeklapt: getij in detail, volledige voorspelling, over dit strand.
+
+Open: de 4 groepen als keuze op de kaart wachten op de berekening van de eigenaar.

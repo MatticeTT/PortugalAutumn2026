@@ -88,11 +88,13 @@ main { flex: 1; position: relative; min-height: 0; }
   color: var(--zacht); cursor: pointer; padding: 4px 8px;
 }
 .waarschuwing { color: var(--gevaar); font-weight: 600; margin: 4px 0 8px; }
-.ww .label { font-weight: 700; font-size: 17px; margin: 2px 0 6px; }
+.ww .label { font-weight: 700; font-size: 19px; margin: 4px 0 8px; line-height: 1.25; }
 .ww-scores { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 8px 0; }
-.ww-score { border-radius: 10px; padding: 8px 10px; color: #fff; }
-.ww-score b { font-size: 26px; display: block; line-height: 1.1; }
-.ww-score small { font-size: 12.5px; opacity: 0.95; display: block; }
+.ww-score { border-radius: 12px; padding: 8px 12px 10px; color: #fff; display: grid; grid-template-columns: auto 1fr; column-gap: 10px; align-items: center; }
+.ww-score .soort { grid-column: 1 / -1; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; opacity: 0.85; }
+.ww-score b { font-size: 42px; line-height: 1; grid-row: span 2; }
+.ww-score strong { font-size: 14px; line-height: 1.2; }
+.ww-score small { font-size: 12.5px; opacity: 0.95; line-height: 1.25; }
 .ww-score.licht { color: #0d2530; }
 .ww-score.gevaar { outline: 3px solid var(--gevaar); outline-offset: -3px; }
 .beeld { display: flex; gap: 16px; align-items: center; margin: 10px 0; }
@@ -179,3 +181,32 @@ dialog h3 { margin: 14px 0 4px; font-size: 15px; }
 .bewijs.sterk { border-color: #2e8b57; }
 .bewijs.praktijk { border-color: #c08a00; }
 .bewijs.eigen { border-color: var(--gevaar); }
+
+/* De dag per uur */
+.verloop table { border-collapse: separate; border-spacing: 2px 0; font-size: 12.5px; }
+.verloop th { text-align: left; font-weight: 600; color: var(--zacht); padding: 3px 6px 3px 0; white-space: nowrap; position: sticky; left: 0; background: var(--vlak); z-index: 1; }
+.verloop th small { font-weight: 400; }
+.verloop td { text-align: center; padding: 3px 2px; min-width: 30px; border: 0; }
+.verloop td a { color: var(--tekst); text-decoration: none; font-weight: 600; }
+.verloop tr.r-cijfer td { border-radius: 6px; height: 28px; }
+.verloop tr.r-cijfer b { font-size: 14px; }
+.verloop td small { display: block; font-size: 10.5px; color: var(--zacht); }
+.verloop td.nacht { opacity: 0.4; }
+.verloop td.nu { outline: 2px solid var(--accent); outline-offset: -1px; opacity: 1; }
+.verloop tr:first-child td.nu { background: var(--accent); }
+.verloop tr:first-child td.nu a { color: #fff; }
+.verloop .pijl { display: block; font-size: 15px; line-height: 1; color: var(--wind); }
+.peil { display: block; width: 14px; height: 30px; margin: 0 auto; background: var(--zacht-vlak); border-radius: 3px; position: relative; overflow: hidden; }
+.peil i { position: absolute; left: 0; right: 0; bottom: 0; background: var(--sea); }
+.verloop tr.r-getij td { vertical-align: bottom; }
+
+/* Om dit uur */
+.deel { margin: 4px 0 12px; }
+.deel h4 { margin: 0 0 4px; font-size: 13px; color: var(--zacht); text-transform: uppercase; letter-spacing: 0.04em; }
+
+/* Ingeklapte delen */
+details.groep { border-top: 1px solid var(--lijn); }
+details.groep summary { cursor: pointer; padding: 9px 4px; font-weight: 700; }
+details.groep .rij { padding-left: 16px; }
+details.meer > summary { cursor: pointer; font-weight: 700; padding: 2px 0; }
+details.meer[open] > summary { margin-bottom: 8px; }
