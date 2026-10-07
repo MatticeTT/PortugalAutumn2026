@@ -9,9 +9,6 @@ on:
   push:
     paths:
       - pipeline/forecast/**
-      - pipeline/site/**
-      - pipeline/rules/**
-      - web/**
       - .github/workflows/forecast.yml
 permissions:
   contents: write
