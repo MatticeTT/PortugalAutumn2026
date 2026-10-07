@@ -126,13 +126,14 @@ function icoon(boulder: boolean, randRood: boolean, tekst: string) {
   g.fillText(tekst, w / 2, h / 2 + 1)
   return { width: c.width, height: c.height, data: new Uint8Array(g.getImageData(0, 0, c.width, c.height).data.buffer) }
 }
-function groepIcoon(n: number) {
+// Bolletje met het aantal plekken bij uitzoomen: wit, met rand en cijfer in de kleur van de laag.
+export function groepIcoon(n: number, kleur: string) {
   const ratio = 2, s = n < 10 ? 28 : n < 100 ? 32 : 38
   const c = document.createElement('canvas'), g = c.getContext('2d')!
   c.width = c.height = s * ratio; g.scale(ratio, ratio)
-  g.beginPath(); g.arc(s / 2, s / 2, s / 2 - 1, 0, Math.PI * 2); g.fillStyle = 'rgba(20,32,43,0.55)'; g.fill()
-  g.beginPath(); g.arc(s / 2, s / 2, s / 2 - 2.5, 0, Math.PI * 2); g.fillStyle = BRUIN; g.fill()
-  g.font = '800 12px system-ui, sans-serif'; g.fillStyle = '#fff'; g.textAlign = 'center'; g.textBaseline = 'middle'
+  g.beginPath(); g.arc(s / 2, s / 2, s / 2 - 2, 0, Math.PI * 2)
+  g.fillStyle = '#fff'; g.fill(); g.lineWidth = 3; g.strokeStyle = kleur; g.stroke()
+  g.font = '800 13px system-ui, sans-serif'; g.fillStyle = kleur; g.textAlign = 'center'; g.textBaseline = 'middle'
   g.fillText(String(n), s / 2, s / 2 + 1)
   return { width: c.width, height: c.height, data: new Uint8Array(g.getImageData(0, 0, c.width, c.height).data.buffer) }
 }
@@ -173,7 +174,7 @@ export async function laadKlim(k: Kaart) {
     const m = /^k\|([01])\|([01])\|(.*)$/.exec(e.id)
     if (m) kaart.addImage(e.id, icoon(m[1] === '1', m[2] === '1', m[3]), { pixelRatio: 2 })
     const n = /^kg\|(\d+)$/.exec(e.id)
-    if (n) kaart.addImage(e.id, groepIcoon(Number(n[1])), { pixelRatio: 2 })
+    if (n) kaart.addImage(e.id, groepIcoon(Number(n[1]), BRUIN), { pixelRatio: 2 })
   })
   kaart.addSource('klim', { type: 'geojson', data: features(), cluster: true, clusterRadius: 40, clusterMaxZoom: 10,
     attribution: '© OpenStreetMap contributors (ODbL) · Camptocamp.org (CC BY-SA 3.0)' })

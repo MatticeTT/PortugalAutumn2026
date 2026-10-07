@@ -4,7 +4,7 @@ import './style.css'
 import { bolletjeWW } from './kleuren'
 import { openFiche, sluitFiche, toonUur } from './fiche'
 import { zoekveld } from './zoek'
-import { laadKlim, openKlim, ververs as klimVervers } from './klim'
+import { groepIcoon, laadKlim, openKlim, ververs as klimVervers } from './klim'
 import type { Getij, Index, KaartStrand } from './types'
 
 const TZ = 'Europe/Lisbon'
@@ -175,10 +175,15 @@ async function start() {
       type: 'geojson', data: features(), cluster: true, clusterRadius: 30, clusterMaxZoom: 9,
       clusterProperties: { w: ['max', ['get', 'w']], v: ['max', ['get', 'v']] },
     })
-    // Links WIND, rechts WAVE. Samengeklonterd: het hoogste WIND- en WAVE-cijfer van de groep.
+    // Links WIND, rechts WAVE.
     const ww = ['concat', 'b', ['to-string', ['get', 'w']], ['to-string', ['get', 'v']]]
+    // Samengeklonterd: het aantal stranden in een wit bolletje met cyaan rand en cijfer.
+    kaart.on('styleimagemissing', (e) => {
+      const n = /^sg\|(\d+)$/.exec(e.id)
+      if (n && !kaart.hasImage(e.id)) kaart.addImage(e.id, groepIcoon(Number(n[1]), '#0e8fa6'), { pixelRatio: 2 })
+    })
     kaart.addLayer({ id: 'groepen', type: 'symbol', source: 'stranden', filter: ['has', 'point_count'],
-      layout: { 'icon-image': ww as any, 'icon-size': 1.1, 'icon-allow-overlap': true } })
+      layout: { 'icon-image': ['concat', 'sg|', ['to-string', ['get', 'point_count']]] as any, 'icon-allow-overlap': true } })
     kaart.addLayer({ id: 'stranden', type: 'symbol', source: 'stranden', filter: ['!', ['has', 'point_count']],
       layout: { 'icon-image': ['concat', ww, ['get', 'l']] as any, 'icon-allow-overlap': true,
         'symbol-sort-key': ['+', ['get', 'w'], ['get', 'v']] } })
