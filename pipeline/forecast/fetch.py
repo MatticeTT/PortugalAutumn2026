@@ -14,7 +14,6 @@ Schrijft data/forecast/:
 - punten.json        per strand het windpunt en het golfpunt
 - wind_<model>.json  per windpunt de uurreeksen
 - golf_<model>.json  per golfpunt de uurreeksen
-- klim_punten.json   per klimplek het weerpunt (de plek zelf)
 - klim_weer.json     per klimplek neerslag, luchtvochtigheid, temperatuur en wind, vanaf 1 dag terug
 """
 
@@ -126,16 +125,16 @@ def golf_met_piek(pts: dict) -> dict:
         return open_meteo(url, pts, "ncep_gfswave016", WAVE_VARS)
 
 
-KLIM = ROOT / "data" / "klim" / "plekken.json"
+KLIM = ROOT / "data" / "klim" / "bron_osm.json"
 KLIM_VARS = ["precipitation", "relative_humidity_2m", "temperature_2m", "wind_speed_10m"]
 
 
 def klim_weer() -> dict:
     """Weer per uur op de klimplek zelf (rekenchat): Open-Meteo met de standaard modelkeuze, neerslag,
     luchtvochtigheid, temperatuur en wind, plus de voorbije 24 uur (past_days=1)."""
-    plekken = json.loads(KLIM.read_text())["plekken"]
-    pts = {q["id"]: (q["lon"], q["lat"]) for q in plekken}
-    (OUT / "klim_punten.json").write_text(json.dumps({k: k for k in pts}) + "\n")
+    from pipeline.klim.plekken import alle
+
+    pts = {q["id"]: (q["lon"], q["lat"]) for q in alle()}
     return open_meteo("https://api.open-meteo.com/v1/forecast", pts, None, KLIM_VARS,
                       {"wind_speed_unit": "kn", "past_days": 1})
 

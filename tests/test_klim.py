@@ -29,3 +29,24 @@ def test_rood():
     assert per_uur(zand, reeks, 40)["sinds"] == 10
     assert per_uur(zand, reeks, 20)["sinds"] is None
 
+
+
+def test_graden_uniform_en_bereik():
+    from pipeline.klim.graden import bereik, font, frans, tekst
+    assert frans("6A+") == (["6a+"], False)
+    assert frans("6a/6a+") == (["6a", "6a+"], False)
+    assert frans("6a - 6c") == (["6a", "6c"], False)
+    assert frans("III") == (["III"], False)        # Romeins cijfer in het Franse veld: zoals in de bron
+    assert frans("onbekend") is None
+    assert font("6a+") == (["6A+"], False)
+    assert bereik(["7b", "5c", "6a+"]) == ("5c", "7b")
+    assert tekst("5c", "7b") == "5c – 7b" and tekst(None, None) == "graad onbekend"
+
+
+def test_omrekenen():
+    from pipeline.klim.graden import uiaa, vschaal, yds
+    assert uiaa("VI+") == (["6a"], True)
+    assert uiaa("VII-") == (["6a+"], True)
+    assert yds("5.10a") == (["6a"], True)
+    assert vschaal("V4") == (["6B"], True)
+    assert yds("5.11c") is None                     # geen eenduidige waarde in de tabel
