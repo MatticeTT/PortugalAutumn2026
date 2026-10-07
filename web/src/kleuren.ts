@@ -36,7 +36,8 @@ export const CYAAN = ['#d4f5fa', '#7ee0f0', '#16b3d0', '#007a96']
 export const BLAUW = ['#dbe5fb', '#93b3f2', '#4f7fe6', '#143aa6']
 export const LICHT = (s: number) => s <= 2 // donkere cijfers op een lichte helft
 
-export function bolletjeWW(w: number, v: number, size = 44, letOp = false): ImageData {
+// rood: 1 = WIND-helft rood omkaderd (wind van land), 2 = WAVE-helft (golf komt niet aan), 3 = beide.
+export function bolletjeWW(w: number, v: number, size = 44, letOp = false, rood = 0): ImageData {
   const c = document.createElement('canvas')
   const ratio = 2
   c.width = c.height = size * ratio
@@ -62,6 +63,10 @@ export function bolletjeWW(w: number, v: number, size = 44, letOp = false): Imag
   } else {
     g.fillStyle = '#4a545c'; g.fillText('–', cx, cy + 1)
   }
+  // Rood kader rond de helft met de verkeerde richting: links WIND, rechts WAVE.
+  g.lineWidth = 3.2; g.strokeStyle = '#e0242f'
+  if (rood & 1) { g.beginPath(); g.arc(cx, cy, r + 0.6, Math.PI / 2, Math.PI * 1.5); g.stroke() }
+  if (rood & 2) { g.beginPath(); g.arc(cx, cy, r + 0.6, -Math.PI / 2, Math.PI / 2); g.stroke() }
   if (letOp) {
     // WIND 2 met aflandige wind: te licht om te kiten, verkeerde richting.
     const br = size * 0.17

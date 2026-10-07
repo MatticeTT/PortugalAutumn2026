@@ -60,10 +60,11 @@ for (const scheme of ['light', 'dark']) {
     const g = await (await fetch('data/index.json')).json()
     const v = `?v=${encodeURIComponent(g.gemaakt)}`
     const k = (await (await fetch('data/kaart.json' + v)).json()).findIndex((s) => s.id === id)
-    return (await (await fetch('data/sport/ww.json' + v)).json())[k].slice(2 * i, 2 * i + 2)
+    return (await (await fetch('data/sport/ww.json' + v)).json())[k].slice(3 * i, 3 * i + 3)
   }, [id, i])
   const ficheCijfers = (await page.$$eval('#fiche .tegel > b', (els) => els.map((e) => e.textContent))).reverse().join('')
-  check(`[${scheme}] kaart en fiche gelijk (WIND, WAVE)`, kaartCijfers === ficheCijfers, `(kaart ${kaartCijfers}, fiche ${ficheCijfers})`)
+    + await page.$$eval('#fiche .tegel', (els) => String((els[1].classList.contains('verkeerd') ? 1 : 0) + (els[0].classList.contains('verkeerd') ? 2 : 0)))
+  check(`[${scheme}] kaart en fiche gelijk (WIND, WAVE, rood kader)`, kaartCijfers === ficheCijfers, `(kaart ${kaartCijfers}, fiche ${ficheCijfers})`)
   const rijen = await page.$$eval('#fiche .dag th', (els) => els.map((e) => e.textContent))
   const uren = await page.$$eval('#fiche .dag a[data-i]', (els) => els.length)
   check(`[${scheme}] fiche: de dag met WAVE, WIND en getij`, ['WAVE', 'WIND', 'getij'].every((r) => rijen.includes(r)) && uren >= 20, `(${uren} uren)`)

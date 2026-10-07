@@ -56,16 +56,16 @@ async function stijl(): Promise<StyleSpecification | string> {
 // Waar de kaart opent: Praia da Rocha (Portimão), op vraag van de eigenaar.
 const START = { center: [-8.5326, 37.1148] as [number, number], zoom: 13 }
 
-// Per strand (volgorde van kaart.json) per uur twee cijfers: WIND en WAVE (level 1–4).
+// Per strand (volgorde van kaart.json) per uur drie cijfers: WIND en WAVE (level 1–4) en het rode kader.
 function features() {
   const i = staat.i
   return {
     type: 'FeatureCollection' as const,
     features: staat.stranden.map((s, k) => {
       const rij = staat.cijfers[k] ?? ''
-      const w = Number(rij[2 * i] ?? 0)
-      const v = Number(rij[2 * i + 1] ?? 0)
-      const l = ''
+      const w = Number(rij[3 * i] ?? 0)
+      const v = Number(rij[3 * i + 1] ?? 0)
+      const l = rij[3 * i + 2] ?? '0' // rood kader: 1 wind van land, 2 golf komt niet aan, 3 beide
       return { type: 'Feature' as const, geometry: { type: 'Point' as const, coordinates: [s.x, s.y] },
         properties: { id: s.id, naam: s.n, w, v, l } }
     }),
@@ -167,6 +167,7 @@ async function start() {
     for (let w = 0; w <= 4; w++) for (let v = 0; v <= 4; v++) {
       if ((w === 0) !== (v === 0)) continue
       kaart.addImage(`b${w}${v}`, bolletjeWW(w, v, 44), { pixelRatio: 2 })
+      for (let rood = 0; rood <= 3; rood++) kaart.addImage(`b${w}${v}${rood}`, bolletjeWW(w, v, 44, false, rood), { pixelRatio: 2 })
     }
     kaart.addSource('stranden', {
       type: 'geojson', data: features(), cluster: true, clusterRadius: 30, clusterMaxZoom: 9,

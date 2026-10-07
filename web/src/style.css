@@ -381,3 +381,4 @@ details.meer[open] > summary { margin-bottom: 8px; }
 .tegel .gegevens { flex: 1; }
 .tegel .tovstrand { margin-top: auto; }
 .tegel .tovstrand small { min-height: 2.4em; }
+.tegel.verkeerd { box-shadow: 0 0 0 3px #e0242f; }

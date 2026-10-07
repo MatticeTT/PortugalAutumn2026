@@ -164,9 +164,11 @@ function conclusie(d: Detail, i: number) {
 
 // ---- Laag 1 en 2: de vlakken WAVE en WIND ----
 
-function tegel(naam: 'WAVE' | 'WIND', n: number, gegevens: string) {
+// rood: het vlak staat rood omkaderd als de richting verkeerd is (wind van land; golf die op zee staat maar
+// op het strand te weinig aankomt). Zie build_data.py.
+function tegel(naam: 'WAVE' | 'WIND', n: number, gegevens: string, rood = false) {
   const kleur = (naam === 'WIND' ? CYAAN : BLAUW)[n - 1] ?? '#ccc'
-  return `<div class="tegel ${LICHT(n) ? 'licht' : ''} ${n === 4 ? 'gevaar' : ''}" style="background:${kleur}">
+  return `<div class="tegel ${LICHT(n) ? 'licht' : ''} ${n === 4 ? 'gevaar' : ''} ${rood ? 'verkeerd' : ''}" style="background:${kleur}">
     <span class="soort">${naam}</span><b>${n}</b><span class="betekenis">${LEVEL[n]}</span>
     <span class="gegevens">${gegevens}</span></div>`
 }
@@ -199,7 +201,9 @@ let tekeningNr = 0
 function richtingTekening(soort: 'golf' | 'wind', richting: number, kust: number, venster?: number[] | null) {
   const clip = `zee${++tekeningNr}`
   const a = rel(richting, kust)
-  const [x0, y0] = op(a, 44)
+  // Van land: de pijl begint in het strand (onder de kustlijn is maar 22 hoog), dus korter.
+  const c = Math.cos((a * Math.PI) / 180)
+  const [x0, y0] = op(a, c < 0 ? Math.min(44, 16 / -c) : 44)
   const [x1, y1] = op(a, 10)
   const hoek = Math.atan2(Number(y1) - Number(y0), Number(x1) - Number(x0)) * 180 / Math.PI
   let waaier = ''
@@ -308,7 +312,7 @@ function render() {
     ${dag(d, idx)}
     <h3 class="kop">Om ${toonTijd(ms)}${d.licht[i] === '0' ? ' <small>(donker)</small>' : ''}</h3>
     ${conclusie(d, i)}
-    ${wave && wind ? `<div class="tegels">${tegel('WAVE', wave, waveGegevens(d, i))}${tegel('WIND', wind, windGegevens(d, i))}</div>${opStrand(d, i)}` : ''}
+    ${wave && wind ? `<div class="tegels">${tegel('WAVE', wave, waveGegevens(d, i), (Number(d.rood?.[i] ?? 0) & 2) > 0)}${tegel('WIND', wind, windGegevens(d, i), (Number(d.rood?.[i] ?? 0) & 1) > 0)}</div>${opStrand(d, i)}` : ''}
     ${extras(d, i)}
     ${nakijken}
     <p class="klein"><a href="rekenen.html">Hoe berekend?</a> · <a href="controle.html#${encodeURIComponent(d.id)}">Stranddata</a>

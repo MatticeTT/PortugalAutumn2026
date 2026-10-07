@@ -10,7 +10,8 @@ Gegevens zoals Windguru: wind van GFS, golven van GFS-Wave (open zee, per deinin
 Schrijft web/public/data/:
 - index.json        tijdas, bron, meldingen over de data
 - kaart.json        per strand: id, naam, district, ligging
-- sport/ww.json     per strand (zelfde volgorde als kaart.json) per uur twee cijfers: WIND en WAVE (00 = geen)
+- sport/ww.json     per strand (zelfde volgorde als kaart.json) per uur drie cijfers: WIND, WAVE (00 = geen) en
+                    rood (0 niets, 1 wind van land, 2 golf komt niet aan, 3 beide)
 - getij.json        hoog- en laagwaters per station
 - controle.json     de controles op de stranddata (pipeline/rules/controle.py)
 - strand/<id>.json  alles voor de fiche (zie main())
@@ -27,7 +28,7 @@ from pathlib import Path
 
 from pipeline.rules import controle as stranddata
 from pipeline.rules.hulp import controle, krachtigste
-from pipeline.rules.model import NAAM, VOLGORDE, bereken
+from pipeline.rules.model import NAAM, VOLGORDE, bereken, hoek
 from pipeline.site.zon_getij import daglicht, getij_fractie
 from pipeline.tides.interp import interpolate
 
@@ -180,13 +181,13 @@ def main(fetch_ipma: bool = True):
         n = len(axis)
         rij = {k: [None] * n for k in ("zee_h", "zee_t", "zee_r", "E_zee", "bereikt", "E", "periode", "H", "windhoek",
                                         "tij", "tijgewicht", "verval", "scores", "conclusie")}
-        wave, wind, laag3, letter, licht = [], [], [], [], []
+        wave, wind, laag3, letter, licht, rood = [], [], [], [], [], []
         for i in range(n):
             licht.append("1" if daglicht(lat, lon, minuten[i]) else "0")
             dein = [(golf[h][i], golf[tp][i] if golf[tp][i] is not None else golf[t][i], golf[r][i])
                     for h, t, tp, r in DEININGEN]
             if ws[i] is None or golf["wave_height"][i] is None:  # geen voorspelling voor dit uur
-                wave.append("0"), wind.append("0"), laag3.append("0"), letter.append("-")
+                wave.append("0"), wind.append("0"), laag3.append("0"), letter.append("-"), rood.append("0")
                 continue
             # Een deining zonder hoogte, periode of richting bestaat op dit uur niet.
             dein = [d for d in dein if None not in d and d[0] > 0 and d[1] > 0]
@@ -198,6 +199,11 @@ def main(fetch_ipma: bool = True):
                         golfdata_in_baai=not rekent)  # niet rekenbaar: alleen laag 1 en 2 gebruiken
             wave.append(str(r["WAVE"]))
             wind.append(str(r["WIND"]))
+            # Rood omkaderd (eigenaar): WIND bij wind van land (windhoek vanaf 112,5°: schuin of recht aflandig);
+            # WAVE als er op zee golf staat (WAVE 2 of meer) maar op het strand te weinig aankomt (WAVE_strand 1).
+            rood_wind = hoek(wd[i] or 0, p["kijkrichting"]) >= 112.5
+            rood_wave = rekent and heeft_getij and r["WAVE"] >= 2 and r["WAVE_strand"] == 1
+            rood.append(str(rood_wind + 2 * rood_wave))
             k = krachtigste(dein)
             rij["E_zee"][i] = r["E_zee"]  # de krachtigste deining: daaruit komt het level WAVE
             if k is not None:
@@ -212,13 +218,13 @@ def main(fetch_ipma: bool = True):
             rij["scores"][i] = [r[x] for x in (*VOLGORDE, "te_wild")]
             rij["conclusie"][i] = r["conclusie"]
             letter.append(conclusie_letter(r["conclusie"]))
-        ww_rijen.append("".join(a + b for a, b in zip(wind, wave, strict=True)))
+        ww_rijen.append("".join(a + b + c for a, b, c in zip(wind, wave, rood, strict=True)))
 
         detail = {
             "id": pid, "naam": p["naam"], "lat": lat, "lon": lon, "kust": p["kijkrichting"],
             "venster": p["venster"], "district": p["district"], "getij": g, "controle": c, "piekperiode": piek,
             "wind": ws, "vlagen": wg, "windrichting": wd, "WAVE": "".join(wave), "WIND": "".join(wind),
-            "WAVE_strand": "".join(laag3), "letter": "".join(letter), "licht": "".join(licht), **rij,
+            "WAVE_strand": "".join(laag3), "letter": "".join(letter), "rood": "".join(rood), "licht": "".join(licht), **rij,
             "ipma": [warning_at(warn, p.get("ipma_area"), t) for t in axis],
         }
         kaart.append({"id": pid, "n": p["naam"], "d": p["district"], "x": lon, "y": lat})

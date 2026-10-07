@@ -67,6 +67,7 @@ export interface Detail {
   scores: (number[] | null)[] // golfsurfen, windsurfen op golven, windsurfen, stille waters, te wild
   conclusie: (string | null)[]
   letter: string // per uur: G O S R ideaal, g o s r andere, W te wild, "." niet berekend, "-" geen data
+  rood: string // per uur: 0 niets, 1 wind van land, 2 golf komt niet aan, 3 beide (rood kader)
   licht: string // per uur 1 = daglicht
   ipma: string[]
 }
