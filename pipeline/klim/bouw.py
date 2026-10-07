@@ -5,7 +5,8 @@ Schrijft web/public/data/klim/:
                      rotssoort, wandrichting, de vier graden, en het weerpunt
 - rood.json          per plek (zelfde volgorde) per uur één teken: 0 geen, 1 het regent, 2 zandsteen nat,
                      - geen weer
-- weer/<punt>.json   per weerpunt per uur: neerslag (mm), luchtvochtigheid (%), temperatuur (°C), wind (kn),
+- weer/<plek>.json   per klimplek (weer op de plek zelf) per uur: neerslag (mm), luchtvochtigheid (%),
+                     temperatuur (°C), wind (kn),
                      uren sinds de laatste regen en of het in de 24 uur ervoor geregend heeft
 Uren op dezelfde tijdas als de surfdata (index.json).
 """
@@ -37,7 +38,7 @@ def main(axis: list[str], out: Path) -> None:
     tijd = weer.get("_tijd", [])
     (out / "klim" / "weer").mkdir(parents=True, exist_ok=True)
 
-    # Per weerpunt: de reeksen vanaf 2 dagen terug, en de plaats van elk uur van de tijdas daarin.
+    # Per weerpunt: de reeksen vanaf 1 dag terug, en de plaats van elk uur van de tijdas daarin.
     pos = {t: k for k, t in enumerate(tijd)}
     kaart, rood = [], []
     gedaan: set[str] = set()

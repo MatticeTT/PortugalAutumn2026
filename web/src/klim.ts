@@ -1,5 +1,5 @@
 // Klimplekken op de kaart (OpenStreetMap, sport=climbing). Los van de surfberekening.
-// Cirkel: donkerbruin muurklimmen, lichtbruin boulderen, met de graad ("5a–7b", of "?" als er geen is).
+// Cirkel: donkerbruin muurklimmen, lichtbruin boulderen, met de Franse graad ("5a–7b", of "?" als er geen is).
 // Rode rand bij slecht weer in het gekozen uur (pipeline/klim/weer.py): het regent, of zandsteen na regen.
 import type { GeoJSONSource, Map as Kaart } from 'maplibre-gl'
 import { data, staat, toonDag, toonTijd, utc, vliegNaar } from './main'
@@ -69,10 +69,21 @@ export async function laadKlim(k: Kaart) {
     layout: { 'icon-image': ['concat', 'k|', ['get', 's'], '|', ['to-string', ['get', 'r']], '|', ['get', 'g']] as any,
       'icon-allow-overlap': false, 'symbol-sort-key': ['-', 0, ['get', 'r']] } })
   kaart.on('click', 'klim', (e) => { const id = e.features?.[0]?.properties?.id; if (id) openKlim(id) })
+  legende()
   kaart.on('mouseenter', 'klim', () => (kaart.getCanvas().style.cursor = 'pointer'))
   kaart.on('mouseleave', 'klim', () => (kaart.getCanvas().style.cursor = ''))
   const hash = decodeURIComponent(location.hash.slice(1))
   if (hash.startsWith('klim:')) openKlim(hash.slice(5))
+}
+
+// Legende rechtsonder: de twee kleuren, en dat de boulderdata onvolledig is (rekenchat).
+function legende() {
+  const d = document.createElement('div')
+  d.className = 'klimlegende'
+  d.innerHTML = `<span><i style="background:${KLEUR.M}"></i>muurklimmen</span>
+    <span><i style="background:${KLEUR.B}"></i>boulderen <small>(boulderdata onvolledig)</small></span>
+    <span><i class="rood"></i>regent dat uur</span>`
+  document.getElementById('kaart')!.appendChild(d)
 }
 
 export function ververs() {
@@ -148,6 +159,7 @@ async function render() {
     </table>
     ${nota.length ? `<ul class="klimnota">${nota.map((n) => `<li>${n}</li>`).join('')}</ul>` : ''}`
     : '<p class="klein">Nog geen weer voor deze plek.</p>'}
+    <p><a class="thecrag" href="https://www.thecrag.com/search?S=${encodeURIComponent(p.n ?? '')}" target="_blank" rel="noopener">Zoek op theCrag</a></p>
     <p class="klein">Bron: <a href="https://www.openstreetmap.org/${esc(p.id)}" rel="noopener">OpenStreetMap</a> (ODbL),
       weer: Open-Meteo. Geen veiligheidsadvies.</p>`
   el().querySelector('.sluit')?.addEventListener('click', () => {

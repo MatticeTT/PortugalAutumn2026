@@ -14,8 +14,8 @@ Schrijft data/forecast/:
 - punten.json        per strand het windpunt en het golfpunt
 - wind_<model>.json  per windpunt de uurreeksen
 - golf_<model>.json  per golfpunt de uurreeksen
-- klim_punten.json   per klimplek het weerpunt
-- klim_weer.json     per weerpunt neerslag, luchtvochtigheid, temperatuur en wind, vanaf 2 dagen terug
+- klim_punten.json   per klimplek het weerpunt (de plek zelf)
+- klim_weer.json     per klimplek neerslag, luchtvochtigheid, temperatuur en wind, vanaf 1 dag terug
 """
 
 from __future__ import annotations
@@ -90,7 +90,7 @@ def get_json(url: str, params: dict, tries: int = 4):
             time.sleep(2 ** (i + 1))
 
 
-def open_meteo(url: str, pts: dict, model: str, variables: list[str], extra: dict | None = None) -> dict:
+def open_meteo(url: str, pts: dict, model: str | None, variables: list[str], extra: dict | None = None) -> dict:
     keys = list(pts)
     out = {}
     for i in range(0, len(keys), PER_AANROEP):
@@ -98,7 +98,8 @@ def open_meteo(url: str, pts: dict, model: str, variables: list[str], extra: dic
         params = {
             "latitude": ",".join(str(pts[k][1]) for k in chunk),
             "longitude": ",".join(str(pts[k][0]) for k in chunk),
-            "hourly": ",".join(variables), "models": model, "timezone": "UTC", "forecast_days": DAGEN,
+            "hourly": ",".join(variables), "timezone": "UTC", "forecast_days": DAGEN,
+            **({"models": model} if model else {}),  # geen model: Open-Meteo kiest zelf (standaard)
             **(extra or {}),
         }
         res = get_json(url, params)
@@ -130,19 +131,13 @@ KLIM_VARS = ["precipitation", "relative_humidity_2m", "temperature_2m", "wind_sp
 
 
 def klim_weer() -> dict:
-    """Weer per uur bij de klimplekken (Open-Meteo, zelfde model als de wind). Twee dagen terug erbij:
-    nodig voor "geregend in de 24 uur ervoor" en "uren sinds de laatste regen"."""
+    """Weer per uur op de klimplek zelf (rekenchat): Open-Meteo met de standaard modelkeuze, neerslag,
+    luchtvochtigheid, temperatuur en wind, plus de voorbije 24 uur (past_days=1)."""
     plekken = json.loads(KLIM.read_text())["plekken"]
-    per_plek, pts = {}, {}
-    for q in plekken:
-        lon = round(round(q["lon"] / PUNT_RASTER) * PUNT_RASTER, 3)
-        lat = round(round(q["lat"] / PUNT_RASTER) * PUNT_RASTER, 3)
-        k = f"{lat:.3f},{lon:.3f}"
-        per_plek[q["id"]] = k
-        pts[k] = (lon, lat)
-    (OUT / "klim_punten.json").write_text(json.dumps(per_plek) + "\n")
-    return open_meteo("https://api.open-meteo.com/v1/forecast", pts, "gfs_seamless", KLIM_VARS,
-                      {"wind_speed_unit": "kn", "past_days": 2})
+    pts = {q["id"]: (q["lon"], q["lat"]) for q in plekken}
+    (OUT / "klim_punten.json").write_text(json.dumps({k: k for k in pts}) + "\n")
+    return open_meteo("https://api.open-meteo.com/v1/forecast", pts, None, KLIM_VARS,
+                      {"wind_speed_unit": "kn", "past_days": 1})
 
 
 def ibi(pts: dict) -> dict:

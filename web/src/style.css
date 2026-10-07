@@ -394,3 +394,10 @@ details.meer[open] > summary { margin-bottom: 8px; }
 .klimtabel td { padding: 4px 0; font-variant-numeric: tabular-nums; }
 .klimtabel tr + tr { border-top: 1px solid var(--lijn); }
 .klimnota { margin: 0 0 10px; padding-left: 18px; font-size: 14px; }
+.klimlegende { position: absolute; left: 8px; bottom: 28px; z-index: 1; display: flex; flex-direction: column; gap: 3px;
+  padding: 6px 9px; border-radius: 10px; background: var(--vlak); box-shadow: 0 1px 4px rgb(0 0 0 / 0.2); font-size: 12px; }
+.klimlegende span { display: flex; align-items: center; gap: 6px; }
+.klimlegende i { width: 18px; height: 11px; border-radius: 6px; flex: none; }
+.klimlegende i.rood { background: transparent; box-shadow: inset 0 0 0 2.5px #e0242f; }
+.klimlegende small { color: var(--zacht); }
+.thecrag { font-weight: 600; }
