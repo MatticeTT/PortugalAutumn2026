@@ -55,6 +55,7 @@ class Score:
     hb: float
     hb_bereik: tuple[float, float]
     windsurf: str | None
+    let_op: bool = False          # WIND 2 met aflandige wind: te licht om te kiten, verkeerde richting ("2!")
 
 
 def fmt(x: float, nd: int = 1) -> str:
@@ -156,6 +157,7 @@ def score(u: Uur, s: Strand, **_ignored) -> Score:
         notas.append("vlagerig")
 
     klasse = None if s.richting_onzeker else wind_class(u.windrichting, s.kijkrichting)
+    let_op = False
     af = R["wind"]["aflandig"]
     if klasse is None:
         notas.append("richting niet beoordeeld")
@@ -166,6 +168,7 @@ def score(u: Uur, s: Strand, **_ignored) -> Score:
                      else "aflandig: blijf dicht bij de kant")
         if s.besloten_water:
             notas.append("besloten water: aflandige wind telt niet als gevaar")
+        let_op = wind == 2 and not s.besloten_water
     elif klasse == "aanlandig":
         notas.append("recht aanlandig, weinig ruimte, voor kite alleen met ervaring")
     else:
@@ -222,10 +225,13 @@ def score(u: Uur, s: Strand, **_ignored) -> Score:
     else:
         label = "Stille dag (sup, kayak, wakeboard)"
         st = R["stil"]
-        if w <= st["sup_goed_tot_kn"]:
+        if w <= st["sup_goed_tot_kn"] and not let_op:
             notas.append("goed voor sup en kajak")
         elif w < R["wind"]["kite"]["s3"]:
             notas.append("randgeval voor sup")
+
+    if let_op and warn is None:
+        warn = "aflandige wind: niet voor kite, windsurf of sup"
 
     # --- redenen in woorden ---------------------------------------------------
     rw = f"WIND {wind}: {round(w)} kn"
@@ -243,4 +249,5 @@ def score(u: Uur, s: Strand, **_ignored) -> Score:
     b = R["wave"]["bereik"]
     return Score(wind=wind, wave=wave, label=label, waarschuwing=warn, redenen=[rw, rv], notas=notas,
                  wind_oorzaak=cause, windklasse=klasse, hb=round(hb, 2),
-                 hb_bereik=(round(hb * b["laag"], 1), round(hb * b["hoog"], 1)), windsurf=windsurf_text(w))
+                 hb_bereik=(round(hb * b["laag"], 1), round(hb * b["hoog"], 1)), windsurf=windsurf_text(w),
+                 let_op=let_op)

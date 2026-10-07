@@ -1,7 +1,7 @@
 import maplibregl, { type GeoJSONSource, type StyleSpecification } from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import './style.css'
-import { bolletje, bolletjeUrl, bolletjeWW, KLEUR, RANG, tekstKleur } from './kleuren'
+import { bolletjePlan, bolletjeUrl, bolletjeWW, plaatje } from './kleuren'
 import { openFiche, sluitFiche, toonUur } from './fiche'
 import type { Getij, Index, KaartStrand } from './types'
 
@@ -27,7 +27,7 @@ export const lisUur = (ms: number) => Number(fmtUurNr.format(ms))
 export const toonTijd = (ms: number) => fmtUur.format(ms)
 export const toonDag = (ms: number) => fmtDag.format(ms)
 export const WW = 'ww'
-export const sportNaam = (id: string) => (id === WW ? 'WIND en WAVE' : staat.index.sporten.find((s) => s.id === id)?.naam ?? id)
+export const sportNaam = (id: string) => (id === WW ? 'WIND en WAVE' : staat.index.activiteiten[id] ?? id)
 
 const OFM = 'https://tiles.openfreemap.org/styles/liberty'
 
@@ -68,11 +68,12 @@ function features() {
     features: staat.stranden.map((s, k) => {
       const rij = staat.cijfers[k] ?? ''
       const ww = staat.sport === WW
-      const n = ww ? 0 : Number(rij[i] ?? 0)
-      const w = ww ? Number(rij[2 * i] ?? 0) : 0
-      const v = ww ? Number(rij[2 * i + 1] ?? 0) : 0
+      const n = ww ? 0 : Number(rij[i] ?? 0) // dagplan: 0 niet, 1 mogelijk, 2 goed
+      const w = ww ? Number(rij[3 * i] ?? 0) : 0
+      const v = ww ? Number(rij[3 * i + 1] ?? 0) : 0
+      const l = ww && rij[3 * i + 2] === '!' ? '!' : ''
       return { type: 'Feature' as const, geometry: { type: 'Point' as const, coordinates: [s.x, s.y] },
-        properties: { id: s.id, naam: s.n, n, rang: RANG[n], w, v } }
+        properties: { id: s.id, naam: s.n, n, w, v, l } }
     }),
   }
 }
@@ -139,7 +140,7 @@ export function kiesUur(i: number) {
 export async function kiesSport(id: string) {
   staat.sport = id
   ;(document.getElementById('sport') as HTMLSelectElement).value = id
-  try { localStorage.setItem('sport', id) } catch { /* privévenster */ }
+  try { localStorage.setItem('activiteit', id) } catch { /* privévenster */ }
   const rows = await laadSport(id)
   if (staat.sport !== id) return
   staat.cijfers = rows
@@ -153,34 +154,29 @@ function sportKeuze() {
   const o = document.createElement('option')
   o.value = WW; o.textContent = 'WIND en WAVE'
   sel.appendChild(o)
-  for (const [g, naam] of Object.entries(I.groepen)) {
-    const og = document.createElement('optgroup')
-    og.label = naam
-    for (const s of I.sporten.filter((s) => s.groep === g)) {
-      const o = document.createElement('option')
-      o.value = s.id; o.textContent = s.naam
-      og.appendChild(o)
-    }
-    sel.appendChild(og)
+  for (const [a, naam] of Object.entries(I.activiteiten)) {
+    const o = document.createElement('option')
+    o.value = a; o.textContent = naam
+    sel.appendChild(o)
   }
   let start = WW
-  try { start = localStorage.getItem('sport') || start } catch { /* geen opslag */ }
-  if (start !== WW && !I.sporten.some((s) => s.id === start)) start = WW
+  try { start = localStorage.getItem('activiteit') || start } catch { /* geen opslag */ }
+  if (start !== WW && !(start in I.activiteiten)) start = WW
   staat.sport = start
   sel.value = start
   sel.onchange = () => kiesSport(sel.value)
 }
 
 function legende() {
-  const t = document.getElementById('schaal')!
-  t.innerHTML = staat.index.schaal.map((naam, k) =>
-    `<tr><th style="background:${KLEUR[k]};color:${tekstKleur(k + 1)}">${k + 1}</th><td>${naam}</td></tr>`).join('')
   const legBol = document.getElementById('leg-bol')!
-  for (const [w, v] of [[1, 1], [3, 2], [2, 3], [4, 4], [5, 3], [3, 5]]) {
+  for (const [w, v, l] of [[1, 1, 0], [2, 3, 1], [3, 2, 0], [4, 4, 0], [5, 3, 0]]) {
     const img = document.createElement('img')
-    img.src = bolletjeUrl(w, v); img.alt = `WIND ${w}, WAVE ${v}`
+    img.src = bolletjeUrl(w, v, 34, l === 1); img.alt = `WIND ${w}${l ? '!' : ''}, WAVE ${v}`
     legBol.appendChild(img)
   }
+  const legPlan = document.getElementById('leg-plan')!
+  legPlan.innerHTML = [[2, 'goed'], [1, 'mogelijk'], [0, 'niet']].map(([n, t]) =>
+    `<span><img src="${plaatje(bolletjePlan(n as number, 28))}" alt="">${t}</span>`).join('')
   const dlg = document.getElementById('legende') as HTMLDialogElement
   document.getElementById('legende-knop')!.onclick = () => dlg.showModal()
 }
@@ -206,16 +202,19 @@ async function start() {
   kaart.on('load', async () => {
     staat.cijfers = await eerste
     for (let n = 0; n <= 5; n++) {
-      kaart.addImage(`s${n}`, bolletje(n, 30), { pixelRatio: 2 })
-      kaart.addImage(`g${n}`, bolletje(n, 36, true), { pixelRatio: 2 })
+    }
+    for (let n = 0; n <= 2; n++) {
+      kaart.addImage(`p${n}`, bolletjePlan(n, 28), { pixelRatio: 2 })
+      kaart.addImage(`pg${n}`, bolletjePlan(n, 34, true), { pixelRatio: 2 })
     }
     for (let w = 0; w <= 5; w++) for (let v = 0; v <= 5; v++) {
       if ((w === 0) !== (v === 0)) continue
       kaart.addImage(`b${w}${v}`, bolletjeWW(w, v, 44), { pixelRatio: 2 })
+      if (w === 2) kaart.addImage(`b${w}${v}!`, bolletjeWW(w, v, 44, true), { pixelRatio: 2 })
     }
     kaart.addSource('stranden', {
       type: 'geojson', data: features(), cluster: true, clusterRadius: 30, clusterMaxZoom: 9,
-      clusterProperties: { rang: ['max', ['get', 'rang']], w: ['max', ['get', 'w']], v: ['max', ['get', 'v']] },
+      clusterProperties: { n: ['max', ['get', 'n']], w: ['max', ['get', 'w']], v: ['max', ['get', 'v']] },
     })
     kaart.addLayer({ id: 'groepen', type: 'symbol', source: 'stranden', filter: ['has', 'point_count'],
       layout: { 'icon-allow-overlap': true } })
@@ -255,16 +254,15 @@ function zetIcoon() {
   if (!kaart?.getLayer('stranden')) return
   const ww = ['concat', 'b', ['to-string', ['get', 'w']], ['to-string', ['get', 'v']]]
   if (staat.sport === WW) {
-    kaart.setLayoutProperty('stranden', 'icon-image', ww)
+    kaart.setLayoutProperty('stranden', 'icon-image', ['concat', ww, ['get', 'l']])
     kaart.setLayoutProperty('groepen', 'icon-image', ww)
     kaart.setLayoutProperty('groepen', 'icon-size', 1.1)
     kaart.setLayoutProperty('stranden', 'symbol-sort-key', ['+', ['get', 'w'], ['get', 'v']])
   } else {
-    kaart.setLayoutProperty('stranden', 'icon-image', ['concat', 's', ['to-string', ['get', 'n']]])
-    kaart.setLayoutProperty('groepen', 'icon-image',
-      ['concat', 'g', ['to-string', ['match', ['get', 'rang'], 5, 3, 4, 4, 3, 2, 2, 5, 1, 1, 0]]])
+    kaart.setLayoutProperty('stranden', 'icon-image', ['concat', 'p', ['to-string', ['get', 'n']]])
+    kaart.setLayoutProperty('groepen', 'icon-image', ['concat', 'pg', ['to-string', ['get', 'n']]])
     kaart.setLayoutProperty('groepen', 'icon-size', 1)
-    kaart.setLayoutProperty('stranden', 'symbol-sort-key', ['get', 'rang'])
+    kaart.setLayoutProperty('stranden', 'symbol-sort-key', ['get', 'n'])
   }
 }
 

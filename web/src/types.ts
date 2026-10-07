@@ -20,6 +20,7 @@ export interface Index {
   notas: string[]
   teksten: string[]
   regels: any
+  activiteiten: Record<string, string> // surf, wind, windgolf, plat -> naam
 }
 
 export interface KaartStrand {
@@ -52,7 +53,7 @@ export interface Detail {
   RUW: (number | null)[]
   tij: (number | null)[] // 0 laag, 1 opkomend, 2 hoog, 3 afgaand
   ipma: string[]
-  cijfers: Record<string, string> // één teken per uur, 0 = geen cijfer
+  plan: Record<string, string> // per activiteit één teken per uur: 0 niet, 1 mogelijk, 2 goed
   score: (ScoreRij | null)[] // WIND en WAVE (M5)
   [k: string]: any // de golfreeksen (wave_height, swell_wave_period, ...)
 }
@@ -62,4 +63,4 @@ export interface Getij {
 }
 
 // WIND en WAVE (M5): [WIND, WAVE, label, [nota's], [redenen], Hb, [laag, hoog], windsurf, waarschuwing, windklasse]
-export type ScoreRij = [number, number, number, number[], number[], number, [number, number], number | null, number | null, string | null]
+export type ScoreRij = [number, number, number, number[], number[], number, [number, number], number | null, number | null, string | null, boolean]

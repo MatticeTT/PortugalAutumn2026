@@ -59,10 +59,18 @@ def test_windklassen(d, klasse):
 
 
 @pytest.mark.parametrize("d", [45.0, 90.0, 135.0])  # schuin aflandig en aflandig
-def test_aflandig_vanaf_8_kn_altijd_5(d):
-    assert score(uur(w=8.0, d=d), WEST).wind == 5
+def test_aflandig_vanaf_12_kn_altijd_5(d):
+    assert score(uur(w=12.0, d=d), WEST).wind == 5
+    assert score(uur(w=12.0, d=d), Strand(kijkrichting=270, besloten_water=True)).wind == 3
+
+
+@pytest.mark.parametrize("d", [45.0, 90.0, 135.0])
+def test_aflandig_onder_12_kn_is_2_met_uitroepteken(d):
+    # Te licht om te kiten; voor golfsurf net goed (eigenaar, 7 okt 2026).
+    r = score(uur(w=8.0, d=d), WEST)
+    assert r.wind == 2 and r.let_op and r.waarschuwing.startswith("aflandige wind")
     assert score(uur(w=7.9, d=d), WEST).wind == 1
-    assert score(uur(w=8.0, d=d), Strand(kijkrichting=270, besloten_water=True)).wind == 2
+    assert not score(uur(w=11.9, d=225), WEST).let_op  # aanlandig: geen uitroepteken
 
 
 def test_richting_onzeker_geen_oordeel():

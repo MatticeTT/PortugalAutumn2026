@@ -281,3 +281,26 @@ Volgorde in de fiche van een strand:
 5. Ingeklapt: getij in detail, volledige voorspelling, over dit strand.
 
 Open: de 4 groepen als keuze op de kaart wachten op de berekening van de eigenaar.
+
+### 31. Dagplan: wanneer kan je gaan (7 oktober 2026)
+
+Op vraag van de eigenaar:
+- WAVE komt uit golfgrootte en periode.
+- WIND komt uit kracht en richting.
+- Aflandige wind maakt WIND pas 5 vanaf 12 kn (de kitegrens). Daaronder is het een 2 met een geel uitroepteken: te licht om te kiten, wel goed voor golfsurf.
+
+Per uur rekent `pipeline/rules/dagplan.py` uit wat kan:
+- **Surfweer**: WAVE 3 of 4 en WIND 1 of 2.
+- **Windweer**: WIND 3 of 4 en WAVE 1 of 2.
+- **Wind-golven**: WIND 3 of 4 en WAVE 3 of 4.
+- **Stille waters**: WAVE 1 of 2 en wind tot 10 kn, niet van land.
+
+Het getij volgt de bronnen op de pagina "Hoe rekenen we". Alleen uren bij daglicht tellen mee.
+
+De kaart toont standaard WIND en WAVE. In de keuzelijst staan de vier activiteiten (goed, mogelijk of niet). De fiche zegt bovenaan per activiteit tussen welke uren je die dag kan gaan.
+
+De 21 sporten van "Sportscore 1 tot 5" staan niet meer op de site. De code en de 41 testgevallen blijven in `pipeline/sport`. De fiche gebruikt die nog voor de golf aan het strand en de tekeningen.
+
+Eigen keuzes:
+- minstens 2 uur na elkaar;
+- plat water niet bij aflandige wind vanaf 5 kn.

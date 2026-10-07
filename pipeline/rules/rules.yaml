@@ -13,7 +13,9 @@ wind:
   vlagen:    {min4: 30, s5: 38, nota_factor: 1.2, nota_aan: false}   # nota pas aan na M6
   voorzichtig: {s5: 28, vlagen_s5: 30, aan: false} # variant, staat uit
   richting:  {aanlandig: 22.5, schuin_aan: 67.5, zij: 112.5, schuin_af: 157.5}
-  aflandig:  {score: 5, vanaf_kn: 8, klassen: [schuin_af, af]}
+  # Aflandige wind maakt WIND pas 5 vanaf de kitegrens (kite.s3). Daaronder blijft het cijfer van de
+  # sterkte (2) met een uitroepteken: te licht om te kiten, wel goed voor golfsurf (eigenaar, 7 okt 2026).
+  aflandig:  {score: 5, vanaf_kn: 12, klassen: [schuin_af, af]}
   windsurf_regels:
     - {van: 7, tot: 11, tekst: "windsurf: beginners kunnen oefenen, zonder planeren"}
     - {van: 12, tot: 16, tekst: "windsurf: planeren begint"}

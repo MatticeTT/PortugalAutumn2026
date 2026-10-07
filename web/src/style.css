@@ -163,6 +163,9 @@ dialog::backdrop { background: rgb(0 0 0 / 0.35); }
 dialog h2 { margin-top: 0; }
 .leg-bol { display: flex; gap: 6px; flex-wrap: wrap; }
 .leg-bol img { width: 34px; height: 34px; }
+.leg-plan { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+.leg-plan span { display: inline-flex; align-items: center; gap: 4px; }
+.leg-plan img { width: 28px; height: 28px; }
 dialog h3 { margin: 14px 0 4px; font-size: 15px; }
 .schaal { border-collapse: collapse; margin: 8px 0; }
 .schaal th { width: 2em; text-align: center; border-radius: 6px; }
@@ -210,3 +213,19 @@ details.groep summary { cursor: pointer; padding: 9px 4px; font-weight: 700; }
 details.groep .rij { padding-left: 16px; }
 details.meer > summary { cursor: pointer; font-weight: 700; padding: 2px 0; }
 details.meer[open] > summary { margin-bottom: 8px; }
+
+/* Dagplan: wanneer kan je gaan */
+.dagplan { margin: 8px 0 4px; padding: 10px 12px; border-radius: 12px; background: var(--zacht-vlak); }
+.dagplan h3 { margin: 0 0 6px; font-size: 15px; }
+.dagplan ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.dagplan li { display: grid; grid-template-columns: 24px minmax(0, 1fr); column-gap: 8px; align-items: start; }
+.dagplan li .act { font-weight: 700; }
+.dagplan li .uren { grid-column: 2; font-variant-numeric: tabular-nums; }
+.dagplan li.niet .act { color: var(--zacht); font-weight: 600; }
+.dagplan .stip { grid-row: span 2; width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center;
+  font-style: normal; font-weight: 800; font-size: 13px; color: #fff; }
+.dagplan li.niet .stip { width: 10px; height: 10px; margin: 6px; }
+.dagplan p { margin: 8px 0 0; }
+.letop { font-style: normal; display: inline-grid; place-items: center; background: #fab219; color: #2b1d00;
+  border-radius: 50%; width: 1.1em; height: 1.1em; font-size: 0.55em; font-weight: 800; vertical-align: super; margin-left: 2px; }
+.verloop .letop { font-size: 10px; width: 13px; height: 13px; vertical-align: top; }

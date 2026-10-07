@@ -35,7 +35,7 @@ export const CYAAN = ['#d4f5fa', '#93e6f3', '#3fcde6', '#0fa9c9', '#007a96']
 export const BLAUW = ['#dbe5fb', '#a3bdf4', '#6693ec', '#2f63da', '#143aa6']
 export const LICHT = (s: number) => s <= 2 // donkere cijfers op een lichte helft
 
-export function bolletjeWW(w: number, v: number, size = 44): ImageData {
+export function bolletjeWW(w: number, v: number, size = 44, letOp = false): ImageData {
   const c = document.createElement('canvas')
   const ratio = 2
   c.width = c.height = size * ratio
@@ -61,11 +61,52 @@ export function bolletjeWW(w: number, v: number, size = 44): ImageData {
   } else {
     g.fillStyle = '#4a545c'; g.fillText('–', cx, cy + 1)
   }
+  if (letOp) {
+    // WIND 2 met aflandige wind: te licht om te kiten, verkeerde richting.
+    const br = size * 0.17
+    g.beginPath(); g.arc(br + 1, br + 1, br, 0, Math.PI * 2)
+    g.fillStyle = '#fab219'; g.fill(); g.lineWidth = 1; g.strokeStyle = '#2b1d00'; g.stroke()
+    g.fillStyle = '#2b1d00'; g.font = `800 ${Math.round(br * 1.5)}px system-ui, sans-serif`
+    g.fillText('!', br + 1, br + 1.5)
+  }
   return g.getImageData(0, 0, c.width, c.height)
 }
 
-export function bolletjeUrl(w: number, v: number, size = 34): string {
-  const img = bolletjeWW(w, v, size)
+// Dagplan op de kaart: goed (groen, vinkje), mogelijk (geel, tilde), niet (klein grijs bolletje).
+export const PLAN_KLEUR = ['#c3cad0', '#fab219', '#0a8a0a']
+export function bolletjePlan(n: number, size = 28, groep = false): ImageData {
+  const c = document.createElement('canvas')
+  const ratio = 2
+  c.width = c.height = size * ratio
+  const g = c.getContext('2d')!
+  g.scale(ratio, ratio)
+  const cx = size / 2
+  const r = n === 0 ? size / 5 : size / 2 - 2
+  if (groep && n > 0) {
+    g.beginPath(); g.arc(cx, cx, r + 1, 0, Math.PI * 2)
+    g.fillStyle = 'rgba(255,255,255,0.9)'; g.fill()
+  }
+  g.beginPath(); g.arc(cx, cx, groep && n > 0 ? r - 2.5 : r, 0, Math.PI * 2)
+  g.fillStyle = PLAN_KLEUR[n]; g.fill()
+  g.lineWidth = 1.2; g.strokeStyle = 'rgba(13,28,35,0.55)'; g.stroke()
+  if (n > 0) {
+    g.font = `800 ${Math.round(size * 0.5)}px system-ui, sans-serif`
+    g.textAlign = 'center'; g.textBaseline = 'middle'
+    g.fillStyle = n === 2 ? '#fff' : '#2b1d00'
+    g.fillText(n === 2 ? '✓' : '~', cx, cx + 1)
+  }
+  return g.getImageData(0, 0, c.width, c.height)
+}
+
+export function bolletjeUrl(w: number, v: number, size = 34, letOp = false): string {
+  const img = bolletjeWW(w, v, size, letOp)
+  const c = document.createElement('canvas')
+  c.width = img.width; c.height = img.height
+  c.getContext('2d')!.putImageData(img, 0, 0)
+  return c.toDataURL()
+}
+
+export function plaatje(img: ImageData): string {
   const c = document.createElement('canvas')
   c.width = img.width; c.height = img.height
   c.getContext('2d')!.putImageData(img, 0, 0)

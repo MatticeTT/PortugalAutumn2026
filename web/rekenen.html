@@ -11,30 +11,27 @@
   <div class="pagina">
     <p><a href="./">← Terug naar de kaart</a></p>
     <h1>Hoe rekenen we</h1>
-    <p>Per strand, per uur en per sport geven we één cijfer van 1 tot 5. De regels komen uit het document "Sportscore 1 tot 5" van de eigenaar. De grenzen steunen waar het kan op bonden, scholen en fabrikanten; de rest is een eigen keuze, die later geijkt wordt.</p>
-    <table id="schaal"></table>
-    <h2>Wat we per uur gebruiken</h2>
-    <ul>
-      <li><b>H</b>: golfhoogte (significant, zoals "Wave" bij Windguru). <b>T</b>: piekperiode. <b>GR</b>: golfrichting.</li>
-      <li><b>V</b>: gemiddelde wind, <b>G</b>: windstoot, <b>WR</b>: windrichting, alle op 10 m, in knopen.</li>
-      <li><b>TIJ</b>: laag of hoog als het uur hoogstens een uur van laag- of hoogwater ligt, anders opkomend of afgaand.</li>
-      <li>Per strand: <b>N</b>, de richting waarin het strand naar zee kijkt, en <b>K</b>, de strandfactor (1 open, 0,6 half beschut, 0,3 beschut, 0,1 sterk beschut, 0 lagune). K halen we uit de blootstelling van het strand aan de open zee; waar die niet te vertrouwen is, nemen we 1.</li>
-    </ul>
-    <h2>Gedeelde tussenwaarden</h2>
-    <ul>
-      <li><b>a</b>: hoek tussen wind en kijkrichting (0 = van zee, 90 = langs het strand, 180 = van land). <b>theta</b>: hetzelfde voor de golven.</li>
-      <li><b>GOLF</b>, de brekende golf aan het strand: 0,33 · H<sup>0,8</sup> · T<sup>0,4</sup> · (T/10, minstens 1)<sup>0,85</sup> (T hoogstens 20 s), maal K en maal een factor R voor de golfrichting (1 recht van zee, 0 vanaf 135°).</li>
-      <li><b>RUW</b>, de ruwheid van het water: K · R (minstens 0,1) · de grootste van GOLF zonder R en H.</li>
-      <li><b>W</b>, het windgetal: de grootste van V en G / 1,3.</li>
-    </ul>
-    <div id="inhoud"><p>Laden…</p></div>
+    <p>Per strand en per uur twee cijfers van 1 tot 5. <b>WAVE</b> komt uit de grootte en de periode van de golven, voor golfsurfen. <b>WIND</b> komt uit de kracht en de richting van de wind, voor kiten en windsurfen. Ze staan apart, want de wind die een windsurfer wil, is net de omgekeerde van wat een golfsurfer wil.</p>
     <h2 id="ww">WIND en WAVE</h2>
-    <p>Naast de sporten geeft de kaart per strand en per uur twee cijfers van 1 tot 5. <b>WIND</b> gaat over kracht en richting van de wind, voor kitesurf en windsurf. <b>WAVE</b> gaat over grootte en periode van de golven, voor golfsurfen.</p>
     <p>Bij elke drempel staat hoe sterk het bewijs is:
       <span class="bewijs sterk">sterk</span> een federatie, reddingsdienst of overheid zegt het, of het is gemeten;
       <span class="bewijs praktijk">praktijk</span> scholen, verhuurders of één vereniging hanteren het;
       <span class="bewijs eigen">eigen keuze</span> geen bron geeft dit getal, het wordt later geijkt.</p>
     <div id="ww-inhoud"><p>Laden…</p></div>
+    <p>Aflandige wind maakt WIND pas een 5 vanaf 12 kn, de grens waarboven je kan kiten. Daaronder blijft het een 2 met een geel uitroepteken: te licht om te kiten, wel goed voor golfsurfen.</p>
+    <h2 id="dagplan">Wanneer kan je gaan?</h2>
+    <p>Uit WIND, WAVE, het getij en het daglicht rekent de kaart per uur uit wat kan. Op de fiche staan de uren per activiteit, als ze minstens 2 uur na elkaar goed zijn.</p>
+    <table>
+      <tr><th>Activiteit</th><th>Goed als</th><th>Getij</th></tr>
+      <tr><td>Golfsurfen (Surfweer)</td><td>WAVE 3 of 4 en WIND 1 of 2</td><td>Goed tussen 35 en 75% van laag naar hoog water, mogelijk tussen 15 en 90%. Rond het laagste water sluiten de golven, rond het hoogste breken ze op de kant.
+        Bron: <a href="https://breakfinder.surf/blog/tide-window-optimizer-surf-break-type-guide">breakfinder</a>, <a href="https://www.surfertoday.com/surfing/how-to-adapt-to-tide-times-in-surfing">Surfer Today</a>.</td></tr>
+      <tr><td>Kiten en windsurfen (Windweer)</td><td>WIND 3 of 4 en WAVE 1 of 2</td><td rowspan="2">Het getij beslist niet. Rond het hoogste water (boven 90%) is er minder strand en meer shorebreak: dan "mogelijk" in plaats van "goed".
+        Bron: <a href="https://rideevolve.eu/en/blog/news-1/guide-wind-tide-and-waves-for-kite-and-wingfoil-193">Evolve</a>, <a href="https://www.windsurf.co.uk/east-wittering-beach-guide/">windsurf.co.uk</a>.</td></tr>
+      <tr><td>Windsurfen op golven (Wind-golven)</td><td>WIND 3 of 4 en WAVE 3 of 4</td></tr>
+      <tr><td>Plat water: SUP, kajak, zwemmen (Stille waters)</td><td>WAVE 1 of 2, wind tot 10 kn en niet van land (vanaf 5 kn drijft die je weg)</td><td>Goed rond hoog- en laagwater (onder 25% of boven 75%), want midden tussen eb en vloed stroomt het het sterkst.
+        Bron: <a href="https://nrc.govt.nz/resource-library-summary/publications/coast/kayaks-and-paddleboards/paddleboarding-safety-guidelines/general-guidelines">Northland Regional Council</a>; 10 kn: American Canoe Association.</td></tr>
+    </table>
+    <p class="klein">Alleen bij daglicht. WIND 5 of WAVE 5: op dat uur niets. "Minstens 2 uur na elkaar" is een eigen keuze: korter is geen sessie.</p>
     <h2>Nauwkeurigheid</h2>
     <div id="nauwkeurigheid"><p>Laden…</p></div>
     <h2>Getij</h2>
