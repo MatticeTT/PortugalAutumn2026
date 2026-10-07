@@ -287,3 +287,11 @@ details.meer[open] > summary { margin-bottom: 8px; }
 .fiche h3.kop { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--zacht); margin: 10px 0 4px; }
 .dag .wat { display: block; height: 8px; border-radius: 4px; background: var(--zacht-vlak); }
 .dag tr.r-wat td { padding: 0 1px; }
+
+/* Uren per uitkomst, met ideaal / goed / kan */
+.held .uren { display: flex; flex-wrap: wrap; gap: 2px 14px; font-size: 20px; }
+.rest .uren { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 0 10px; }
+.venster { white-space: nowrap; }
+.venster small { font-size: 12px; font-weight: 600; opacity: 0.85; }
+.venster.k1, .venster.k2 { font-weight: 600; }
+.venster.k2 { opacity: 0.75; }

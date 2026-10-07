@@ -31,8 +31,9 @@ export function bolletje(n: number, size = 30, groep = false): ImageData {
 
 // WIND en WAVE (M5): een halve cirkel cyaan voor WIND, een halve blauw voor WAVE.
 // Vijf stappen van flets (1) naar fel (5): cyaan voor WIND, blauw voor WAVE (PLAN.md 2.6).
-export const CYAAN = ['#d4f5fa', '#93e6f3', '#3fcde6', '#0fa9c9', '#007a96']
-export const BLAUW = ['#dbe5fb', '#a3bdf4', '#6693ec', '#2f63da', '#143aa6']
+// Vier levels (1 niets, 2 beginner, 3 sterk, 4 te sterk).
+export const CYAAN = ['#d4f5fa', '#7ee0f0', '#16b3d0', '#007a96']
+export const BLAUW = ['#dbe5fb', '#93b3f2', '#4f7fe6', '#143aa6']
 export const LICHT = (s: number) => s <= 2 // donkere cijfers op een lichte helft
 
 export function bolletjeWW(w: number, v: number, size = 44, letOp = false): ImageData {
@@ -45,7 +46,7 @@ export function bolletjeWW(w: number, v: number, size = 44, letOp = false): Imag
   const cx = size / 2
   const cy = size / 2
   const leeg = w === 0 || v === 0
-  const gevaar = w === 5 || v === 5
+  const gevaar = w === 4 || v === 4
   g.beginPath(); g.arc(cx, cy, r + 2, 0, Math.PI * 2)
   g.fillStyle = gevaar ? '#d0021b' : 'rgba(20,32,43,0.55)'; g.fill()
   g.beginPath(); g.moveTo(cx, cy); g.arc(cx, cy, r, Math.PI / 2, Math.PI * 1.5)

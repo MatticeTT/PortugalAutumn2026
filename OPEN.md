@@ -316,3 +316,14 @@ Op vraag van de eigenaar ("keep it simple"):
 - Al de rest staat op de pagina "Hoe rekenen we": tekeningen, tabellen, de legende en de sporten.
 
 De berekening erachter blijft dezelfde (punt 31).
+
+### 33. Uitkomst per uur: regels van de rekenchat (7 oktober 2026)
+
+Per strand en per uur is er precies één uitkomst: te wild, golfsurfen, windsurfen op golven, windsurfen of stille waters. Ze gebruikt strafpunten. Daarnaast zijn er WAVE en WIND als level 1 tot 4.
+
+- De regels zijn exact overgenomen van de rekenchat van de eigenaar, in `pipeline/rules/uitkomst.py`.
+- De 15 testvoorbeelden van die chat staan in `tests/test_uitkomst.py` en slagen allemaal.
+- De gegevens zijn dezelfde als bij Windguru: wind van GFS, golven van GFS-Wave per deining.
+- Een vlaag die lager is dan de gemiddelde wind (komt voor in GFS) wordt gelijk gezet aan de wind.
+
+In de fiche betekenen de strafpunten: 0 is "ideaal", 1 is "goed", 2 of meer is "kan". Alleen uren met daglicht tellen.

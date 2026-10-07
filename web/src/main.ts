@@ -55,16 +55,16 @@ async function stijl(): Promise<StyleSpecification | string> {
 // Waar de kaart opent (voorlopig Ferragudo, op vraag van de eigenaar).
 const START = { center: [-8.52, 37.11] as [number, number], zoom: 13 }
 
-// Per strand (volgorde van kaart.json) per uur drie tekens: WIND, WAVE en "!" of ".".
+// Per strand (volgorde van kaart.json) per uur twee cijfers: WIND en WAVE (level 1–4).
 function features() {
   const i = staat.i
   return {
     type: 'FeatureCollection' as const,
     features: staat.stranden.map((s, k) => {
       const rij = staat.cijfers[k] ?? ''
-      const w = Number(rij[3 * i] ?? 0)
-      const v = Number(rij[3 * i + 1] ?? 0)
-      const l = rij[3 * i + 2] === '!' ? '!' : ''
+      const w = Number(rij[2 * i] ?? 0)
+      const v = Number(rij[2 * i + 1] ?? 0)
+      const l = ''
       return { type: 'Feature' as const, geometry: { type: 'Point' as const, coordinates: [s.x, s.y] },
         properties: { id: s.id, naam: s.n, w, v, l } }
     }),
@@ -151,10 +151,9 @@ async function start() {
 
   kaart.on('load', async () => {
     staat.cijfers = await eerste
-    for (let w = 0; w <= 5; w++) for (let v = 0; v <= 5; v++) {
+    for (let w = 0; w <= 4; w++) for (let v = 0; v <= 4; v++) {
       if ((w === 0) !== (v === 0)) continue
       kaart.addImage(`b${w}${v}`, bolletjeWW(w, v, 44), { pixelRatio: 2 })
-      if (w === 2) kaart.addImage(`b${w}${v}!`, bolletjeWW(w, v, 44, true), { pixelRatio: 2 })
     }
     kaart.addSource('stranden', {
       type: 'geojson', data: features(), cluster: true, clusterRadius: 30, clusterMaxZoom: 9,

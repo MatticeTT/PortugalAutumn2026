@@ -10,34 +10,36 @@
 <body>
   <div class="pagina">
     <p><a href="./">← Terug naar de kaart</a></p>
-    <h1>Hoe rekenen we</h1>
-    <p>Per strand en per uur twee cijfers van 1 tot 5. <b>WAVE</b> komt uit de grootte en de periode van de golven, voor golfsurfen. <b>WIND</b> komt uit de kracht en de richting van de wind, voor kiten en windsurfen. Ze staan apart, want de wind die een windsurfer wil, is net de omgekeerde van wat een golfsurfer wil.</p>
-    <h2 id="ww">WIND en WAVE</h2>
-    <p>Bij elke drempel staat hoe sterk het bewijs is:
-      <span class="bewijs sterk">sterk</span> een federatie, reddingsdienst of overheid zegt het, of het is gemeten;
-      <span class="bewijs praktijk">praktijk</span> scholen, verhuurders of één vereniging hanteren het;
-      <span class="bewijs eigen">eigen keuze</span> geen bron geeft dit getal, het wordt later geijkt.</p>
-    <div id="ww-inhoud"><p>Laden…</p></div>
-    <p>Aflandige wind maakt WIND pas een 5 vanaf 12 kn, de grens waarboven je kan kiten. Daaronder blijft het een 2 met een geel uitroepteken: te licht om te kiten, wel goed voor golfsurfen.</p>
-    <h2 id="dagplan">Wanneer kan je gaan?</h2>
-    <p>Uit WIND, WAVE, het getij en het daglicht rekent de kaart per uur uit wat kan. Op de fiche staan de uren per activiteit, als ze minstens 2 uur na elkaar goed zijn.</p>
+    <h1>Hoe berekend</h1>
+    <p>Per strand en per uur valt elk uur in precies één van vijf uitkomsten: <b>golfsurfen</b>, <b>windsurfen op golven</b>, <b>windsurfen</b>, <b>stille waters</b> of <b>te wild</b>. Daarvoor tellen de windsnelheid, de windstoten, de windrichting, de golfhoogte, de golfperiode, de golfrichting en het getij. De gegevens zijn dezelfde als op Windguru: wind van GFS, golven van GFS-Wave, per deining apart.</p>
+
+    <h2>De hulpgetallen</h2>
+    <ul>
+      <li><b>Golfkracht E</b> = 1,96 × hoogte² × periode² × cos(hoek tussen golfrichting en kustrichting), in kJ, per deining. Komt de deining uit een richting die het strand niet kan bereiken (achter een kaap, of van land), dan telt ze niet. De sterkste deining telt.</li>
+      <li><b>Windrichting tegenover het strand:</b> recht aanlandig (onder 22,5°), schuin aanlandig (tot 67,5°), zijwind (tot 112,5°), schuin aflandig (tot 157,5°), recht aflandig.</li>
+      <li><b>Getij:</b> hoe ver het water staat tussen laag (0%) en hoog (100%). Telt alleen als het verval groot genoeg is tegenover de golven.</li>
+    </ul>
+
+    <h2>WAVE en WIND</h2>
     <table>
-      <tr><th>Activiteit</th><th>Goed als</th><th>Getij</th></tr>
-      <tr><td>Golfsurfen (Surfweer)</td><td>WAVE 3 of 4 en WIND 1 of 2</td><td>Goed tussen 35 en 75% van laag naar hoog water, mogelijk tussen 15 en 90%. Rond het laagste water sluiten de golven, rond het hoogste breken ze op de kant.
-        Bron: <a href="https://breakfinder.surf/blog/tide-window-optimizer-surf-break-type-guide">breakfinder</a>, <a href="https://www.surfertoday.com/surfing/how-to-adapt-to-tide-times-in-surfing">Surfer Today</a>.</td></tr>
-      <tr><td>Kiten en windsurfen (Windweer)</td><td>WIND 3 of 4 en WAVE 1 of 2</td><td rowspan="2">Het getij beslist niet. Rond het hoogste water (boven 90%) is er minder strand en meer shorebreak: dan "mogelijk" in plaats van "goed".
-        Bron: <a href="https://rideevolve.eu/en/blog/news-1/guide-wind-tide-and-waves-for-kite-and-wingfoil-193">Evolve</a>, <a href="https://www.windsurf.co.uk/east-wittering-beach-guide/">windsurf.co.uk</a>.</td></tr>
-      <tr><td>Windsurfen op golven (Wind-golven)</td><td>WIND 3 of 4 en WAVE 3 of 4</td></tr>
-      <tr><td>Plat water: SUP, kajak, zwemmen (Stille waters)</td><td>WAVE 1 of 2, wind tot 10 kn en niet van land (vanaf 5 kn drijft die je weg)</td><td>Goed rond hoog- en laagwater (onder 25% of boven 75%), want midden tussen eb en vloed stroomt het het sterkst.
-        Bron: <a href="https://nrc.govt.nz/resource-library-summary/publications/coast/kayaks-and-paddleboards/paddleboarding-safety-guidelines/general-guidelines">Northland Regional Council</a>; 10 kn: American Canoe Association.</td></tr>
+      <tr><th></th><th>1 niets</th><th>2 beginner</th><th>3 sterk</th><th>4 te sterk</th></tr>
+      <tr><td>WAVE (golfkracht)</td><td>onder 100 kJ</td><td>100–300 kJ</td><td>300–1000 kJ</td><td>vanaf 1000 kJ</td></tr>
+      <tr><td>WIND (gemiddelde wind)</td><td>onder 5 kn</td><td>5–12 kn</td><td>12–25 kn</td><td>boven 25 kn, of vlagen boven 35 kn</td></tr>
     </table>
-    <p class="klein">Alleen bij daglicht. WIND 5 of WAVE 5: op dat uur niets. "Minstens 2 uur na elkaar" is een eigen keuze: korter is geen sessie.</p>
-    <h2>Nauwkeurigheid</h2>
-    <div id="nauwkeurigheid"><p>Laden…</p></div>
-    <h2>Getij</h2>
-    <p>Hoog- en laagwater worden berekend met harmonische voorspelling (Neaps, TICON-4) voor zeven Portugese peilstations en Huelva, en tussen de stations langs de kust verdeeld. Op de open kust valt dat meestal binnen 2 à 3 minuten van de officiële getijtafel; in de oostelijke Algarve tot een kwartier, in lagunes en riviermondingen tot een half uur. Het getij telt mee bij kiten op land (hoog water: cijfer 1), bij stranden die droogvallen (laag water: cijfer 1) en bij golfsporten als het beste getij van het strand gekend is.</p>
-    <h2>Wat de cijfers niet zeggen</h2>
-    <p>Of golven mooi lopen hangt af van de zeebodem en van zandbanken die verschuiven; dat zit in geen enkel weermodel. Stroming, rotsen, watertemperatuur, zicht onder water, drukte, plaatselijke regels en of er redders zijn, zitten niet in de cijfers. GOLF is een schatting die gemiddeld 20 à 25% naast metingen zit: een uur vlak bij een grens kan een cijfer hoger of lager uitvallen. De scores zijn geen veiligheidsadvies.</p>
+
+    <h2>De vijf uitkomsten</h2>
+    <p><b>Te wild</b> als de wind boven 25 kn is, de vlagen boven 35 kn, of de golfkracht 1000 kJ of meer. Anders krijgt elk van de andere vier strafpunten voor wat minder goed is, of valt het af. De minste strafpunten wint. Bij gelijkstand: golfsurfen, dan windsurfen op golven, dan windsurfen, dan stille waters.</p>
+    <table>
+      <tr><th>Uitkomst</th><th>Valt af als</th><th>Strafpunt voor</th></tr>
+      <tr><td>Golfsurfen</td><td>golfkracht onder 100 kJ; wind van zee of opzij vanaf 15 kn</td><td>golfkracht onder 200 kJ; periode onder 9 s; wind van zee of opzij 5–15 kn; wind van land 15–25 kn; heel laag of heel hoog water (tot 15% of vanaf 90%)</td></tr>
+      <tr><td>Windsurfen op golven</td><td>golfkracht onder 100 kJ; wind onder 12 kn; wind recht van land</td><td>wind onder 15 kn; vlagen meer dan 10 kn boven de wind; wind recht aanlandig of schuin aflandig; golfkracht onder 200 kJ; heel laag of heel hoog water</td></tr>
+      <tr><td>Windsurfen</td><td>wind onder 5 kn; golfkracht vanaf 300 kJ, of vanaf 100 kJ bij wind onder 12 kn; wind recht van land; schuin aflandig bij wind onder 12 kn</td><td>wind onder 12 kn; vlagerig; schuin aflandig; recht aanlandig met golven vanaf 0,5 m; golfkracht 100–300 kJ; hoog water met golven vanaf 0,5 m</td></tr>
+      <tr><td>Stille waters</td><td>wind vanaf 12 kn; golfkracht vanaf 200 kJ</td><td>wind 5–12 kn; vlagerig; wind van land vanaf 5 kn (je drijft af); golven vanaf 0,5 m; laag water met golven vanaf 0,5 m (muistromen)</td></tr>
+    </table>
+    <p><b>Ideaal</b> = geen strafpunt, <b>goed</b> = één strafpunt, <b>kan</b> = twee of meer. Alleen uren met daglicht.</p>
+
+    <h2>Wat de cijfers niet weten</h2>
+    <p>Stroming, rotsen, zandbanken, drukte en plaatselijke regels zitten er niet in. Het beste getij per strand is nog niet gekend. Getijden worden berekend (Neaps, TICON-4) en vallen op de open kust binnen enkele minuten van de officiële tabel. Geen veiligheidsadvies: volg de redders en de vlaggen.</p>
   </div>
   <script type="module" src="/src/rekenen.ts"></script>
 </body>

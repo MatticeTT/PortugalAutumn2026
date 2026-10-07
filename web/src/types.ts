@@ -35,26 +35,19 @@ export interface Detail {
   naam: string
   lat: number
   lon: number
-  kijkrichting: number
+  kust: number // kustrichting
+  venster: [number, number][] // swell-venster
   district: string
-  onzeker: boolean
-  redenen_onzeker: string[]
   getij: { a: string; b: string; w: number; nauwkeurigheid: string; nota: string | null } | null
-  K: number
-  K_bron: string
-  BESTTIJ: string | null
-  DROOG: boolean
-  LUWTE: [number, number] | null
   wind: (number | null)[]
   vlagen: (number | null)[]
   windrichting: (number | null)[]
-  piekperiode: (number | null)[]
-  GOLF: (number | null)[]
-  RUW: (number | null)[]
-  tij: (number | null)[] // 0 laag, 1 opkomend, 2 hoog, 3 afgaand
+  uitkomst: string // per uur: W te wild, G golfsurfen, O windsurfen op golven, S windsurfen, R stille waters, - geen
+  straf: string // per uur: strafpunten van de uitkomst (0 ideaal, 1 goed, 2+ kan)
+  WAVE: string // per uur level 1–4 (0 = geen)
+  WIND: string
+  licht: string // per uur 1 = daglicht
   ipma: string[]
-  plan: Record<string, string> // per activiteit één teken per uur: 0 niet, 1 mogelijk, 2 goed
-  score: (ScoreRij | null)[] // WIND en WAVE (M5)
   [k: string]: any // de golfreeksen (wave_height, swell_wave_period, ...)
 }
 
