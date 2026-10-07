@@ -1,7 +1,7 @@
 """Klimplekken: graad op de kaart en slecht weer per uur (eigenaar, 7 oktober 2026). De surfberekening
 staat hier los van.
 
-Rode rand als een van deze twee geldt:
+Rode rand als een van deze twee geldt (in Portugal is geen zandsteen getagd, dus in de praktijk: het regent):
 - het regent in dat uur (neerslag boven 0 mm);
 - de rotssoort is zandsteen (sandstone) en het heeft in de 24 uur ervoor geregend.
 Nota's (maken de rand niet rood): "klam, minder grip" bij luchtvochtigheid boven 70%;
@@ -21,9 +21,8 @@ def graad(lo: str | None, hi: str | None) -> str:
 
 
 def label(plek: dict) -> str:
-    """Muurklimmen: de Franse graad; boulderen: de Font-graad."""
-    s = "french" if plek["soort"] == "muurklimmen" else "font"
-    return graad(plek.get(f"{s}:min"), plek.get(f"{s}:max"))
+    """Niveau in de cirkel: climbing:grade:french:min – :max; ontbreekt dat: "?" (rekenchat)."""
+    return graad(plek.get("french:min"), plek.get("french:max"))
 
 
 def rotsen(plek: dict) -> list[str]:

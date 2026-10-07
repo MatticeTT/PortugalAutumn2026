@@ -11,10 +11,23 @@ def test_soort():
     assert soort({}) == "muurklimmen"
 
 
-def test_geen_klimhallen():
-    e = [{"type": "node", "id": 1, "lat": 38, "lon": -9, "tags": {"sport": "climbing", "leisure": "sports_centre"}},
-         {"type": "way", "id": 2, "center": {"lat": 38, "lon": -9}, "tags": {"sport": "climbing", "climbing": "crag"}}]
-    assert [p["id"] for p in plekken(e)] == ["way/2"]
+def test_alleen_crags_areas_boulders():
+    def el(i, **tags):
+        return {"type": "node", "id": i, "lat": 38, "lon": -9, "tags": {"sport": "climbing", **tags}}
+    e = [el(1, leisure="sports_centre", climbing="crag"), el(2, climbing="crag"), el(3, climbing="route_bottom"),
+         el(4, climbing="route"), el(5, climbing="bolt"), el(6), el(7, climbing="boulder"),
+         el(8, **{"climbing:boulder": "yes"}), el(9, climbing="area")]
+    assert [p["id"] for p in plekken(e)] == ["node/2", "node/7", "node/8", "node/9"]
+
+
+def test_area_met_crag_erin_valt_weg():
+    vierkant = [{"lon": x, "lat": y} for x, y in [(-9, 38), (-8, 38), (-8, 39), (-9, 39), (-9, 38)]]
+    area = {"type": "way", "id": 1, "center": {"lon": -8.5, "lat": 38.5}, "geometry": vierkant,
+            "tags": {"sport": "climbing", "climbing": "area"}}
+    crag = {"type": "node", "id": 2, "lon": -8.4, "lat": 38.4, "tags": {"sport": "climbing", "climbing": "crag"}}
+    ver = {"type": "node", "id": 3, "lon": -7, "lat": 38.4, "tags": {"sport": "climbing", "climbing": "crag"}}
+    assert [p["id"] for p in plekken([area, crag])] == ["node/2"]
+    assert [p["id"] for p in plekken([area, ver])] == ["way/1", "node/3"]
 
 
 def test_graad():
@@ -23,8 +36,8 @@ def test_graad():
     assert graad(None, "7b") == "7b"
     assert graad(None, None) == "?"
     assert label({"soort": "muurklimmen", "french:min": "5a", "font:min": "6A"}) == "5a"
-    assert label({"soort": "boulderen", "french:min": "5a", "font:min": "6A", "font:max": "7B"}) == "6A–7B"
-    assert label({"soort": "boulderen", "french:min": "5a"}) == "?"
+    assert label({"soort": "boulderen", "font:min": "6A", "font:max": "7B"}) == "?"  # alleen de Franse graad
+    assert label({"soort": "boulderen", "french:min": "5a"}) == "5a"
 
 
 def test_rotssoort():
