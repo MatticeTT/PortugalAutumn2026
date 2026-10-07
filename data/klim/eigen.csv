@@ -1,4 +1,4 @@
-﻿naam,lat,lon,discipline,graad_min,graad_max,schaal,aantal_routes,omgerekend,bron,bron_url
+naam,lat,lon,discipline,graad_min,graad_max,schaal,aantal_routes,omgerekend,bron,bron_url
 Sintra - Capuchos,38.78702,-9.43647,boulder,4C,8B,Font,50-100,nee,Climbing Away,https://climbingaway.fr/en/climbing-areas/sintra-capuchos
 Sintra - Dinossauros,38.754928,-9.43028,boulder,4C,8A,Font,25-50,nee,Climbing Away,https://climbingaway.fr/en/climbing-areas/sintra-dinossauros
 Sintra - Peninha nova,38.769807,-9.45753,boulder,4C,7C,Font,50-100,nee,Climbing Away,https://climbingaway.fr/en/climbing-areas/sintra-peninha-nova
@@ -38,3 +38,4 @@ Buracas do Casmilo,40.045925,-8.496178,sport,6b,8c,Frans,50-100,nee,Climbing Awa
 Montejunto Novo,39.176816,-9.073135,sport,3c,8a,Frans,25-50,nee,Climbing Away,https://climbingaway.fr/en/climbing-areas/montejunto-novo
 Montejunto Velho,39.192314,-9.05731,sport,4a,7b,Frans,25-50,nee,Climbing Away,https://climbingaway.fr/en/climbing-areas/montejunto-velho
 Meadinha,41.977083,-8.224875,trad,6b,7a,Frans,10-25,nee,Climbing Away,https://climbingaway.fr/en/climbing-areas/meadinha
+Bensafrim,37.15338,-8.73129,sport,IV+,6a+,Frans,ca. 15,nee,Climbing Algarve (ligging: Mountain Project),https://climbingalgarve.pt/trips/climbing-in-lagos/

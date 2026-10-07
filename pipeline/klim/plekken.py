@@ -265,6 +265,8 @@ def eigen_plek(r: dict, nr: int) -> dict | None:
                  "soort": "omgerekend" if om else "eigen"}
         if om:
             graad["toelichting"] = r["omgerekend"].strip()
+        if any(G.romeins(g or "") for g in (graad["min"], graad["max"])):
+            graad["romeins"] = True  # zoals in de bron, niet omgerekend
     routes = (r.get("aantal_routes") or "").strip() or None
     if routes and routes.isdigit():
         routes = int(routes)
