@@ -26,9 +26,19 @@ const SOORTEN: Soort[] = [
 const soort = (l: string) => SOORTEN.find((s) => s.letter === l)
 const SPORT = ['G', 'O', 'S']
 
-// Strafpunten van de uitkomst: 0 ideaal, 1 goed, 2 of meer: kan.
-const KWALITEIT = ['ideaal', 'goed', 'kan']
-const kwaliteit = (straf: string) => Math.min(2, Number(straf || 0))
+// Strafpunten van de uitkomst: 0 ideaal, 1 goed. Bij 2 of meer toont de app geen uitkomst ("."),
+// behalve "te wild" (pipeline/rules/uitkomst.py, getoond()).
+const KWALITEIT = ['ideaal', 'goed']
+const kwaliteit = (straf: string) => Math.min(1, Number(straf || 0))
+const kompas = (d: number) => ['N', 'NNO', 'NO', 'ONO', 'O', 'OZO', 'ZO', 'ZZO', 'Z', 'ZZW', 'ZW', 'WZW', 'W', 'WNW', 'NW', 'NNW'][Math.round(d / 22.5) % 16]
+const hoek = (a: number, b: number) => { const x = Math.abs(a - b) % 360; return x > 180 ? 360 - x : x }
+// Windrichting tegenover het strand, met dezelfde grenzen als de berekening.
+const tovStrand = (wind: number, kust: number) => {
+  const p = hoek(wind, kust)
+  return p < 22.5 ? 'recht aanlandig' : p <= 67.5 ? 'schuin aanlandig' : p <= 112.5 ? 'zijwind'
+    : p <= 157.5 ? 'schuin aflandig' : 'recht aflandig'
+}
+const getal = (x: number | null | undefined, nd = 0) => (x == null ? '–' : x.toFixed(nd).replace('.', ','))
 
 const WAVE_NAAM = ['', 'niets', 'beginnergolven', 'sterke golven', 'te sterk']
 const WIND_NAAM = ['', 'niets', 'beginnerwind', 'sterke wind', 'te sterk']
@@ -63,11 +73,11 @@ export function toonUur() {
 
 // ---- 1. Wat kan je vandaag? ----
 
-// Uren na elkaar met dezelfde uitkomst en kwaliteit, bij daglicht: [eerste, laatste, kwaliteit].
+// Uren na elkaar met dezelfde uitkomst en kwaliteit, dag en nacht: [eerste, laatste, kwaliteit].
 function vensters(d: Detail, idx: number[], letter: string): [number, number, number][] {
   const out: [number, number, number][] = []
   for (const i of idx) {
-    if (d.licht[i] !== '1' || d.uitkomst[i] !== letter) continue
+    if (d.uitkomst[i] !== letter) continue
     const k = kwaliteit(d.straf[i])
     const laatste = out[out.length - 1]
     if (laatste && laatste[1] === i - 1 && (letter === 'W' || laatste[2] === k)) laatste[1] = i
@@ -103,11 +113,11 @@ function overzicht(d: Detail, idx: number[]) {
 function dag(d: Detail, idx: number[]) {
   const T = staat.index.tijd
   const ex = d.getij ? extremen(staat.getij, d.getij.a, d.getij.b, d.getij.w) : []
-  const kol = (i: number) => `${d.licht[i] === '1' ? '' : 'nacht'} ${i === staat.i ? 'nu' : ''}`
+  const kol = (i: number) => (i === staat.i ? 'nu' : '')
   const wat = (i: number) => {
     const s = soort(d.uitkomst[i])
     const k = s?.letter === 'W' ? 0 : kwaliteit(d.straf[i])
-    return `<td class="${kol(i)}"><span class="wat" style="${s ? `background:${s.kleur};opacity:${[1, 0.7, 0.4][k]}` : ''}"
+    return `<td class="${kol(i)}"><span class="wat" style="${s ? `background:${s.kleur};opacity:${[1, 0.6][k]}` : ''}"
       title="${s ? (s.letter === 'W' ? s.kort : `${s.kort}, ${KWALITEIT[k]}`) : ''}"></span></td>`
   }
   const level = (i: number, reeks: string, pal: string[]) => {
@@ -132,11 +142,22 @@ function dag(d: Detail, idx: number[]) {
 
 // ---- 3. WAVE en WIND op het gekozen uur ----
 
-function tegel(soortNaam: 'WAVE' | 'WIND', n: number) {
+function tegel(soortNaam: 'WAVE' | 'WIND', n: number, gegevens: string) {
   const kleur = (soortNaam === 'WIND' ? CYAAN : BLAUW)[n - 1] ?? '#ccc'
   const naam = (soortNaam === 'WIND' ? WIND_NAAM : WAVE_NAAM)[n]
   return `<div class="tegel ${LICHT(n) ? 'licht' : ''} ${n === 4 ? 'gevaar' : ''}" style="background:${kleur}">
-    <span class="soort">${soortNaam}</span><b>${n}</b><span class="betekenis">${naam}</span></div>`
+    <span class="soort">${soortNaam}</span><b>${n}</b><span class="betekenis">${naam}</span>
+    <span class="gegevens">${gegevens}</span></div>`
+}
+
+function waveGegevens(d: Detail, i: number) {
+  const r = d.wave_direction?.[i]
+  return `${getal(d.wave_height?.[i], 1)} m · ${getal(d.wave_period?.[i])} s${r == null ? '' : ` · uit ${kompas(r)}`}`
+}
+
+function windGegevens(d: Detail, i: number) {
+  const r = d.windrichting[i]
+  return `${getal(d.wind[i])} kn · vlagen ${getal(d.vlagen[i])} kn${r == null ? '' : `<br>uit ${kompas(r)} · ${tovStrand(r, d.kust)}`}`
 }
 
 function render() {
@@ -153,8 +174,8 @@ function render() {
     ${overzicht(d, idx)}
     <h3 class="kop">Per uur</h3>
     ${dag(d, idx)}
-    ${wave && wind ? `<h3 class="kop">Om ${toonTijd(ms)}${nu && d.licht[i] === '1' ? `: ${nu.kort.toLowerCase()}${nu.letter === 'W' ? '' : `, ${KWALITEIT[kwaliteit(d.straf[i])]}`}` : ''}</h3>
-      <div class="tegels">${tegel('WAVE', wave)}${tegel('WIND', wind)}</div>` : ''}
+    ${wave && wind ? `<h3 class="kop">Om ${toonTijd(ms)}${nu ? `: ${nu.kort.toLowerCase()}${nu.letter === 'W' ? '' : `, ${KWALITEIT[kwaliteit(d.straf[i])]}`}` : ''}</h3>
+      <div class="tegels">${tegel('WAVE', wave, waveGegevens(d, i))}${tegel('WIND', wind, windGegevens(d, i))}</div>` : ''}
     <p class="klein"><a href="rekenen.html">Hoe berekend?</a> · Geen veiligheidsadvies: volg de redders en de vlaggen.</p>`
   bind()
 }

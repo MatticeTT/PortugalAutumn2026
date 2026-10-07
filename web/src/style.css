@@ -295,3 +295,5 @@ details.meer[open] > summary { margin-bottom: 8px; }
 .venster small { font-size: 12px; font-weight: 600; opacity: 0.85; }
 .venster.k1, .venster.k2 { font-weight: 600; }
 .venster.k2 { opacity: 0.75; }
+
+.tegel .gegevens { margin-top: 6px; font-size: 13px; font-weight: 600; line-height: 1.35; font-variant-numeric: tabular-nums; opacity: 0.9; }

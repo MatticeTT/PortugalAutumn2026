@@ -180,3 +180,10 @@ def bereken(u: Uur, s: Strand) -> Uitkomst:
         return Uitkomst(TE_WILD, 0, lvl_wave, lvl_wind, E, H, punten)
     p, _, k = min(kandidaten)
     return Uitkomst(k, p, lvl_wave, lvl_wind, E, H, punten)
+
+
+def getoond(r: Uitkomst) -> str | None:
+    """Wat de app toont: te wild altijd; een andere uitkomst alleen bij 0 of 1 strafpunt (eigenaar)."""
+    if r.uitkomst == TE_WILD or r.strafpunten <= 1:
+        return r.uitkomst
+    return None

@@ -327,3 +327,9 @@ Per strand en per uur is er precies één uitkomst: te wild, golfsurfen, windsur
 - Een vlaag die lager is dan de gemiddelde wind (komt voor in GFS) wordt gelijk gezet aan de wind.
 
 In de fiche betekenen de strafpunten: 0 is "ideaal", 1 is "goed", 2 of meer is "kan". Alleen uren met daglicht tellen.
+
+Aanvulling (eigenaar, 7 oktober 2026):
+- Een uur krijgt alleen een uitkomst als de beste uitkomst 0 of 1 strafpunt heeft. "Te wild" wordt altijd getoond.
+- Alle uren worden berekend, ook 's nachts.
+- Het WIND-vak toont ook de snelheid, de vlagen en de richting (kompas en tegenover het strand).
+- Het WAVE-vak toont ook de golfhoogte, de periode en de golfrichting.

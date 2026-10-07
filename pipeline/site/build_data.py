@@ -10,8 +10,8 @@ Schrijft web/public/data/:
 - sport/ww.json     per strand (zelfde volgorde als kaart.json) per uur twee cijfers: WIND en WAVE (00 = geen)
 - getij.json        hoog- en laagwaters per station
 - strand/<id>.json  alles voor de fiche: de voorspelling per uur, het getij, en per uur
-                    "uitkomst" (W, G, O, S, R; "-" = geen voorspelling), "straf" (strafpunten van de
-                    winnaar), "WAVE", "WIND" (level) en "licht" (1 = daglicht)
+                    "uitkomst" (W, G, O, S, R; "." = past niets echt; "-" = geen voorspelling),
+                    "straf" (strafpunten van de winnaar), "WAVE", "WIND" (level) en "licht" (1 = daglicht)
 """
 
 from __future__ import annotations
@@ -24,7 +24,7 @@ from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 from pipeline.rules.dagplan import daglicht, getij_fractie
-from pipeline.rules.uitkomst import UITKOMSTEN, Deining, Strand, Uur, bereken
+from pipeline.rules.uitkomst import UITKOMSTEN, Deining, Strand, Uur, bereken, getoond
 from pipeline.tides.interp import interpolate
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -151,7 +151,7 @@ def main(fetch_ipma: bool = True):
             tij, verval = getij_stand(ext, minuten[i])
             r = bereken(Uur(wind=ws[i], vlaag=wg[i] if wg[i] is not None else ws[i], windrichting=wd[i] or 0,
                             deiningen=deiningen, tij=tij, verval=verval), strand)
-            uitk.append(r.uitkomst)
+            uitk.append(getoond(r) or ".")  # "." = geen uitkomst die echt past
             straf.append(str(min(r.strafpunten, 9)))
             wave.append(str(r.wave))
             wind.append(str(r.wind))

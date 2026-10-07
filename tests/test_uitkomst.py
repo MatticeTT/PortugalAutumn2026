@@ -15,6 +15,7 @@ from pipeline.rules.uitkomst import (
     Strand,
     Uur,
     bereken,
+    getoond,
 )
 
 MEIA = Strand(kust=142, venster=[[100, 200]])
@@ -95,3 +96,9 @@ def test_levels():
     assert (r.wave, r.wind) == (3, 3)
     assert bereken(uur(4.9, 4.9, 230), MEIA).wind == 1
     assert bereken(uur(22, 36, 230), MEIA).wind == 4
+
+
+def test_getoond_alleen_bij_0_of_1_strafpunt():
+    assert getoond(bereken(uur(3, 3, 0, GOLF_160), MEIA)) == GOLFSURF          # 0 strafpunten
+    assert getoond(bereken(uur(8, 11, 322, GOLF_WNW), MEIA)) is None           # stil met 2 strafpunten
+    assert getoond(bereken(uur(28, 36, 225), MEIA)) == TE_WILD                 # te wild altijd
