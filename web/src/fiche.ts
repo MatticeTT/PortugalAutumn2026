@@ -181,14 +181,15 @@ function strandTekening(wind: number, kust: number) {
 function getijTekening(p: number, stijgt: boolean) {
   const y = 28 - p * 20 // waterlijn: 28 bij laagwater, 8 bij hoogwater
   const pijl = stijgt ? 'M38 22 V8 M33 13 L38 7 L43 13' : 'M38 8 V22 M33 17 L38 23 L43 17'
-  return `<svg class="strand" viewBox="0 0 48 32" width="72" height="48" aria-hidden="true">
+  return `<svg class="strand" viewBox="0 0 48 32" width="48" height="32" aria-hidden="true">
     <rect y="${y}" width="48" height="${32 - y}" rx="2" fill="#4f9fd0" opacity=".55"/>
     <path d="M0 32 L48 6 V32 Z" fill="#e8d9b0" opacity=".9"/>
     <path d="M0 ${y} H48" stroke="currentColor" stroke-width="1.6"/>
     <path d="${pijl}" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`
 }
 
-function getijVak(d: Detail, i: number) {
+// Getij op dit uur, als laatste regel in het WAVE-vak (zoals de wind tegenover het strand in het WIND-vak).
+function getijRegel(d: Detail, i: number) {
   if (!d.getij) return ''
   const ex = extremen(staat.getij, d.getij.a, d.getij.b, d.getij.w)
   const t = utc(staat.index.tijd[i]) / 60000
@@ -200,10 +201,8 @@ function getijVak(d: Detail, i: number) {
   const p = volgend.hoog ? x : 1 - x // 0 laagwater, 1 hoogwater
   const stijgt = volgend.hoog
   const tijd = (m: number) => toonTijd(m * 60000)
-  return `<div class="getijvak"><span class="soort">GETIJ</span>${getijTekening(p, stijgt)}
-    <span class="tekst"><b>${stijgt ? 'Opkomend' : 'Afgaand'}</b>
-    <span>${Math.round(p * 100)}% van laag naar hoog water</span>
-    <small>${volgend.hoog ? 'Hoogwater' : 'Laagwater'} om ${tijd(volgend.t)}</small></span></div>`
+  return `<span class="tovstrand">${getijTekening(p, stijgt)}<small>${stijgt ? 'opkomend' : 'afgaand'}
+    <span>${volgend.hoog ? 'hoog' : 'laag'} ${tijd(volgend.t)}</span></small></span>`
 }
 
 const rijtje = (icoon: string, waarde: string, woord: string) =>
@@ -214,7 +213,8 @@ function waveGegevens(d: Detail, i: number) {
   return `<span class="rijtjes">
     ${rijtje(ICOON.golf, `${getal(d.wave_height?.[i], 1)} m`, 'hoogte')}
     ${rijtje(ICOON.periode, `${getal(d.wave_period?.[i])} s`, 'periode')}
-    ${r == null ? '' : rijtje(pijl(r), kompas(r), 'richting')}</span>`
+    ${r == null ? '' : rijtje(pijl(r), kompas(r), 'richting')}</span>
+    ${getijRegel(d, i)}`
 }
 
 function windGegevens(d: Detail, i: number) {
@@ -241,8 +241,7 @@ function render() {
     <h3 class="kop">Per uur</h3>
     ${dag(d, idx)}
     ${wave && wind ? `<h3 class="kop">Om ${toonTijd(ms)}${nu ? `: ${nu.kort.toLowerCase()}${nu.letter === 'W' ? '' : `, ${KWALITEIT[kwaliteit(d.straf[i])]}`}` : ''}</h3>
-      <div class="tegels">${tegel('WAVE', wave, waveGegevens(d, i))}${tegel('WIND', wind, windGegevens(d, i))}</div>
-      ${getijVak(d, i)}` : ''}
+      <div class="tegels">${tegel('WAVE', wave, waveGegevens(d, i))}${tegel('WIND', wind, windGegevens(d, i))}</div>` : ''}
     <p class="klein"><a href="rekenen.html">Hoe berekend?</a> · Geen veiligheidsadvies: volg de redders en de vlaggen.</p>`
   bind()
 }
