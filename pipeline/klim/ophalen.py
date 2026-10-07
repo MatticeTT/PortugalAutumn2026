@@ -14,13 +14,16 @@ Schrijft data/klim/plekken.json en drukt een telling af.
 from __future__ import annotations
 
 import json
+import time
 import urllib.parse
 import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "data" / "klim" / "plekken.json"
-OVERPASS = "https://overpass-api.de/api/interpreter"
+# Overpass is soms overbelast (504): dan opnieuw, ook via spiegelservers.
+OVERPASS = ["https://overpass-api.de/api/interpreter", "https://overpass.kumi.systems/api/interpreter",
+            "https://overpass.private.coffee/api/interpreter"]
 UA = "surfkaart-portugal/0.1 (niet-commercieel, besloten)"
 QUERY = """[out:json][timeout:180];
 area["ISO3166-1"="PT"][admin_level=2]->.pt;
@@ -64,11 +67,24 @@ def telling(p: list[dict]) -> str:
     return "\n".join(regels)
 
 
+def vraag() -> list[dict]:
+    fout = None
+    for poging in range(6):
+        url = OVERPASS[poging % len(OVERPASS)]
+        try:
+            req = urllib.request.Request(url, data=urllib.parse.urlencode({"data": QUERY}).encode(),
+                                         headers={"User-Agent": UA})
+            with urllib.request.urlopen(req, timeout=300) as r:
+                return json.loads(r.read())["elements"]
+        except Exception as e:  # noqa: BLE001
+            fout = e
+            print(f"{url}: {e}; opnieuw", flush=True)
+            time.sleep(20 * (poging + 1))
+    raise RuntimeError(f"Overpass niet bereikbaar: {fout}")
+
+
 def main():
-    req = urllib.request.Request(OVERPASS, data=urllib.parse.urlencode({"data": QUERY}).encode(),
-                                 headers={"User-Agent": UA})
-    with urllib.request.urlopen(req, timeout=300) as r:
-        elementen = json.loads(r.read())["elements"]
+    elementen = vraag()
     p = plekken(elementen)
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps({"bron": "OpenStreetMap (ODbL), sport=climbing", "aantal_osm": len(elementen),
