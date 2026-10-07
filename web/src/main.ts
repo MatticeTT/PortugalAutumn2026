@@ -133,14 +133,26 @@ export function kiesUur(i: number) {
 
 
 
+// Kaart en fiche moeten uit dezelfde berekening komen. Daarom haalt de app elk databestand op met het
+// tijdstip van de berekening (index.json, "gemaakt") erbij. Komt er een nieuwe berekening terwijl de
+// pagina openstaat, dan laadt de pagina opnieuw: anders toont de kaart de oude en de fiche de nieuwe.
+const vers = () => fetch('data/index.json', { cache: 'no-store' }).then((r) => r.json())
+export const data = (pad: string) => fetch(`data/${pad}?v=${encodeURIComponent(staat.index.gemaakt)}`).then((r) => r.json())
+
+async function nieuweBerekening() {
+  try {
+    if ((await vers()).gemaakt !== staat.index.gemaakt) location.reload()
+  } catch { /* offline: de huidige gegevens blijven staan */ }
+}
+
 async function start() {
-  const [index, stranden, getij] = await Promise.all([
-    fetch('data/index.json').then((r) => r.json()),
-    fetch('data/kaart.json').then((r) => r.json()),
-    fetch('data/getij.json').then((r) => r.json()),
-  ])
-  Object.assign(staat, { index, stranden, getij })
-  const eerste = fetch('data/sport/ww.json').then((r) => r.json())
+  const index = await vers()
+  staat.index = index
+  const [stranden, getij] = await Promise.all([data('kaart.json'), data('getij.json')])
+  Object.assign(staat, { stranden, getij })
+  const eerste = data('sport/ww.json')
+  setInterval(nieuweBerekening, 5 * 60 * 1000)
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) nieuweBerekening() })
 
   kaart = new maplibregl.Map({
     container: 'kaart', style: await stijl(), ...START, minZoom: 5, maxZoom: 16,

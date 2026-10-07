@@ -5,7 +5,7 @@
 // Alles wordt in de pipeline berekend (pipeline/rules/uitkomst.py); hier wordt alleen getoond.
 import { BLAUW, CYAAN, LICHT } from './kleuren'
 import { extremen, hoogte } from './getij'
-import { kiesUur, lisDag, lisUur, staat, toonDag, toonTijd, utc, vliegNaar } from './main'
+import { data, kiesUur, lisDag, lisUur, staat, toonDag, toonTijd, utc, vliegNaar } from './main'
 import type { Detail } from './types'
 
 const cache = new Map<string, Promise<Detail>>()
@@ -51,7 +51,7 @@ const WAVE_NAAM = ['', 'niets', 'beginnergolven', 'sterke golven', 'te sterk']
 const WIND_NAAM = ['', 'niets', 'beginnerwind', 'sterke wind', 'te sterk']
 
 function laad(id: string): Promise<Detail> {
-  if (!cache.has(id)) cache.set(id, fetch(`data/strand/${id.replace(/[^A-Za-z0-9_.-]/g, '_')}.json`).then((r) => r.json()))
+  if (!cache.has(id)) cache.set(id, data(`strand/${id.replace(/[^A-Za-z0-9_.-]/g, '_')}.json`))
   return cache.get(id)!
 }
 

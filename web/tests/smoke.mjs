@@ -42,6 +42,16 @@ for (const scheme of ['light', 'dark']) {
   check(`[${scheme}] fiche open`, ms < 1000, `(${ms} ms na het laden van de kaart)`)
   const tegels = await page.$$eval('#fiche .tegel .soort', (els) => els.map((e) => e.textContent))
   check(`[${scheme}] fiche: WAVE en WIND`, tegels.join() === 'WAVE,WIND', `(${tegels.join(', ')})`)
+  // Het bolletje op de kaart en de fiche tonen hetzelfde WIND- en WAVE-cijfer.
+  const i = Number(await page.getAttribute('#fiche .dag td.nu a[data-i]', 'data-i'))
+  const kaartCijfers = await page.evaluate(async ([id, i]) => {
+    const g = await (await fetch('data/index.json')).json()
+    const v = `?v=${encodeURIComponent(g.gemaakt)}`
+    const k = (await (await fetch('data/kaart.json' + v)).json()).findIndex((s) => s.id === id)
+    return (await (await fetch('data/sport/ww.json' + v)).json())[k].slice(2 * i, 2 * i + 2)
+  }, [id, i])
+  const ficheCijfers = (await page.$$eval('#fiche .tegel > b', (els) => els.map((e) => e.textContent))).reverse().join('')
+  check(`[${scheme}] kaart en fiche gelijk (WIND, WAVE)`, kaartCijfers === ficheCijfers, `(kaart ${kaartCijfers}, fiche ${ficheCijfers})`)
   const rijen = await page.$$eval('#fiche .dag th', (els) => els.map((e) => e.textContent))
   const uren = await page.$$eval('#fiche .dag a[data-i]', (els) => els.length)
   check(`[${scheme}] fiche: de dag met WAVE, WIND en getij`, ['WAVE', 'WIND', 'getij'].every((r) => rijen.includes(r)) && uren >= 20, `(${uren} uren)`)
