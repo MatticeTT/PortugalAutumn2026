@@ -71,7 +71,13 @@ def binnen(lon: float, lat: float, ring: list[tuple[float, float]]) -> bool:
 
 
 def midden(e: dict) -> tuple[float, float]:
-    return (e["lon"], e["lat"]) if "lon" in e else (e["center"]["lon"], e["center"]["lat"])
+    """Ligging: de node zelf, anders het midden (Overpass geeft met "geom" soms geen center, wel bounds)."""
+    if "lon" in e:
+        return e["lon"], e["lat"]
+    if "center" in e:
+        return e["center"]["lon"], e["center"]["lat"]
+    b = e["bounds"]
+    return (b["minlon"] + b["maxlon"]) / 2, (b["minlat"] + b["maxlat"]) / 2
 
 
 def plekken(elementen: list[dict]) -> list[dict]:

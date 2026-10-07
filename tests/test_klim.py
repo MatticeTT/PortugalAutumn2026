@@ -55,3 +55,8 @@ def test_rood():
     assert per_uur(zand, reeks, 55)["rood"] == "0"          # 25 uur na de regen: niet meer
     assert per_uur(zand, reeks, 40)["sinds"] == 10
     assert per_uur(zand, reeks, 20)["sinds"] is None
+
+
+def test_ligging_uit_bounds():
+    from pipeline.klim.ophalen import midden
+    assert midden({"type": "way", "bounds": {"minlon": -9, "maxlon": -8, "minlat": 38, "maxlat": 39}}) == (-8.5, 38.5)
