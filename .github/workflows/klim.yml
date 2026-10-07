@@ -1,0 +1,25 @@
+# Klimplekken uit OpenStreetMap ophalen en in data/klim/plekken.json zetten (op deze tak).
+name: klim
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - pipeline/klim/ophalen.py
+      - .github/workflows/klim.yml
+permissions:
+  contents: write
+jobs:
+  klim:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: python -m pipeline.klim.ophalen
+      - name: Vastleggen
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/klim/plekken.json
+          git diff --cached --quiet || git commit -q -m "Klimplekken uit OpenStreetMap $(date -u +%F)"
+          git push "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" HEAD:${{ github.ref_name }}
