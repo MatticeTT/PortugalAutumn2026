@@ -180,7 +180,6 @@ const ICOON = {
   golf: svg('<path d="M2 15c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2 2-2 4-2"/><path d="M2 20c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2 2-2 4-2"/><path d="M4 9c2-4 7-5 10-2"/>'),
   periode: svg('<circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2"/><path d="M9 3h6"/>'),
   wind: svg('<path d="M3 8h11a3 3 0 1 0-3-3"/><path d="M3 12h16a3 3 0 1 1-3 3"/><path d="M3 16h7"/>'),
-  kracht: svg('<path d="M13 2 L5 13 H11 L10 22 L19 10 H13 Z"/>'),
   vlaag: svg('<path d="M3 9h9a3 3 0 1 0-3-3"/><path d="M3 14h13a3 3 0 1 1-3 3"/><path d="M18 3l-2 4h3l-2 4"/>'),
 }
 // Pijl die wijst waar wind of golven naartoe gaan (ze komen "uit" de richting r).
@@ -246,14 +245,13 @@ const rijtje = (icoon: string, waarde: string, woord: string) =>
   `<span class="rijtje">${icoon}<b>${waarde}</b><small>${woord}</small></span>`
 
 // WAVE: het level komt alleen uit E_zee = 1,96 × hoogte² × periode² van de krachtigste deining, zonder
-// richting. Het vlak toont precies die deining (hoogte, periode, richting) en E_zee. Wat het strand
+// richting. Het vlak toont precies die deining: hoogte, periode, richting (evenveel regels als WIND). Wat het strand
 // ervan krijgt (bereikt, WAVE_strand), staat in de regel onder de vlakken.
 function waveGegevens(d: Detail, i: number) {
   const r = d.zee_r?.[i]
   return `<span class="rijtjes">
     ${rijtje(ICOON.golf, `${getal(d.zee_h?.[i], 1)} m`, 'hoogte')}
     ${rijtje(ICOON.periode, `${getal(d.zee_t?.[i], 1)} s`, 'periode')}
-    ${rijtje(ICOON.kracht, `${d.E_zee?.[i] ?? '–'} kJ`, 'E_zee')}
     ${r == null ? '' : rijtje(pijl(r), kompas(r), 'richting')}</span>
     ${r == null ? '' : `<span class="tovstrand">${richtingTekening('golf', r, d.kust, d.venster.length === 1 ? d.venster[0] : null)}
       <small>golf uit ${kompas(r)}</small></span>`}`
