@@ -10,15 +10,9 @@
 </head>
 <body>
   <header class="balk">
-    <div class="balk-boven">
-      <h1>Surfkaart <span>Portugal</span></h1>
-      <button id="legende-knop" class="knop" aria-haspopup="dialog" aria-label="Legende">?</button>
-    </div>
-    <div class="keuzes">
-      <label><span class="sr">Datum</span><select id="datum"></select></label>
-      <label><span class="sr">Sport</span><select id="sport"></select></label>
-    </div>
+    <h1>Surfkaart <span>Portugal</span></h1>
     <div class="uurrij">
+      <label><span class="sr">Dag</span><select id="datum"></select></label>
       <input id="uur" type="range" min="0" max="23" step="1" aria-label="Uur" />
       <output id="uurlabel" for="uur"></output>
     </div>
@@ -27,33 +21,6 @@
     <div id="kaart" role="application" aria-label="Kaart met stranden"></div>
     <aside id="fiche" class="fiche" hidden aria-live="polite"></aside>
   </main>
-  <dialog id="legende">
-    <form method="dialog"><button class="sluit" aria-label="Sluiten">×</button></form>
-    <h2>Zo lees je de kaart</h2>
-    <p>Kies een dag en een uur. Elk bolletje is een strand. Tik op een strand: je ziet wanneer je die dag kan gaan.</p>
-    <h3>WIND en WAVE</h3>
-    <div class="leg-bol" id="leg-bol"></div>
-    <p><b>Links (cyaan)</b> WIND: hoe hard en uit welke richting het waait, voor kiten en windsurfen. <b>Rechts (blauw)</b> WAVE: hoe groot de golven zijn en hun periode, voor golfsurfen. Een rode rand: gevaarlijk.</p>
-    <table class="schaal">
-      <tr><th>1</th><td>De moeite niet</td></tr>
-      <tr><th>2</th><td>Je kan proberen, wellicht niets</td></tr>
-      <tr><th>3</th><td>Ideaal voor beginners</td></tr>
-      <tr><th>4</th><td>Sterk: voor gevorderden</td></tr>
-      <tr><th>5</th><td>Gevaarlijk</td></tr>
-    </table>
-    <p class="klein">Een geel <b>!</b> bij WIND 2: de wind komt van land. Te licht om te kiten, wel goed voor golfsurfen.</p>
-    <h3>Surfweer, Windweer, Wind-golven, Stille waters</h3>
-    <p>Kies je een van deze vier, dan zegt elk bolletje of het op dat uur kan:</p>
-    <div class="leg-plan" id="leg-plan"></div>
-    <ul class="klein">
-      <li><b>Surfweer</b>: WAVE 3 of 4, WIND 1 of 2, en het getij halverwege (niet rond het laagste of hoogste water).</li>
-      <li><b>Windweer</b>: WIND 3 of 4 op weinig golven (WAVE 1 of 2): kiten en windsurfen.</li>
-      <li><b>Wind-golven</b>: WIND 3 of 4 en WAVE 3 of 4: windsurfen op golven.</li>
-      <li><b>Stille waters</b>: WAVE 1 of 2 en wind tot 10 kn, niet van land. Beste rond hoog- of laagwater, als het minst stroomt.</li>
-    </ul>
-    <p class="klein">Alleen bij daglicht. Bij een groep stranden toont het bolletje het beste van de groep. De cijfers zeggen niets over stroming, rotsen, drukte of je eigen niveau, en ze zijn <b>geen veiligheidsadvies</b>.</p>
-    <p><a href="rekenen.html">Hoe rekenen we?</a></p>
-  </dialog>
   <footer class="bronnen">
     <details>
       <summary>Bronnen: Open-Meteo · Copernicus · OpenStreetMap · EEA/APA · TICON-4 · IPMA</summary>

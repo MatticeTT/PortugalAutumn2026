@@ -304,3 +304,15 @@ De 21 sporten van "Sportscore 1 tot 5" staan niet meer op de site. De code en de
 Eigen keuzes:
 - minstens 2 uur na elkaar;
 - plat water niet bij aflandige wind vanaf 5 kn.
+
+### 32. Terug naar eenvoud (7 oktober 2026)
+
+Op vraag van de eigenaar ("keep it simple"):
+- De kaart opent op Ferragudo, met als enige filter de dag en het uur. Elk strand toont WIND en WAVE.
+- Een strand aantikken toont, in deze volgorde:
+  1. WAVE en WIND;
+  2. de dag per uur, met WAVE, WIND en getij;
+  3. per activiteit (golfsurfen, windsurfen, wind-golven, stille waters) de uren, of "vandaag niet".
+- Al de rest staat op de pagina "Hoe rekenen we": tekeningen, tabellen, de legende en de sporten.
+
+De berekening erachter blijft dezelfde (punt 31).

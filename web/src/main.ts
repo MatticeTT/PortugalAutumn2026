@@ -1,7 +1,7 @@
 import maplibregl, { type GeoJSONSource, type StyleSpecification } from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import './style.css'
-import { bolletjePlan, bolletjeUrl, bolletjeWW, plaatje } from './kleuren'
+import { bolletjeWW } from './kleuren'
 import { openFiche, sluitFiche, toonUur } from './fiche'
 import type { Getij, Index, KaartStrand } from './types'
 
@@ -15,8 +15,7 @@ export const staat = {
   index: null as unknown as Index,
   stranden: [] as KaartStrand[],
   getij: null as unknown as Getij,
-  sport: 'ww', // 'ww' = WIND en WAVE (M5), anders een sport uit index.sporten
-  cijfers: [] as string[], // per strand (volgorde van kaart.json) één teken per uur
+  cijfers: [] as string[], // per strand (volgorde van kaart.json): WIND, WAVE, "!" per uur
   i: 0, // index in index.tijd
   open: null as string | null,
 }
@@ -26,8 +25,6 @@ export const lisDag = (ms: number) => fmtSleutel.format(ms)
 export const lisUur = (ms: number) => Number(fmtUurNr.format(ms))
 export const toonTijd = (ms: number) => fmtUur.format(ms)
 export const toonDag = (ms: number) => fmtDag.format(ms)
-export const WW = 'ww'
-export const sportNaam = (id: string) => (id === WW ? 'WIND en WAVE' : staat.index.activiteiten[id] ?? id)
 
 const OFM = 'https://tiles.openfreemap.org/styles/liberty'
 
@@ -55,25 +52,21 @@ async function stijl(): Promise<StyleSpecification | string> {
   return reserveStijl()
 }
 
-const sportCache = new Map<string, Promise<string[]>>()
-function laadSport(id: string) {
-  if (!sportCache.has(id)) sportCache.set(id, fetch(`data/sport/${id}.json`).then((r) => r.json()))
-  return sportCache.get(id)!
-}
+// Waar de kaart opent (voorlopig Ferragudo, op vraag van de eigenaar).
+const START = { center: [-8.52, 37.11] as [number, number], zoom: 13 }
 
+// Per strand (volgorde van kaart.json) per uur drie tekens: WIND, WAVE en "!" of ".".
 function features() {
   const i = staat.i
   return {
     type: 'FeatureCollection' as const,
     features: staat.stranden.map((s, k) => {
       const rij = staat.cijfers[k] ?? ''
-      const ww = staat.sport === WW
-      const n = ww ? 0 : Number(rij[i] ?? 0) // dagplan: 0 niet, 1 mogelijk, 2 goed
-      const w = ww ? Number(rij[3 * i] ?? 0) : 0
-      const v = ww ? Number(rij[3 * i + 1] ?? 0) : 0
-      const l = ww && rij[3 * i + 2] === '!' ? '!' : ''
+      const w = Number(rij[3 * i] ?? 0)
+      const v = Number(rij[3 * i + 1] ?? 0)
+      const l = rij[3 * i + 2] === '!' ? '!' : ''
       return { type: 'Feature' as const, geometry: { type: 'Point' as const, coordinates: [s.x, s.y] },
-        properties: { id: s.id, naam: s.n, n, w, v, l } }
+        properties: { id: s.id, naam: s.n, w, v, l } }
     }),
   }
 }
@@ -137,49 +130,8 @@ export function kiesUur(i: number) {
   zetDag(datumKeuze().value)
 }
 
-export async function kiesSport(id: string) {
-  staat.sport = id
-  ;(document.getElementById('sport') as HTMLSelectElement).value = id
-  try { localStorage.setItem('activiteit', id) } catch { /* privévenster */ }
-  const rows = await laadSport(id)
-  if (staat.sport !== id) return
-  staat.cijfers = rows
-  zetIcoon()
-  ververs()
-}
 
-function sportKeuze() {
-  const sel = document.getElementById('sport') as HTMLSelectElement
-  const I = staat.index
-  const o = document.createElement('option')
-  o.value = WW; o.textContent = 'WIND en WAVE'
-  sel.appendChild(o)
-  for (const [a, naam] of Object.entries(I.activiteiten)) {
-    const o = document.createElement('option')
-    o.value = a; o.textContent = naam
-    sel.appendChild(o)
-  }
-  let start = WW
-  try { start = localStorage.getItem('activiteit') || start } catch { /* geen opslag */ }
-  if (start !== WW && !(start in I.activiteiten)) start = WW
-  staat.sport = start
-  sel.value = start
-  sel.onchange = () => kiesSport(sel.value)
-}
 
-function legende() {
-  const legBol = document.getElementById('leg-bol')!
-  for (const [w, v, l] of [[1, 1, 0], [2, 3, 1], [3, 2, 0], [4, 4, 0], [5, 3, 0]]) {
-    const img = document.createElement('img')
-    img.src = bolletjeUrl(w, v, 34, l === 1); img.alt = `WIND ${w}${l ? '!' : ''}, WAVE ${v}`
-    legBol.appendChild(img)
-  }
-  const legPlan = document.getElementById('leg-plan')!
-  legPlan.innerHTML = [[2, 'goed'], [1, 'mogelijk'], [0, 'niet']].map(([n, t]) =>
-    `<span><img src="${plaatje(bolletjePlan(n as number, 28))}" alt="">${t}</span>`).join('')
-  const dlg = document.getElementById('legende') as HTMLDialogElement
-  document.getElementById('legende-knop')!.onclick = () => dlg.showModal()
-}
 
 async function start() {
   const [index, stranden, getij] = await Promise.all([
@@ -188,12 +140,10 @@ async function start() {
     fetch('data/getij.json').then((r) => r.json()),
   ])
   Object.assign(staat, { index, stranden, getij })
-  sportKeuze()
-  legende()
-  const eerste = laadSport(staat.sport)
+  const eerste = fetch('data/sport/ww.json').then((r) => r.json())
 
   kaart = new maplibregl.Map({
-    container: 'kaart', style: await stijl(), center: [-8.6, 39.4], zoom: 5.8, minZoom: 5, maxZoom: 16,
+    container: 'kaart', style: await stijl(), ...START, minZoom: 5, maxZoom: 16,
     maxBounds: [[-12.5, 35.5], [-4.5, 43.5]], attributionControl: { compact: true },
   })
   kaart.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-left')
@@ -201,12 +151,6 @@ async function start() {
 
   kaart.on('load', async () => {
     staat.cijfers = await eerste
-    for (let n = 0; n <= 5; n++) {
-    }
-    for (let n = 0; n <= 2; n++) {
-      kaart.addImage(`p${n}`, bolletjePlan(n, 28), { pixelRatio: 2 })
-      kaart.addImage(`pg${n}`, bolletjePlan(n, 34, true), { pixelRatio: 2 })
-    }
     for (let w = 0; w <= 5; w++) for (let v = 0; v <= 5; v++) {
       if ((w === 0) !== (v === 0)) continue
       kaart.addImage(`b${w}${v}`, bolletjeWW(w, v, 44), { pixelRatio: 2 })
@@ -214,13 +158,15 @@ async function start() {
     }
     kaart.addSource('stranden', {
       type: 'geojson', data: features(), cluster: true, clusterRadius: 30, clusterMaxZoom: 9,
-      clusterProperties: { n: ['max', ['get', 'n']], w: ['max', ['get', 'w']], v: ['max', ['get', 'v']] },
+      clusterProperties: { w: ['max', ['get', 'w']], v: ['max', ['get', 'v']] },
     })
+    // Links WIND, rechts WAVE. Samengeklonterd: het hoogste WIND- en WAVE-cijfer van de groep.
+    const ww = ['concat', 'b', ['to-string', ['get', 'w']], ['to-string', ['get', 'v']]]
     kaart.addLayer({ id: 'groepen', type: 'symbol', source: 'stranden', filter: ['has', 'point_count'],
-      layout: { 'icon-allow-overlap': true } })
+      layout: { 'icon-image': ww as any, 'icon-size': 1.1, 'icon-allow-overlap': true } })
     kaart.addLayer({ id: 'stranden', type: 'symbol', source: 'stranden', filter: ['!', ['has', 'point_count']],
-      layout: { 'icon-allow-overlap': true } })
-    zetIcoon()
+      layout: { 'icon-image': ['concat', ww, ['get', 'l']] as any, 'icon-allow-overlap': true,
+        'symbol-sort-key': ['+', ['get', 'w'], ['get', 'v']] } })
     kaart.on('click', 'stranden', (e) => {
       const id = e.features?.[0]?.properties?.id
       if (id) openFiche(id)
@@ -247,24 +193,6 @@ async function start() {
   })
 }
 
-// Per sport een gekleurd bolletje met het cijfer. Bij WIND en WAVE het oude bolletje: links WIND, rechts WAVE.
-// Samengeklonterd: bij een sport het interessantste cijfer van de groep (3, dan 4, 2, 5, 1);
-// bij WIND en WAVE het hoogste WIND- en WAVE-cijfer van de groep.
-function zetIcoon() {
-  if (!kaart?.getLayer('stranden')) return
-  const ww = ['concat', 'b', ['to-string', ['get', 'w']], ['to-string', ['get', 'v']]]
-  if (staat.sport === WW) {
-    kaart.setLayoutProperty('stranden', 'icon-image', ['concat', ww, ['get', 'l']])
-    kaart.setLayoutProperty('groepen', 'icon-image', ww)
-    kaart.setLayoutProperty('groepen', 'icon-size', 1.1)
-    kaart.setLayoutProperty('stranden', 'symbol-sort-key', ['+', ['get', 'w'], ['get', 'v']])
-  } else {
-    kaart.setLayoutProperty('stranden', 'icon-image', ['concat', 'p', ['to-string', ['get', 'n']]])
-    kaart.setLayoutProperty('groepen', 'icon-image', ['concat', 'pg', ['to-string', ['get', 'n']]])
-    kaart.setLayoutProperty('groepen', 'icon-size', 1)
-    kaart.setLayoutProperty('stranden', 'symbol-sort-key', ['get', 'n'])
-  }
-}
 
 export function vliegNaar(lon: number, lat: number) {
   if (kaart.getZoom() < 10) kaart.easeTo({ center: [lon, lat], zoom: 11 })

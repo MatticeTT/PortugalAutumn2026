@@ -229,3 +229,36 @@ details.meer[open] > summary { margin-bottom: 8px; }
 .letop { font-style: normal; display: inline-grid; place-items: center; background: #fab219; color: #2b1d00;
   border-radius: 50%; width: 1.1em; height: 1.1em; font-size: 0.55em; font-weight: 800; vertical-align: super; margin-left: 2px; }
 .verloop .letop { font-size: 10px; width: 13px; height: 13px; vertical-align: top; }
+
+/* ---- Eenvoudige fiche ---- */
+.balk h1 { margin-bottom: 4px; }
+.uurrij label select { min-height: 34px; }
+.tegels { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 10px 0 12px; }
+.tegel { border-radius: 14px; padding: 10px 12px; color: #fff; display: flex; flex-direction: column; }
+.tegel .soort { font-size: 12px; font-weight: 800; letter-spacing: 0.12em; opacity: 0.85; }
+.tegel b { font-size: 48px; line-height: 1.05; }
+.tegel .betekenis { font-size: 14px; font-weight: 600; line-height: 1.2; }
+.tegel.licht { color: #0d2530; }
+.tegel.gevaar { outline: 3px solid var(--gevaar); outline-offset: -3px; }
+.dag { overflow-x: auto; margin: 0 -4px 12px; padding: 0 4px; }
+.dag table { border-collapse: separate; border-spacing: 2px; font-size: 13px; }
+.dag th { text-align: left; font-size: 11.5px; font-weight: 800; letter-spacing: 0.06em; color: var(--zacht);
+  padding-right: 6px; position: sticky; left: 0; background: var(--vlak); z-index: 1; }
+.dag td { text-align: center; min-width: 28px; padding: 3px 1px; border-radius: 6px; }
+.dag td a { color: var(--zacht); text-decoration: none; font-weight: 600; font-variant-numeric: tabular-nums; }
+.dag tr.r-cijfer td { height: 30px; }
+.dag tr.r-cijfer b { font-size: 15px; }
+.dag td.nacht { opacity: 0.35; }
+.dag td.nu { outline: 2px solid var(--accent); outline-offset: -1px; opacity: 1; }
+.dag tr:first-child td.nu { background: var(--accent); }
+.dag tr:first-child td.nu a { color: #fff; }
+.dag tr.r-getij td { vertical-align: bottom; }
+.dag td small { display: block; font-size: 10px; color: var(--zacht); }
+.wanneer { list-style: none; margin: 0 0 10px; padding: 0; border-top: 1px solid var(--lijn); }
+.wanneer li { display: flex; justify-content: space-between; gap: 10px; padding: 10px 2px; border-bottom: 1px solid var(--lijn); }
+.wanneer .naam { font-weight: 700; }
+.wanneer .uren { text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; }
+.wanneer li.goed .uren { color: #0a8a0a; }
+.wanneer li.kan .uren { color: #b07800; }
+.wanneer li.niet .uren, .wanneer li.niet .naam { color: var(--zacht); font-weight: 500; }
+.wanneer small { font-weight: 400; }
