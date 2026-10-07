@@ -17,6 +17,7 @@ from dataclasses import dataclass
 
 # Uitkomsten, met een letter voor de databestanden.
 TE_WILD, GOLFSURF, WINDGOLF, WINDSURF, STIL = "W", "G", "O", "S", "R"
+GEEN = "."  # alles valt af: er staat niets (eigenaar, 7 oktober 2026)
 UITKOMSTEN = {
     GOLFSURF: "Golfsurfen", WINDGOLF: "Windsurfen op golven", WINDSURF: "Windsurfen",
     STIL: "Stille waters", TE_WILD: "Te wild",
@@ -64,7 +65,7 @@ class Strand:
 
 @dataclass
 class Uitkomst:
-    uitkomst: str        # W, G, O, S of R
+    uitkomst: str        # W, G, O, S, R of "." (geen)
     strafpunten: int     # van de winnaar (0 bij te wild)
     wave: int            # 1 tot 4
     wind: int            # 1 tot 4
@@ -177,13 +178,16 @@ def bereken(u: Uur, s: Strand) -> Uitkomst:
 
     kandidaten = [(punten[k], VOLGORDE.index(k), k) for k in VOLGORDE if punten[k] is not None]
     if not kandidaten:
-        return Uitkomst(TE_WILD, 0, lvl_wave, lvl_wind, E, H, punten)
+        # Te wild geldt alleen bij wind > 25 kn, vlagen > 35 kn of E ≥ 1000; valt alles af, dan niets.
+        return Uitkomst(GEEN, 0, lvl_wave, lvl_wind, E, H, punten)
     p, _, k = min(kandidaten)
     return Uitkomst(k, p, lvl_wave, lvl_wind, E, H, punten)
 
 
 def getoond(r: Uitkomst) -> str | None:
     """Wat de app toont: te wild altijd; een andere uitkomst alleen bij 0 of 1 strafpunt (eigenaar)."""
+    if r.uitkomst == GEEN:
+        return None
     if r.uitkomst == TE_WILD or r.strafpunten <= 1:
         return r.uitkomst
     return None

@@ -6,6 +6,7 @@ Meia Praia: kustrichting 142°, swell-venster 100–200°, verval 2,4 m, tij 50%
 import pytest
 
 from pipeline.rules.uitkomst import (
+    GEEN,
     GOLFSURF,
     STIL,
     TE_WILD,
@@ -34,7 +35,8 @@ GEVALLEN = [
     ("1 wind 12 uit 230, golf uit WNW", uur(12, 17, 230, GOLF_WNW), WINDSURF),
     ("2 wind 8 aanlandig, golf uit WNW", uur(8, 11, 142, GOLF_WNW), WINDSURF),
     ("3 wind 8 aflandig, golf uit WNW", uur(8, 11, 322, GOLF_WNW), STIL),
-    ("4 wind 18 aflandig, golf uit WNW", uur(18, 22, 322, GOLF_WNW), TE_WILD),
+    # Oorspronkelijk "te wild"; die regel is geschrapt (eigenaar, 7 okt): valt alles af, dan niets.
+    ("4 wind 18 aflandig, golf uit WNW", uur(18, 22, 322, GOLF_WNW), GEEN),
     ("5 wind 3, 1,2 m 11 s uit 160", uur(3, 3, 0, GOLF_160), GOLFSURF),
     ("6 zelfde golf, wind 18 aflandig", uur(18, 22, 322, GOLF_160), GOLFSURF),
     ("7 zelfde golf, wind 18 aanlandig", uur(18, 22, 142, GOLF_160), WINDGOLF),
@@ -102,3 +104,8 @@ def test_getoond_alleen_bij_0_of_1_strafpunt():
     assert getoond(bereken(uur(3, 3, 0, GOLF_160), MEIA)) == GOLFSURF          # 0 strafpunten
     assert getoond(bereken(uur(8, 11, 322, GOLF_WNW), MEIA)) is None           # stil met 2 strafpunten
     assert getoond(bereken(uur(28, 36, 225), MEIA)) == TE_WILD                 # te wild altijd
+
+
+def test_alles_valt_af_is_niets():
+    r = bereken(uur(18, 22, 322, GOLF_WNW), MEIA)
+    assert r.uitkomst == GEEN and getoond(r) is None
