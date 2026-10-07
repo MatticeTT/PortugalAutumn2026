@@ -109,7 +109,6 @@ function samen() {
   for (const e of leesEigen()) {
     const q = vrij.find((q) => afstand(e, q) <= 150 && gelijkeNaam(e.naam, q.naam))
     if (!q) { plekken.push({ ...e }); continue }
-    q.lokaal = !q.w
     vrij.splice(vrij.indexOf(q), 1)
     for (const k of ['naam', 'lat', 'lon', 'disciplines', 'schaal', 'graad', 'frans', 'font', 'routes'] as const)
       if (e[k] != null && !(k === 'disciplines' && e.disciplines[0] === 'onbekend')) (q as any)[k] = e[k]
