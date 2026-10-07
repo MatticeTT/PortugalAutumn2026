@@ -15,13 +15,15 @@ const el = () => document.getElementById('fiche')!
 const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!)
 
 // De vijf uitkomsten, elk met een foto en een kleur (letters zoals in strand/<id>.json).
-interface Soort { letter: string; zin: string; kort: string; foto: string; kleur: string }
+// Kleuren (eigenaar): golfsurf blauw, windsurf cyaan, windsurf op golven geel, stil water grijs, te wild rood.
+// `tekst` is dezelfde kleur, donker genoeg om leesbaar te zijn als tekst.
+interface Soort { letter: string; zin: string; kort: string; foto: string; kleur: string; tekst: string }
 const SOORTEN: Soort[] = [
-  { letter: 'G', zin: 'Vandaag kan je golfsurfen', kort: 'Golfsurfen', foto: 'golfsurfen', kleur: '#2a78d6' },
-  { letter: 'O', zin: 'Vandaag kan je windsurfen op golven', kort: 'Windsurfen op golven', foto: 'golven-en-wind', kleur: '#0a9396' },
-  { letter: 'S', zin: 'Vandaag kan je windsurfen', kort: 'Windsurfen', foto: 'windsurfen', kleur: '#e8590c' },
-  { letter: 'R', zin: 'Vandaag is het water stil', kort: 'Stille waters', foto: 'plat-water', kleur: '#2f9e44' },
-  { letter: 'W', zin: 'Vandaag is het te wild', kort: 'Te wild', foto: 'af-te-raden', kleur: '#c92a2a' },
+  { letter: 'G', zin: 'Vandaag kan je golfsurfen', kort: 'Golfsurfen', foto: 'golfsurfen', kleur: '#2a6fdb', tekst: '#2a6fdb' },
+  { letter: 'O', zin: 'Vandaag kan je windsurfen op golven', kort: 'Windsurfen op golven', foto: 'golven-en-wind', kleur: '#f5c400', tekst: '#b38f00' },
+  { letter: 'S', zin: 'Vandaag kan je windsurfen', kort: 'Windsurfen', foto: 'windsurfen', kleur: '#14b8d4', tekst: '#0e8fa6' },
+  { letter: 'R', zin: 'Vandaag is het water stil', kort: 'Stille waters', foto: 'plat-water', kleur: '#8a949c', tekst: '#6b757d' },
+  { letter: 'W', zin: 'Vandaag is het te wild', kort: 'Te wild', foto: 'af-te-raden', kleur: '#d0312d', tekst: '#d0312d' },
 ]
 const soort = (l: string) => SOORTEN.find((s) => s.letter === l)
 const SPORT = ['G', 'O', 'S']
@@ -102,7 +104,7 @@ function overzicht(d: Detail, idx: number[]) {
         <figcaption><span class="zin">${hoofd.s.zin}</span><span class="uren">${uren(hoofd.v, hoofd.s.letter)}</span></figcaption></figure>`
     : '<div class="held leeg"><span class="zin">Geen voorspelling voor vandaag</span></div>'
   const rest = lijst.filter((x) => x !== hoofd).map((x) => `
-    <li class="${x.v.length ? '' : 'niet'}" style="--kleur:${x.s.kleur}">
+    <li class="${x.v.length ? '' : 'niet'}" style="--kleur:${x.s.kleur};--uren:${x.s.tekst}">
       <img src="foto/${x.s.foto}.webp" alt=""><span class="kort">${x.s.kort}</span>
       <span class="uren">${x.v.length ? uren(x.v, x.s.letter) : 'niet vandaag'}</span></li>`).join('')
   return `${held}<ul class="rest">${rest}</ul>`
