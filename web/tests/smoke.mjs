@@ -9,14 +9,16 @@ const exe = ['/opt/pw-browsers/chromium'].find(existsSync)
 const browser = await chromium.launch(exe ? { executablePath: exe } : {})
 const fouten = []
 let ok = true
-// Nominatim en OSRM nagebootst (geen internet nodig): rijtijd = vogelvlucht aan 60 km/h.
+// Photon, Nominatim en OSRM nagebootst (geen internet in de test): de nagebootste rijtijd = afstand aan 60 km/h.
 const km = ([a, b], [c, d]) => {
   const t = Math.PI / 180, h = Math.sin((d - b) * t / 2) ** 2 + Math.cos(b * t) * Math.cos(d * t) * Math.sin((c - a) * t / 2) ** 2
   return 2 * 6371 * Math.asin(Math.sqrt(h))
 }
 let osrm = 0
 async function nabootsen(ctx) {
-  await ctx.route('https://nominatim.openstreetmap.org/**', (r) => r.fulfill({ json: [{ display_name: 'Lagos, Faro, Portugal', lat: '37.1020', lon: '-8.6730' }] }))
+  await ctx.route('https://photon.komoot.io/**', (r) => r.fulfill({ json: { type: 'FeatureCollection', features: [
+    { geometry: { type: 'Point', coordinates: [-8.6730, 37.1020] }, properties: { name: 'Lagos', postcode: '8600', state: 'Faro', osm_key: 'place' } },
+    { geometry: { type: 'Point', coordinates: [-8.6745, 37.0990] }, properties: { name: 'Hotel Riomar', street: 'Rua Cândido dos Reis', housenumber: '83', city: 'Lagos', state: 'Faro' } }] } }))
   await ctx.route('https://router.project-osrm.org/**', (r) => {
     osrm++
     const u = new URL(r.request().url())
@@ -40,10 +42,14 @@ for (const scheme of ['light', 'dark']) {
   // Eerst de vraag: waar verblijf je, hoe lang wil je rijden. Daarna zoomt de kaart in en komen de routes.
   await page.waitForSelector('dialog.verblijfvraag[open]', { timeout: 5000 })
   if (shots) await page.screenshot({ path: `${shots}/verblijf-vraag-${scheme}.png` })
-  await page.fill('dialog input[name=q]', 'Lagos')
-  await page.click('dialog [data-a=zoek]')
+  await page.locator('dialog input[name=q]').pressSequentially('Lag', { delay: 60 })
+  await page.waitForSelector('dialog .gevonden button', { timeout: 5000 })
+  const sugg = await page.$$eval('dialog .gevonden b', (els) => els.map((e) => e.textContent))
+  check(`[${scheme}] suggesties terwijl je typt`, sugg.length === 2 && sugg[1] === 'Hotel Riomar', `(${sugg.join(', ')})`)
+  if (shots) await page.screenshot({ path: `${shots}/verblijf-zoek-${scheme}.png` })
   await page.click('dialog .gevonden button')
-  await page.click('dialog label:has(input[value="60"])')
+  await page.fill('dialog input[name=uren]', '1')
+  await page.fill('dialog input[name=min]', '0')
   await page.click('dialog button[value=ok]')
   await page.waitForSelector('#routes:not([hidden])', { timeout: 10000 })
   const knop = await page.textContent('#verblijfknop')

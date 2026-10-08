@@ -132,9 +132,9 @@ async function tekenRoutes() {
   const beste = besteDitUur()
   const lijnen = await Promise.all(beste.map((b) => route(v, { id: b.s.id, lat: b.s.y, lon: b.s.x }).catch(() => null)))
   if (beurt !== routeBeurt) return // intussen een ander uur gekozen
+  // Alleen echte routes over de weg; lukt een route niet, dan geen lijn (nooit vogelvlucht).
   src.setData({ type: 'FeatureCollection', features: beste.flatMap((b, k) => lijnen[k]
-    ? [{ type: 'Feature' as const, geometry: lijnen[k], properties: { kleur: b.sport.kleur } }]
-    : [{ type: 'Feature' as const, geometry: { type: 'LineString' as const, coordinates: [[v.lon, v.lat], [b.s.x, b.s.y]] }, properties: { kleur: b.sport.kleur, recht: 1 } }]) })
+    ? [{ type: 'Feature' as const, geometry: lijnen[k], properties: { kleur: b.sport.kleur } }] : []) })
   const naam = (n: string) => n === n.toUpperCase() ? n.charAt(0) + n.slice(1).toLowerCase() : n
   lijst.innerHTML = beste.length
     ? beste.map((b) => `<li><button type="button" data-id="${b.s.id}" style="--kleur:${b.sport.kleur};--tekstkleur:${b.sport.tekst}"><b>${b.sport.naam}</b>
@@ -287,8 +287,7 @@ async function start() {
     kaart.addLayer({ id: 'routes-rand', type: 'line', source: 'routes', layout: { 'line-cap': 'round', 'line-join': 'round' },
       paint: { 'line-color': '#ffffff', 'line-width': 7, 'line-opacity': 0.9 } })
     kaart.addLayer({ id: 'routes', type: 'line', source: 'routes', layout: { 'line-cap': 'round', 'line-join': 'round' },
-      paint: { 'line-color': ['get', 'kleur'], 'line-width': 4,
-        'line-dasharray': ['case', ['has', 'recht'], ['literal', [1, 2]], ['literal', [1, 0]]] as any } })
+      paint: { 'line-color': ['get', 'kleur'], 'line-width': 4 } })
     kaart.addLayer({ id: 'groepen', type: 'symbol', source: 'stranden', filter: ['has', 'point_count'],
       layout: { 'icon-image': ['concat', 'sg|', ['to-string', ['get', 'point_count']]] as any, 'icon-allow-overlap': true } })
     kaart.addLayer({ id: 'stranden', type: 'symbol', source: 'stranden', filter: ['!', ['has', 'point_count']],

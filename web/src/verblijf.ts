@@ -1,5 +1,6 @@
 // Het verblijf van de bezoeker: waar je verblijft en hoe lang je wil rijden (eigenaar, 8 oktober 2026).
-// - plaats zoeken: Nominatim (OpenStreetMap), of je huidige locatie
+// - plaats zoeken terwijl je typt (zoals Google Maps): Photon (komoot, op OpenStreetMap), met Nominatim als reserve;
+//   of je huidige locatie
 // - rijtijden en routes: OSRM (router.project-osrm.org), rechtstreeks vanuit de browser
 // Het verblijf wordt in deze browser bewaard; kaart en planning rekenen er vanaf dan mee.
 
@@ -9,7 +10,7 @@ export interface Plek { id: string; lat: number; lon: number }
 const SLEUTEL = 'verblijf-v1'
 const OSRM = 'https://router.project-osrm.org'
 const NOMINATIM = 'https://nominatim.openstreetmap.org/search'
-export const RIJTIJDEN = [30, 45, 60, 90, 120, 180]
+const PHOTON = 'https://photon.komoot.io/api/'
 
 export function leesVerblijf(): Verblijf | null {
   try {
@@ -23,25 +24,38 @@ export function bewaarVerblijf(v: Verblijf) {
 
 export const rijTekst = (m: number) => m < 60 ? `${m} min` : `${Math.floor(m / 60)}u${m % 60 ? String(m % 60).padStart(2, '0') : ''}`
 
-export async function zoekPlaats(q: string): Promise<{ naam: string; lat: number; lon: number }[]> {
-  const url = `${NOMINATIM}?format=json&countrycodes=pt&limit=6&accept-language=nl&q=${encodeURIComponent(q)}`
-  const r = await fetch(url)
-  if (!r.ok) throw new Error(`Nominatim ${r.status}`)
-  return (await r.json()).map((x: any) => ({ naam: x.display_name as string, lat: Number(x.lat), lon: Number(x.lon) }))
+export interface Gevonden { naam: string; lat: number; lon: number; titel: string; adres: string }
+
+// Suggesties terwijl je typt: dorpen, straten, adressen, hotels, campings … in Portugal, eerst rond de Algarve.
+export async function zoekPlaats(q: string, signal?: AbortSignal): Promise<Gevonden[]> {
+  try {
+    const url = `${PHOTON}?q=${encodeURIComponent(q)}&limit=8&lat=37.1&lon=-8.5&bbox=-9.6,36.9,-6.1,42.2`
+    const r = await fetch(url, { signal })
+    if (!r.ok) throw new Error(`Photon ${r.status}`)
+    return (await r.json()).features.map((f: any) => {
+      const p = f.properties ?? {}
+      const straat = [p.street, p.housenumber].filter(Boolean).join(' ')
+      const titel = p.name || straat || p.city || q
+      const plaats = [p.postcode, p.city || p.town || p.village || p.district].filter(Boolean).join(' ')
+      const adres = [p.name && straat, plaats !== titel && plaats, p.state].filter(Boolean).join(', ')
+      return { titel, adres, naam: [titel, plaats].filter(Boolean).join(', '),
+        lon: f.geometry.coordinates[0], lat: f.geometry.coordinates[1] }
+    })
+  } catch (e) {
+    if ((e as Error).name === 'AbortError') throw e
+    const r = await fetch(`${NOMINATIM}?format=json&countrycodes=pt&limit=6&accept-language=nl&q=${encodeURIComponent(q)}`, { signal })
+    if (!r.ok) throw new Error(`Nominatim ${r.status}`)
+    return (await r.json()).map((x: any) => {
+      const delen = String(x.display_name).split(', ')
+      return { naam: x.display_name, titel: delen[0], adres: delen.slice(1, 4).join(', '), lat: Number(x.lat), lon: Number(x.lon) }
+    })
+  }
 }
 
-function km(a: { lat: number; lon: number }, b: { lat: number; lon: number }) {
-  const r = 6371, t = Math.PI / 180
-  const dp = (b.lat - a.lat) * t, dl = (b.lon - a.lon) * t
-  const h = Math.sin(dp / 2) ** 2 + Math.cos(a.lat * t) * Math.cos(b.lat * t) * Math.sin(dl / 2) ** 2
-  return 2 * r * Math.asin(Math.sqrt(h))
-}
-
-// Rijtijd (minuten) van het verblijf naar elke plek. Plekken die in vogelvlucht al verder liggen dan je
-// met 130 km/h in de maximale tijd haalt, worden niet opgevraagd (die vallen zeker af). Resultaten blijven
-// in deze browser bewaard per verblijf.
+// Rijtijd (minuten) over de weg van het verblijf naar elke plek, voor alle plekken (geen vogelvlucht).
+// Resultaten blijven in deze browser bewaard per verblijf.
 const geheugen = new Map<string, number | null>()
-const cacheSleutel = (v: Verblijf) => `rij-v1:${v.lat.toFixed(4)},${v.lon.toFixed(4)}`
+const cacheSleutel = (v: Verblijf) => `rij-v2:${v.lat.toFixed(4)},${v.lon.toFixed(4)}`
 function laadCache(v: Verblijf) {
   try { return JSON.parse(localStorage.getItem(cacheSleutel(v)) ?? '{}') as Record<string, number | null> } catch { return {} }
 }
@@ -56,7 +70,6 @@ export async function rijtijden(v: Verblijf, plekken: Plek[]): Promise<Map<strin
   for (const p of plekken) {
     const k = `${p.id}`
     if (k in cache) { uit.set(p.id, cache[k]); continue }
-    if (km(v, p) > (v.max / 60) * 130) { uit.set(p.id, null); continue } // te ver, ook in vogelvlucht
     vragen.push(p)
   }
   for (let i = 0; i < vragen.length; i += 90) {
@@ -95,13 +108,17 @@ export function vraagVerblijf(huidig: Verblijf | null): Promise<Verblijf | null>
     let gekozen: { naam: string; lat: number; lon: number } | null = huidig
     d.innerHTML = `<form method="dialog">
       <h2>Waar verblijf je?</h2>
-      <div class="zoekrij"><input name="q" type="search" placeholder="bv. Ferragudo, Lagos, Sagres" autocomplete="off" value="${huidig ? huidig.naam.split(',')[0].replace(/"/g, '&quot;') : ''}">
-        <button type="button" class="knop" data-a="zoek">Zoek</button></div>
+      <div class="zoekrij"><input name="q" type="search" placeholder="Adres, hotel, straat of dorp" autocomplete="off"
+        role="combobox" aria-expanded="false" aria-autocomplete="list" aria-label="Zoek je verblijf"
+        value="${huidig ? huidig.naam.split(',')[0].replace(/"/g, '&quot;') : ''}"></div>
+      <ul class="gevonden" role="listbox"></ul>
       <button type="button" class="linkknop" data-a="hier">Gebruik mijn huidige locatie</button>
-      <ul class="gevonden"></ul>
       <p class="keuze">${huidig ? `Gekozen: <b>${huidig.naam.split(',').slice(0, 2).join(',')}</b>` : ''}</p>
       <h2>Hoe lang wil je rijden?</h2>
-      <div class="tijden">${RIJTIJDEN.map((m) => `<label><input type="radio" name="max" value="${m}" ${(huidig?.max ?? 120) === m ? 'checked' : ''}> ${rijTekst(m)}</label>`).join('')}</div>
+      <div class="tijden">
+        <label><input name="uren" type="number" inputmode="numeric" min="0" max="12" step="1" value="${Math.floor((huidig?.max ?? 120) / 60)}" aria-label="Uren"> u</label>
+        <label><input name="min" type="number" inputmode="numeric" min="0" max="59" step="1" value="${(huidig?.max ?? 120) % 60}" aria-label="Minuten"> min</label>
+      </div>
       <p class="fout" hidden></p>
       <div class="knoppen"><button value="sluit" class="linkknop">Overslaan</button><button value="ok" class="knop hoofd">Toon de kaart</button></div>
     </form>`
@@ -112,39 +129,68 @@ export function vraagVerblijf(huidig: Verblijf | null): Promise<Verblijf | null>
     const fout = d.querySelector<HTMLElement>('.fout')!
     const toonFout = (t: string) => { fout.textContent = t; fout.hidden = !t }
     const kies = (g: { naam: string; lat: number; lon: number }) => {
-      gekozen = g; lijst.innerHTML = ''
+      gekozen = g; lijst.innerHTML = ''; resultaten = []
+      veld.value = g.naam.split(',')[0]; veld.setAttribute('aria-expanded', 'false')
       keuze.innerHTML = `Gekozen: <b>${g.naam.split(',').slice(0, 2).join(',')}</b>`
       toonFout('')
     }
+    // Zoeken terwijl je typt: even wachten tot je stopt met typen, oude vragen afbreken.
+    const PIN = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>'
+    const esc = (t: string) => t.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!)
+    let wacht: ReturnType<typeof setTimeout> | undefined, bezig: AbortController | null = null
+    let resultaten: Gevonden[] = [], actief = -1
+    const markeer = (i: number) => {
+      actief = i
+      lijst.querySelectorAll('button').forEach((b, k) => b.setAttribute('aria-selected', String(k === i)))
+    }
     const zoek = async () => {
-      if (!veld.value.trim()) return
-      lijst.innerHTML = '<li class="rustig">Zoeken…</li>'
+      const q = veld.value.trim()
+      bezig?.abort()
+      if (q.length < 2) { lijst.innerHTML = ''; resultaten = []; veld.setAttribute('aria-expanded', 'false'); return }
+      bezig = new AbortController()
       try {
-        const r = await zoekPlaats(veld.value.trim())
-        lijst.innerHTML = r.length ? '' : '<li class="rustig">Niets gevonden in Portugal.</li>'
-        r.forEach((g) => {
+        resultaten = await zoekPlaats(q, bezig.signal)
+        lijst.innerHTML = resultaten.length ? '' : '<li class="rustig">Niets gevonden in Portugal.</li>'
+        resultaten.forEach((g) => {
           const li = document.createElement('li')
-          li.innerHTML = `<button type="button">${g.naam.replace(/</g, '&lt;')}</button>`
+          li.innerHTML = `<button type="button" role="option">${PIN}<span><b>${esc(g.titel)}</b><small>${esc(g.adres)}</small></span></button>`
           li.querySelector('button')!.onclick = () => kies(g)
           lijst.appendChild(li)
         })
-      } catch { lijst.innerHTML = ''; toonFout('Zoeken lukt nu niet (OpenStreetMap). Probeer opnieuw of gebruik je locatie.') }
+        veld.setAttribute('aria-expanded', String(resultaten.length > 0))
+        markeer(-1)
+        toonFout('')
+      } catch (e) {
+        if ((e as Error).name === 'AbortError') return
+        lijst.innerHTML = ''; toonFout('Zoeken lukt nu niet. Probeer opnieuw of gebruik je locatie.')
+      }
     }
-    d.querySelector<HTMLButtonElement>('[data-a=zoek]')!.onclick = zoek
-    veld.onkeydown = (e) => { if (e.key === 'Enter') { e.preventDefault(); zoek() } }
+    veld.oninput = () => { clearTimeout(wacht); wacht = setTimeout(zoek, 250) }
+    veld.onkeydown = (e) => {
+      if (e.key === 'ArrowDown' && resultaten.length) { e.preventDefault(); markeer((actief + 1) % resultaten.length) }
+      else if (e.key === 'ArrowUp' && resultaten.length) { e.preventDefault(); markeer((actief - 1 + resultaten.length) % resultaten.length) }
+      else if (e.key === 'Enter') { e.preventDefault(); if (resultaten.length) kies(resultaten[Math.max(0, actief)]); else zoek() }
+    }
     d.querySelector<HTMLButtonElement>('[data-a=hier]')!.onclick = () => {
       navigator.geolocation?.getCurrentPosition(
         (pos) => kies({ naam: 'Mijn locatie', lat: pos.coords.latitude, lon: pos.coords.longitude }),
         () => toonFout('Je locatie is niet beschikbaar.'))
     }
+    const maxTijd = () => {
+      const u = Number(d.querySelector<HTMLInputElement>('input[name=uren]')!.value || 0)
+      const m = Number(d.querySelector<HTMLInputElement>('input[name=min]')!.value || 0)
+      return Math.round(u) * 60 + Math.round(m)
+    }
     d.addEventListener('close', () => {
-      const max = Number((d.querySelector<HTMLInputElement>('input[name=max]:checked'))?.value ?? 120)
+      const max = maxTijd()
       const ok = d.returnValue === 'ok' && gekozen
       d.remove()
       klaar(ok ? { ...gekozen!, max } : null)
     })
     d.querySelector('form')!.addEventListener('submit', (e) => {
-      if ((e as SubmitEvent).submitter?.getAttribute('value') === 'ok' && !gekozen) { e.preventDefault(); toonFout('Kies eerst een plaats.') }
+      if ((e as SubmitEvent).submitter?.getAttribute('value') !== 'ok') return
+      if (!gekozen) { e.preventDefault(); toonFout('Kies eerst een plaats.') }
+      else if (maxTijd() < 1) { e.preventDefault(); toonFout('Vul in hoe lang je wil rijden.') }
     })
     d.showModal()
   })
