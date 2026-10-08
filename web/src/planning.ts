@@ -1,5 +1,5 @@
 // Tabblad Planning: 4 weken, per dag één resultaat (pipeline/site/planning.py):
-// golfsurfen, anders stille waters / e-foil, anders windsurfles, anders klimmen, anders niets.
+// golfsurfen, anders windsurfles, anders stille waters / e-foil, anders klimmen, anders niets.
 import './style.css'
 
 interface Keuze { sport: 'golfsurfen' | 'stil' | 'windsurf' | 'klim'; plek: string; id: string | null; van: string; tot: string; km: number; rij: number | null; score?: number }

@@ -4,9 +4,10 @@ Per dag precies één resultaat, in deze volgorde (eigenaar):
 1 golfsurfen     conclusie "ideaal golfsurfen", alleen stranden tot 2 uur rijden van Ferragudo; daarvan
                  eerst de beste condities (hoogste gemiddelde golfsurfscore over het blok, afgerond), en van
                  die het blok met de kortste rijtijd.
-2 stille waters  anders: conclusie "ideaal stille waters", het dichtstbijzijnde blok.
-3 windsurfles    anders: Ria de Alvor (lagune): wind van Alvor, geen swell-venster; WIND level 2,
-                 geen "te wild"; de windrichting telt niet mee.
+2 windsurfles    anders: Ria de Alvor (lagune): wind van Alvor, geen swell-venster; WIND level 2,
+                 geen "te wild"; de windrichting telt niet mee. Eén plek zonder score: het langste blok.
+3 stille waters  anders: conclusie "ideaal stille waters", alleen tot 2 uur rijden; eerst de beste condities
+                 (hoogste gemiddelde score stille waters, afgerond), en van die de kortste rijtijd.
 4 klimmen        anders: Bensafrim, minstens 4 opeenvolgende uren zonder regen en geen regen in de 24 uur ervoor.
 Anders niets.
 
@@ -37,7 +38,7 @@ DAGEN = 28
 # Praia do Alvor Poente, aan de monding van de ria (uit de stranddata).
 ALVOR_WIND = "37.100,-8.600"
 ALVOR = {"naam": "Ria de Alvor", "id": "ria-de-alvor", "lat": 37.122296, "lon": -8.59756}
-MAX_RIJ_SURF = 120  # minuten (eigenaar: surf alleen tot 2 uur rijden)
+MAX_RIJ_SURF = 120  # minuten (eigenaar: golfsurfen en stille waters alleen tot 2 uur rijden)
 RIJ: dict[str, dict | None] = {}
 BENSAFRIM = "eigen/bensafrim"
 
@@ -96,11 +97,11 @@ def maak(axis: list[str], out: Path, wind_bron: dict, klimweer: dict) -> dict:
         for sport, tekst in (("golfsurfen", "ideaal golfsurfen"), ("stil", "ideaal stille waters")):
             ok = [licht[i] and (d["conclusie"][i] or "").startswith(tekst) for i in range(len(uren))]
             for a, b in blokken(uren, ok, 3):
-                extra = {}
-                if sport == "golfsurfen":
-                    s = [d["scores"][i][0] for i in range(a, b + 1)]
-                    extra["score"] = round(sum(s) / len(s), 1)
-                voeg(uren[a].astimezone(LIS).date().isoformat(), sport, blok(plek, uren, a, b, **extra))
+                # gemiddelde score van die activiteit over het blok (golfsurfen: kolom 0, stille waters: kolom 3)
+                kolom = 0 if sport == "golfsurfen" else 3
+                s = [d["scores"][i][kolom] for i in range(a, b + 1)]
+                voeg(uren[a].astimezone(LIS).date().isoformat(), sport,
+                     blok(plek, uren, a, b, score=round(sum(s) / len(s), 1)))
 
     # 3: windsurfles op de Ria de Alvor
     w = wind_bron.get(ALVOR_WIND)
@@ -158,10 +159,11 @@ def maak(axis: list[str], out: Path, wind_bron: dict, klimweer: dict) -> dict:
             beste = max(round(b["score"]) for b in p["golfsurfen"])
             top = [b for b in p["golfsurfen"] if round(b["score"]) == beste]
             keuze = {"sport": "golfsurfen", **min(top, key=lambda b: b["rij"])}
-        elif p["stil"]:
-            keuze = {"sport": "stil", **min(p["stil"], key=lambda b: (b["km"], -lengte(b)))}
         elif p["windsurf"]:
             keuze = {"sport": "windsurf", **max(p["windsurf"], key=lengte)}
+        elif stil := [b for b in p["stil"] if b["rij"] is not None and b["rij"] <= MAX_RIJ_SURF]:
+            beste = max(round(b["score"]) for b in stil)
+            keuze = {"sport": "stil", **min([b for b in stil if round(b["score"]) == beste], key=lambda b: b["rij"])}
         elif p["klim"]:
             keuze = {"sport": "klim", **max(p["klim"], key=lengte)}
         dagen.append({"dag": s, "voorspelling": True, "keuze": keuze})
