@@ -243,7 +243,7 @@ def alle() -> list[dict]:
 
 EIGEN_KOLOMMEN = ["naam", "lat", "lon", "discipline", "graad_min", "graad_max", "bron"]
 # Mag er ook in staan: schaal (Frans/Font), aantal_routes (getal of tekst zoals "25-50"),
-# omgerekend ("ja ..." = de bron gaf een andere schaal), bron_url.
+# omgerekend ("ja ..." = de bron gaf een andere schaal), bron_url, let_op (waarschuwing, bv. toegang).
 
 
 def eigen_plek(r: dict, nr: int) -> dict | None:
@@ -278,6 +278,7 @@ def eigen_plek(r: dict, nr: int) -> dict | None:
     p["schaal"] = "font" if font else "frans"
     p["graad"] = graad
     p["eigen"] = True
+    p["let_op"] = (r.get("let_op") or "").strip() or None
     return p
 
 
@@ -303,8 +304,8 @@ def eigen_voor(plekken: list[dict], eigen_lijst: list[dict]) -> list[dict]:
         if q is None:
             plekken.append(e)
             continue
-        for k in ("naam", "lat", "lon", "disciplines", "schaal", "graad", "frans", "font", "routes"):
-            if e[k] not in (None, ["onbekend"]):
+        for k in ("naam", "lat", "lon", "disciplines", "schaal", "graad", "frans", "font", "routes", "let_op"):
+            if e.get(k) not in (None, ["onbekend"]):
                 q[k] = e[k]
         q["bronnen"] = e["bronnen"] + q["bronnen"]
         q["eigen"] = True

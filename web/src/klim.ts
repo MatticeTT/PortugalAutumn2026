@@ -12,7 +12,7 @@ interface Bron { bron: string; id: string; link: string | null; datum: string | 
 export interface KlimPlek {
   id: string; naam: string | null; lat: number; lon: number; soort: string; disciplines: string[]
   routes: number | string | null; schaal: 'frans' | 'font'; graad: Graad | null; frans: Graad | null; font: Graad | null
-  rots: string | null; richting: string | null; bronnen: Bron[]; w?: string | null; eigen?: boolean; lokaal?: boolean
+  rots: string | null; richting: string | null; bronnen: Bron[]; w?: string | null; eigen?: boolean; lokaal?: boolean; let_op?: string | null
 }
 interface Weer {
   neerslag: (number | null)[]; vocht: (number | null)[]; temp: (number | null)[]; wind: (number | null)[]
@@ -81,7 +81,7 @@ function eigenPlek(r: Record<string, string>, nr: number): KlimPlek | null {
     id: `eigen/${Date.now()}-${nr}`, naam: (r.naam ?? '').trim() || null, lat, lon, soort: 'onbekend', disciplines: disc,
     routes: routes ? (/^\d+$/.test(routes) ? Number(routes) : routes) : null,
     schaal: boulder ? 'font' : 'frans', graad: g, frans: boulder ? null : g, font: boulder ? g : null,
-    rots: null, richting: null, eigen: true, lokaal: true,
+    rots: null, richting: null, eigen: true, lokaal: true, let_op: (r.let_op ?? '').trim() || null,
     bronnen: [{ bron: `eigen invoer${r.bron ? ` (${r.bron})` : ''}`, id: 'eigen', link: (r.bron_url ?? '').trim() || null,
       datum: new Date().toISOString().slice(0, 10) }],
   }
@@ -110,7 +110,7 @@ function samen() {
     const q = vrij.find((q) => afstand(e, q) <= 150 && gelijkeNaam(e.naam, q.naam))
     if (!q) { plekken.push({ ...e }); continue }
     vrij.splice(vrij.indexOf(q), 1)
-    for (const k of ['naam', 'lat', 'lon', 'disciplines', 'schaal', 'graad', 'frans', 'font', 'routes'] as const)
+    for (const k of ['naam', 'lat', 'lon', 'disciplines', 'schaal', 'graad', 'frans', 'font', 'routes', 'let_op'] as const)
       if (e[k] != null && !(k === 'disciplines' && e.disciplines[0] === 'onbekend')) (q as any)[k] = e[k]
     q.bronnen = [...e.bronnen, ...q.bronnen]
     q.eigen = true
@@ -258,7 +258,7 @@ function paneel() {
         <label class="knop bestand">Importeer CSV of GeoJSON<input type="file" accept=".csv,.geojson,.json" hidden></label>
         <button class="knop" data-a="nieuw">Plek toevoegen</button>
         <button class="knop" data-a="export" ${leesEigen().length ? '' : 'disabled'}>Exporteer eigen plekken (CSV)</button>
-        <p class="klein">Kolommen: naam, lat, lon, discipline (sport/boulder/trad), graad_min, graad_max, bron; mag ook: schaal, aantal_routes, omgerekend, bron_url.
+        <p class="klein">Kolommen: naam, lat, lon, discipline (sport/boulder/trad), graad_min, graad_max, bron; mag ook: schaal, aantal_routes, omgerekend, bron_url, let_op.
           Eigen plekken staan alleen in deze browser; stuur de export door om ze voor iedereen op de kaart te zetten.</p>
       </fieldset>`
     p.querySelectorAll<HTMLInputElement>('input[data-f]').forEach((i) => i.onchange = () => { (filter as any)[i.dataset.f!] = i.checked; ververs() })
@@ -398,6 +398,7 @@ async function render() {
     <div class="klimkop" style="--kleur:${isBoulder(p) ? LICHTBRUIN : BRUIN}">
       <span class="graadpil ${isBoulder(p) ? 'boulder' : ''} ${r === '1' || r === '2' ? 'rood' : ''}">${esc(kort(g))}</span>
       ${reden ? `<b class="reden">Slecht weer: ${reden}</b>` : ''}</div>
+    ${p.let_op ? `<p class="klimmelding">Let op: ${esc(p.let_op)}</p>` : ''}
     <table class="klimtabel">
       ${rij('Discipline', p.disciplines.map((d) => DISC[d]).join(', '))}
       ${rij('Soort plek', SOORT[p.soort] ?? p.soort)}
