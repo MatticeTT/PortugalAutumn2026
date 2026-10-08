@@ -1,6 +1,7 @@
 // Tabblad Planning: 4 weken, per dag één resultaat (pipeline/site/planning.py):
 // golfsurfen, anders windsurfles, anders stille waters / e-foil, anders klimmen, anders niets.
 import './style.css'
+import { laadActiviteiten, nieuweActiviteit, wisActiviteit, type Activiteit } from './activiteiten'
 import { bewaarVerblijf, leesVerblijf, tabWissel, rijTekst, rijtijden, vraagVerblijf, type Verblijf } from './verblijf'
 
 interface Keuze { sport: 'golfsurfen' | 'stil' | 'windsurf' | 'klim'; plek: string; id: string | null; van: string; tot: string; km: number; rij: number | null; score?: number }
@@ -82,7 +83,7 @@ function plan(d: Dag, k: Keuze) {
   const plek = strand ? `<a href="./#${encodeURIComponent(k.id!)}">${esc(naam)}</a>` : esc(naam)
   const beeld = s.foto ? `<img src="foto/${s.foto}.webp" alt="">` : `<div class="geenfoto">${ICOON.rots}</div>`
   return `<article class="plandag" style="--kleur:${s.kleur}">
-    <figure>${beeld}
+    <figure>${beeld}${plus(d.dag)}
       <figcaption>
         <span class="datumlijn"><b>${datumTekst(d.dag, { weekday: 'short' })} ${DAGNR.format(new Date(d.dag + 'T12:00:00Z'))}</b>${datumTekst(d.dag, { month: 'short' })}</span>
         <span class="wat">${s.naam}</span>
@@ -95,6 +96,31 @@ function plan(d: Dag, k: Keuze) {
       ${s.links.length ? `<div class="links">${s.links.map(chip).join('')}</div>` : ''}
       ${s.extra ? `<details><summary>${s.extra.titel}</summary><div class="links">${s.extra.links.map(chip).join('')}</div></details>` : ''}
     </div>` : ''}
+  </article>`
+}
+
+// Eigen activiteiten (van iedereen, gedeeld via /api/activiteiten).
+let eigen: Activiteit[] = []
+const eigenVan = (dag: string) => eigen.filter((a) => a.dag === dag)
+const PLUS = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>'
+const plus = (dag: string) => `<button type="button" class="plus" data-plus="${dag}" aria-label="Activiteit toevoegen op ${dag}">${PLUS}</button>`
+const KLEUR_EIGEN = '#d9622b'
+
+// Een eigen activiteit: dezelfde kaart als een plan, met de eigen foto (of een effen vlak).
+function eigenKaart(a: Activiteit) {
+  const beeld = a.foto ? `<img src="${esc(a.foto)}" alt="" loading="lazy">` : `<div class="geenfoto eigenfoto"></div>`
+  const plek = a.plek
+    ? `<a href="https://www.openstreetmap.org/?mlat=${a.plek.lat}&mlon=${a.plek.lon}#map=15/${a.plek.lat}/${a.plek.lon}" target="_blank" rel="noopener">${esc(a.plek.naam)}</a>` : ''
+  return `<article class="plandag eigen" style="--kleur:${KLEUR_EIGEN}">
+    <figure>${beeld}${plus(a.dag)}
+      <figcaption>
+        <span class="datumlijn"><b>${datumTekst(a.dag, { weekday: 'short' })} ${DAGNR.format(new Date(a.dag + 'T12:00:00Z'))}</b>${datumTekst(a.dag, { month: 'short' })}</span>
+        <span class="wat">${esc(a.titel)}</span>
+        <span class="uren">${a.van.replace(/^0/, '').replace(':00', '')}–${a.tot.replace(/^0/, '').replace(':00', '')}u</span>
+        ${plek ? `<span class="waar">${ICOON.plek}${plek}</span>` : ''}
+      </figcaption>
+    </figure>
+    <div class="onder eigenonder"><span>Eigen activiteit</span><button type="button" class="linkknop" data-wis="${a.id}">Verwijderen</button></div>
   </article>`
 }
 
@@ -119,14 +145,14 @@ function bereik(a: string, b: string) {
   const na = DAGNR.format(new Date(a + 'T12:00:00Z')), nb = DAGNR.format(new Date(b + 'T12:00:00Z'))
   return ma === mb ? `${na} – ${nb} ${mb}` : `${na} ${ma} – ${nb} ${mb}`
 }
-const regel = (datum: string, inhoud: string, soort = '') => soort === 'leeg'
+const regel = (datum: string, inhoud: string, soort = '', dag = '') => soort === 'leeg'
   // Periode zonder voorspelling: kopregel van het kader, tekst links en de periode rechts (past altijd).
-  ? `<li class="leeg">${inhoud}<span class="periode">${datum}</span></li>`
-  : `<li class="${soort}"><span class="datum">${datum}</span><div>${inhoud}</div></li>`
+  ? `<li class="leeg">${inhoud}<span class="periode">${datum}</span>${dag ? plus(dag) : ''}</li>`
+  : `<li class="${soort}"><span class="datum">${datum}</span><div>${inhoud}</div>${dag ? plus(dag) : ''}</li>`
 
 function toon(dagen: Dag[]) {
   // Per week: is er voor geen enkele dag een voorspelling, dan staat dat één keer bovenaan het kader
-  // en tonen de regels eronder alleen nog de reisdagen.
+  // en tonen de regels eronder alleen nog de reisdagen. Eigen activiteiten staan als kaart op hun dag.
   const weken = new Map<string, Dag[]>()
   for (const d of dagen) {
     const w = weekKop(d.dag, dagen[0].dag)
@@ -134,34 +160,40 @@ function toon(dagen: Dag[]) {
     weken.get(w)!.push(d)
   }
   const geenVoorspelling = `<span class="stil">${ICOON.wolk} Nog geen voorspelling</span>`
+  const kaarten = (dag: string) => eigenVan(dag).map(eigenKaart).join('')
   let html = ''
   for (const [w, ds] of weken) {
     html += `<h2 class="week">${w}</h2>`
     if (ds.every((d) => !d.voorspelling)) {
-      const rijen = [regel(bereik(ds[0].dag, ds[ds.length - 1].dag), geenVoorspelling, 'leeg')]
-      for (const d of ds) if (d.reizen?.length) rijen.push(regel(kortDag(d.dag), d.reizen.map(reis).join(''), 'reisregel'))
-      html += `<ul class="daglijst">${rijen.join('')}</ul>`
+      const rijen = [regel(bereik(ds[0].dag, ds[ds.length - 1].dag), geenVoorspelling, 'leeg', ds[0].dag)]
+      for (const d of ds) if (d.reizen?.length) rijen.push(regel(kortDag(d.dag), d.reizen.map(reis).join(''), 'reisregel', d.dag))
+      html += `<ul class="daglijst">${rijen.join('')}</ul>` + ds.map((d) => kaarten(d.dag)).join('')
       continue
     }
     let lijst: string[] = [], zonder: Dag[] = []
     const sluitZonder = () => {
-      if (zonder.length) lijst.push(regel(bereik(zonder[0].dag, zonder[zonder.length - 1].dag), geenVoorspelling, 'leeg'))
+      if (zonder.length) lijst.push(regel(bereik(zonder[0].dag, zonder[zonder.length - 1].dag), geenVoorspelling, 'leeg', zonder[0].dag))
       zonder = []
     }
     const sluitLijst = () => { sluitZonder(); if (lijst.length) html += `<ul class="daglijst">${lijst.join('')}</ul>`; lijst = [] }
     for (const d of ds) {
       const reizen = d.reizen ?? []
-      if (!d.voorspelling && !reizen.length) { zonder.push(d); continue }
+      const eigenHier = eigenVan(d.dag).length > 0
+      if (!d.voorspelling && !reizen.length && !eigenHier) { zonder.push(d); continue }
       sluitZonder()
       const reisHtml = reizen.map(reis).join('')
       if (d.voorspelling && d.keuze) {
         // Een dag met plan: eventuele reis als regel net boven de fotokaart.
-        if (reizen.length) lijst.push(regel(kortDag(d.dag), reisHtml, 'reisregel'))
+        if (reizen.length) lijst.push(regel(kortDag(d.dag), reisHtml, 'reisregel', d.dag))
         sluitLijst()
-        html += plan(d, d.keuze)
+        html += plan(d, d.keuze) + kaarten(d.dag)
+      } else if (!reizen.length && eigenHier) {
+        sluitLijst()
+        html += kaarten(d.dag)
       } else {
         const status = d.voorspelling ? '<span class="stil">Niets ideaal</span>' : geenVoorspelling
-        lijst.push(regel(kortDag(d.dag), reisHtml + status, reizen.length ? 'reisregel' : ''))
+        lijst.push(regel(kortDag(d.dag), reisHtml + status, reizen.length ? 'reisregel' : '', d.dag))
+        if (eigenHier) { sluitLijst(); html += kaarten(d.dag) }
       }
     }
     sluitLijst()
@@ -251,9 +283,22 @@ async function start() {
     doel.innerHTML = '<p class="rustig">De planning kon niet worden geladen.</p>'
     return
   }
+  eigen = await laadActiviteiten()
   const doelTonen = (rij: (b: Blok) => number | null, max: number) => {
     const teken = () => { doel.innerHTML = toon(p.dagen.map((d) => (d.voorspelling && d.kandidaten ? { ...d, keuze: kies(d, rij, max) } : d))) }
     voorrang(teken); teken()
+    // Plusje: activiteit toevoegen; Verwijderen: eigen activiteit weg. Daarna opnieuw tekenen.
+    doel.onclick = async (e) => {
+      const t = (e.target as HTMLElement).closest<HTMLElement>('[data-plus], [data-wis]')
+      if (!t) return
+      if (t.dataset.plus) {
+        const a = await nieuweActiviteit(p.dagen.map((d) => [d.dag, kortDag(d.dag)]), t.dataset.plus)
+        if (a) { eigen = [...eigen, a].sort((x, y) => (x.dag + x.van).localeCompare(y.dag + y.van)); teken() }
+      } else if (t.dataset.wis && confirm('Deze activiteit voor iedereen verwijderen?')) {
+        try { await wisActiviteit(t.dataset.wis); eigen = eigen.filter((a) => a.id !== t.dataset.wis); teken() }
+        catch { alert('Verwijderen lukt nu niet. Probeer opnieuw.') }
+      }
+    }
   }
   // Zonder verblijf (of als de rijtijden niet lukken): vanaf Ferragudo met 2 uur rijden.
   const vanafFerragudo = (b: Blok) => b.rij ?? null

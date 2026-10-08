@@ -15,6 +15,7 @@ const km = ([a, b], [c, d]) => {
   return 2 * 6371 * Math.asin(Math.sqrt(h))
 }
 let osrm = 0
+const PNG = 'iVBORw0KGgoAAAANSUhEUgAAAEAAAAAwCAIAAAAuKetIAAAAU0lEQVR4nO3PQQ3AIADAQMAOrnCNm4ngcVnSU9DOe/b4s6UDXjWgNaA1oDWgNaA1oDWgNaA1oDWgNaA1oDWgNaA1oDWgNaA1oDWgNaA1oDWgNaB9iYkBxtqsWxgAAAAASUVORK5CYII='
 async function nabootsen(ctx, google) {
   // Donker thema: Esri (hoofdbron) nagebootst; licht thema: Esri faalt, terugval op Photon.
   if (google) await ctx.route('https://geocode.arcgis.com/**', (r) => {
@@ -151,6 +152,43 @@ for (const scheme of ['light', 'dark']) {
   if (shots) await page.screenshot({ path: `${shots}/planning-vol-${scheme}.png`, fullPage: true })
   const regels = await page.$$eval('.daglijst li', (els) => els.map((e) => e.textContent.replace(/\s+/g, ' ').trim()))
   check(`[${scheme}] dagen zonder plan als regels per week`, regels.some((r) => /Aankomst/.test(r)) && regels.some((r) => /Nog geen voorspelling/.test(r)), `(${regels.length} regels)`)
+  // Eigen activiteit: plusje op de eerste dagkaart, formulier invullen met foto en locatie, kaart verschijnt, verwijderen.
+  check(`[${scheme}] plusje bij elke dag`, (await page.$$('#dagen [data-plus]')).length >= 10)
+  if (scheme === 'dark') {
+    const opslag = []
+    await page.route('**/api/activiteiten**', async (r) => {
+      const m = r.request().method()
+      if (m === 'GET') return r.fulfill({ json: opslag })
+      if (m === 'POST') {
+        const b = JSON.parse(r.request().postData())
+        const a = { ...b, id: 'a' + (opslag.length + 1), foto: b.foto ? 'data:image/png;base64,' + PNG : null }
+        opslag.push(a); return r.fulfill({ json: a })
+      }
+      if (m === 'DELETE') { opslag.length = 0; return r.fulfill({ json: { ok: true } }) }
+    })
+    const dagPlus = await page.getAttribute('.plandag [data-plus]', 'data-plus')
+    await page.click('.plandag [data-plus]')
+    await page.waitForSelector('dialog.activiteitvraag[open]')
+    await page.fill('dialog input[name=titel]', 'Kajakken Benagil')
+    await page.fill('dialog input[name=van]', '14:00')
+    await page.fill('dialog input[name=tot]', '16:30')
+    await page.locator('dialog input[name=plek]').pressSequentially('One2', { delay: 40 })
+    await page.waitForSelector('dialog .gevonden button')
+    await page.click('dialog .gevonden button')
+    await page.setInputFiles('dialog input[name=foto]', { name: 'f.png', mimeType: 'image/png', buffer: Buffer.from(PNG, 'base64') })
+    await page.waitForSelector('dialog .fotokeuze img:not([hidden])')
+    if (shots) await page.screenshot({ path: `${shots}/activiteit-form-${scheme}.png` })
+    await page.click('dialog button[value=ok]')
+    await page.waitForSelector('.plandag.eigen', { timeout: 5000 })
+    const kaart = (await page.textContent('.plandag.eigen')).replace(/\s+/g, ' ')
+    check(`[${scheme}] activiteit toegevoegd op de juiste dag`, opslag[0]?.dag === dagPlus && /Kajakken Benagil/.test(kaart) && /14–16:30u/.test(kaart) && /One2Seven/.test(kaart) && !!opslag[0]?.plek,
+      `(${kaart.trim().slice(0, 80)})`)
+    if (shots) { await page.locator('.plandag.eigen').scrollIntoViewIfNeeded(); await page.screenshot({ path: `${shots}/activiteit-${scheme}.png` }) }
+    page.once('dialog', (dl) => dl.accept())
+    await page.click('.plandag.eigen [data-wis]')
+    await page.waitForFunction(() => !document.querySelector('.plandag.eigen'))
+    check(`[${scheme}] activiteit verwijderd`, opslag.length === 0)
+  }
   // Volgorde van voorrang: Klimmen naar boven zetten.
   const vooraf = await page.$$eval('.plandag .wat', (els) => els.map((e) => e.textContent))
   for (let k = 0; k < 3; k++) await page.click('#voorrang li:has-text("Klimmen") button[data-r="-1"]')

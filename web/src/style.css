@@ -619,3 +619,30 @@ details.meer[open] > summary { margin-bottom: 8px; }
 .daglijst li.leeg { display: flex; align-items: center; justify-content: space-between; gap: 12px; background: var(--zacht-vlak); }
 .daglijst .periode { font-weight: 700; font-size: 14px; white-space: nowrap; color: var(--tekst); }
 .daglijst .periode::first-letter { text-transform: uppercase; }
+
+/* Planning: eigen activiteiten — plusje, kaart en formulier */
+.plus { all: unset; box-sizing: border-box; cursor: pointer; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%;
+  color: var(--tekst); background: var(--zacht-vlak); flex: none; }
+.plus:hover, .plus:focus-visible { background: var(--accent); color: #fff; }
+.plandag figure .plus { position: absolute; top: 10px; right: 10px; z-index: 2; background: rgb(255 255 255 / 0.92); color: #14202b;
+  box-shadow: 0 1px 6px rgb(0 0 0 / 0.25); }
+.plandag figure .plus:hover, .plandag figure .plus:focus-visible { background: #fff; color: var(--accent); }
+.daglijst li { grid-template-columns: 92px 1fr auto; }
+.daglijst li .plus { width: 30px; height: 30px; margin: -4px -4px -4px 0; }
+.daglijst li.leeg .periode { margin-left: auto; }
+.daglijst li.leeg > .stil { flex: 1; }
+@media (max-width: 380px) { .daglijst li { grid-template-columns: 80px 1fr auto; } }
+.plandag .eigenfoto { background: linear-gradient(135deg, #d9622b, #8a3a8f); }
+.plandag.eigen .wat { font-size: 20px; }
+.plandag .eigenonder { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; color: var(--zacht); font-size: 13px; }
+.plandag .eigenonder .linkknop { font-size: 13px; color: var(--zacht); }
+.plandag .eigenonder .linkknop:hover { color: var(--gevaar); }
+.activiteitvraag .veld { display: flex; flex-direction: column; gap: 4px; font-size: 13px; font-weight: 700; }
+.activiteitvraag .veld small { font-weight: 400; color: var(--zacht); }
+.activiteitvraag .veld input:not([type=file]), .activiteitvraag .veld select { font: inherit; font-size: 16px; font-weight: 400; color: var(--tekst);
+  background: var(--bg); border: 1px solid var(--lijn); border-radius: 8px; padding: 8px 10px; min-height: 40px; }
+.activiteitvraag .tweeling { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.activiteitvraag .fotokeuze { display: flex; align-items: center; gap: 10px; }
+.activiteitvraag .fotokeuze img { width: 64px; height: 64px; object-fit: cover; border-radius: 10px; }
+.activiteitvraag .fotokeuze .knop { cursor: pointer; font-weight: 600; }
+.activiteitvraag .gevonden:empty { display: none; }
