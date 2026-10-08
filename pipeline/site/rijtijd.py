@@ -1,4 +1,5 @@
-"""Rijtijd met de auto van Ferragudo naar elk strand (en de extra plekken van de planning).
+"""Rijtijd met de auto van Ferragudo naar elk Portugees strand en elke Portugese klimplek (de planning zonder
+eigen verblijf rekent vanaf Ferragudo; met een verblijf rekent de site zelf de rijtijden).
 
 Bron: OSRM (Open Source Routing Machine) op OpenStreetMap-wegen, de openbare server router.project-osrm.org
 (één aanvraag per seconde). Draait in GitHub Actions (rijtijd.yml); schrijft data/beaches/rijtijd.json:
@@ -17,14 +18,16 @@ OUT = ROOT / "data" / "beaches" / "rijtijd.json"
 FERRAGUDO = (-8.5195, 37.1238)  # lon, lat
 OSRM = "https://router.project-osrm.org/table/v1/driving/"
 UA = "surfkaart-portugal/0.1 (niet-commercieel, besloten)"
-EXTRA = {"ria-de-alvor": (-8.59756, 37.122296), "eigen/bensafrim": (-8.73129, 37.15338)}
+EXTRA = {"eigen/bensafrim": (-8.73129, 37.15338)}
 PER_KEER = 90
 
 
 def plekken() -> dict[str, tuple[float, float]]:
     fc = json.loads((ROOT / "data" / "beaches" / "stranden.geojson").read_text())
     uit = {f["properties"]["id"]: tuple(f["geometry"]["coordinates"][:2]) for f in fc["features"]}
-    return {**uit, **EXTRA}
+    from pipeline.klim.plekken import alle
+    klim = {k["id"]: (k["lon"], k["lat"]) for k in alle() if (k.get("land") or "pt") == "pt"}
+    return {**uit, **klim, **EXTRA}
 
 
 def main():

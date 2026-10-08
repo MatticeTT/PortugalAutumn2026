@@ -1,15 +1,14 @@
 """De planning voor de komende 4 weken (tabblad /planning; eigenaar en rekenchat, 8 oktober 2026).
 
-Per dag precies één resultaat, in deze volgorde (eigenaar):
+Per dag precies één resultaat, in deze volgorde (eigenaar; de site laat de volgorde aanpassen):
 1 golfsurfen     conclusie "ideaal golfsurfen", alleen stranden tot 2 uur rijden van Ferragudo; daarvan
                  eerst de beste condities (hoogste gemiddelde golfsurfscore over het blok, afgerond), en van
                  die het blok met de kortste rijtijd.
-2 windsurfles    anders: Ria de Alvor (lagune): wind van Alvor, geen swell-venster; WIND level 2,
-                 geen "te wild"; de windrichting telt niet mee. Eén plek zonder score: het langste blok.
-3 stille waters  anders: conclusie "ideaal stille waters", alleen tot 2 uur rijden; eerst de beste condities
-                 (hoogste gemiddelde score stille waters, afgerond), en van die de kortste rijtijd.
-4 klimmen        anders: Bensafrim, minstens 4 opeenvolgende uren zonder regen en geen regen in de 24 uur ervoor.
-Anders niets.
+2 windsurfen     anders: conclusie "ideaal windsurfen", zelfde werkwijze als golfsurfen (score windsurfen).
+3 stille waters  anders: conclusie "ideaal stille waters", zelfde werkwijze (score stille waters).
+4 klimmen        anders: elke klimplek (sport of trad) tot 2 uur rijden, minstens 4 opeenvolgende uren zonder
+                 regen en geen regen in de 24 uur ervoor; eerst het langste blok, dan de kortste rijtijd.
+Anders niets. Dezelfde regels in alle landen.
 
 Algemeen
 - Een uur telt alleen mee als het begint tussen 30 min voor zonsopgang en 30 min na zonsondergang.
@@ -30,19 +29,16 @@ from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
-from pipeline.rules.model import bereken
 from pipeline.site.zon_getij import zon
 
 LIS = ZoneInfo("Europe/Lisbon")
 FERRAGUDO = (37.1238, -8.5195)
 DAGEN = 28
-# Ria de Alvor: de wind van het windpunt van Alvor (dat ook Praia do Alvor gebruikt); als ligging
-# Praia do Alvor Poente, aan de monding van de ria (uit de stranddata).
-ALVOR_WIND = "37.100,-8.600"
-ALVOR = {"naam": "Ria de Alvor", "id": "ria-de-alvor", "lat": 37.122296, "lon": -8.59756}
-MAX_RIJ_SURF = 120  # minuten (eigenaar: golfsurfen en stille waters alleen tot 2 uur rijden)
+MAX_RIJ_SURF = 120  # minuten (eigenaar: alleen tot 2 uur rijden)
 RIJ: dict[str, dict | None] = {}
-BENSAFRIM = "eigen/bensafrim"
+# Per strand-sport: de conclusie die telt en de kolom van zijn score in "scores" (volgorde van model.VOLGORDE).
+STRAND_SPORT = (("golfsurfen", "ideaal golfsurfen", 0), ("windsurf", "ideaal windsurfen", 2),
+                ("stil", "ideaal stille waters", 3))
 
 
 def km(lat: float, lon: float) -> float:
@@ -85,7 +81,7 @@ def blok(plek: dict, uren: list[datetime], a: int, b: int, **extra) -> dict:
             "dag": van.date().isoformat(), **extra}
 
 
-def maak(axis: list[str], out: Path, wind_bron: dict, klimweer: dict) -> dict:
+def maak(axis: list[str], out: Path, klimweer: dict, klimplekken: list[dict]) -> dict:
     uren = [datetime.fromisoformat(t).replace(tzinfo=UTC) for t in axis]
     per_dag: dict[str, dict[str, list]] = {}
 
@@ -106,7 +102,7 @@ def maak(axis: list[str], out: Path, wind_bron: dict, klimweer: dict) -> dict:
         if land:
             doel = per_land.setdefault(land, {})
             licht = [telt(d["lat"], d["lon"], t) for t in uren]
-            for sport, tekst, kolom in (("golfsurfen", "ideaal golfsurfen", 0), ("stil", "ideaal stille waters", 3)):
+            for sport, tekst, kolom in STRAND_SPORT:
                 ok = [licht[i] and (d["conclusie"][i] or "").startswith(tekst) for i in range(len(uren))]
                 for a, b in blokken(uren, ok, 3):
                     s = [d["scores"][i][kolom] for i in range(a, b + 1)]
@@ -114,48 +110,39 @@ def maak(axis: list[str], out: Path, wind_bron: dict, klimweer: dict) -> dict:
                     doel.setdefault(uren[a].astimezone(LIS).date().isoformat(), {}).setdefault(sport, []).append(bl)
             continue
         licht = [telt(d["lat"], d["lon"], t) for t in uren]
-        for sport, tekst in (("golfsurfen", "ideaal golfsurfen"), ("stil", "ideaal stille waters")):
+        for sport, tekst, kolom in STRAND_SPORT:
             ok = [licht[i] and (d["conclusie"][i] or "").startswith(tekst) for i in range(len(uren))]
             for a, b in blokken(uren, ok, 3):
-                # gemiddelde score van die activiteit over het blok (golfsurfen: kolom 0, stille waters: kolom 3)
-                kolom = 0 if sport == "golfsurfen" else 3
+                # gemiddelde score van die activiteit over het blok
                 s = [d["scores"][i][kolom] for i in range(a, b + 1)]
                 voeg(uren[a].astimezone(LIS).date().isoformat(), sport,
                      blok(plek, uren, a, b, score=round(sum(s) / len(s), 1)))
 
-    # 3: windsurfles op de Ria de Alvor
-    w = wind_bron.get(ALVOR_WIND)
-    if w:
-        idx = {t: k for k, t in enumerate(wind_bron["_tijd"])}
-        ok = []
-        for i, t in enumerate(axis):
-            k = idx.get(t)
-            ws = w["wind_speed_10m"][k] if k is not None else None
-            if ws is None or not telt(ALVOR["lat"], ALVOR["lon"], uren[i]):
-                ok.append(False)
-                continue
-            vl = max(w["wind_gusts_10m"][k] or ws, ws)  # vlaag lager dan de wind: reken met de wind (model v2)
-            r = bereken(0, [], ws, vl, w["wind_direction_10m"][k] or 0, [])  # geen venster, geen golven
-            ok.append(r["WIND"] == 2 and r["te_wild"] < 50)
-        for a, b in blokken(uren, ok, 3):
-            voeg(uren[a].astimezone(LIS).date().isoformat(), "windsurf", blok(ALVOR, uren, a, b))
-
-    # 4: klimmen in Bensafrim
-    kw = klimweer.get(BENSAFRIM)
-    if kw:
-        kt = [datetime.fromisoformat(t).replace(tzinfo=UTC) for t in klimweer["_tijd"]]
+    # Klimmen: elke klimplek met sport of trad (boulderen wordt niet gepland), per plek de droge blokken.
+    kt = [datetime.fromisoformat(t).replace(tzinfo=UTC) for t in klimweer.get("_tijd", [])]
+    for kp in klimplekken:
+        if not ({"sport", "trad"} & set(kp.get("disciplines") or [])):
+            continue
+        kw = klimweer.get(kp["id"])
+        if not kw:
+            continue
         regen = kw.get("precipitation") or []
-        k_lat, k_lon = 37.15338, -8.73129
-        kplek = {"naam": "Bensafrim", "id": BENSAFRIM, "lat": k_lat, "lon": k_lon}
+        kplek = {"naam": kp["naam"], "id": kp["id"], "lat": kp["lat"], "lon": kp["lon"]}
         droog = [x is not None and x == 0 for x in regen]
-        ok = [droog[i] and telt(k_lat, k_lon, kt[i]) for i in range(len(kt))]
+        ok = [droog[i] and telt(kp["lat"], kp["lon"], kt[i]) for i in range(min(len(kt), len(droog)))]
         for a, b in blokken(kt, ok, 4):
             # geen regen in de 24 uur vóór het begin van het blok (en die 24 uur moeten in de reeks zitten)
             if a < 24 or any(x is None or x > 0 for x in regen[a - 24:a]):
                 continue
             if kt[a] < uren[0]:
                 continue
-            voeg(kt[a].astimezone(LIS).date().isoformat(), "klim", blok(kplek, kt, a, b))
+            bl = blok(kplek, kt, a, b)
+            land = kp.get("land")
+            if land and land != "pt":
+                dagen_land = per_land.setdefault(land, {}).setdefault(bl["dag"], {})
+                dagen_land.setdefault("klim", []).append(bl | {"rij": None})
+            else:
+                voeg(bl["dag"], "klim", bl)
 
     # Per dag kiezen wat getoond wordt
     vandaag = datetime.now(LIS).date()
@@ -180,21 +167,18 @@ def maak(axis: list[str], out: Path, wind_bron: dict, klimweer: dict) -> dict:
         kandidaten = {k: [dict(b) for b in v] for k, v in p.items()}
         lengte = lambda b: int(b["tot"][:2]) - int(b["van"][:2])  # noqa: E731
         keuze = None
-        # Surf alleen tot 2 uur rijden; zonder gekende rijtijd telt een strand niet mee.
-        p["golfsurfen"] = [b for b in p["golfsurfen"] if b["rij"] is not None and b["rij"] <= MAX_RIJ_SURF]
-        if p["golfsurfen"]:
-            # Eerst de beste condities (hoogste gemiddelde golfsurfscore, afgerond zoals getoond),
-            # dan van die blokken de kortste rijtijd.
-            beste = max(round(b["score"]) for b in p["golfsurfen"])
-            top = [b for b in p["golfsurfen"] if round(b["score"]) == beste]
-            keuze = {"sport": "golfsurfen", **min(top, key=lambda b: b["rij"])}
-        elif p["windsurf"]:
-            keuze = {"sport": "windsurf", **max(p["windsurf"], key=lengte)}
-        elif stil := [b for b in p["stil"] if b["rij"] is not None and b["rij"] <= MAX_RIJ_SURF]:
-            beste = max(round(b["score"]) for b in stil)
-            keuze = {"sport": "stil", **min([b for b in stil if round(b["score"]) == beste], key=lambda b: b["rij"])}
-        elif p["klim"]:
-            keuze = {"sport": "klim", **max(p["klim"], key=lengte)}
+        # Alleen tot 2 uur rijden; zonder gekende rijtijd telt een plek niet mee.
+        for sport in ("golfsurfen", "windsurf", "stil", "klim"):
+            bs = [b for b in p[sport] if b["rij"] is not None and b["rij"] <= MAX_RIJ_SURF]
+            if not bs:
+                continue
+            if sport == "klim":  # eerst het langste blok, dan de kortste rijtijd
+                langst = max(lengte(b) for b in bs)
+                keuze = {"sport": sport, **min([b for b in bs if lengte(b) == langst], key=lambda b: b["rij"])}
+            else:  # eerst de beste condities (gemiddelde score, afgerond zoals getoond), dan de kortste rijtijd
+                beste = max(round(b["score"]) for b in bs)
+                keuze = {"sport": sport, **min([b for b in bs if round(b["score"]) == beste], key=lambda b: b["rij"])}
+            break
         dagen.append({"dag": s, "voorspelling": True, "keuze": keuze, "kandidaten": kandidaten,
                       "reizen": per_reisdag.get(s, [])})
     uit = {"gemaakt": datetime.now(UTC).strftime("%Y-%m-%dT%H:%MZ"), "dagen": dagen}
@@ -213,9 +197,9 @@ def main(axis: list[str], out: Path, root: Path) -> None:
     else:
         print("planning: nog geen rijtijden (data/beaches/rijtijd.json); geen surf in de planning")
     fc = root / "data" / "forecast"
-    wind = json.loads((fc / "wind_gfs.json").read_text()) if (fc / "wind_gfs.json").exists() else {}
     kw = json.loads((fc / "klim_weer.json").read_text()) if (fc / "klim_weer.json").exists() else {}
-    p = maak(axis, out, wind, kw)
+    from pipeline.klim.plekken import alle
+    p = maak(axis, out, kw, alle())
     n = sum(1 for d in p["dagen"] if (d.get("keuze") or {}).get("sport") == "golfsurfen")
     print(f"planning: {len(p['dagen'])} dagen, {n} met golfsurfen")
 

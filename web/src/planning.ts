@@ -1,11 +1,11 @@
 // Tabblad Planning: 4 weken, per dag één resultaat (pipeline/site/planning.py):
-// golfsurfen, anders windsurfles, anders stille waters / e-foil, anders klimmen, anders niets.
+// golfsurfen, anders windsurfen, anders stille waters / e-foil, anders klimmen, anders niets (volgorde aanpasbaar).
 import './style.css'
 import { themaKnop } from './thema'
 import { laadActiviteiten, nieuweActiviteit, wisActiviteit, type Activiteit } from './activiteiten'
 import { bewaarVerblijf, hemelsbreed, leesVerblijf, ONBEREIKBAAR_KMH, tabWissel, rijTekst, rijtijden, vraagVerblijf, type Verblijf } from './verblijf'
 
-interface Keuze { sport: 'golfsurfen' | 'stil' | 'windsurf' | 'klim'; plek: string; id: string | null; van: string; tot: string; km: number; rij: number | null; score?: number }
+interface Keuze { sport: 'golfsurfen' | 'stil' | 'windsurf' | 'klim'; plek: string; id: string | null; van: string; tot: string; km: number; rij: number | null; score?: number; lat?: number; lon?: number }
 interface Reis { soort: 'aankomst' | 'terugvlucht'; wie: string[] }
 type Blok = Omit<Keuze, 'sport'> & { lat: number; lon: number }
 interface Dag { dag: string; voorspelling: boolean; keuze?: Keuze | null; reizen?: Reis[]; kandidaten?: Record<Keuze['sport'], Blok[]> }
@@ -41,7 +41,7 @@ const SPORT: Record<Keuze['sport'], { naam: string; kleur: string; foto?: string
     ],
   },
   windsurf: {
-    naam: 'Windsurfles', kleur: '#0e8fa6', foto: 'windsurfen',
+    naam: 'Windsurfen', kleur: '#0e8fa6', foto: 'windsurfen',
     nota: 'De school bevestigt de avond ervoor of de les doorgaat.',
     links: [
       { url: 'https://algarvewatersport.com/en/lagos-windsurf-school/', label: 'Algarve Watersport', uitleg: 'Ria de Alvor · beginners · 2,5 u · start rond 10:00' },
@@ -77,12 +77,20 @@ const uur = (t: string) => String(Number(t.slice(0, 2)))
 const datumTekst = (d: string, o: Intl.DateTimeFormatOptions) => fmt(o).format(new Date(d + 'T12:00:00Z'))
 
 // Eén dag met een plan: een fotostrook zoals bovenaan de strandfiche, met de links eronder.
+// De scholen in SPORT liggen rond Lagos en Alvor.
+const ALGARVE_SCHOLEN = { lat: 37.12, lon: -8.62 }
+
 function plan(d: Dag, k: Keuze) {
-  const s = SPORT[k.sport]
-  const strand = k.id && (k.sport === 'golfsurfen' || k.sport === 'stil')
   // Namen die helemaal in hoofdletters staan (bv. FERRAGUDO) gewoon schrijven.
   const naam = k.plek === k.plek.toUpperCase() ? k.plek.charAt(0) + k.plek.slice(1).toLowerCase() : k.plek
-  const plek = strand ? `<a href="./#${encodeURIComponent(k.id!)}">${esc(naam)}</a>` : esc(naam)
+  // Link naar de fiche op de kaart (strand of klimplek).
+  const doel = k.id ? (k.sport === 'klim' ? `klim:${k.id}` : k.id) : null
+  const plek = doel ? `<a href="./#${encodeURIComponent(doel)}">${esc(naam)}</a>` : esc(naam)
+  // Scholen en lessen (Algarve): alleen tonen als de plek in de buurt ligt.
+  const s = { ...SPORT[k.sport] }
+  if (!(k.lat != null && k.lon != null && hemelsbreed({ lat: k.lat, lon: k.lon }, ALGARVE_SCHOLEN) <= 45)) {
+    s.links = []; s.extra = undefined; s.nota = undefined
+  }
   const beeld = s.foto ? `<img src="foto/${s.foto}.webp" alt="">` : `<div class="geenfoto">${ICOON.rots}</div>`
   return `<article class="plandag" style="--kleur:${s.kleur}">
     <figure>${beeld}${plus(d.dag)}
@@ -205,11 +213,11 @@ function toon(dagen: Dag[]) {
 
 // Keuze per dag, zoals pipeline/site/planning.py, maar met de rijtijd vanaf je verblijf, jouw maximale rijtijd
 // (voor alle sporten) en jouw volgorde van voorrang. Golfsurfen en stille waters: eerst de hoogste score
-// (afgerond zoals Python), dan de kortste rijtijd; windsurfles en klimmen: het langste blok.
+// (afgerond zoals Python), dan de kortste rijtijd; zo ook windsurfen; klimmen: het langste blok, dan de kortste rijtijd.
 const rondPy = (x: number) => { const f = Math.floor(x), d = x - f; return d > 0.5 ? f + 1 : d < 0.5 ? f : f % 2 === 0 ? f : f + 1 }
 const lengte = (b: Blok) => Number(b.tot.slice(0, 2)) - Number(b.van.slice(0, 2))
 
-// Volgorde van voorrang: standaard golfsurfen, windsurfles, stille waters, klimmen; aanpasbaar en bewaard.
+// Volgorde van voorrang: standaard golfsurfen, windsurfen, stille waters, klimmen; aanpasbaar en bewaard.
 type Sport = Keuze['sport']
 const STANDAARD: Sport[] = ['golfsurfen', 'windsurf', 'stil', 'klim']
 const VOLGORDE_SLEUTEL = 'planning-volgorde-v1'
@@ -229,15 +237,19 @@ function kies(d: Dag, rij: (b: Blok) => number | null, max: number): Keuze | nul
     const top = Math.max(...bs.map((b) => rondPy(b.score ?? 0)))
     return bs.filter((b) => rondPy(b.score ?? 0) === top).reduce((a, b) => (b.rij! < a.rij! ? b : a))
   }
-  const langste = (bs: Blok[]) => bs.reduce((a, b) => (lengte(b) > lengte(a) ? b : a))
+  // Klimmen: eerst het langste droge blok, dan de kortste rijtijd.
+  const langste = (bs: Blok[]) => {
+    const top = Math.max(...bs.map(lengte))
+    return bs.filter((b) => lengte(b) === top).reduce((a, b) => (b.rij! < a.rij! ? b : a))
+  }
   for (const sport of volgorde) {
     const bs = binnen(k[sport] ?? [])
-    if (bs.length) return { sport, ...(sport === 'golfsurfen' || sport === 'stil' ? beste(bs) : langste(bs)) }
+    if (bs.length) return { sport, ...(sport === 'klim' ? langste(bs) : beste(bs)) }
   }
   return null
 }
 
-const KORT: Record<Sport, string> = { golfsurfen: 'Golfsurfen', windsurf: 'Windsurfles', stil: 'Stille waters', klim: 'Klimmen' }
+const KORT: Record<Sport, string> = { golfsurfen: 'Golfsurfen', windsurf: 'Windsurfen', stil: 'Stille waters', klim: 'Klimmen' }
 function voorrang(opnieuw: () => void) {
   const el = document.getElementById('voorrang')!
   const pijl = (r: string) => `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${r}"/></svg>`
