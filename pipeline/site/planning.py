@@ -1,0 +1,183 @@
+"""De planning voor de komende 4 weken (tabblad /planning; eigenaar en rekenchat, 8 oktober 2026).
+
+Algemeen
+- Een uur telt alleen mee als het begint tussen 30 min voor zonsopgang en 30 min na zonsondergang.
+- Een blok = minstens 3 opeenvolgende uren op dezelfde plek die aan de regel voldoen (klimmen: 4).
+- Afstand = vogelvlucht vanaf Ferragudo (37.1238, -8.5195).
+- Dagen zonder voorspelling: "nog geen voorspelling".
+
+Regels per sport
+1 golfsurfen     conclusie "ideaal golfsurfen"; het beste blok (hoogste gemiddelde golfsurfscore) en het
+                 dichtstbijzijnde blok.
+2 stille waters  conclusie "ideaal stille waters"; het dichtstbijzijnde blok.
+3 windsurfles    Ria de Alvor (lagune): wind van Alvor, geen swell-venster; WIND level 2, geen "te wild";
+                 de windrichting telt niet mee.
+4 klimmen        Bensafrim: minstens 4 opeenvolgende uren zonder regen en geen regen in de 24 uur ervoor.
+Toont een plek op dezelfde dag nog een blok, dan komt dat er ook bij.
+
+Schrijft web/public/data/planning.json.
+"""
+
+from __future__ import annotations
+
+import json
+import math
+from datetime import UTC, datetime, timedelta
+from pathlib import Path
+from zoneinfo import ZoneInfo
+
+from pipeline.rules.model import bereken
+from pipeline.site.zon_getij import zon
+
+LIS = ZoneInfo("Europe/Lisbon")
+FERRAGUDO = (37.1238, -8.5195)
+DAGEN = 28
+# Ria de Alvor: de wind van het windpunt van Alvor (dat ook Praia do Alvor gebruikt); als ligging
+# Praia do Alvor Poente, aan de monding van de ria (uit de stranddata).
+ALVOR_WIND = "37.100,-8.600"
+ALVOR = {"naam": "Ria de Alvor", "lat": 37.122296, "lon": -8.59756}
+BENSAFRIM = "eigen/bensafrim"
+
+
+def km(lat: float, lon: float) -> float:
+    r, t = 6371.0, math.radians
+    dp, dl = t(lat - FERRAGUDO[0]), t(lon - FERRAGUDO[1])
+    h = math.sin(dp / 2) ** 2 + math.cos(t(FERRAGUDO[0])) * math.cos(t(lat)) * math.sin(dl / 2) ** 2
+    return 2 * r * math.asin(math.sqrt(h))
+
+
+def telt(lat: float, lon: float, t: datetime) -> bool:
+    """Het uur begint tussen 30 min voor zonsopgang en 30 min na zonsondergang."""
+    z = zon(lat, lon, t)
+    m = t.timestamp() / 60
+    return z is not None and z[0] - 30 <= m <= z[1] + 30
+
+
+def blokken(uren: list[datetime], ok: list[bool], minimum: int) -> list[tuple[int, int]]:
+    """Reeksen van minstens `minimum` opeenvolgende goede uren op dezelfde lokale dag: [(eerste, laatste)]."""
+    uit, start = [], None
+    for i in range(len(uren) + 1):
+        goed = i < len(uren) and ok[i] and (start is None or (
+            uren[i] - uren[i - 1] == timedelta(hours=1)
+            and uren[i].astimezone(LIS).date() == uren[start].astimezone(LIS).date()))
+        if goed and start is None:
+            start = i
+        elif not goed and start is not None:
+            if i - start >= minimum:
+                uit.append((start, i - 1))
+            start = i if i < len(uren) and ok[i] else None
+    return uit
+
+
+def blok(plek: dict, uren: list[datetime], a: int, b: int, **extra) -> dict:
+    van = uren[a].astimezone(LIS)
+    tot = (uren[b] + timedelta(hours=1)).astimezone(LIS)
+    return {"plek": plek["naam"], "id": plek.get("id"), "van": van.strftime("%H:00"), "tot": tot.strftime("%H:00"),
+            "km": round(km(plek["lat"], plek["lon"])), "dag": van.date().isoformat(), **extra}
+
+
+def met_zelfde_plek(gekozen: list[dict], alle: list[dict]) -> list[dict]:
+    """De gekozen blokken, plus de andere blokken van dezelfde plek op die dag; op volgorde van uur."""
+    plekken = {b["id"] or b["plek"] for b in gekozen}
+    uit = [b for b in alle if (b["id"] or b["plek"]) in plekken]
+    return sorted(uit, key=lambda b: (b["plek"], b["van"]))
+
+
+def maak(axis: list[str], out: Path, wind_bron: dict, klimweer: dict) -> dict:
+    uren = [datetime.fromisoformat(t).replace(tzinfo=UTC) for t in axis]
+    per_dag: dict[str, dict[str, list]] = {}
+
+    def voeg(dag: str, sport: str, b: dict):
+        per_dag.setdefault(dag, {"golfsurfen": [], "stil": [], "windsurf": [], "klim": []})[sport].append(b)
+
+    # 1 en 2: stranden (de conclusie per uur staat in strand/<id>.json)
+    for f in sorted((out / "strand").glob("*.json")):
+        d = json.loads(f.read_text())
+        plek = {"naam": d["naam"], "id": d["id"], "lat": d["lat"], "lon": d["lon"]}
+        licht = [telt(d["lat"], d["lon"], t) for t in uren]
+        for sport, tekst in (("golfsurfen", "ideaal golfsurfen"), ("stil", "ideaal stille waters")):
+            ok = [licht[i] and (d["conclusie"][i] or "").startswith(tekst) for i in range(len(uren))]
+            for a, b in blokken(uren, ok, 3):
+                extra = {}
+                if sport == "golfsurfen":
+                    s = [d["scores"][i][0] for i in range(a, b + 1)]
+                    extra["score"] = round(sum(s) / len(s), 1)
+                voeg(uren[a].astimezone(LIS).date().isoformat(), sport, blok(plek, uren, a, b, **extra))
+
+    # 3: windsurfles op de Ria de Alvor
+    w = wind_bron.get(ALVOR_WIND)
+    if w:
+        idx = {t: k for k, t in enumerate(wind_bron["_tijd"])}
+        ok = []
+        for i, t in enumerate(axis):
+            k = idx.get(t)
+            ws = w["wind_speed_10m"][k] if k is not None else None
+            if ws is None or not telt(ALVOR["lat"], ALVOR["lon"], uren[i]):
+                ok.append(False)
+                continue
+            vl = max(w["wind_gusts_10m"][k] or ws, ws)  # vlaag lager dan de wind: reken met de wind (model v2)
+            r = bereken(0, [], ws, vl, w["wind_direction_10m"][k] or 0, [])  # geen venster, geen golven
+            ok.append(r["WIND"] == 2 and r["te_wild"] < 50)
+        for a, b in blokken(uren, ok, 3):
+            voeg(uren[a].astimezone(LIS).date().isoformat(), "windsurf", blok(ALVOR, uren, a, b))
+
+    # 4: klimmen in Bensafrim
+    kw = klimweer.get(BENSAFRIM)
+    if kw:
+        kt = [datetime.fromisoformat(t).replace(tzinfo=UTC) for t in klimweer["_tijd"]]
+        regen = kw.get("precipitation") or []
+        k_lat, k_lon = 37.15338, -8.73129
+        kplek = {"naam": "Bensafrim", "id": BENSAFRIM, "lat": k_lat, "lon": k_lon}
+        droog = [x is not None and x == 0 for x in regen]
+        ok = [droog[i] and telt(k_lat, k_lon, kt[i]) for i in range(len(kt))]
+        for a, b in blokken(kt, ok, 4):
+            # geen regen in de 24 uur vóór het begin van het blok (en die 24 uur moeten in de reeks zitten)
+            if a < 24 or any(x is None or x > 0 for x in regen[a - 24:a]):
+                continue
+            if kt[a] < uren[0]:
+                continue
+            voeg(kt[a].astimezone(LIS).date().isoformat(), "klim", blok(kplek, kt, a, b))
+
+    # Per dag kiezen wat getoond wordt
+    vandaag = datetime.now(LIS).date()
+    # Een dag telt pas als de voorspelling tot minstens 20:00 die dag loopt (anders "nog geen voorspelling").
+    laatste = (uren[-1].astimezone(LIS) - timedelta(hours=20)).date()
+    dagen = []
+    for n in range(DAGEN):
+        dag = vandaag + timedelta(days=n)
+        s = dag.isoformat()
+        if dag > laatste:
+            dagen.append({"dag": s, "voorspelling": False})
+            continue
+        p = per_dag.get(s, {"golfsurfen": [], "stil": [], "windsurf": [], "klim": []})
+        g = p["golfsurfen"]
+        gekozen = []
+        if g:
+            beste = max(g, key=lambda b: (b["score"], -b["km"]))
+            dichtst = min(g, key=lambda b: (b["km"], -b["score"]))
+            gekozen = [beste] + ([dichtst] if dichtst is not beste else [])
+        if gekozen:
+            gekozen[0]["beste"] = True
+            gekozen[-1]["dichtstbij"] = True
+        golf = met_zelfde_plek(gekozen, g)
+        stil = met_zelfde_plek([min(p["stil"], key=lambda b: b["km"])], p["stil"]) if p["stil"] else []
+        dagen.append({"dag": s, "voorspelling": True, "golfsurfen": golf, "stil": stil,
+                      "windsurf": p["windsurf"], "klim": p["klim"]})
+    uit = {"gemaakt": datetime.now(UTC).strftime("%Y-%m-%dT%H:%MZ"), "dagen": dagen}
+    (out / "planning.json").write_text(json.dumps(uit, ensure_ascii=False, separators=(",", ":")))
+    return uit
+
+
+def main(axis: list[str], out: Path, root: Path) -> None:
+    fc = root / "data" / "forecast"
+    wind = json.loads((fc / "wind_gfs.json").read_text()) if (fc / "wind_gfs.json").exists() else {}
+    kw = json.loads((fc / "klim_weer.json").read_text()) if (fc / "klim_weer.json").exists() else {}
+    p = maak(axis, out, wind, kw)
+    n = sum(1 for d in p["dagen"] if d.get("golfsurfen"))
+    print(f"planning: {len(p['dagen'])} dagen, {n} met een golfsurfblok")
+
+
+if __name__ == "__main__":  # pragma: no cover
+    ROOT = Path(__file__).resolve().parents[2]
+    ax = json.loads((ROOT / "web" / "public" / "data" / "index.json").read_text())["tijd"]
+    main(ax, ROOT / "web" / "public" / "data", ROOT)

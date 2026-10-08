@@ -24,3 +24,15 @@ def test_zon_lissabon_oktober():
     assert 6 * 60 + 15 < op - t0 < 6 * 60 + 45
     assert 18 * 60 < onder - t0 < 18 * 60 + 25
     assert daglicht(38.7, -9.14, t0 + 12 * 60) and not daglicht(38.7, -9.14, t0 + 2 * 60)
+
+
+def test_planning_blokken():
+    from datetime import UTC, datetime, timedelta
+
+    from pipeline.site.planning import blokken, km
+    t0 = datetime(2026, 10, 8, 7, tzinfo=UTC)
+    uren = [t0 + timedelta(hours=i) for i in range(12)]
+    ok = [True, True, False, True, True, True, False, True, True, True, True, False]
+    assert blokken(uren, ok, 3) == [(3, 5), (7, 10)]      # twee blokken op één dag; 2 uur is geen blok
+    assert blokken(uren, ok, 4) == [(7, 10)]
+    assert km(37.1238, -8.5195) == 0

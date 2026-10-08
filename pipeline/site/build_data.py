@@ -30,6 +30,7 @@ from pipeline.klim import bouw as klim
 from pipeline.rules import controle as stranddata
 from pipeline.rules.hulp import controle, krachtigste
 from pipeline.rules.model import NAAM, VOLGORDE, bereken, hoek
+from pipeline.site import planning
 from pipeline.site.zon_getij import daglicht, getij_fractie
 from pipeline.tides.interp import interpolate
 
@@ -242,6 +243,7 @@ def main(fetch_ipma: bool = True):
     }
     stranddata.main()
     klim.main(axis, OUT)
+    planning.main(axis, OUT, ROOT)
     (OUT / "index.json").write_text(json.dumps(index, ensure_ascii=False, separators=(",", ":")))
     print(f"{len(kaart)} stranden, {len(axis)} uur")
 
