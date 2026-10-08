@@ -3,7 +3,8 @@
 import './style.css'
 
 interface Keuze { sport: 'golfsurfen' | 'stil' | 'windsurf' | 'klim'; plek: string; id: string | null; van: string; tot: string; km: number; rij: number | null; score?: number }
-interface Dag { dag: string; voorspelling: boolean; keuze?: Keuze | null }
+interface Reis { soort: 'aankomst' | 'terugvlucht'; wie: string[] }
+interface Dag { dag: string; voorspelling: boolean; keuze?: Keuze | null; reizen?: Reis[] }
 
 const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!)
 const fmt = (o: Intl.DateTimeFormatOptions) => new Intl.DateTimeFormat('nl-BE', { ...o, timeZone: 'UTC' })
@@ -17,6 +18,8 @@ const ICOON = {
   afstand: svg('<path d="M4 19h16"/><path d="M6 19V9l6-4 6 4v10"/><path d="M10 19v-5h4v5"/>'),
   info: svg('<circle cx="12" cy="12" r="9"/><path d="M12 11v6"/><path d="M12 7.5v.5"/>'),
   wolk: svg('<path d="M7 18h10a4 4 0 0 0 .5-8A6 6 0 0 0 6 11a3.5 3.5 0 0 0 1 7z"/>'),
+  aankomst: svg('<path d="M2 20h20"/><path d="M3 10l3 1 3-4 2 1-1 4 5 2 4-1c1 0 1.5 1.5.5 2L8 17l-5-2z"/>'),
+  vertrek: svg('<path d="M2 20h20"/><path d="M3 14l3-1 3 3 2-1-2-4 5-3 4-2c1-.5 2 .8 1.2 1.6L9 17l-5 1z"/>'),
   rots: svg('<path d="M3 20l5-9 3 4 3-7 7 12z"/><path d="M14 8l1.5 3"/>'),
 }
 
@@ -100,20 +103,31 @@ function weekKop(d: string, eerste: string) {
   return w === 0 ? 'Deze week' : w === 1 ? 'Volgende week' : `Week van ${fmt({ day: 'numeric', month: 'long' }).format(maandag(t))}`
 }
 
+// Aankomst of terugvlucht: een balk boven de dag.
+const reis = (r: Reis) => `<p class="reis ${r.soort}">${r.soort === 'aankomst' ? ICOON.aankomst : ICOON.vertrek}
+  <b>${r.soort === 'aankomst' ? 'Aankomst' : 'Terugvlucht'}</b> ${esc(r.wie.join(', '))}</p>`
+
 function toon(dagen: Dag[]) {
-  const met = dagen.filter((d) => d.voorspelling)
-  const zonder = dagen.filter((d) => !d.voorspelling)
-  let html = '', kop = ''
-  for (const d of met) {
-    const w = weekKop(d.dag, dagen[0].dag)
-    if (w !== kop) { html += `<h2 class="week">${w}</h2>`; kop = w }
-    html += d.keuze ? plan(d, d.keuze) : niets(d)
-  }
-  if (zonder.length) {
+  let html = '', kop = '', zonder: Dag[] = []
+  const sluitZonder = () => {
+    if (!zonder.length) return
     const a = zonder[0].dag, b = zonder[zonder.length - 1].dag
-    html += `<p class="nogniet">${ICOON.wolk} ${datumTekst(a, { day: 'numeric', month: 'short' })} – ${datumTekst(b, { day: 'numeric', month: 'short' })}:
-      nog geen voorspelling</p>`
+    const tekst = a === b ? datumTekst(a, { weekday: 'short', day: 'numeric', month: 'short' })
+      : `${datumTekst(a, { day: 'numeric', month: 'short' })} – ${datumTekst(b, { day: 'numeric', month: 'short' })}`
+    html += `<p class="nogniet">${ICOON.wolk} ${tekst}: nog geen voorspelling</p>`
+    zonder = []
   }
+  for (const d of dagen) {
+    const w = weekKop(d.dag, dagen[0].dag)
+    if (w !== kop) { sluitZonder(); html += `<h2 class="week">${w}</h2>`; kop = w }
+    const reizen = d.reizen ?? []
+    if (!d.voorspelling && !reizen.length) { zonder.push(d); continue }
+    sluitZonder()
+    if (reizen.length) html += `<div class="reisdag"><span class="reisdatum">${datumTekst(d.dag, { weekday: 'short' })} ${DAGNR.format(new Date(d.dag + 'T12:00:00Z'))} ${datumTekst(d.dag, { month: 'short' })}</span>${reizen.map(reis).join('')}</div>`
+    if (!d.voorspelling) html += `<p class="nogniet klein-na-reis">${ICOON.wolk} nog geen voorspelling</p>`
+    else html += d.keuze ? plan(d, d.keuze) : niets(d)
+  }
+  sluitZonder()
   return html
 }
 

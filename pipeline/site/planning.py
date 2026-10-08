@@ -16,6 +16,8 @@ Algemeen
 - Een blok = minstens 3 opeenvolgende ideale uren op dezelfde plek (klimmen: 4).
 - Afstand = rijtijd met de auto vanaf Ferragudo (OSRM, data/beaches/rijtijd.json); ook de vogelvlucht staat erbij.
 - Dagen zonder voorspelling: "nog geen voorspelling".
+- Aankomsten en terugvluchten (data/planning/reizen.json) staan bij hun dag; de planning loopt minstens 4 weken
+  en zeker tot de laatste vlucht.
 
 Schrijft web/public/data/planning.json.
 """
@@ -141,12 +143,18 @@ def maak(axis: list[str], out: Path, wind_bron: dict, klimweer: dict) -> dict:
     vandaag = datetime.now(LIS).date()
     # Een dag telt pas als de voorspelling tot minstens 20:00 die dag loopt (anders "nog geen voorspelling").
     laatste = (uren[-1].astimezone(LIS) - timedelta(hours=20)).date()
+    reispad = Path(__file__).resolve().parents[2] / "data" / "planning" / "reizen.json"
+    reizen = json.loads(reispad.read_text())["reizen"] if reispad.exists() else []
+    per_reisdag: dict[str, list] = {}
+    for r in reizen:
+        per_reisdag.setdefault(r["dag"], []).append({"soort": r["soort"], "wie": r["wie"]})
+    eind = max([vandaag + timedelta(days=DAGEN - 1)] + [datetime.fromisoformat(r["dag"]).date() for r in reizen])
     dagen = []
-    for n in range(DAGEN):
+    for n in range((eind - vandaag).days + 1):
         dag = vandaag + timedelta(days=n)
         s = dag.isoformat()
         if dag > laatste:
-            dagen.append({"dag": s, "voorspelling": False})
+            dagen.append({"dag": s, "voorspelling": False, "reizen": per_reisdag.get(s, [])})
             continue
         p = per_dag.get(s, {"golfsurfen": [], "stil": [], "windsurf": [], "klim": []})
         lengte = lambda b: int(b["tot"][:2]) - int(b["van"][:2])  # noqa: E731
@@ -166,7 +174,7 @@ def maak(axis: list[str], out: Path, wind_bron: dict, klimweer: dict) -> dict:
             keuze = {"sport": "stil", **min([b for b in stil if round(b["score"]) == beste], key=lambda b: b["rij"])}
         elif p["klim"]:
             keuze = {"sport": "klim", **max(p["klim"], key=lengte)}
-        dagen.append({"dag": s, "voorspelling": True, "keuze": keuze})
+        dagen.append({"dag": s, "voorspelling": True, "keuze": keuze, "reizen": per_reisdag.get(s, [])})
     uit = {"gemaakt": datetime.now(UTC).strftime("%Y-%m-%dT%H:%MZ"), "dagen": dagen}
     (out / "planning.json").write_text(json.dumps(uit, ensure_ascii=False, separators=(",", ":")))
     return uit

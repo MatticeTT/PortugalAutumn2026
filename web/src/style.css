@@ -461,3 +461,13 @@ details.meer[open] > summary { margin-bottom: 8px; }
 .balk-boven .tabs { flex: none; }
 .balk-boven h1 { overflow: hidden; text-overflow: ellipsis; }
 @media (max-width: 560px) { body:has(#kaart) .balk h1 { display: none; } }
+
+/* Aankomsten en terugvluchten in de planning */
+.reisdag { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin: 0 0 6px; }
+.reisdatum { font-weight: 800; font-size: 14px; text-transform: capitalize; }
+.reis { display: flex; align-items: center; gap: 6px; margin: 0; padding: 5px 12px; border-radius: 999px; font-size: 14px;
+  background: #fff4d6; color: #5c4300; }
+.reis.terugvlucht { background: #eceaf9; color: #3b2f7a; }
+.reis svg { flex: none; }
+@media (prefers-color-scheme: dark) { .reis { background: #3a2f12; color: #f5d98a; } .reis.terugvlucht { background: #26223f; color: #c9c0ff; } }
+.nogniet.klein-na-reis { margin: 0 0 12px; }

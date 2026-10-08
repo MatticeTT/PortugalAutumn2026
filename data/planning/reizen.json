@@ -1,0 +1,10 @@
+{
+  "toelichting": "Aankomsten en terugvluchten (eigenaar, 8 oktober 2026). Verschijnen in het tabblad Planning.",
+  "reizen": [
+    {"dag": "2026-10-28", "soort": "aankomst", "wie": ["Louis", "Hanna", "Tinus", "Florence"]},
+    {"dag": "2026-10-29", "soort": "aankomst", "wie": ["Mattice", "Silke"]},
+    {"dag": "2026-11-01", "soort": "terugvlucht", "wie": ["Tinus", "Florence"]},
+    {"dag": "2026-11-03", "soort": "terugvlucht", "wie": ["Louis", "Hanna"]},
+    {"dag": "2026-11-06", "soort": "terugvlucht", "wie": ["Mattice", "Silke"]}
+  ]
+}
