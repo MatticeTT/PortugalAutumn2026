@@ -133,26 +133,62 @@ function toon(dagen: Dag[]) {
   return html
 }
 
-// Vanaf je eigen verblijf: dezelfde keuze als pipeline/site/planning.py, maar met de rijtijd vanaf je verblijf
-// en jouw maximale rijtijd (voor alle sporten). Golfsurfen, anders windsurfles, anders stille waters, anders klimmen;
-// golfsurfen en stille waters: eerst de hoogste score (afgerond zoals Python), dan de kortste rijtijd;
-// windsurfles en klimmen: het langste blok.
+// Keuze per dag, zoals pipeline/site/planning.py, maar met de rijtijd vanaf je verblijf, jouw maximale rijtijd
+// (voor alle sporten) en jouw volgorde van voorrang. Golfsurfen en stille waters: eerst de hoogste score
+// (afgerond zoals Python), dan de kortste rijtijd; windsurfles en klimmen: het langste blok.
 const rondPy = (x: number) => { const f = Math.floor(x), d = x - f; return d > 0.5 ? f + 1 : d < 0.5 ? f : f % 2 === 0 ? f : f + 1 }
 const lengte = (b: Blok) => Number(b.tot.slice(0, 2)) - Number(b.van.slice(0, 2))
-function kies(d: Dag, rij: Map<string, number | null>, max: number): Keuze | null {
+
+// Volgorde van voorrang: standaard golfsurfen, windsurfles, stille waters, klimmen; aanpasbaar en bewaard.
+type Sport = Keuze['sport']
+const STANDAARD: Sport[] = ['golfsurfen', 'windsurf', 'stil', 'klim']
+const VOLGORDE_SLEUTEL = 'planning-volgorde-v1'
+function leesVolgorde(): Sport[] {
+  try {
+    const v = JSON.parse(localStorage.getItem(VOLGORDE_SLEUTEL) ?? 'null')
+    if (Array.isArray(v) && v.length === 4 && STANDAARD.every((x) => v.includes(x))) return v
+  } catch { /* standaard */ }
+  return [...STANDAARD]
+}
+let volgorde = leesVolgorde()
+
+function kies(d: Dag, rij: (b: Blok) => number | null, max: number): Keuze | null {
   const k = d.kandidaten!
-  const binnen = (bs: Blok[]) => bs.flatMap((b) => { const m = rij.get(b.id ?? b.plek); return m != null && m <= max ? [{ ...b, rij: m }] : [] })
+  const binnen = (bs: Blok[]) => bs.flatMap((b) => { const m = rij(b); return m != null && m <= max ? [{ ...b, rij: m }] : [] })
   const beste = (bs: Blok[]) => {
     const top = Math.max(...bs.map((b) => rondPy(b.score ?? 0)))
     return bs.filter((b) => rondPy(b.score ?? 0) === top).reduce((a, b) => (b.rij! < a.rij! ? b : a))
   }
   const langste = (bs: Blok[]) => bs.reduce((a, b) => (lengte(b) > lengte(a) ? b : a))
-  let bs: Blok[]
-  if ((bs = binnen(k.golfsurfen ?? [])).length) return { sport: 'golfsurfen', ...beste(bs) }
-  if ((bs = binnen(k.windsurf ?? [])).length) return { sport: 'windsurf', ...langste(bs) }
-  if ((bs = binnen(k.stil ?? [])).length) return { sport: 'stil', ...beste(bs) }
-  if ((bs = binnen(k.klim ?? [])).length) return { sport: 'klim', ...langste(bs) }
+  for (const sport of volgorde) {
+    const bs = binnen(k[sport] ?? [])
+    if (bs.length) return { sport, ...(sport === 'golfsurfen' || sport === 'stil' ? beste(bs) : langste(bs)) }
+  }
   return null
+}
+
+const KORT: Record<Sport, string> = { golfsurfen: 'Golfsurfen', windsurf: 'Windsurfles', stil: 'Stille waters', klim: 'Klimmen' }
+function voorrang(opnieuw: () => void) {
+  const el = document.getElementById('voorrang')!
+  const pijl = (r: string) => `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${r}"/></svg>`
+  const anders = volgorde.join() !== STANDAARD.join()
+  el.innerHTML = `<span class="voorrangkop">Voorrang</span><ol>${volgorde.map((s, i) => `<li style="--kleur:${SPORT[s].kleur}">
+      <button type="button" data-i="${i}" data-r="-1" ${i === 0 ? 'disabled' : ''} aria-label="${KORT[s]} hoger">${pijl('M15 6l-6 6 6 6')}</button>
+      <span><b>${i + 1}</b> ${KORT[s]}</span>
+      <button type="button" data-i="${i}" data-r="1" ${i === volgorde.length - 1 ? 'disabled' : ''} aria-label="${KORT[s]} lager">${pijl('M9 6l6 6-6 6')}</button>
+    </li>`).join('')}</ol>${anders ? '<button type="button" class="linkknop" data-a="standaard">standaard</button>' : ''}`
+  el.querySelectorAll<HTMLButtonElement>('button[data-i]').forEach((k) => k.onclick = () => {
+    const i = Number(k.dataset.i), j = i + Number(k.dataset.r)
+    ;[volgorde[i], volgorde[j]] = [volgorde[j], volgorde[i]]
+    try { localStorage.setItem(VOLGORDE_SLEUTEL, JSON.stringify(volgorde)) } catch { /* niet bewaard */ }
+    voorrang(opnieuw); opnieuw()
+  })
+  const st = el.querySelector<HTMLButtonElement>('[data-a=standaard]')
+  if (st) st.onclick = () => {
+    volgorde = [...STANDAARD]
+    try { localStorage.removeItem(VOLGORDE_SLEUTEL) } catch { /* niets */ }
+    voorrang(opnieuw); opnieuw()
+  }
 }
 
 function kop(v: Verblijf | null, melding = '') {
@@ -177,8 +213,14 @@ async function start() {
     doel.innerHTML = '<p class="rustig">De planning kon niet worden geladen.</p>'
     return
   }
+  const doelTonen = (rij: (b: Blok) => number | null, max: number) => {
+    const teken = () => { doel.innerHTML = toon(p.dagen.map((d) => (d.voorspelling && d.kandidaten ? { ...d, keuze: kies(d, rij, max) } : d))) }
+    voorrang(teken); teken()
+  }
+  // Zonder verblijf (of als de rijtijden niet lukken): vanaf Ferragudo met 2 uur rijden.
+  const vanafFerragudo = (b: Blok) => b.rij ?? null
   const v = leesVerblijf()
-  if (!v) { kop(null); doel.innerHTML = toon(p.dagen); return }
+  if (!v) { kop(null); doelTonen(vanafFerragudo, 120); return }
   kop(v, 'rijtijden berekenen…')
   const plekken = new Map<string, { id: string; lat: number; lon: number }>()
   for (const d of p.dagen) for (const bs of Object.values(d.kandidaten ?? {})) for (const b of bs) {
@@ -188,10 +230,10 @@ async function start() {
   try {
     const rij = await rijtijden(v, [...plekken.values()])
     kop(v)
-    doel.innerHTML = toon(p.dagen.map((d) => (d.voorspelling && d.kandidaten ? { ...d, keuze: kies(d, rij, v.max) } : d)))
+    doelTonen((b) => rij.get(b.id ?? b.plek) ?? null, v.max)
   } catch {
     kop(v, 'Rijtijden lukken nu niet; dit is de planning vanaf Ferragudo met 2 uur rijden.')
-    doel.innerHTML = toon(p.dagen)
+    doelTonen(vanafFerragudo, 120)
   }
 }
 start()

@@ -148,6 +148,15 @@ for (const scheme of ['light', 'dark']) {
   const plannen = await page.$$eval('.plandag .waar em', (els) => els.map((e) => e.textContent))
   check(`[${scheme}] planning vanaf het verblijf, max 1 uur`, van.includes('max 1u') && plannen.every((t) => !/1u0[1-9]|1u[1-5]\d|[2-9]u/.test(t)), `(${van}; ${plannen.join(', ')})`)
   if (shots) await page.screenshot({ path: `${shots}/planning-${scheme}.png` })
+  // Volgorde van voorrang: Klimmen naar boven zetten.
+  const vooraf = await page.$$eval('.plandag .wat', (els) => els.map((e) => e.textContent))
+  for (let k = 0; k < 3; k++) await page.click('#voorrang li:has-text("Klimmen") button[data-r="-1"]')
+  const volg = await page.$$eval('#voorrang li span', (els) => els.map((e) => e.textContent.replace(/\d/, '').trim()))
+  const achteraf = await page.$$eval('.plandag .wat', (els) => els.map((e) => e.textContent))
+  check(`[${scheme}] voorrang aanpassen: klimmen eerst`, volg[0] === 'Klimmen' && achteraf.filter((t) => t === 'Klimmen').length > vooraf.filter((t) => t === 'Klimmen').length,
+    `(${volg.join(' > ')}; klimdagen ${vooraf.filter((t) => t === 'Klimmen').length} → ${achteraf.filter((t) => t === 'Klimmen').length})`)
+  if (shots) await page.screenshot({ path: `${shots}/voorrang-${scheme}.png` })
+  await page.click('#voorrang [data-a=standaard]')
   // Terug naar de kaart via het tabblad: het verblijf is onthouden, geen nieuwe vraag.
   await page.click('.tabs a[href="./"]')
   await page.waitForSelector('body[data-klaar="1"]', { timeout: 20000 })

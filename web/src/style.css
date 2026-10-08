@@ -552,3 +552,16 @@ details.meer[open] > summary { margin-bottom: 8px; }
 .klimpaneel > label.rij:hover { background: none; }
 .surfpaneel .keuzes .klein { margin: 2px 0 0; }
 .laagknop.surf { max-width: 60vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Planning: volgorde van voorrang */
+.voorrang { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin: 0 0 14px; font-size: 13px; }
+.voorrangkop { font-weight: 700; color: var(--zacht); text-transform: uppercase; letter-spacing: 0.06em; font-size: 12px; }
+.voorrang ol { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.voorrang li { display: inline-flex; align-items: center; gap: 2px; padding: 2px; border-radius: 999px;
+  border: 1.5px solid var(--kleur); background: var(--vlak); }
+.voorrang li span { padding: 0 4px; font-weight: 600; white-space: nowrap; }
+.voorrang li b { display: inline-grid; place-items: center; width: 18px; height: 18px; border-radius: 50%;
+  background: var(--kleur); color: #fff; font-size: 11px; margin-right: 3px; }
+.voorrang li button { all: unset; cursor: pointer; display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; color: var(--tekst); }
+.voorrang li button:hover, .voorrang li button:focus-visible { background: var(--zacht-vlak); }
+.voorrang li button:disabled { opacity: 0.25; cursor: default; background: none; }
