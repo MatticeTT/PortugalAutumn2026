@@ -74,7 +74,7 @@ function features() {
       const w = Number(rij[5 * i] ?? 0)
       const v = Number(rij[5 * i + 1] ?? 0)
       const l = rij[5 * i + 2] ?? '0' // rood kader: 1 wind van land, 2 golf komt niet aan, 3 beide
-      if (!toont(w, v, l, rij[5 * i + 3] ?? '')) return [] // filters van de knop Surfen
+      if (!toont(rij[5 * i + 3] ?? '')) return [] // filters van de knop Surfen
       return [{ type: 'Feature' as const, geometry: { type: 'Point' as const, coordinates: [s.x, s.y] },
         properties: { id: s.id, naam: s.n, w, v, l } }]
     }),
@@ -150,12 +150,13 @@ async function tekenRoutes() {
   lijst.querySelectorAll<HTMLButtonElement>('button[data-id]').forEach((k) => { k.onclick = () => openFiche(k.dataset.id!) })
   lijst.hidden = false
   if (inBeeld && beste.length) {
+    // Je verblijf blijft in het midden; zo ver uitzoomen dat ook de bestemmingen in beeld zijn
+    // (maar niet verder dan zoom 10, zodat je de stranden zelf blijft zien).
     inBeeld = false
     const b = new maplibregl.LngLatBounds([v.lon, v.lat], [v.lon, v.lat])
-    beste.forEach((x) => b.extend([x.s.x, x.s.y]))
-    // Zo dicht dat je de stranden zelf ziet (geen groepjes, zoom 10+), en het midden tussen verblijf en bestemmingen.
+    beste.forEach((x) => { b.extend([x.s.x, x.s.y]); b.extend([2 * v.lon - x.s.x, 2 * v.lat - x.s.y]) })
     const c = kaart.cameraForBounds(b, { padding: { top: 60, bottom: 40 + lijst.offsetHeight, left: 40, right: 40 }, maxZoom: 11 })
-    if (c) kaart.easeTo({ center: c.center, zoom: Math.max(10, c.zoom ?? 10), duration: 1200 })
+    kaart.easeTo({ center: [v.lon, v.lat], zoom: Math.max(10, c?.zoom ?? 10), duration: 1000 })
   }
 }
 

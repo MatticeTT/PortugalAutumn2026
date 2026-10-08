@@ -16,12 +16,15 @@ const km = ([a, b], [c, d]) => {
 }
 let osrm = 0
 async function nabootsen(ctx, google) {
-  // Donker thema: Google Places via /api/plaats nagebootst; licht thema: geen sleutel, terugval op Photon.
-  if (google) await ctx.route('**/api/plaats?**', (r) => {
+  // Donker thema: Esri (hoofdbron) nagebootst; licht thema: Esri faalt, terugval op Photon.
+  if (google) await ctx.route('https://geocode.arcgis.com/**', (r) => {
     const u = new URL(r.request().url())
-    if (u.searchParams.get('id')) return r.fulfill({ json: { naam: 'One2Seven, Ferragudo', lat: 37.1236, lon: -8.5196 } })
-    return r.fulfill({ json: [{ id: 'g1', titel: 'One2Seven', adres: 'Ferragudo, Portugal' }, { id: 'g2', titel: 'Lagos', adres: 'Portugal' }] })
+    if (u.pathname.endsWith('/suggest')) return r.fulfill({ json: { suggestions: [
+      { text: 'One2Seven, Urbanização da Cerca do Moinho, 8400-205, Ferragudo, Lagoa, Faro, PRT', magicKey: 'k1', isCollection: false },
+      { text: 'Lagos, Faro, PRT', magicKey: 'k2', isCollection: false }] } })
+    return r.fulfill({ json: { candidates: [{ location: u.searchParams.get('magicKey') === 'k1' ? { x: -8.5196, y: 37.1236 } : { x: -8.673, y: 37.102 } }] } })
   })
+  else await ctx.route('https://geocode.arcgis.com/**', (r) => r.abort())
   await ctx.route('https://photon.komoot.io/**', (r) => r.fulfill({ json: { type: 'FeatureCollection', features: [
     { geometry: { type: 'Point', coordinates: [-8.6730, 37.1020] }, properties: { name: 'Lagos', postcode: '8600', state: 'Faro', osm_key: 'place' } },
     { geometry: { type: 'Point', coordinates: [-8.6745, 37.0990] }, properties: { name: 'Hotel Riomar', street: 'Rua Cândido dos Reis', housenumber: '83', city: 'Lagos', state: 'Faro' } }] } }))
@@ -51,7 +54,7 @@ for (const scheme of ['light', 'dark']) {
   await page.locator('dialog input[name=q]').pressSequentially('Lag', { delay: 60 })
   await page.waitForSelector('dialog .gevonden button', { timeout: 5000 })
   const sugg = await page.$$eval('dialog .gevonden b', (els) => els.map((e) => e.textContent))
-  check(`[${scheme}] suggesties terwijl je typt (${scheme === 'dark' ? 'Google' : 'Photon'})`,
+  check(`[${scheme}] suggesties terwijl je typt (${scheme === 'dark' ? 'Esri' : 'Photon'})`,
     sugg.length === 2 && sugg[1] === (scheme === 'dark' ? 'Lagos' : 'Hotel Riomar'), `(${sugg.join(', ')})`)
   if (shots) await page.screenshot({ path: `${shots}/verblijf-zoek-${scheme}.png` })
   await page.click(scheme === 'dark' ? 'dialog .gevonden li:nth-child(2) button' : 'dialog .gevonden button')
@@ -65,6 +68,10 @@ for (const scheme of ['light', 'dark']) {
   const rijMin = await page.$$eval('#routes em', (els) => els.map((e) => e.textContent))
   check(`[${scheme}] routes binnen 1 uur (of melding)`, routes.length > 0 && rijMin.every((t) => !t.includes('u') || t === '1u'), `(${routes.join(' | ')})`)
   check(`[${scheme}] punt van het verblijf op de kaart`, !!(await page.$('.verblijfpunt')))
+  await page.waitForTimeout(1600)
+  const midden = await page.evaluate(() => { const c = (window).__kaart.getCenter(); return [c.lng, c.lat] })
+  const doel = scheme === 'dark' ? [-8.673, 37.102] : [-8.673, 37.102]
+  check(`[${scheme}] verblijf in het midden van de kaart`, Math.abs(midden[0] - doel[0]) < 0.01 && Math.abs(midden[1] - doel[1]) < 0.01, `(${midden.map((x) => x.toFixed(3))})`)
   await page.waitForTimeout(1500)
 
   if (scheme === 'light') {
@@ -159,12 +166,14 @@ for (const scheme of ['light', 'dark']) {
   const uitleg = await page.textContent('.surfpaneel')
   const tel = () => page.evaluate(async () => (await (window).__kaart.getSource('stranden').getData()).features.length)
   const voor = await tel()
-  await page.check('.surfpaneel input[name=ideaal][value="1"]')
+  await page.check('.surfpaneel input[name=surfkeuze][value="R"]')
   await page.waitForTimeout(300)
   const na = await tel()
-  check(`[${scheme}] knop Surfen: uitleg en filter alleen ideaal`, /Links WIND/.test(uitleg) && /te sterk/.test(uitleg) && na < voor, `(${voor} → ${na} stranden)`)
+  const keuzes = await page.$$eval('.surfpaneel .keuzes label', (els) => els.map((e) => e.textContent.trim()))
+  check(`[${scheme}] knop Surfen: 5 keuzes en filter werkt`, keuzes.join('|') === 'Alles|Ideale golfsurfdag|Ideale windsurfdag|Windsurfen op golven|Ideale stille waters'
+    && /Links WIND/.test(uitleg) && na < voor, `(${voor} → ${na} stranden)`)
   if (shots) await page.screenshot({ path: `${shots}/surfpaneel-${scheme}.png` })
-  await page.check('.surfpaneel input[name=ideaal][value="0"]')
+  await page.check('.surfpaneel input[name=surfkeuze][value="alles"]')
   // Herladen: de vraag komt terug, leeg.
   await page.reload()
   await page.waitForSelector('dialog.verblijfvraag[open]', { timeout: 10000 })

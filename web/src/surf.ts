@@ -2,34 +2,20 @@
 // De filters gelden voor het gekozen uur en blijven in deze browser bewaard.
 import { bolletjeWW } from './kleuren'
 
-export const SPORTEN = [
-  { letter: 'G', naam: 'golfsurfen', kleur: '#2a6fdb' },
-  { letter: 'O', naam: 'windsurfen op golven', kleur: '#f5c400' },
-  { letter: 'S', naam: 'windsurfen', kleur: '#14b8d4' },
-  { letter: 'R', naam: 'stille waters', kleur: '#8a949c' },
+const SLEUTEL = 'surf-filter-v2'
+// Eén keuze: alles, of alleen de stranden die op het gekozen uur ideaal zijn voor één sport.
+export const KEUZES = [
+  { waarde: 'alles', naam: 'Alles' },
+  { waarde: 'G', naam: 'Ideale golfsurfdag', kleur: '#2a6fdb' },
+  { waarde: 'S', naam: 'Ideale windsurfdag', kleur: '#14b8d4' },
+  { waarde: 'O', naam: 'Windsurfen op golven', kleur: '#f5c400' },
+  { waarde: 'R', naam: 'Ideale stille waters', kleur: '#8a949c' },
 ] as const
-
-const SLEUTEL = 'surf-filter-v1'
-export const surfFilter = {
-  aan: true, // laag Surfen tonen
-  alleenIdeaal: false, // alleen stranden die dit uur ideaal zijn voor een aangevinkte sport
-  G: true, O: true, S: true, R: true,
-  wave: [true, true, true, true], // WAVE 1–4
-  wind: [true, true, true, true], // WIND 1–4
-  zonderRood: false, // rood omkaderde stranden verbergen
-}
+export const surfFilter = { keuze: 'alles' as string }
 try { Object.assign(surfFilter, JSON.parse(localStorage.getItem(SLEUTEL) ?? '{}')) } catch { /* standaard */ }
 
-// Telt dit strand mee met de filters? w, v = WIND, WAVE (0 = geen gegevens), rood = 0–3, letter = conclusie-letter.
-export function toont(w: number, v: number, rood: string, letter: string) {
-  const f = surfFilter
-  if (!f.aan) return false
-  if (f.alleenIdeaal && !(SPORTEN.some((s) => s.letter === letter && (f as any)[s.letter]))) return false
-  if (w > 0 && !f.wind[w - 1]) return false
-  if (v > 0 && !f.wave[v - 1]) return false
-  if (f.zonderRood && rood !== '0') return false
-  return true
-}
+// Telt dit strand mee? letter = conclusie-letter van het gekozen uur (hoofdletter = ideaal).
+export const toont = (letter: string) => surfFilter.keuze === 'alles' || letter === surfFilter.keuze
 
 const voorbeeld = (w: number, v: number, rood = 0) => {
   const d = bolletjeWW(w, v, 30, false, rood)
@@ -41,7 +27,8 @@ const voorbeeld = (w: number, v: number, rood = 0) => {
 export function surfPaneel(opnieuw: () => void) {
   const knop = document.createElement('button')
   knop.className = 'laagknop surf'
-  knop.textContent = 'Surfen'
+  knop.textContent = surfFilter.keuze === 'alles' ? 'Surfen'
+    : `Surfen · ${KEUZES.find((k) => k.waarde === surfFilter.keuze)?.naam.replace(/^Ideale /, '') ?? ''}`
   knop.setAttribute('aria-expanded', 'false')
   const p = document.createElement('div')
   p.className = 'klimpaneel surfpaneel'
@@ -58,36 +45,22 @@ export function surfPaneel(opnieuw: () => void) {
   const bewaar = () => { try { localStorage.setItem(SLEUTEL, JSON.stringify(surfFilter)) } catch { /* niet bewaard */ } }
   const NIVEAU = ['niets', 'ideaal, ook voor beginners', 'sterk, ervaring nodig', 'te sterk']
   const vul = () => {
-    const f = surfFilter
-    const vak = (k: string, aan: boolean, tekst: string) => `<label><input type="checkbox" data-f="${k}" ${aan ? 'checked' : ''}> ${tekst}</label>`
     p.innerHTML = `
-      <label class="rij"><input type="checkbox" data-f="aan" ${f.aan ? 'checked' : ''}> <b>Laag Surfen tonen</b></label>
+      <fieldset class="keuzes"><legend>Toon</legend>
+        ${KEUZES.map((k) => `<label style="--kleur:${'kleur' in k ? k.kleur : 'transparent'}"><input type="radio" name="surfkeuze" value="${k.waarde}"
+          ${surfFilter.keuze === k.waarde ? 'checked' : ''}>${'kleur' in k ? '<i></i>' : ''} ${k.naam}</label>`).join('')}
+        <p class="klein">Ideaal op het gekozen dag en uur (schuifbalk bovenaan).</p>
+      </fieldset>
       <fieldset class="uitleg"><legend>Zo lees je een bolletje</legend>
         <p>${voorbeeld(2, 3)}<span>Links <b>WIND</b>, rechts <b>WAVE</b> (golf op zee).</span></p>
         <ol class="niveaus">${NIVEAU.map((n, i) => `<li><b>${i + 1}</b> ${n}</li>`).join('')}</ol>
         <p>${voorbeeld(2, 2, 1)}<span>Rode rand links: wind van land.</span></p>
         <p>${voorbeeld(2, 2, 2)}<span>Rode rand rechts: genoeg golf op zee, maar die komt hier niet aan.</span></p>
         <p class="klein">Een getal in een wit bolletje is het aantal stranden. Tik op een strand voor de fiche.</p>
-      </fieldset>
-      <fieldset><legend>Toon</legend>
-        <label><input type="radio" name="ideaal" value="0" ${f.alleenIdeaal ? '' : 'checked'}> alle stranden</label>
-        <label><input type="radio" name="ideaal" value="1" ${f.alleenIdeaal ? 'checked' : ''}> alleen ideaal dit uur</label>
-      </fieldset>
-      <fieldset ${f.alleenIdeaal ? '' : 'disabled'} class="sporten"><legend>Ideaal voor</legend>
-        ${SPORTEN.map((s) => `<label style="--kleur:${s.kleur}"><input type="checkbox" data-f="${s.letter}" ${(f as any)[s.letter] ? 'checked' : ''}><i></i> ${s.naam}</label>`).join('')}
-      </fieldset>
-      <fieldset><legend>WAVE</legend>${[1, 2, 3, 4].map((n) => vak(`wave${n}`, f.wave[n - 1], String(n))).join('')}</fieldset>
-      <fieldset><legend>WIND</legend>${[1, 2, 3, 4].map((n) => vak(`wind${n}`, f.wind[n - 1], String(n))).join('')}</fieldset>
-      <fieldset><legend>Richting</legend>${vak('zonderRood', f.zonderRood, 'verberg stranden met een rode rand')}</fieldset>`
-    p.querySelectorAll<HTMLInputElement>('input[data-f]').forEach((i) => i.onchange = () => {
-      const k = i.dataset.f!
-      const m = /^(wave|wind)(\d)$/.exec(k)
-      if (m) (f as any)[m[1]][Number(m[2]) - 1] = i.checked
-      else (f as any)[k] = i.checked
-      bewaar(); opnieuw()
-    })
-    p.querySelectorAll<HTMLInputElement>('input[name=ideaal]').forEach((i) => i.onchange = () => {
-      f.alleenIdeaal = i.value === '1'; bewaar(); opnieuw(); vul()
+      </fieldset>`
+    p.querySelectorAll<HTMLInputElement>('input[name=surfkeuze]').forEach((i) => i.onchange = () => {
+      surfFilter.keuze = i.value; bewaar(); opnieuw()
+      knop.textContent = i.value === 'alles' ? 'Surfen' : `Surfen · ${KEUZES.find((k) => k.waarde === i.value)!.naam.replace(/^Ideale /, '')}`
     })
   }
 }

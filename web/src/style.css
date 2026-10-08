@@ -542,9 +542,13 @@ details.meer[open] > summary { margin-bottom: 8px; }
 .surfpaneel .uitleg img { flex: none; }
 .surfpaneel .niveaus { list-style: none; margin: 2px 0 6px 38px; padding: 0; display: grid; gap: 1px; }
 .surfpaneel .niveaus b { display: inline-block; width: 1.2em; }
-.surfpaneel .sporten i { width: 12px; height: 12px; border-radius: 50%; background: var(--kleur); display: inline-block; }
+.surfpaneel .keuzes { flex-direction: column; gap: 6px; }
+.surfpaneel .keuzes label { font-size: 14px; }
+.surfpaneel .keuzes i { width: 12px; height: 12px; border-radius: 50%; background: var(--kleur); display: inline-block; }
 .surfpaneel fieldset[disabled] { opacity: 0.45; }
 .surfpaneel .klein { color: var(--zacht); font-size: 12px; margin: 4px 0 0; }
 .klimpaneel { z-index: 3; }
 .klimpaneel > label.rij { border: 0; padding: 2px 0; display: flex; }
 .klimpaneel > label.rij:hover { background: none; }
+.surfpaneel .keuzes .klein { margin: 2px 0 0; }
+.laagknop.surf { max-width: 60vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

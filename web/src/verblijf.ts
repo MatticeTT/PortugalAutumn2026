@@ -1,6 +1,6 @@
 // Het verblijf van de bezoeker: waar je verblijft en hoe lang je wil rijden (eigenaar, 8 oktober 2026).
-// - plaats zoeken terwijl je typt (zoals Google Maps): Photon (komoot, op OpenStreetMap), met Nominatim als reserve;
-//   of je huidige locatie
+// - plaats zoeken terwijl je typt (zoals Google Maps): Esri ArcGIS World Geocoding (zonder sleutel; kent ook hotels
+//   en vakantieappartementen), met Photon (OpenStreetMap) als reserve; of je huidige locatie
 // - rijtijden en routes: OSRM (router.project-osrm.org), rechtstreeks vanuit de browser
 // Het verblijf wordt in deze browser bewaard; kaart en planning rekenen er vanaf dan mee.
 
@@ -9,7 +9,7 @@ export interface Plek { id: string; lat: number; lon: number }
 
 const SLEUTEL = 'verblijf-v1'
 const OSRM = 'https://router.project-osrm.org'
-const NOMINATIM = 'https://nominatim.openstreetmap.org/search'
+const ESRI = 'https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer'
 const PHOTON = 'https://photon.komoot.io/api/'
 
 export function leesVerblijf(): Verblijf | null {
@@ -38,23 +38,22 @@ export function komtViaTab() {
 
 export const rijTekst = (m: number) => m < 60 ? `${m} min` : `${Math.floor(m / 60)}u${m % 60 ? String(m % 60).padStart(2, '0') : ''}`
 
-export interface Gevonden { naam: string; lat: number; lon: number; titel: string; adres: string; id?: string }
+export interface Gevonden { naam: string; lat: number; lon: number; titel: string; adres: string; sleutel?: string }
 
-// Suggesties terwijl je typt (zoals Google Maps): eerst Google Places via onze eigen Vercel-functie /api/plaats
-// (vindt ook hotels en vakantieappartementen); werkt die niet (nog geen sleutel), dan Photon (OpenStreetMap).
-// Antwoorden worden onthouden, zodat terugtypen meteen gaat.
-let googleWerkt: boolean | null = null
+// Suggesties terwijl je typt, eerst rond de Algarve. Antwoorden worden onthouden, zodat terugtypen meteen gaat.
 const bewaard = new Map<string, Gevonden[]>()
-export const nieuweSessie = () => (crypto.randomUUID?.() ?? String(Math.random()).slice(2))
 
-async function viaGoogle(q: string, sessie: string, signal?: AbortSignal): Promise<Gevonden[] | null> {
-  if (googleWerkt === false) return null
-  const r = await fetch(`/api/plaats?q=${encodeURIComponent(q)}&s=${sessie}`, { signal })
-  const type = r.headers.get('content-type') ?? ''
-  if (!r.ok || !type.includes('json')) { googleWerkt = false; return null }
-  googleWerkt = true
-  return (await r.json()).map((x: { id: string; titel: string; adres: string }) =>
-    ({ ...x, naam: [x.titel, x.adres].filter(Boolean).join(', '), lat: NaN, lon: NaN }))
+async function viaEsri(q: string, signal?: AbortSignal): Promise<Gevonden[]> {
+  const url = `${ESRI}/suggest?f=json&countryCode=PRT&location=-8.5,37.12&maxSuggestions=8&text=${encodeURIComponent(q)}`
+  const r = await fetch(url, { signal })
+  if (!r.ok) throw new Error(`Esri ${r.status}`)
+  const d = await r.json()
+  if (!d.suggestions) throw new Error('Esri')
+  return d.suggestions.filter((x: any) => !x.isCollection).map((x: any) => {
+    const delen = String(x.text).replace(/, PRT$/, '').split(', ')
+    return { titel: delen[0], adres: delen.slice(1).join(', '), naam: String(x.text).replace(/, PRT$/, ''),
+      lat: NaN, lon: NaN, sleutel: x.magicKey }
+  })
 }
 
 async function viaPhoton(q: string, signal?: AbortSignal): Promise<Gevonden[]> {
@@ -71,33 +70,26 @@ async function viaPhoton(q: string, signal?: AbortSignal): Promise<Gevonden[]> {
   })
 }
 
-export async function zoekPlaats(q: string, sessie: string, signal?: AbortSignal): Promise<Gevonden[]> {
+export async function zoekPlaats(q: string, signal?: AbortSignal): Promise<Gevonden[]> {
   const k = q.toLowerCase()
   if (bewaard.has(k)) return bewaard.get(k)!
-  let r: Gevonden[] | null = null
-  try { r = await viaGoogle(q, sessie, signal) } catch (e) { if ((e as Error).name === 'AbortError') throw e }
-  if (r == null) {
-    try { r = await viaPhoton(q, signal) } catch (e) {
-      if ((e as Error).name === 'AbortError') throw e
-      const n = await fetch(`${NOMINATIM}?format=json&countrycodes=pt&limit=6&accept-language=nl&q=${encodeURIComponent(q)}`, { signal })
-      if (!n.ok) throw new Error(`Nominatim ${n.status}`)
-      r = (await n.json()).map((x: any) => {
-        const delen = String(x.display_name).split(', ')
-        return { naam: x.display_name, titel: delen[0], adres: delen.slice(1, 4).join(', '), lat: Number(x.lat), lon: Number(x.lon) }
-      })
-    }
+  let r: Gevonden[]
+  try { r = await viaEsri(q, signal) } catch (e) {
+    if ((e as Error).name === 'AbortError') throw e
+    r = await viaPhoton(q, signal)
   }
-  bewaard.set(k, r!)
-  return r!
+  bewaard.set(k, r)
+  return r
 }
 
-// Een Google-suggestie heeft nog geen coördinaten: die komen pas bij het kiezen (zelfde sessie = goedkoper).
-export async function plaatsVan(g: Gevonden, sessie: string): Promise<Gevonden> {
-  if (!g.id || Number.isFinite(g.lat)) return g
-  const r = await fetch(`/api/plaats?id=${encodeURIComponent(g.id)}&s=${sessie}`)
-  if (!r.ok) throw new Error(`plaats ${r.status}`)
-  const p = await r.json()
-  return { ...g, naam: [g.titel, g.adres].filter(Boolean).join(', '), lat: p.lat, lon: p.lon }
+// Een Esri-suggestie heeft nog geen coördinaten: die komen pas bij het kiezen.
+export async function plaatsVan(g: Gevonden): Promise<Gevonden> {
+  if (!g.sleutel || Number.isFinite(g.lat)) return g
+  const r = await fetch(`${ESRI}/findAddressCandidates?f=json&maxLocations=1&singleLine=${encodeURIComponent(g.naam)}&magicKey=${encodeURIComponent(g.sleutel)}`)
+  if (!r.ok) throw new Error(`Esri ${r.status}`)
+  const c = (await r.json()).candidates?.[0]
+  if (!c?.location) throw new Error('geen plaats')
+  return { ...g, lat: c.location.y, lon: c.location.x }
 }
 
 // Rijtijd (minuten) over de weg van het verblijf naar elke plek, voor alle plekken (geen vogelvlucht).
@@ -176,12 +168,10 @@ export function vraagVerblijf(huidig: Verblijf | null): Promise<Verblijf | null>
     const keuze = d.querySelector('.keuze')!
     const fout = d.querySelector<HTMLElement>('.fout')!
     const toonFout = (t: string) => { fout.textContent = t; fout.hidden = !t }
-    let sessie = nieuweSessie()
     const kies = async (g0: Gevonden | { naam: string; lat: number; lon: number }) => {
       let g = g0
       if ('titel' in g0) {
-        try { g = await plaatsVan(g0, sessie) } catch { toonFout('Deze plaats kon niet worden geladen. Kies een andere.'); return }
-        sessie = nieuweSessie()
+        try { g = await plaatsVan(g0) } catch { toonFout('Deze plaats kon niet worden geladen. Kies een andere.'); return }
       }
       gekozen = g; lijst.innerHTML = ''; resultaten = []
       veld.value = g.naam.split(',')[0]; veld.setAttribute('aria-expanded', 'false')
@@ -203,7 +193,7 @@ export function vraagVerblijf(huidig: Verblijf | null): Promise<Verblijf | null>
       if (q.length < 2) { lijst.innerHTML = ''; resultaten = []; veld.setAttribute('aria-expanded', 'false'); return }
       bezig = new AbortController()
       try {
-        resultaten = await zoekPlaats(q, sessie, bezig.signal)
+        resultaten = await zoekPlaats(q, bezig.signal)
         lijst.innerHTML = resultaten.length ? '' : '<li class="rustig">Niets gevonden in Portugal.</li>'
         resultaten.forEach((g) => {
           const li = document.createElement('li')
