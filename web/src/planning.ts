@@ -1,10 +1,12 @@
 // Tabblad Planning: 4 weken, per dag één resultaat (pipeline/site/planning.py):
 // golfsurfen, anders windsurfles, anders stille waters / e-foil, anders klimmen, anders niets.
 import './style.css'
+import { bewaarVerblijf, leesVerblijf, rijTekst, rijtijden, vraagVerblijf, type Verblijf } from './verblijf'
 
 interface Keuze { sport: 'golfsurfen' | 'stil' | 'windsurf' | 'klim'; plek: string; id: string | null; van: string; tot: string; km: number; rij: number | null; score?: number }
 interface Reis { soort: 'aankomst' | 'terugvlucht'; wie: string[] }
-interface Dag { dag: string; voorspelling: boolean; keuze?: Keuze | null; reizen?: Reis[] }
+type Blok = Omit<Keuze, 'sport'> & { lat: number; lon: number }
+interface Dag { dag: string; voorspelling: boolean; keuze?: Keuze | null; reizen?: Reis[]; kandidaten?: Record<Keuze['sport'], Blok[]> }
 
 const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!)
 const fmt = (o: Intl.DateTimeFormatOptions) => new Intl.DateTimeFormat('nl-BE', { ...o, timeZone: 'UTC' })
@@ -131,14 +133,63 @@ function toon(dagen: Dag[]) {
   return html
 }
 
+// Vanaf je eigen verblijf: dezelfde keuze als pipeline/site/planning.py, maar met de rijtijd vanaf je verblijf
+// en jouw maximale rijtijd (voor alle sporten). Golfsurfen, anders windsurfles, anders stille waters, anders klimmen;
+// golfsurfen en stille waters: eerst de hoogste score (afgerond zoals Python), dan de kortste rijtijd;
+// windsurfles en klimmen: het langste blok.
+const rondPy = (x: number) => { const f = Math.floor(x), d = x - f; return d > 0.5 ? f + 1 : d < 0.5 ? f : f % 2 === 0 ? f : f + 1 }
+const lengte = (b: Blok) => Number(b.tot.slice(0, 2)) - Number(b.van.slice(0, 2))
+function kies(d: Dag, rij: Map<string, number | null>, max: number): Keuze | null {
+  const k = d.kandidaten!
+  const binnen = (bs: Blok[]) => bs.flatMap((b) => { const m = rij.get(b.id ?? b.plek); return m != null && m <= max ? [{ ...b, rij: m }] : [] })
+  const beste = (bs: Blok[]) => {
+    const top = Math.max(...bs.map((b) => rondPy(b.score ?? 0)))
+    return bs.filter((b) => rondPy(b.score ?? 0) === top).reduce((a, b) => (b.rij! < a.rij! ? b : a))
+  }
+  const langste = (bs: Blok[]) => bs.reduce((a, b) => (lengte(b) > lengte(a) ? b : a))
+  let bs: Blok[]
+  if ((bs = binnen(k.golfsurfen ?? [])).length) return { sport: 'golfsurfen', ...beste(bs) }
+  if ((bs = binnen(k.windsurf ?? [])).length) return { sport: 'windsurf', ...langste(bs) }
+  if ((bs = binnen(k.stil ?? [])).length) return { sport: 'stil', ...beste(bs) }
+  if ((bs = binnen(k.klim ?? [])).length) return { sport: 'klim', ...langste(bs) }
+  return null
+}
+
+function kop(v: Verblijf | null, melding = '') {
+  const el = document.getElementById('planvan')!
+  el.innerHTML = `<span>Vanaf <b>${esc(v ? v.naam.split(',')[0] : 'Ferragudo')}</b> · max ${rijTekst(v?.max ?? 120)} rijden</span>
+    <button type="button" class="verblijfknop">Wijzig</button>${melding ? `<span class="rustig">${melding}</span>` : ''}`
+  el.querySelector('button')!.onclick = async () => {
+    const n = await vraagVerblijf(v ?? leesVerblijf())
+    if (n) { bewaarVerblijf(n); start() }
+  }
+}
+
 async function start() {
   const doel = document.getElementById('dagen')!
+  let p: { dagen: Dag[] }
   try {
     const g = await (await fetch('data/index.json', { cache: 'no-store' })).json()
-    const p = await (await fetch(`data/planning.json?v=${encodeURIComponent(g.gemaakt)}`)).json()
-    doel.innerHTML = toon(p.dagen as Dag[])
+    p = await (await fetch(`data/planning.json?v=${encodeURIComponent(g.gemaakt)}`)).json()
   } catch {
     doel.innerHTML = '<p class="rustig">De planning kon niet worden geladen.</p>'
+    return
+  }
+  const v = leesVerblijf()
+  if (!v) { kop(null); doel.innerHTML = toon(p.dagen); return }
+  kop(v, 'rijtijden berekenen…')
+  const plekken = new Map<string, { id: string; lat: number; lon: number }>()
+  for (const d of p.dagen) for (const bs of Object.values(d.kandidaten ?? {})) for (const b of bs) {
+    const id = b.id ?? b.plek
+    if (!plekken.has(id)) plekken.set(id, { id, lat: b.lat, lon: b.lon })
+  }
+  try {
+    const rij = await rijtijden(v, [...plekken.values()])
+    kop(v)
+    doel.innerHTML = toon(p.dagen.map((d) => (d.voorspelling && d.kandidaten ? { ...d, keuze: kies(d, rij, v.max) } : d)))
+  } catch {
+    kop(v, 'Rijtijden lukken nu niet; dit is de planning vanaf Ferragudo met 2 uur rijden.')
+    doel.innerHTML = toon(p.dagen)
   }
 }
 start()

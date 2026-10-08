@@ -10,8 +10,9 @@ Gegevens zoals Windguru: wind van GFS, golven van GFS-Wave (open zee, per deinin
 Schrijft web/public/data/:
 - index.json        tijdas, bron, meldingen over de data
 - kaart.json        per strand: id, naam, district, ligging
-- sport/ww.json     per strand (zelfde volgorde als kaart.json) per uur drie cijfers: WIND, WAVE (00 = geen) en
-                    rood (0 niets, 1 wind van land, 2 golf komt niet aan, 3 beide)
+- sport/ww.json     per strand (zelfde volgorde als kaart.json) per uur vijf tekens: WIND, WAVE (00 = geen),
+                    rood (0 niets, 1 wind van land, 2 golf komt niet aan, 3 beide), de conclusie-letter
+                    (G O S R ideaal, g o s r andere, W te wild) en bij ideaal de score (75..100 als a..z, anders 0)
 - getij.json        hoog- en laagwaters per station
 - controle.json     de controles op de stranddata (pipeline/rules/controle.py)
 - strand/<id>.json  alles voor de fiche (zie main())
@@ -218,7 +219,14 @@ def main(fetch_ipma: bool = True):
             rij["scores"][i] = [r[x] for x in (*VOLGORDE, "te_wild")]
             rij["conclusie"][i] = r["conclusie"]
             letter.append(conclusie_letter(r["conclusie"]))
-        ww_rijen.append("".join(a + b + c for a, b, c in zip(wind, wave, rood, strict=True)))
+        # Per uur 5 tekens: WIND, WAVE, rood kader, conclusie-letter, en bij een ideale conclusie de score
+        # van die activiteit (75..100 als a..z), anders 0. De kaart kiest daarmee per sport de route.
+        sc = []
+        for i, lt in enumerate(letter):
+            kol = "GOSR".find(lt)
+            ideaal = kol >= 0 and rij["scores"][i]
+            sc.append(chr(ord("a") + max(0, min(25, rij["scores"][i][kol] - 75))) if ideaal else "0")
+        ww_rijen.append("".join(a + b + c + d + e for a, b, c, d, e in zip(wind, wave, rood, letter, sc, strict=True)))
 
         detail = {
             "id": pid, "naam": p["naam"], "lat": lat, "lon": lon, "kust": p["kijkrichting"],

@@ -81,6 +81,7 @@ def blok(plek: dict, uren: list[datetime], a: int, b: int, **extra) -> dict:
     rij = RIJ.get(plek.get("id") or "")
     return {"plek": plek["naam"], "id": plek.get("id"), "van": van.strftime("%H:00"), "tot": tot.strftime("%H:00"),
             "km": round(km(plek["lat"], plek["lon"])), "rij": rij["min"] if rij else None,
+            "lat": round(plek["lat"], 5), "lon": round(plek["lon"], 5),
             "dag": van.date().isoformat(), **extra}
 
 
@@ -157,6 +158,9 @@ def maak(axis: list[str], out: Path, wind_bron: dict, klimweer: dict) -> dict:
             dagen.append({"dag": s, "voorspelling": False, "reizen": per_reisdag.get(s, [])})
             continue
         p = per_dag.get(s, {"golfsurfen": [], "stil": [], "windsurf": [], "klim": []})
+        # Alle blokken per sport, vóór de keuze: de site kiest daarmee opnieuw vanaf het verblijf van de bezoeker
+        # (eigen plaats en maximale rijtijd); "keuze" is de keuze vanaf Ferragudo met 2 uur rijden.
+        kandidaten = {k: [dict(b) for b in v] for k, v in p.items()}
         lengte = lambda b: int(b["tot"][:2]) - int(b["van"][:2])  # noqa: E731
         keuze = None
         # Surf alleen tot 2 uur rijden; zonder gekende rijtijd telt een strand niet mee.
@@ -174,7 +178,8 @@ def maak(axis: list[str], out: Path, wind_bron: dict, klimweer: dict) -> dict:
             keuze = {"sport": "stil", **min([b for b in stil if round(b["score"]) == beste], key=lambda b: b["rij"])}
         elif p["klim"]:
             keuze = {"sport": "klim", **max(p["klim"], key=lengte)}
-        dagen.append({"dag": s, "voorspelling": True, "keuze": keuze, "reizen": per_reisdag.get(s, [])})
+        dagen.append({"dag": s, "voorspelling": True, "keuze": keuze, "kandidaten": kandidaten,
+                      "reizen": per_reisdag.get(s, [])})
     uit = {"gemaakt": datetime.now(UTC).strftime("%Y-%m-%dT%H:%MZ"), "dagen": dagen}
     (out / "planning.json").write_text(json.dumps(uit, ensure_ascii=False, separators=(",", ":")))
     return uit

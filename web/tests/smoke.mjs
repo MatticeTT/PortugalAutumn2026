@@ -9,6 +9,22 @@ const exe = ['/opt/pw-browsers/chromium'].find(existsSync)
 const browser = await chromium.launch(exe ? { executablePath: exe } : {})
 const fouten = []
 let ok = true
+// Nominatim en OSRM nagebootst (geen internet nodig): rijtijd = vogelvlucht aan 60 km/h.
+const km = ([a, b], [c, d]) => {
+  const t = Math.PI / 180, h = Math.sin((d - b) * t / 2) ** 2 + Math.cos(b * t) * Math.cos(d * t) * Math.sin((c - a) * t / 2) ** 2
+  return 2 * 6371 * Math.asin(Math.sqrt(h))
+}
+let osrm = 0
+async function nabootsen(ctx) {
+  await ctx.route('https://nominatim.openstreetmap.org/**', (r) => r.fulfill({ json: [{ display_name: 'Lagos, Faro, Portugal', lat: '37.1020', lon: '-8.6730' }] }))
+  await ctx.route('https://router.project-osrm.org/**', (r) => {
+    osrm++
+    const u = new URL(r.request().url())
+    const pts = decodeURIComponent(u.pathname.split('/').pop()).split(';').map((p) => p.split(',').map(Number))
+    if (u.pathname.includes('/table/')) return r.fulfill({ json: { code: 'Ok', durations: [pts.map((p) => km(pts[0], p) / 60 * 3600)] } })
+    return r.fulfill({ json: { code: 'Ok', routes: [{ geometry: { type: 'LineString', coordinates: pts } }] } })
+  })
+}
 const check = (naam, voorwaarde, extra = '') => {
   console.log(`${voorwaarde ? 'OK  ' : 'FOUT'} ${naam} ${extra}`)
   if (!voorwaarde) ok = false
@@ -16,11 +32,28 @@ const check = (naam, voorwaarde, extra = '') => {
 
 for (const scheme of ['light', 'dark']) {
   const ctx = await browser.newContext({ viewport: { width: 400, height: 820 }, deviceScaleFactor: 2, colorScheme: scheme, isMobile: true, hasTouch: true })
+  await nabootsen(ctx)
   const page = await ctx.newPage()
   page.on('pageerror', (e) => fouten.push(String(e)))
   const resp = await page.goto(base + '/', { waitUntil: 'domcontentloaded' })
   await page.waitForSelector('body[data-klaar="1"]', { timeout: 20000 })
+  // Eerst de vraag: waar verblijf je, hoe lang wil je rijden. Daarna zoomt de kaart in en komen de routes.
+  await page.waitForSelector('dialog.verblijfvraag[open]', { timeout: 5000 })
+  if (shots) await page.screenshot({ path: `${shots}/verblijf-vraag-${scheme}.png` })
+  await page.fill('dialog input[name=q]', 'Lagos')
+  await page.click('dialog [data-a=zoek]')
+  await page.click('dialog .gevonden button')
+  await page.click('dialog label:has(input[value="60"])')
+  await page.click('dialog button[value=ok]')
+  await page.waitForSelector('#routes:not([hidden])', { timeout: 10000 })
+  const knop = await page.textContent('#verblijfknop')
+  check(`[${scheme}] verblijf gekozen`, knop.includes('Lagos') && knop.includes('1u'), `(${knop.trim()})`)
+  const routes = await page.$$eval('#routes li', (els) => els.map((e) => e.textContent.replace(/\s+/g, ' ').trim()))
+  const rijMin = await page.$$eval('#routes em', (els) => els.map((e) => e.textContent))
+  check(`[${scheme}] routes binnen 1 uur (of melding)`, routes.length > 0 && rijMin.every((t) => !t.includes('u') || t === '1u'), `(${routes.join(' | ')})`)
+  check(`[${scheme}] punt van het verblijf op de kaart`, !!(await page.$('.verblijfpunt')))
   await page.waitForTimeout(1500)
+
   if (scheme === 'light') {
     check('noindex in de pagina', (await page.getAttribute('meta[name=robots]', 'content'))?.includes('noindex'))
     const robots = await (await page.request.get(base + '/robots.txt')).text()
@@ -73,7 +106,7 @@ for (const scheme of ['light', 'dark']) {
     const g = await (await fetch('data/index.json')).json()
     const v = `?v=${encodeURIComponent(g.gemaakt)}`
     const k = (await (await fetch('data/kaart.json' + v)).json()).findIndex((s) => s.id === id)
-    return (await (await fetch('data/sport/ww.json' + v)).json())[k].slice(3 * i, 3 * i + 3)
+    return (await (await fetch('data/sport/ww.json' + v)).json())[k].slice(5 * i, 5 * i + 3)
   }, [id, i])
   const ficheCijfers = (await page.$$eval('#fiche .tegel > b', (els) => els.map((e) => e.textContent))).reverse().join('')
     + await page.$$eval('#fiche .tegel', (els) => String((els[1].classList.contains('verkeerd') ? 1 : 0) + (els[0].classList.contains('verkeerd') ? 2 : 0)))
@@ -88,8 +121,16 @@ for (const scheme of ['light', 'dark']) {
     await page.screenshot({ path: `${shots}/fiche-${scheme}.png` })
     await page.locator('#fiche').screenshot({ path: `${shots}/fiche-vol-${scheme}.png` }).catch(() => {})
   }
+  // De planning rekent vanaf het gekozen verblijf.
+  await page.goto(base + '/planning')
+  await page.waitForFunction(() => /Lagos/.test(document.getElementById('planvan')?.textContent ?? '') && !/berekenen/.test(document.getElementById('planvan').textContent), null, { timeout: 15000 })
+  const van = (await page.textContent('#planvan')).replace(/\s+/g, ' ').trim()
+  const plannen = await page.$$eval('.plandag .waar em', (els) => els.map((e) => e.textContent))
+  check(`[${scheme}] planning vanaf het verblijf, max 1 uur`, van.includes('max 1u') && plannen.every((t) => !/1u0[1-9]|1u[1-5]\d|[2-9]u/.test(t)), `(${van}; ${plannen.join(', ')})`)
+  if (shots) await page.screenshot({ path: `${shots}/planning-${scheme}.png` })
   await ctx.close()
 }
+check('OSRM nagebootst en gebruikt', osrm > 0, `(${osrm} vragen)`)
 check('geen JavaScript-fouten', fouten.length === 0, fouten.slice(0, 3).join(' | '))
 await browser.close()
 process.exit(ok ? 0 : 1)
