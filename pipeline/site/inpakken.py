@@ -8,47 +8,48 @@ terug uit (web/src/fiche.ts, uitpakken); tests/test_inpakken.py controleert dat 
 from __future__ import annotations
 
 ALFABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_"
-# veld: (schaal, tekens per waarde)
+# veld: (schaal, tekens per waarde[, verschuiving voor negatieve waarden])
 VELDEN = {
+    "stroom": (10, 2), "stroom_naar": (1, 2), "stroom_pct": (1, 2, 500),
     "wind": (10, 2), "vlagen": (10, 2), "windrichting": (1, 2), "zee_h": (100, 2), "zee_t": (10, 2),
     "zee_r": (1, 2), "E_zee": (1, 3), "bereikt": (1, 2), "E": (1, 3), "periode": (10, 2), "H": (100, 2),
     "windhoek": (10, 2), "tij": (1, 2), "tijgewicht": (100, 2), "verval": (100, 2),
 }
 
 
-def pak(waarden: list, schaal: int, n: int) -> str:
+def pak(waarden: list, schaal: int, n: int, schuif: int = 0) -> str:
     leeg = 64 ** n - 1
     uit = []
     for v in waarden:
         if v is None:
             k = leeg
         else:
-            k = round(v * schaal)
+            k = round(v * schaal) + schuif
             if not 0 <= k < leeg:
                 raise ValueError(f"{v} past niet in {n} tekens")
         uit.append("".join(ALFABET[(k // 64 ** (n - 1 - j)) % 64] for j in range(n)))
     return "".join(uit)
 
 
-def ontpak(tekst: str, schaal: int, n: int) -> list:
+def ontpak(tekst: str, schaal: int, n: int, schuif: int = 0) -> list:
     leeg = 64 ** n - 1
     uit = []
     for i in range(0, len(tekst), n):
         k = 0
         for c in tekst[i:i + n]:
             k = k * 64 + ALFABET.index(c)
-        uit.append(None if k == leeg else (k if schaal == 1 else k / schaal))
+        uit.append(None if k == leeg else ((k - schuif) if schaal == 1 else (k - schuif) / schaal))
     return uit
 
 
 def inpakken(detail: dict) -> dict:
     """Velden uit VELDEN als tekst onder "p" (met de schalen onder "ps"); de rest blijft."""
     p = {}
-    for veld, (schaal, n) in VELDEN.items():
+    for veld, opties in VELDEN.items():
         if veld in detail:
             waarden = detail.pop(veld)
-            p[veld] = pak(waarden, schaal, n)
-            if ontpak(p[veld], schaal, n) != waarden:  # nooit stil een andere waarde tonen
+            p[veld] = pak(waarden, *opties)
+            if ontpak(p[veld], *opties) != waarden:  # nooit stil een andere waarde tonen
                 raise ValueError(f"{veld}: inpakken verandert de waarden")
     detail["p"] = p
     return detail

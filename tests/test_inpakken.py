@@ -3,10 +3,11 @@ from pipeline.site.inpakken import VELDEN, ontpak, pak
 
 def test_heen_en_terug():
     reeksen = {"wind": [0, 12.3, None, 35.7], "E_zee": [0, 4096, 70000, None], "H": [0.0, 1.23, 4.5, None],
-               "windrichting": [0, 359, None, 180], "verval": [0.12, 6.62, None, 0]}
+               "windrichting": [0, 359, None, 180], "verval": [0.12, 6.62, None, 0],
+               "stroom_pct": [-59, 0, 107, None], "stroom": [0.0, 2.3, None, 0.1]}
     for veld, xs in reeksen.items():
-        schaal, n = VELDEN[veld]
-        assert ontpak(pak(xs, schaal, n), schaal, n) == xs
+        opties = VELDEN[veld]
+        assert ontpak(pak(xs, *opties), *opties) == xs
 
 
 def test_conclusies_heen_en_terug():

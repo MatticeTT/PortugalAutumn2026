@@ -4,17 +4,18 @@ import type { Detail } from './types'
 // Compacte fiche (andere landen): de conclusietekst staat één keer in "conclusies", per uur een volgnummer in "c";
 // getallen per uur als tekst in "p" (pipeline/site/inpakken.py: zelfde alfabet en schalen).
 const ALFABET = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_'
-const VELDEN: Record<string, [number, number]> = {
+const VELDEN: Record<string, [number, number, number?]> = {
+  stroom: [10, 2], stroom_naar: [1, 2], stroom_pct: [1, 2, 500],
   wind: [10, 2], vlagen: [10, 2], windrichting: [1, 2], zee_h: [100, 2], zee_t: [10, 2], zee_r: [1, 2], E_zee: [1, 3],
   bereikt: [1, 2], E: [1, 3], periode: [10, 2], H: [100, 2], windhoek: [10, 2], tij: [1, 2], tijgewicht: [100, 2], verval: [100, 2],
 }
-export function ontpak(tekst: string, schaal: number, n: number): (number | null)[] {
+export function ontpak(tekst: string, schaal: number, n: number, schuif = 0): (number | null)[] {
   const leeg = 64 ** n - 1
   const uit: (number | null)[] = []
   for (let i = 0; i < tekst.length; i += n) {
     let k = 0
     for (let j = 0; j < n; j++) k = k * 64 + ALFABET.indexOf(tekst[i + j])
-    uit.push(k === leeg ? null : schaal === 1 ? k : k / schaal)
+    uit.push(k === leeg ? null : schaal === 1 ? k - schuif : (k - schuif) / schaal)
   }
   return uit
 }

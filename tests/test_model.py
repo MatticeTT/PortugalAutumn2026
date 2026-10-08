@@ -91,3 +91,14 @@ def test_34_korte_periode_niet_ideaal():
     r = bereken(*MEIA, 3, 5, 322, [(2.0, 7, 160)], tij_pct=50, verval=2.4)
     assert (r["WAVE"], r["bereikt_pct"], r["E"], r["golfsurfen"], r["te_wild"]) == (2, 95, 365, 78, 0)
     assert r["conclusie"] == "andere: golfsurfen 78/100, niet ideaal door korte, rommelige golven"
+
+
+def test_35_stroming():
+    """Rekenchat: stroomfactor. Stroom tegen de golf in maakt ze hoger, mee lager, dwars niets."""
+    gevallen = {(0.0, 0.0): (125, 63), (2.0, 142.0): (169, 85), (2.0, 322.0): (99, 49), (2.0, 52.0): (125, 63)}
+    for (kn, naar), (E, golf) in gevallen.items():
+        r = bereken(*MEIA, 3, 5, 322, [(0.8, 10, 142)], tij_pct=50, verval=2.4, stroom_kn=kn, stroom_naar=naar)
+        assert (r["E"], r["golfsurfen"]) == (E, golf), (kn, naar, r["E"], r["golfsurfen"])
+        assert r["E_zee"] == 125 and r["WAVE"] == 2  # op zee ongewijzigd
+    r = bereken(*MEIA, 3, 5, 322, [(0.8, 10, 142)], tij_pct=50, verval=2.4, stroom_kn=2.0, stroom_naar=142.0)
+    assert r["conclusie"] == "ideaal golfsurfen"

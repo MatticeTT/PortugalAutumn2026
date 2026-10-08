@@ -30,7 +30,7 @@ from pathlib import Path
 from pipeline.klim import bouw as klim
 from pipeline.rules import controle as stranddata
 from pipeline.rules.hulp import controle, krachtigste
-from pipeline.rules.model import NAAM, VOLGORDE, bereken, hoek
+from pipeline.rules.model import NAAM, VOLGORDE, bereken, hoek, stroomfactor
 from pipeline.site import planning
 from pipeline.site.inpakken import conclusies_inpakken, inpakken
 from pipeline.site.zon_getij import daglicht, getij_fractie
@@ -144,6 +144,11 @@ def meldingen(paren: list[tuple[float, float]]) -> list[str]:
     return uit
 
 
+# Stroming per vakje van het strand (rekenchat, alle kusten): data/forecast/stroom.json en punten_stroom.json.
+STROOM: dict = {}
+STROOM_PUNTEN: dict = {}
+
+
 def strand(f: dict, punten: dict, wsrc: dict, gsrc: dict, getij: dict, ext_by: dict, warn: list, axis: list[str],
            minuten: list[float], vlaag_paren: list, land: str = "pt"):
     """Eén strand: de vier lagen per uur. Geeft (kaart-item, ww-rij, detail) of None zonder voorspelling."""
@@ -170,7 +175,10 @@ def strand(f: dict, punten: dict, wsrc: dict, gsrc: dict, getij: dict, ext_by: d
 
     n = len(axis)
     rij = {k: [None] * n for k in ("zee_h", "zee_t", "zee_r", "E_zee", "bereikt", "E", "periode", "H", "windhoek",
-                                    "tij", "tijgewicht", "verval", "scores", "conclusie")}
+                                    "tij", "tijgewicht", "verval", "scores", "conclusie", "stroom_pct")}
+    sk = STROOM_PUNTEN.get(pid)
+    stroom_kn = rnd(align(STROOM, sk, "stroom_kn", axis), 1) if sk else [None] * n
+    stroom_naar = rnd(align(STROOM, sk, "stroom_naar", axis), 0) if sk else [None] * n
     wave, wind, laag3, letter, licht, rood = [], [], [], [], [], []
     for i in range(n):
         licht.append("1" if daglicht(lat, lon, minuten[i]) else "0")
@@ -184,8 +192,10 @@ def strand(f: dict, punten: dict, wsrc: dict, gsrc: dict, getij: dict, ext_by: d
         tij, verval = getij_stand(ext, minuten[i])
         # Zonder getij rekent het model met zijn standaardwaarden niet: dan geen laag 3 en 4.
         heeft_getij = tij is not None
+        skn, snr = stroom_kn[i] or 0.0, stroom_naar[i] or 0.0  # geen stroomdata: geen stroom (factor 1)
         r = bereken(p["kijkrichting"], vensters, ws[i], wg[i], wd[i] or 0, dein,
-                    tij_pct=tij if heeft_getij else 50, verval=verval if heeft_getij else 2.4)
+                    tij_pct=tij if heeft_getij else 50, verval=verval if heeft_getij else 2.4,
+                    stroom_kn=skn, stroom_naar=snr)
         wave.append(str(r["WAVE"]))
         wind.append(str(r["WIND"]))
         # Rood omkaderd (eigenaar): WIND bij wind van land (windhoek vanaf 112,5°: schuin of recht aflandig);
@@ -197,6 +207,8 @@ def strand(f: dict, punten: dict, wsrc: dict, gsrc: dict, getij: dict, ext_by: d
         rij["E_zee"][i] = r["E_zee"]  # de krachtigste deining: daaruit komt het level WAVE
         if k is not None:
             rij["zee_h"][i], rij["zee_t"][i], rij["zee_r"][i] = dein[k][0], dein[k][1], dein[k][2]
+            if skn > 0:  # "golf x% hoger/lager": de stroomfactor op de krachtigste deining
+                rij["stroom_pct"][i] = round((stroomfactor(dein[k][1], dein[k][2], skn, snr) - 1) * 100)
         if not heeft_getij:
             laag3.append("0"), letter.append(".")
             continue
@@ -220,6 +232,7 @@ def strand(f: dict, punten: dict, wsrc: dict, gsrc: dict, getij: dict, ext_by: d
         "id": pid, "naam": p["naam"], "lat": lat, "lon": lon, "kust": p["kijkrichting"],
         "venster": p["venster"], "district": p["district"], "getij": g, "controle": c, "piekperiode": piek,
         "wind": ws, "vlagen": wg, "windrichting": wd, "WAVE": "".join(wave), "WIND": "".join(wind),
+        "stroom": stroom_kn, "stroom_naar": stroom_naar,
         "WAVE_strand": "".join(laag3), "letter": "".join(letter), "rood": "".join(rood),
         "licht": "".join(licht), **rij,
         "ipma": [warning_at(warn, p.get("ipma_area"), t) for t in axis],
@@ -284,6 +297,11 @@ def andere_landen(axis: list[str], minuten: list[float], ext_by: dict, vlaag_par
 def main(fetch_ipma: bool = True):
     fc = json.loads((DATA / "beaches" / "stranden.geojson").read_text())
     punten = load("punten")
+    if (DATA / "forecast" / "stroom.json").exists() and (DATA / "forecast" / "punten_stroom.json").exists():
+        STROOM.update(load("stroom"))
+        STROOM_PUNTEN.update(load("punten_stroom"))
+    else:
+        print("geen stroomdata (data/forecast/stroom.json): rekenen zonder stroming")
     wsrc, gsrc = load(WIND), load(GOLF)
     axis = time_axis(wsrc)
     minuten = [datetime.fromisoformat(t).replace(tzinfo=UTC).timestamp() / 60 for t in axis]

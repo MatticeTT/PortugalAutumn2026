@@ -54,8 +54,18 @@ def vensterfactor(richting, vensters):
             einde = hi
     return totaal / 45.0
 
+def stroomfactor(periode, richting, stroom_kn, stroom_naar):
+    """Factor op de golfhoogte door de stroming (rekenchat): stroom tegen de golf in maakt ze hoger, mee lager.
+    richting = waar de deining vandaan komt; stroom_naar = waarheen de stroom gaat."""
+    if stroom_kn <= 0 or periode <= 0: return 1.0
+    c0 = 9.81 * periode / (2 * math.pi)
+    U = stroom_kn * 0.5144 * math.cos(math.radians(stroom_naar - (richting + 180)))
+    u = max(U / c0, -0.2)
+    c = 0.5 * (1 + math.sqrt(1 + 4 * u))
+    return 1 / math.sqrt(c * (c + 2 * u))
+
 def bereken(kust, vensters, wind, vlaag, windrichting, deiningen,
-            tij_pct=50, verval=2.4, golfdata_in_baai=False):
+            tij_pct=50, verval=2.4, golfdata_in_baai=False, stroom_kn=0.0, stroom_naar=0.0):
     # ---- hulpgetallen ----
     E, E_zee, som_e, som_et, h2 = 0.0, 0.0, 0.0, 0.0, 0.0
     for (H, periode, richting) in deiningen:
@@ -64,12 +74,13 @@ def bereken(kust, vensters, wind, vlaag, windrichting, deiningen,
         if not golfdata_in_baai:
             aandeel *= vensterfactor(richting, vensters)
         e_zee = 1.96 * H * H * periode * periode      # kracht op zee: alleen hoogte en periode
-        e = e_zee * aandeel                           # wat daarvan dit strand bereikt
+        f_stroom = stroomfactor(periode, richting, stroom_kn, stroom_naar)
+        e = e_zee * aandeel * f_stroom ** 2           # wat daarvan dit strand bereikt
         E_zee = max(E_zee, e_zee)
         E = max(E, e)
         som_e += e
         som_et += e * periode
-        h2 += H * H * aandeel
+        h2 += H * H * aandeel * f_stroom ** 2
     T = som_et / som_e if som_e > 0 else 0.0   # periode, gewogen met de energie per deining
     H_strand = math.sqrt(h2)
     phi = hoek(windrichting, kust)            # 0 = recht aanlandig, 180 = recht aflandig

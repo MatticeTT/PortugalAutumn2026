@@ -103,6 +103,51 @@ def points_landen():
     return per_beach, wind, wave
 
 
+STROOM_VAK = 0.08   # graden: rastervak van de stroming bij Open-Meteo Marine (SMOC, 1/12 graad)
+STROOM_VARS = ["ocean_current_velocity", "ocean_current_direction"]
+NAAR_KN = {"km/h": 1 / 1.852, "m/s": 3.6 / 1.852, "kn": 1.0, "mph": 1.609344 / 1.852}
+
+
+def points_stroom():
+    """Stroming per vakje van het strand (rekenchat), voor Portugal en de andere landen."""
+    per_beach, pts = {}, {}
+    paden = [BEACHES, *sorted(LANDEN.glob("*.geojson"))]
+    for path in paden:
+        if not path.exists():
+            continue
+        for f in json.loads(path.read_text())["features"]:
+            lon, lat = f["geometry"]["coordinates"]
+            k = vak(lon, lat, STROOM_VAK)
+            pts.setdefault(k, (round(lon, 4), round(lat, 4)))
+            per_beach.setdefault(f["properties"]["id"], k)
+    return per_beach, pts
+
+
+def stroom(pts: dict) -> dict:
+    """Snelheid (kn) en richting waarheen, per uur. Open-Meteo zegt in hourly_units welke eenheid het geeft."""
+    keys = list(pts)
+    out = {}
+    for i in range(0, len(keys), PER_AANROEP):
+        chunk = keys[i : i + PER_AANROEP]
+        res = get_json("https://marine-api.open-meteo.com/v1/marine", {
+            "latitude": ",".join(str(pts[k][1]) for k in chunk), "longitude": ",".join(str(pts[k][0]) for k in chunk),
+            "hourly": ",".join(STROOM_VARS), "timezone": "UTC", "forecast_days": DAGEN, "cell_selection": "sea"})
+        res = res if isinstance(res, list) else [res]
+        for k, r in zip(chunk, res, strict=True):
+            h = r["hourly"]
+            eenheid = (r.get("hourly_units") or {}).get("ocean_current_velocity", "km/h")
+            if eenheid not in NAAR_KN:
+                raise RuntimeError(f"onbekende eenheid voor de stroming: {eenheid}")
+            f = NAAR_KN[eenheid]
+            snelheid = h.get("ocean_current_velocity") or []
+            out[k] = {"rasterpunt": [r["longitude"], r["latitude"]],
+                      "stroom_kn": [None if v is None else round(v * f, 2) for v in snelheid],
+                      "stroom_naar": h.get("ocean_current_direction")}
+            out.setdefault("_tijd", h["time"])
+        time.sleep(4)
+    return out
+
+
 def get_json(url: str, params: dict, tries: int = 4):
     full = f"{url}?{urllib.parse.urlencode(params, safe=',')}"
     for i in range(tries):
@@ -210,6 +255,9 @@ def main(argv: list[str]) -> int:
     per_beach, wind_pts, wave_pts = points()
     (OUT / "punten.json").write_text(json.dumps(per_beach) + "\n")
     print(f"{len(per_beach)} stranden, {len(wind_pts)} windpunten, {len(wave_pts)} golfpunten", flush=True)
+    sb, sp = points_stroom()
+    (OUT / "punten_stroom.json").write_text(json.dumps(sb) + "\n")
+    print(f"stroming: {len(sb)} stranden, {len(sp)} vakken", flush=True)
     lb, lw, lg = points_landen()
     if lb:
         (OUT / "punten_landen.json").write_text(json.dumps(lb) + "\n")
@@ -228,6 +276,7 @@ def main(argv: list[str]) -> int:
         "golf_gfswave": lambda: golf_met_piek(wave_pts),
         "golf_ibi": lambda: ibi(wave_pts),
         "klim_weer": klim_weer,
+        "stroom": lambda: stroom(sp),
         "meteoalarm": lambda: __import__("pipeline.forecast.waarschuwingen", fromlist=["ophalen"]).ophalen(),
     }
     failed = []

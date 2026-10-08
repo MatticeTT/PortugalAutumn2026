@@ -268,7 +268,16 @@ function opStrand(d: Detail, i: number) {
   if (d.bereikt?.[i] == null) return ''
   const n = Number(d.WAVE_strand[i])
   return `<p class="opstrand">Op dit strand komt <b>${d.bereikt[i]}%</b> van de golfkracht aan
-    (E ${d.E[i]} kJ): <span class="lvl" style="background:${BLAUW[n - 1]};color:${LICHT(n) ? '#0d2530' : '#fff'}">WAVE_strand ${n}</span> ${LEVEL[n]}</p>`
+    (E ${d.E[i]} kJ): <span class="lvl" style="background:${BLAUW[n - 1]};color:${LICHT(n) ? '#0d2530' : '#fff'}">WAVE_strand ${n}</span> ${LEVEL[n]}</p>
+    ${stroming(d, i)}`
+}
+
+// Stroming (rekenchat): snelheid, richting waarheen, en hoeveel hoger of lager de golf daardoor wordt.
+function stroming(d: Detail, i: number) {
+  const kn = d.stroom?.[i], naar = d.stroom_naar?.[i], pct = d.stroom_pct?.[i]
+  if (kn == null || naar == null || !(kn > 0)) return ''
+  const golf = pct == null ? '' : pct === 0 ? ', golf even hoog' : `, golf ${Math.abs(pct)}% ${pct > 0 ? 'hoger' : 'lager'}`
+  return `<p class="opstrand stroming">Stroming: <b>${getal(kn, 1)} kn</b> naar ${kompas(naar)}${golf}</p>`
 }
 
 // WIND: wind en vlaag, en de windrichting tegenover het strand.
