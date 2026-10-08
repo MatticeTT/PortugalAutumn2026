@@ -30,7 +30,8 @@ const soort = (l: string) => SOORTEN.find((s) => s.letter === l.toUpperCase())
 const SCORES = ['golfsurfen', 'windsurfen op golven', 'windsurfen', 'stille waters', 'te wild']
 const SCORE_LETTER = ['G', 'O', 'S', 'R', 'W']
 
-const LEVEL = ['', 'niets', 'beginner', 'sterk', 'te sterk']
+// Labels voor WAVE en WIND (eigenaar, 8 oktober 2026).
+const LEVEL = ['', 'niets', 'ideaal – ook voor beginners', 'sterk – ervaring nodig', 'te sterk']
 const kompas = (d: number) => ['N', 'NNO', 'NO', 'ONO', 'O', 'OZO', 'ZO', 'ZZO', 'Z', 'ZZW', 'ZW', 'WZW', 'W', 'WNW', 'NW', 'NNW'][Math.round(d / 22.5) % 16]
 // Naam van de windhoek φ (tabel in laag 3 van het document).
 const windNaam = (phi: number) => phi < 22.5 ? 'recht aanlandig' : phi < 67.5 ? 'schuin aanlandig' : phi < 112.5 ? 'zijwind'

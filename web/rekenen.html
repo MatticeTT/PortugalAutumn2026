@@ -12,7 +12,7 @@
     <p><a href="./">← Terug naar de kaart</a> · <a href="controle.html">Controle stranddata</a></p>
     <h1>Hoe berekend: rekenmodel v2</h1>
     <p>Dit document vervangt alle eerdere rekenregels van de Surfkaart: verwijder de bestaande berekening en bouw alleen wat hier staat. Elk uur krijgt per strand precies één van zes conclusies: ideaal golfsurfen, ideaal windsurfen op golven, ideaal windsurfen, ideaal stille waters, te wild, of andere met de reden waarom het niet ideaal is.</p>
-    <p class="klein">Deze pagina is de tekst van het document "Surfkaart rekenmodel v2" (7 oktober 2026). De berekening zelf is de referentiecode uit dat document (pipeline/rules/model.py); de 27 testgevallen van het document slagen.</p>
+    <p class="klein">Deze pagina is de tekst van het document "Surfkaart rekenmodel v2" (7 oktober 2026). De berekening zelf is de referentiecode uit dat document (pipeline/rules/model.py); de testgevallen van het document slagen. Grenzen en labels van WAVE en WIND bijgewerkt op 8 oktober 2026.</p>
     <h2>Opzet</h2>
     <p>De berekening loopt in vier lagen, en elke laag staat apart op het scherm.</p>
     <div class="tabel"><table><tr><th>Laag</th><th>Wat ze zegt</th><th>Waaruit</th></tr><tr><td>1. WAVE</td><td>Hoe krachtig de zee is, level 1 tot 4</td><td>golfhoogte en golfperiode</td></tr><tr><td>2. WIND</td><td>Hoe krachtig de wind is, level 1 tot 4</td><td>windsnelheid en windstoten</td></tr><tr><td>3. Extra&#x27;s per strand</td><td>Hoeveel van de golf het strand bereikt, hoe de wind op het strand staat, en het getij</td><td>golfrichting en windrichting tegenover het strand, getij</td></tr><tr><td>4. Conclusie</td><td>Precies één van zes</td><td>de vijf scores</td></tr></table></div>
@@ -60,7 +60,7 @@
     <p>De app toont de vier lagen onder elkaar, zodat elk uur te volgen is van de zee tot de conclusie.</p>
     <h3>Laag 1 en 2: de vlakken WAVE en WIND</h3>
     <p>WAVE komt alleen uit golfhoogte en golfperiode, WIND alleen uit windsnelheid en windstoten. De richting zit er niet in.</p>
-    <div class="tabel"><table><tr><th>Level</th><th>WAVE (uit E_zee)</th><th>WIND</th></tr><tr><td>1 niets</td><td>onder 100</td><td>wind onder 5 kn</td></tr><tr><td>2 beginner</td><td>van 100 tot 300</td><td>wind van 5 tot 12 kn</td></tr><tr><td>3 sterk</td><td>van 300 tot 1000</td><td>wind van 12 tot en met 25 kn</td></tr><tr><td>4 te sterk</td><td>vanaf 1000</td><td>wind boven 25 kn of vlaag boven 35 kn</td></tr></table></div>
+    <div class="tabel"><table><tr><th>Level</th><th>WAVE (uit E_zee)</th><th>WIND</th></tr><tr><td>1 niets</td><td>onder 100</td><td>wind onder 5 kn</td></tr><tr><td>2 ideaal – ook voor beginners</td><td>van 100 tot 1000</td><td>wind van 5 tot 15 kn</td></tr><tr><td>3 sterk – ervaring nodig</td><td>van 1000 tot 3000</td><td>wind van 15 tot en met 25 kn</td></tr><tr><td>4 te sterk</td><td>vanaf 3000</td><td>wind boven 25 kn of vlaag boven 35 kn</td></tr></table></div>
     <ul><li>WAVE-vlak: level en naam, en van de krachtigste deining op zee de hoogte, de periode en de richting.</li><li>WIND-vlak: level en naam, wind en vlaag.</li></ul>
     <h3>Laag 3: de extra&#x27;s per strand</h3>
     <p>Onder de twee vlakken staan drie regels die uitleggen wat dit strand met die zee en die wind doet.</p>

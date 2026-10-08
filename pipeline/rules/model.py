@@ -3,6 +3,7 @@
 De code hieronder is de referentiecode uit het document "Surfkaart rekenmodel v2", letterlijk overgenomen.
 Aanpassing van de rekenchat (antwoord c, 7 oktober 2026): vensterfactor krijgt een lijst vensters (0 tot 3)
 en geeft het deel van de 45 graden rond de golfrichting dat binnen een venster valt.
+Update van de eigenaar (8 oktober 2026): WAVE-grenzen 100 / 1000 / 3000 kJ, WIND-grenzen 5 / 15 / 25 kn.
 bij twijfel geldt deze code. Niets eigens toegevoegd of weggelaten. De 27 testgevallen van het document
 staan in tests/test_model.py. Alles wat de site extra nodig heeft (welke deining het krachtigst is, de
 controles op de stranddata), staat in pipeline/rules/hulp.py, niet hier.
@@ -123,7 +124,7 @@ def bereken(kust, vensters, wind, vlaag, windrichting, deiningen,
         return 100 * p
 
     def level(e):
-        return 1 if e < 100 else 2 if e < 300 else 3 if e < 1000 else 4
+        return 1 if e < 100 else 2 if e < 1000 else 3 if e < 3000 else 4
 
     factoren = {"golfsurfen": golfsurfen, "windsurfen_op_golven": windsurfen_op_golven,
                 "windsurfen": windsurfen, "stille_waters": stille_waters}
@@ -135,7 +136,7 @@ def bereken(kust, vensters, wind, vlaag, windrichting, deiningen,
         "E_zee": rond(E_zee), "WAVE": level(E_zee),
         # laag 2: WIND = wind + vlagen
         "wind": wind, "vlaag": vlaag,
-        "WIND": 4 if (wind > 25 or vlaag > 35) else 1 if wind < 5 else 2 if wind < 12 else 3,
+        "WIND": 4 if (wind > 25 or vlaag > 35) else 1 if wind < 5 else 2 if wind < 15 else 3,
         # laag 3: de extra's per strand
         "bereikt_pct": rond(100 * E / E_zee) if E_zee > 0 else 0,
         "E": rond(E), "WAVE_strand": level(E),
