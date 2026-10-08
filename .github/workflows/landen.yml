@@ -1,0 +1,52 @@
+# Stranden van andere landen (Spanje, Frankrijk, België): zelfde meetkunde als Portugal,
+# eigen bestanden in data/beaches/landen/ (pipeline/beaches/landen.py). Portugal blijft ongewijzigd.
+name: landen
+on:
+  workflow_dispatch:
+    inputs:
+      landen: { description: "landen, bv. es,fr,be", default: "es,fr,be" }
+  push:
+    paths:
+      - pipeline/beaches/landen.py
+      - .github/workflows/landen.yml
+permissions:
+  contents: write
+jobs:
+  kies:
+    runs-on: ubuntu-latest
+    outputs:
+      landen: ${{ steps.k.outputs.landen }}
+    steps:
+      - id: k
+        run: |
+          l="${{ github.event.inputs.landen || 'be,es,fr' }}"
+          echo "landen=$(echo "$l" | python3 -c 'import sys,json;print(json.dumps(sys.stdin.read().strip().split(",")))')" >> "$GITHUB_OUTPUT"
+  stranden:
+    needs: kies
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      matrix:
+        land: ${{ fromJSON(needs.kies.outputs.landen) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: sudo apt-get update -q && sudo apt-get install -y -q osmium-tool
+      - run: pip install -e ".[geo]"
+      - name: Ruwe data ophalen
+        run: python -m pipeline.beaches.landen ophalen ${{ matrix.land }}
+      - name: Strandentabel bouwen
+        run: python -m pipeline.beaches.landen bouwen ${{ matrix.land }}
+      - name: Commit resultaat
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/beaches/landen
+          git diff --cached --quiet && exit 0
+          git commit -m "Stranden ${{ matrix.land }} bijgewerkt vanuit GitHub Actions"
+          for i in 1 2 3 4 5; do
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && break
+            sleep $((i * 10))
+          done
