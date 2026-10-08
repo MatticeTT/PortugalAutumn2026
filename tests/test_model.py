@@ -1,7 +1,7 @@
 """De testgevallen uit "Surfkaart rekenmodel v2", exact zoals in het document, met de update van 8 oktober 2026
-(WAVE 2 in plaats van 3 bij test 6, 7, 8, 9, 10, 13, 17, 20, 21, 23 en 24; nieuwe tests 32 en 33).
+(WAVE 2 in plaats van 3 bij test 6, 7, 8, 9, 10, 13, 17, 20, 21, 23 en 24; nieuwe tests 28 tot 33).
 Ook test 1, 16, 26 en 27 krijgen WAVE 3 in plaats van 4: dat volgt uit de nieuwe grenzen (E_zee 1859, 2070, 1073 en
-1245 kJ, tussen 1000 en 3000), maar stond niet in de update. Gemeld aan de eigenaar; scores en conclusies blijven gelijk.
+1245 kJ, tussen 1000 en 3000); bevestigd door de eigenaar op 8 oktober 2026.
 
 Meia Praia: kust 142°, venster 100–200°, verval 2,4 m, golfdata_in_baai nee.
 Per geval: nr, wind, vlaag, windrichting, deiningen (hoogte, periode, richting), tij_pct,
@@ -12,6 +12,11 @@ WAVE, bereikt %, E, golfsurfen, windsurfen op golven, windsurfen, stille waters,
 import pytest
 
 from pipeline.rules.model import bereken, vensterfactor
+
+# Test 28 tot 31 (8 oktober 2026): alles klopt behalve "te wild" (app 53, 51, 96, 96; lijst 6, 2, 92, 57).
+# De lijst past bij een golfdeel met punten 1000/3000/5000 kJ, maar dan veranderen test 16, 17 en 27 van conclusie.
+# Tot de rekenchat dat uitklaart: verwacht te falen (strict: slaagt een test toch, dan valt dat op).
+OPEN = pytest.mark.xfail(strict=True, reason="te wild: regel van de rekenchat nog niet eenduidig")
 
 GEVALLEN = [
     (1, 12.0, 17.0, 230.0, [(2.2, 14.0, 292.5)], 50, 3, 0, 0, 0, 0, 79, 0, 0, 'ideaal windsurfen'),
@@ -41,10 +46,13 @@ GEVALLEN = [
     (25, 9.0, 11.0, 187.0, [(1.2, 6.0, 177.0)], 50, 2, 82, 83, 23, 0, 57, 5, 0, 'andere: windsurfen 57/100, niet ideaal door te weinig wind'),
     (26, 7.0, 14.0, 232.0, [(1.8, 13.0, 292.5)], 10, 3, 0, 0, 0, 0, 30, 64, 0, 'andere: stille waters 64/100, niet ideaal door te veel wind'),
     (27, 13.0, 14.0, 187.0, [(1.8, 14.0, 160.0)], 10, 3, 95, 1184, 38, 8, 0, 0, 52, 'te wild'),
+    pytest.param((28, 13.0, 15.0, 152.0, [(1.8, 14.0, 150.0)], 31, 3, 99, 1233, 54, 8, 0, 0, 6, 'andere: golfsurfen 54/100, niet ideaal door wind van zee of opzij'), marks=OPEN),
+    pytest.param((29, 13.0, 14.0, 152.0, [(1.8, 13.0, 150.0)], 11, 3, 99, 1063, 40, 6, 0, 0, 2, 'andere: golfsurfen 40/100, niet ideaal door wind van zee of opzij'), marks=OPEN),
+    pytest.param((30, 10.0, 14.0, 322.0, [(3.5, 14.0, 150.0)], 50, 4, 99, 4660, 8, 0, 0, 0, 92, 'te wild'), marks=OPEN),
+    pytest.param((31, 22.0, 28.0, 230.0, [(2.4, 13.0, 150.0)], 50, 3, 99, 1889, 12, 73, 0, 0, 57, 'te wild; windsurfen op golven 73/100 alleen voor ervaren'), marks=OPEN),
 ]
 
-
-@pytest.mark.parametrize("g", GEVALLEN, ids=[f"geval {g[0]}" for g in GEVALLEN])
+@pytest.mark.parametrize("g", GEVALLEN, ids=[f"geval {(g.values[0] if hasattr(g, 'values') else g)[0]}" for g in GEVALLEN])
 def test_geval(g):
     nr, wind, vlaag, richting, deiningen, tij, WAVE, bereikt, E, G, WG, W, S, TW, conclusie = g
     r = bereken(142, [(100, 200)], wind, vlaag, richting, deiningen, tij_pct=tij, verval=2.4)
