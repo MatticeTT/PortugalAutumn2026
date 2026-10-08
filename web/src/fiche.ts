@@ -38,8 +38,15 @@ const windNaam = (phi: number) => phi < 22.5 ? 'recht aanlandig' : phi < 67.5 ? 
   : phi < 157.5 ? 'schuin aflandig' : 'recht aflandig'
 const getal = (x: number | null | undefined, nd = 0) => (x == null ? '–' : x.toFixed(nd).replace('.', ','))
 
+// Compacte fiche (andere landen): de conclusietekst staat één keer in "conclusies", per uur een volgnummer in "c".
+const uitpakken = (d: any): Detail => {
+  if (d.c && d.conclusies) d.conclusie = d.c.map((k: number) => (k < 0 ? null : d.conclusies[k]))
+  d.ipma ??= []
+  return d as Detail
+}
+
 function laad(id: string): Promise<Detail> {
-  if (!cache.has(id)) cache.set(id, data(`strand/${id.replace(/[^A-Za-z0-9_.-]/g, '_')}.json`))
+  if (!cache.has(id)) cache.set(id, data(`strand/${id.replace(/[^A-Za-z0-9_.-]/g, '_')}.json`).then(uitpakken))
   return cache.get(id)!
 }
 

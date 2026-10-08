@@ -101,6 +101,8 @@ def maak(axis: list[str], out: Path, wind_bron: dict, klimweer: dict) -> dict:
         d = json.loads(f.read_text())
         plek = {"naam": d["naam"], "id": d["id"], "lat": d["lat"], "lon": d["lon"]}
         land = d.get("land")
+        if "c" in d:  # compacte fiche (andere landen): conclusies terug per uur
+            d["conclusie"] = [None if k < 0 else d["conclusies"][k] for k in d["c"]]
         if land:
             doel = per_land.setdefault(land, {})
             licht = [telt(d["lat"], d["lon"], t) for t in uren]

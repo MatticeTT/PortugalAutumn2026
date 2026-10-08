@@ -224,6 +224,13 @@ def strand(f: dict, punten: dict, wsrc: dict, gsrc: dict, getij: dict, ext_by: d
         "ipma": [warning_at(warn, p.get("ipma_area"), t) for t in axis],
     }
     if land != "pt":
+        # Compacter voor de andere landen (duizenden stranden): elke conclusietekst één keer in "conclusies",
+        # per uur een volgnummer in "c" (-1 = geen); geen IPMA-waarschuwingen (die gelden alleen voor Portugal).
+        teksten = sorted({c for c in detail["conclusie"] if c is not None})
+        nr = {c: k for k, c in enumerate(teksten)}
+        detail["conclusies"] = teksten
+        detail["c"] = [-1 if c is None else nr[c] for c in detail.pop("conclusie")]
+        detail.pop("ipma")
         detail["land"] = land
         if land in VASTE_NOTA:
             detail["nota"] = VASTE_NOTA[land]
