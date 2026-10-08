@@ -325,9 +325,11 @@ async function start() {
       const oud = leesVerblijf()
       if (oud) kiesVerblijf(oud, false)
     } else {
-      // Al een verblijf bewaard: meteen gebruiken, zonder opnieuw te vragen (wijzigen kan met de knop bovenaan).
+      // De vraag komt bij het eerste bezoek en wanneer je de pagina herlaadt. Kom je terug van de planning
+      // (of open je de kaart opnieuw), dan blijft je bewaarde verblijf gewoon staan.
       const oud = leesVerblijf()
-      if (oud) kiesVerblijf(oud)
+      const herladen = (performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined)?.type === 'reload'
+      if (oud && !herladen) kiesVerblijf(oud)
       else vraag()
     }
   })

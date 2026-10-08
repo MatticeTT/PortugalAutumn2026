@@ -15,7 +15,13 @@ const km = ([a, b], [c, d]) => {
   return 2 * 6371 * Math.asin(Math.sqrt(h))
 }
 let osrm = 0
-async function nabootsen(ctx) {
+async function nabootsen(ctx, google) {
+  // Donker thema: Google Places via /api/plaats nagebootst; licht thema: geen sleutel, terugval op Photon.
+  if (google) await ctx.route('**/api/plaats?**', (r) => {
+    const u = new URL(r.request().url())
+    if (u.searchParams.get('id')) return r.fulfill({ json: { naam: 'One2Seven, Ferragudo', lat: 37.1236, lon: -8.5196 } })
+    return r.fulfill({ json: [{ id: 'g1', titel: 'One2Seven', adres: 'Ferragudo, Portugal' }, { id: 'g2', titel: 'Lagos', adres: 'Portugal' }] })
+  })
   await ctx.route('https://photon.komoot.io/**', (r) => r.fulfill({ json: { type: 'FeatureCollection', features: [
     { geometry: { type: 'Point', coordinates: [-8.6730, 37.1020] }, properties: { name: 'Lagos', postcode: '8600', state: 'Faro', osm_key: 'place' } },
     { geometry: { type: 'Point', coordinates: [-8.6745, 37.0990] }, properties: { name: 'Hotel Riomar', street: 'Rua Cândido dos Reis', housenumber: '83', city: 'Lagos', state: 'Faro' } }] } }))
@@ -34,7 +40,7 @@ const check = (naam, voorwaarde, extra = '') => {
 
 for (const scheme of ['light', 'dark']) {
   const ctx = await browser.newContext({ viewport: { width: 400, height: 820 }, deviceScaleFactor: 2, colorScheme: scheme, isMobile: true, hasTouch: true })
-  await nabootsen(ctx)
+  await nabootsen(ctx, scheme === 'dark')
   const page = await ctx.newPage()
   page.on('pageerror', (e) => fouten.push(String(e)))
   const resp = await page.goto(base + '/', { waitUntil: 'domcontentloaded' })
@@ -45,9 +51,10 @@ for (const scheme of ['light', 'dark']) {
   await page.locator('dialog input[name=q]').pressSequentially('Lag', { delay: 60 })
   await page.waitForSelector('dialog .gevonden button', { timeout: 5000 })
   const sugg = await page.$$eval('dialog .gevonden b', (els) => els.map((e) => e.textContent))
-  check(`[${scheme}] suggesties terwijl je typt`, sugg.length === 2 && sugg[1] === 'Hotel Riomar', `(${sugg.join(', ')})`)
+  check(`[${scheme}] suggesties terwijl je typt (${scheme === 'dark' ? 'Google' : 'Photon'})`,
+    sugg.length === 2 && sugg[1] === (scheme === 'dark' ? 'Lagos' : 'Hotel Riomar'), `(${sugg.join(', ')})`)
   if (shots) await page.screenshot({ path: `${shots}/verblijf-zoek-${scheme}.png` })
-  await page.click('dialog .gevonden button')
+  await page.click(scheme === 'dark' ? 'dialog .gevonden li:nth-child(2) button' : 'dialog .gevonden button')
   await page.fill('dialog input[name=uren]', '1')
   await page.fill('dialog input[name=min]', '0')
   await page.click('dialog button[value=ok]')
@@ -140,6 +147,10 @@ for (const scheme of ['light', 'dark']) {
   await page.waitForTimeout(800)
   const terug = await page.textContent('#verblijfknop')
   check(`[${scheme}] verblijf onthouden na planning`, !(await page.$('dialog.verblijfvraag[open]')) && terug.includes('Lagos'), `(${terug.trim()})`)
+  // Herladen: de vraag komt terug, ingevuld met het bewaarde verblijf.
+  await page.reload()
+  await page.waitForSelector('dialog.verblijfvraag[open]', { timeout: 10000 })
+  check(`[${scheme}] herladen vraagt opnieuw (ingevuld)`, (await page.inputValue('dialog input[name=q]')) === 'Lagos')
   await ctx.close()
 }
 check('OSRM nagebootst en gebruikt', osrm > 0, `(${osrm} vragen)`)

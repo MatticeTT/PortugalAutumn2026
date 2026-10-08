@@ -24,32 +24,66 @@ export function bewaarVerblijf(v: Verblijf) {
 
 export const rijTekst = (m: number) => m < 60 ? `${m} min` : `${Math.floor(m / 60)}u${m % 60 ? String(m % 60).padStart(2, '0') : ''}`
 
-export interface Gevonden { naam: string; lat: number; lon: number; titel: string; adres: string }
+export interface Gevonden { naam: string; lat: number; lon: number; titel: string; adres: string; id?: string }
 
-// Suggesties terwijl je typt: dorpen, straten, adressen, hotels, campings … in Portugal, eerst rond de Algarve.
-export async function zoekPlaats(q: string, signal?: AbortSignal): Promise<Gevonden[]> {
-  try {
-    const url = `${PHOTON}?q=${encodeURIComponent(q)}&limit=8&lat=37.1&lon=-8.5&bbox=-9.6,36.9,-6.1,42.2`
-    const r = await fetch(url, { signal })
-    if (!r.ok) throw new Error(`Photon ${r.status}`)
-    return (await r.json()).features.map((f: any) => {
-      const p = f.properties ?? {}
-      const straat = [p.street, p.housenumber].filter(Boolean).join(' ')
-      const titel = p.name || straat || p.city || q
-      const plaats = [p.postcode, p.city || p.town || p.village || p.district].filter(Boolean).join(' ')
-      const adres = [p.name && straat, plaats !== titel && plaats, p.state].filter(Boolean).join(', ')
-      return { titel, adres, naam: [titel, plaats].filter(Boolean).join(', '),
-        lon: f.geometry.coordinates[0], lat: f.geometry.coordinates[1] }
-    })
-  } catch (e) {
-    if ((e as Error).name === 'AbortError') throw e
-    const r = await fetch(`${NOMINATIM}?format=json&countrycodes=pt&limit=6&accept-language=nl&q=${encodeURIComponent(q)}`, { signal })
-    if (!r.ok) throw new Error(`Nominatim ${r.status}`)
-    return (await r.json()).map((x: any) => {
-      const delen = String(x.display_name).split(', ')
-      return { naam: x.display_name, titel: delen[0], adres: delen.slice(1, 4).join(', '), lat: Number(x.lat), lon: Number(x.lon) }
-    })
+// Suggesties terwijl je typt (zoals Google Maps): eerst Google Places via onze eigen Vercel-functie /api/plaats
+// (vindt ook hotels en vakantieappartementen); werkt die niet (nog geen sleutel), dan Photon (OpenStreetMap).
+// Antwoorden worden onthouden, zodat terugtypen meteen gaat.
+let googleWerkt: boolean | null = null
+const bewaard = new Map<string, Gevonden[]>()
+export const nieuweSessie = () => (crypto.randomUUID?.() ?? String(Math.random()).slice(2))
+
+async function viaGoogle(q: string, sessie: string, signal?: AbortSignal): Promise<Gevonden[] | null> {
+  if (googleWerkt === false) return null
+  const r = await fetch(`/api/plaats?q=${encodeURIComponent(q)}&s=${sessie}`, { signal })
+  const type = r.headers.get('content-type') ?? ''
+  if (!r.ok || !type.includes('json')) { googleWerkt = false; return null }
+  googleWerkt = true
+  return (await r.json()).map((x: { id: string; titel: string; adres: string }) =>
+    ({ ...x, naam: [x.titel, x.adres].filter(Boolean).join(', '), lat: NaN, lon: NaN }))
+}
+
+async function viaPhoton(q: string, signal?: AbortSignal): Promise<Gevonden[]> {
+  const url = `${PHOTON}?q=${encodeURIComponent(q)}&limit=8&lat=37.12&lon=-8.5&bbox=-9.6,36.9,-6.1,42.2`
+  const r = await fetch(url, { signal })
+  if (!r.ok) throw new Error(`Photon ${r.status}`)
+  return (await r.json()).features.map((f: any) => {
+    const p = f.properties ?? {}
+    const straat = [p.street, p.housenumber].filter(Boolean).join(' ')
+    const titel = p.name || straat || p.city || q
+    const plaats = [p.postcode, p.city || p.town || p.village || p.district].filter(Boolean).join(' ')
+    const adres = [p.name && straat, plaats !== titel && plaats, p.state].filter(Boolean).join(', ')
+    return { titel, adres, naam: [titel, plaats].filter(Boolean).join(', '), lon: f.geometry.coordinates[0], lat: f.geometry.coordinates[1] }
+  })
+}
+
+export async function zoekPlaats(q: string, sessie: string, signal?: AbortSignal): Promise<Gevonden[]> {
+  const k = q.toLowerCase()
+  if (bewaard.has(k)) return bewaard.get(k)!
+  let r: Gevonden[] | null = null
+  try { r = await viaGoogle(q, sessie, signal) } catch (e) { if ((e as Error).name === 'AbortError') throw e }
+  if (r == null) {
+    try { r = await viaPhoton(q, signal) } catch (e) {
+      if ((e as Error).name === 'AbortError') throw e
+      const n = await fetch(`${NOMINATIM}?format=json&countrycodes=pt&limit=6&accept-language=nl&q=${encodeURIComponent(q)}`, { signal })
+      if (!n.ok) throw new Error(`Nominatim ${n.status}`)
+      r = (await n.json()).map((x: any) => {
+        const delen = String(x.display_name).split(', ')
+        return { naam: x.display_name, titel: delen[0], adres: delen.slice(1, 4).join(', '), lat: Number(x.lat), lon: Number(x.lon) }
+      })
+    }
   }
+  bewaard.set(k, r!)
+  return r!
+}
+
+// Een Google-suggestie heeft nog geen coördinaten: die komen pas bij het kiezen (zelfde sessie = goedkoper).
+export async function plaatsVan(g: Gevonden, sessie: string): Promise<Gevonden> {
+  if (!g.id || Number.isFinite(g.lat)) return g
+  const r = await fetch(`/api/plaats?id=${encodeURIComponent(g.id)}&s=${sessie}`)
+  if (!r.ok) throw new Error(`plaats ${r.status}`)
+  const p = await r.json()
+  return { ...g, naam: [g.titel, g.adres].filter(Boolean).join(', '), lat: p.lat, lon: p.lon }
 }
 
 // Rijtijd (minuten) over de weg van het verblijf naar elke plek, voor alle plekken (geen vogelvlucht).
@@ -128,7 +162,13 @@ export function vraagVerblijf(huidig: Verblijf | null): Promise<Verblijf | null>
     const keuze = d.querySelector('.keuze')!
     const fout = d.querySelector<HTMLElement>('.fout')!
     const toonFout = (t: string) => { fout.textContent = t; fout.hidden = !t }
-    const kies = (g: { naam: string; lat: number; lon: number }) => {
+    let sessie = nieuweSessie()
+    const kies = async (g0: Gevonden | { naam: string; lat: number; lon: number }) => {
+      let g = g0
+      if ('titel' in g0) {
+        try { g = await plaatsVan(g0, sessie) } catch { toonFout('Deze plaats kon niet worden geladen. Kies een andere.'); return }
+        sessie = nieuweSessie()
+      }
       gekozen = g; lijst.innerHTML = ''; resultaten = []
       veld.value = g.naam.split(',')[0]; veld.setAttribute('aria-expanded', 'false')
       keuze.innerHTML = `Gekozen: <b>${g.naam.split(',').slice(0, 2).join(',')}</b>`
@@ -149,7 +189,7 @@ export function vraagVerblijf(huidig: Verblijf | null): Promise<Verblijf | null>
       if (q.length < 2) { lijst.innerHTML = ''; resultaten = []; veld.setAttribute('aria-expanded', 'false'); return }
       bezig = new AbortController()
       try {
-        resultaten = await zoekPlaats(q, bezig.signal)
+        resultaten = await zoekPlaats(q, sessie, bezig.signal)
         lijst.innerHTML = resultaten.length ? '' : '<li class="rustig">Niets gevonden in Portugal.</li>'
         resultaten.forEach((g) => {
           const li = document.createElement('li')
@@ -165,7 +205,7 @@ export function vraagVerblijf(huidig: Verblijf | null): Promise<Verblijf | null>
         lijst.innerHTML = ''; toonFout('Zoeken lukt nu niet. Probeer opnieuw of gebruik je locatie.')
       }
     }
-    veld.oninput = () => { clearTimeout(wacht); wacht = setTimeout(zoek, 250) }
+    veld.oninput = () => { clearTimeout(wacht); wacht = setTimeout(zoek, 120) }
     veld.onkeydown = (e) => {
       if (e.key === 'ArrowDown' && resultaten.length) { e.preventDefault(); markeer((actief + 1) % resultaten.length) }
       else if (e.key === 'ArrowUp' && resultaten.length) { e.preventDefault(); markeer((actief - 1 + resultaten.length) % resultaten.length) }
