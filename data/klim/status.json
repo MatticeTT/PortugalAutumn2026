@@ -1,10 +1,42 @@
 {
  "osm": {
-  "ok": true,
+  "ok": false,
+  "fout": "RuntimeError: Overpass: HTTP Error 500: Internal Server Error",
+  "geprobeerd": "2026-10-08T14:02Z",
   "opgehaald": "2026-10-07T19:21Z"
  },
  "c2c": {
   "ok": true,
-  "opgehaald": "2026-10-07T19:21Z"
+  "opgehaald": "2026-10-08T14:02Z"
+ },
+ "osm_es": {
+  "ok": false,
+  "fout": "RuntimeError: Overpass: HTTP Error 500: Internal Server Error",
+  "geprobeerd": "2026-10-08T14:10Z",
+  "opgehaald": null
+ },
+ "c2c_es": {
+  "ok": true,
+  "opgehaald": "2026-10-08T14:10Z"
+ },
+ "osm_fr": {
+  "ok": false,
+  "fout": "RuntimeError: Overpass: HTTP Error 500: Internal Server Error",
+  "geprobeerd": "2026-10-08T14:26Z",
+  "opgehaald": null
+ },
+ "c2c_fr": {
+  "ok": true,
+  "opgehaald": "2026-10-08T14:26Z"
+ },
+ "osm_be": {
+  "ok": false,
+  "fout": "RuntimeError: Overpass: HTTP Error 500: Internal Server Error",
+  "geprobeerd": "2026-10-08T15:30Z",
+  "opgehaald": null
+ },
+ "c2c_be": {
+  "ok": true,
+  "opgehaald": "2026-10-08T15:30Z"
  }
 }
