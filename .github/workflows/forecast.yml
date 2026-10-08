@@ -6,10 +6,6 @@ on:
   workflow_dispatch:
   schedule:
     - cron: "23 4 * * *"   # één keer per dag (eigenaar), ongeveer 4 uur na de modelrun van 00 UTC
-  push:
-    paths:
-      - pipeline/forecast/**
-      - .github/workflows/forecast.yml
 permissions:
   contents: write
 concurrency: { group: forecast, cancel-in-progress: false }

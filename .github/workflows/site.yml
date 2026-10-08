@@ -1,19 +1,9 @@
-# De site meteen opnieuw publiceren na een wijziging aan de opmaak of de regels, met de
-# laatst opgehaalde voorspelling (tak `data`). Het ophalen zelf gebeurt elke 6 uur in forecast.yml.
+# De site publiceren met de laatst opgehaalde voorspelling (tak `data`). Alleen met de hand (na een reeks
+# wijzigingen): Vercel (gratis plan) laat maar een beperkt aantal publicaties per dag toe. De dagelijkse
+# voorspelling (forecast.yml) publiceert de site ook, één keer per dag.
 name: site
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - pipeline/site/**
-      - pipeline/rules/**
-      - web/**
-      - data/beaches/**
-      - data/tides/**
-      - data/klim/**
-      - data/planning/**
-      - pipeline/klim/**
-      - .github/workflows/site.yml
 permissions:
   contents: write
 concurrency: { group: site, cancel-in-progress: true }
