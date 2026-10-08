@@ -1,9 +1,9 @@
 """De planning voor de komende 4 weken (tabblad /planning; eigenaar en rekenchat, 8 oktober 2026).
 
 Per dag precies één resultaat, in deze volgorde (eigenaar):
-1 golfsurfen     conclusie "ideaal golfsurfen" (de beste surf), alleen stranden tot 2 uur rijden van
-                 Ferragudo: van die blokken het dichtstbijzijnde (rijtijd); bij gelijke rijtijd de hoogste
-                 gemiddelde golfsurfscore.
+1 golfsurfen     conclusie "ideaal golfsurfen", alleen stranden tot 2 uur rijden van Ferragudo; daarvan
+                 eerst de beste condities (hoogste gemiddelde golfsurfscore over het blok, afgerond), en van
+                 die het blok met de kortste rijtijd.
 2 stille waters  anders: conclusie "ideaal stille waters", het dichtstbijzijnde blok.
 3 windsurfles    anders: Ria de Alvor (lagune): wind van Alvor, geen swell-venster; WIND level 2,
                  geen "te wild"; de windrichting telt niet mee.
@@ -153,7 +153,11 @@ def maak(axis: list[str], out: Path, wind_bron: dict, klimweer: dict) -> dict:
         # Surf alleen tot 2 uur rijden; zonder gekende rijtijd telt een strand niet mee.
         p["golfsurfen"] = [b for b in p["golfsurfen"] if b["rij"] is not None and b["rij"] <= MAX_RIJ_SURF]
         if p["golfsurfen"]:
-            keuze = {"sport": "golfsurfen", **min(p["golfsurfen"], key=lambda b: (b["rij"], -b["score"]))}
+            # Eerst de beste condities (hoogste gemiddelde golfsurfscore, afgerond zoals getoond),
+            # dan van die blokken de kortste rijtijd.
+            beste = max(round(b["score"]) for b in p["golfsurfen"])
+            top = [b for b in p["golfsurfen"] if round(b["score"]) == beste]
+            keuze = {"sport": "golfsurfen", **min(top, key=lambda b: b["rij"])}
         elif p["stil"]:
             keuze = {"sport": "stil", **min(p["stil"], key=lambda b: (b["km"], -lengte(b)))}
         elif p["windsurf"]:
