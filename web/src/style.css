@@ -553,15 +553,45 @@ details.meer[open] > summary { margin-bottom: 8px; }
 .surfpaneel .keuzes .klein { margin: 2px 0 0; }
 .laagknop.surf { max-width: 60vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-/* Planning: volgorde van voorrang */
-.voorrang { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin: 0 0 14px; font-size: 13px; }
-.voorrangkop { font-weight: 700; color: var(--zacht); text-transform: uppercase; letter-spacing: 0.06em; font-size: 12px; }
-.voorrang ol { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
-.voorrang li { display: inline-flex; align-items: center; gap: 2px; padding: 2px; border-radius: 999px;
-  border: 1.5px solid var(--kleur); background: var(--vlak); }
-.voorrang li span { padding: 0 4px; font-weight: 600; white-space: nowrap; }
-.voorrang li b { display: inline-grid; place-items: center; width: 18px; height: 18px; border-radius: 50%;
-  background: var(--kleur); color: #fff; font-size: 11px; margin-right: 3px; }
-.voorrang li button { all: unset; cursor: pointer; display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; color: var(--tekst); }
+/* Planning: blok "Jouw planning" (verblijf + voorrang) */
+.instellingen { background: var(--vlak); border: 1px solid var(--lijn); border-radius: 14px; padding: 12px 14px; margin: 0 0 18px; }
+.instellingen .planvan { display: flex; align-items: center; gap: 10px; margin: 0; padding-bottom: 12px; border-bottom: 1px solid var(--lijn); font-size: 15px; }
+.instellingen .huis { flex: none; width: 34px; height: 34px; border-radius: 50%; background: var(--zacht-vlak); position: relative; }
+.instellingen .huis::after { content: ""; position: absolute; inset: 9px; background: var(--tekst);
+  clip-path: polygon(50% 0, 100% 45%, 86% 45%, 86% 100%, 14% 100%, 14% 45%, 0 45%); }
+.instellingen .waar { flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.25; }
+.instellingen .waar b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.instellingen .waar small { color: var(--zacht); font-size: 13px; }
+.instellingen .terug { all: unset; cursor: pointer; flex: none; font-size: 13px; font-weight: 700; color: var(--accent); padding: 6px 10px; border-radius: 999px; }
+.instellingen .terug:hover, .instellingen .terug:focus-visible { background: var(--zacht-vlak); }
+.voorrang { padding-top: 10px; }
+.voorrang .kopregel { display: flex; align-items: center; justify-content: space-between; min-height: 28px; margin-bottom: 4px; }
+.voorrang .kopregel span { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--zacht); }
+.voorrang ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.voorrang li { display: grid; grid-template-columns: 24px 1fr 36px 36px; align-items: center; gap: 8px; min-height: 42px;
+  padding: 0 4px 0 10px; border-radius: 10px; background: var(--bg); box-shadow: inset 4px 0 0 var(--kleur); }
+.voorrang li b { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--kleur); color: #fff; font-size: 12px; }
+.voorrang li span { font-weight: 600; font-size: 15px; }
+.voorrang li button { all: unset; cursor: pointer; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 8px; color: var(--tekst); }
 .voorrang li button:hover, .voorrang li button:focus-visible { background: var(--zacht-vlak); }
-.voorrang li button:disabled { opacity: 0.25; cursor: default; background: none; }
+.voorrang li button:disabled { opacity: 0.2; cursor: default; background: none; }
+.instellingen .uitleg { margin: 10px 0 0; font-size: 13px; color: var(--zacht); }
+.instellingen .uitleg { padding: 0; display: block; }
+.instellingen .planvan { flex-wrap: nowrap; }
+
+/* Planning: één kaart per dag — foto bovenaan, links eronder in hetzelfde kader */
+.plandag { background: var(--vlak); border: 1px solid var(--lijn); border-radius: 16px; overflow: hidden; margin: 0 0 14px; }
+.plandag figure { border-radius: 0; }
+.plandag .onder { padding: 10px 12px 12px; font-size: 13px; }
+.plandag .nota { margin: 0 0 8px; color: var(--zacht); }
+.plandag .links { display: grid; gap: 6px; }
+.plandag .linkrij { display: flex; align-items: center; gap: 10px; padding: 8px 10px 8px 12px; border-radius: 10px;
+  background: var(--bg); color: var(--tekst); text-decoration: none; box-shadow: inset 3px 0 0 var(--kleur); }
+.plandag .linkrij:hover, .plandag .linkrij:focus-visible { background: var(--zacht-vlak); }
+.plandag .linkrij span { flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.3; }
+.plandag .linkrij b { font-size: 14px; }
+.plandag .linkrij small { color: var(--zacht); font-size: 12.5px; }
+.plandag .linkrij svg { flex: none; color: var(--zacht); }
+.plandag details { margin-top: 10px; color: var(--zacht); }
+.plandag details summary { cursor: pointer; font-weight: 600; padding: 2px 0; }
+.plandag details .links { margin-top: 8px; }

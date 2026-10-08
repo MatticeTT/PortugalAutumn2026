@@ -65,7 +65,10 @@ const SPORT: Record<Keuze['sport'], { naam: string; kleur: string; foto?: string
   },
 }
 
-const chip = (l: Link) => `<a class="schoolpil" href="${l.url}" target="_blank" rel="noopener" title="${esc(l.uitleg ?? l.label)}">${esc(l.label)}</a>`
+// Elke school of link op een eigen regel: naam, korte uitleg eronder, pijltje rechts.
+const chip = (l: Link) => `<a class="linkrij" href="${l.url}" target="_blank" rel="noopener">
+  <span><b>${esc(l.label)}</b>${l.uitleg ? `<small>${esc(l.uitleg)}</small>` : ''}</span>
+  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>`
 const rijtijd = (m: number | null) => m == null ? '' : m < 60 ? `${m} min rijden` : `${Math.floor(m / 60)}u${String(m % 60).padStart(2, '0')} rijden`
 const uur = (t: string) => String(Number(t.slice(0, 2)))
 const datumTekst = (d: string, o: Intl.DateTimeFormatOptions) => fmt(o).format(new Date(d + 'T12:00:00Z'))
@@ -89,8 +92,8 @@ function plan(d: Dag, k: Keuze) {
     </figure>
     ${s.nota || s.links.length || s.extra ? `<div class="onder">
       ${s.nota ? `<p class="nota">${s.nota}</p>` : ''}
-      ${s.links.length ? `<div class="pillen">${s.links.map(chip).join('')}</div>` : ''}
-      ${s.extra ? `<details><summary>${s.extra.titel}</summary><div class="pillen">${s.extra.links.map(chip).join('')}</div></details>` : ''}
+      ${s.links.length ? `<div class="links">${s.links.map(chip).join('')}</div>` : ''}
+      ${s.extra ? `<details><summary>${s.extra.titel}</summary><div class="links">${s.extra.links.map(chip).join('')}</div></details>` : ''}
     </div>` : ''}
   </article>`
 }
@@ -170,13 +173,14 @@ function kies(d: Dag, rij: (b: Blok) => number | null, max: number): Keuze | nul
 const KORT: Record<Sport, string> = { golfsurfen: 'Golfsurfen', windsurf: 'Windsurfles', stil: 'Stille waters', klim: 'Klimmen' }
 function voorrang(opnieuw: () => void) {
   const el = document.getElementById('voorrang')!
-  const pijl = (r: string) => `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${r}"/></svg>`
+  const pijl = (r: string) => `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${r}"/></svg>`
   const anders = volgorde.join() !== STANDAARD.join()
-  el.innerHTML = `<span class="voorrangkop">Voorrang</span><ol>${volgorde.map((s, i) => `<li style="--kleur:${SPORT[s].kleur}">
-      <button type="button" data-i="${i}" data-r="-1" ${i === 0 ? 'disabled' : ''} aria-label="${KORT[s]} hoger">${pijl('M15 6l-6 6 6 6')}</button>
-      <span><b>${i + 1}</b> ${KORT[s]}</span>
-      <button type="button" data-i="${i}" data-r="1" ${i === volgorde.length - 1 ? 'disabled' : ''} aria-label="${KORT[s]} lager">${pijl('M9 6l6 6-6 6')}</button>
-    </li>`).join('')}</ol>${anders ? '<button type="button" class="linkknop" data-a="standaard">standaard</button>' : ''}`
+  el.innerHTML = `<div class="kopregel"><span>Voorrang</span>${anders ? '<button type="button" class="terug" data-a="standaard">Standaard</button>' : ''}</div>
+    <ol>${volgorde.map((s, i) => `<li style="--kleur:${SPORT[s].kleur}">
+      <b>${i + 1}</b><span>${KORT[s]}</span>
+      <button type="button" data-i="${i}" data-r="-1" ${i === 0 ? 'disabled' : ''} aria-label="${KORT[s]} hoger">${pijl('M6 15l6-6 6 6')}</button>
+      <button type="button" data-i="${i}" data-r="1" ${i === volgorde.length - 1 ? 'disabled' : ''} aria-label="${KORT[s]} lager">${pijl('M6 9l6 6 6-6')}</button>
+    </li>`).join('')}</ol>`
   el.querySelectorAll<HTMLButtonElement>('button[data-i]').forEach((k) => k.onclick = () => {
     const i = Number(k.dataset.i), j = i + Number(k.dataset.r)
     ;[volgorde[i], volgorde[j]] = [volgorde[j], volgorde[i]]
@@ -193,8 +197,9 @@ function voorrang(opnieuw: () => void) {
 
 function kop(v: Verblijf | null, melding = '') {
   const el = document.getElementById('planvan')!
-  el.innerHTML = `<span>Vanaf <b>${esc(v ? v.naam.split(',')[0] : 'Ferragudo')}</b> · max ${rijTekst(v?.max ?? 120)} rijden</span>
-    <button type="button" class="verblijfknop">Wijzig</button>${melding ? `<span class="rustig">${melding}</span>` : ''}`
+  el.innerHTML = `<span class="huis" aria-hidden="true"></span>
+    <span class="waar"><b>${esc(v ? v.naam.split(',')[0] : 'Ferragudo')}</b><small>max ${rijTekst(v?.max ?? 120)} rijden${melding ? ` · ${melding}` : ''}</small></span>
+    <button type="button" class="terug">Wijzig</button>`
   el.querySelector('button')!.onclick = async () => {
     const n = await vraagVerblijf(v ?? leesVerblijf())
     if (n) { bewaarVerblijf(n); start() }
@@ -232,7 +237,7 @@ async function start() {
     kop(v)
     doelTonen((b) => rij.get(b.id ?? b.plek) ?? null, v.max)
   } catch {
-    kop(v, 'Rijtijden lukken nu niet; dit is de planning vanaf Ferragudo met 2 uur rijden.')
+    kop(v, 'rijtijden lukken nu niet, planning vanaf Ferragudo')
     doelTonen(vanafFerragudo, 120)
   }
 }
