@@ -605,16 +605,17 @@ details.meer[open] > summary { margin-bottom: 8px; }
 .daglijst li > div { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
 .daglijst .stil { display: inline-flex; align-items: center; gap: 6px; color: var(--zacht); font-size: 14px; line-height: 22px; }
 .daglijst .stil svg { width: 16px; height: 16px; flex: none; }
-.daglijst .reis { display: flex; align-items: flex-start; gap: 8px; margin: 0; padding: 0; background: none; border-radius: 0; font-size: 14px; line-height: 22px; color: var(--tekst); }
-.daglijst .reis svg { flex: none; width: 18px; height: 18px; color: #b07d00; }
-.daglijst .reis.terugvlucht svg { color: #6b5bd6; }
-.daglijst .reis b { font-weight: 700; }
+.daglijst .reis { display: flex; align-items: center; gap: 10px; margin: 0; padding: 0; background: none; border-radius: 0;
+  font-size: 14px; line-height: 1.35; color: var(--tekst); }
+.daglijst .reis i { flex: none; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; }
+.daglijst .reis i svg { width: 20px; height: 20px; }
+.daglijst .reis.aankomst i { background: #fde3c4; color: #a3520a; }
+.daglijst .reis.terugvlucht i { background: #c2410c; color: #fff; }
 .daglijst .reis span { color: var(--zacht); }
-.daglijst .reis b { color: var(--tekst); margin-right: 2px; }
-.daglijst .reis svg { margin-top: 2px; }
-.daglijst .reisregel { box-shadow: inset 4px 0 0 #e0b100; }
-.daglijst .reisregel:has(.terugvlucht) { box-shadow: inset 4px 0 0 #7d6ee6; }
-@media (prefers-color-scheme: dark) { .daglijst .reis { background: none; color: var(--tekst); } .daglijst .reis svg { color: #f5c400; } .daglijst .reis.terugvlucht svg { color: #a99bff; } }
+.daglijst .reis b { color: var(--tekst); font-weight: 700; }
+.daglijst .reisregel { box-shadow: inset 4px 0 0 #f5a54a; }
+.daglijst .reisregel:has(.terugvlucht) { box-shadow: inset 4px 0 0 #c2410c; }
+.daglijst .reisregel .datum { line-height: 34px; }
 @media (max-width: 380px) { .daglijst li { grid-template-columns: 80px 1fr; gap: 8px; } }
 .daglijst li.leeg { display: flex; align-items: center; justify-content: space-between; gap: 12px; background: var(--zacht-vlak); }
 .daglijst .periode { font-weight: 700; font-size: 14px; white-space: nowrap; color: var(--tekst); }
@@ -632,7 +633,7 @@ details.meer[open] > summary { margin-bottom: 8px; }
 .daglijst li.leeg .periode { margin-left: auto; }
 .daglijst li.leeg > .stil { flex: 1; }
 @media (max-width: 380px) { .daglijst li { grid-template-columns: 80px 1fr auto; } }
-.plandag .eigenfoto { background: linear-gradient(135deg, #3fb871, #1d6b41); }
+.plandag figure img.vlag { object-position: 50% 50%; }
 .plandag.eigen .wat { font-size: 20px; }
 .plandag .eigenonder { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; color: var(--zacht); font-size: 13px; }
 .plandag .eigenonder .linkknop { font-size: 13px; color: var(--zacht); }
@@ -646,3 +647,5 @@ details.meer[open] > summary { margin-bottom: 8px; }
 .activiteitvraag .fotokeuze img { width: 64px; height: 64px; object-fit: cover; border-radius: 10px; }
 .activiteitvraag .fotokeuze .knop { cursor: pointer; font-weight: 600; }
 .activiteitvraag .gevonden:empty { display: none; }
+.daglijst li.leeg .stil svg { display: none; }
+.daglijst li.leeg { gap: 8px; }

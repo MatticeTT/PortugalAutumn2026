@@ -21,8 +21,9 @@ const ICOON = {
   afstand: svg('<path d="M4 19h16"/><path d="M6 19V9l6-4 6 4v10"/><path d="M10 19v-5h4v5"/>'),
   info: svg('<circle cx="12" cy="12" r="9"/><path d="M12 11v6"/><path d="M12 7.5v.5"/>'),
   wolk: svg('<path d="M7 18h10a4 4 0 0 0 .5-8A6 6 0 0 0 6 11a3.5 3.5 0 0 0 1 7z"/>'),
-  aankomst: svg('<path d="M2 20h20"/><path d="M3 10l3 1 3-4 2 1-1 4 5 2 4-1c1 0 1.5 1.5.5 2L8 17l-5-2z"/>'),
-  vertrek: svg('<path d="M2 20h20"/><path d="M3 14l3-1 3 3 2-1-2-4 5-3 4-2c1-.5 2 .8 1.2 1.6L9 17l-5 1z"/>'),
+  // Vliegtuig dat landt / opstijgt (vormen van Material Icons "flight_land" en "flight_takeoff", Apache 2.0).
+  aankomst: '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M2.5 19h19v2h-19v-2zm7.18-5.73l4.35 1.16 5.31 1.42c.8.21 1.62-.26 1.84-1.06.21-.8-.26-1.62-1.06-1.84l-5.31-1.42-2.76-9.02L10.12 2v8.28L5.15 8.95l-.93-2.32-1.45-.39v5.17l1.6.43 5.31 1.43z"/></svg>',
+  vertrek: '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M2.5 19h19v2h-19v-2zm19.57-9.36c-.21-.8-1.04-1.28-1.84-1.06L14.92 10l-6.9-6.43-1.93.51 4.14 7.17-4.97 1.33-1.97-1.54-1.45.39 1.82 3.16.77 1.33 1.6-.43 5.31-1.42 4.35-1.16L21 11.49c.81-.23 1.28-1.05 1.07-1.85z"/></svg>',
   rots: svg('<path d="M3 20l5-9 3 4 3-7 7 12z"/><path d="M14 8l1.5 3"/>'),
 }
 
@@ -108,7 +109,7 @@ const KLEUR_EIGEN = '#2e9e5b'
 
 // Een eigen activiteit: dezelfde kaart als een plan, met de eigen foto (of een effen vlak).
 function eigenKaart(a: Activiteit) {
-  const beeld = a.foto ? `<img src="${esc(a.foto)}" alt="" loading="lazy">` : `<div class="geenfoto eigenfoto"></div>`
+  const beeld = a.foto ? `<img src="${esc(a.foto)}" alt="" loading="lazy">` : `<img class="vlag" src="foto/vlag-portugal.svg" alt="">`
   const plek = a.plek
     ? `<a href="https://www.openstreetmap.org/?mlat=${a.plek.lat}&mlon=${a.plek.lon}#map=15/${a.plek.lat}/${a.plek.lon}" target="_blank" rel="noopener">${esc(a.plek.naam)}</a>` : ''
   return `<article class="plandag eigen" style="--kleur:${KLEUR_EIGEN}">
@@ -133,8 +134,8 @@ function weekKop(d: string, eerste: string) {
 }
 
 // Aankomst of terugvlucht: één regel met icoon.
-const reis = (r: Reis) => `<p class="reis ${r.soort}">${r.soort === 'aankomst' ? ICOON.aankomst : ICOON.vertrek}
-  <span><b>${r.soort === 'aankomst' ? 'Aankomst' : 'Terugvlucht'}</b> ${esc(r.wie.join(', '))}</span></p>`
+const reis = (r: Reis) => `<p class="reis ${r.soort}"><i>${r.soort === 'aankomst' ? ICOON.aankomst : ICOON.vertrek}</i>
+  <span><b>${r.soort === 'aankomst' ? 'Aankomst' : 'Terugvlucht'}</b><br>${esc(r.wie.join(', '))}</span></p>`
 
 // Dagen zonder plan staan per week in één kader, als regels met links altijd dezelfde datumkolom:
 // reisdagen, "niets ideaal", en opeenvolgende dagen zonder voorspelling samen op één regel.
