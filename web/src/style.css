@@ -632,7 +632,7 @@ details.meer[open] > summary { margin-bottom: 8px; }
 .daglijst li.leeg .periode { margin-left: auto; }
 .daglijst li.leeg > .stil { flex: 1; }
 @media (max-width: 380px) { .daglijst li { grid-template-columns: 80px 1fr auto; } }
-.plandag .eigenfoto { background: linear-gradient(135deg, #d9622b, #8a3a8f); }
+.plandag .eigenfoto { background: linear-gradient(135deg, #3fb871, #1d6b41); }
 .plandag.eigen .wat { font-size: 20px; }
 .plandag .eigenonder { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; color: var(--zacht); font-size: 13px; }
 .plandag .eigenonder .linkknop { font-size: 13px; color: var(--zacht); }

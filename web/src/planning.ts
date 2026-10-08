@@ -104,7 +104,7 @@ let eigen: Activiteit[] = []
 const eigenVan = (dag: string) => eigen.filter((a) => a.dag === dag)
 const PLUS = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>'
 const plus = (dag: string) => `<button type="button" class="plus" data-plus="${dag}" aria-label="Activiteit toevoegen op ${dag}">${PLUS}</button>`
-const KLEUR_EIGEN = '#d9622b'
+const KLEUR_EIGEN = '#2e9e5b'
 
 // Een eigen activiteit: dezelfde kaart als een plan, met de eigen foto (of een effen vlak).
 function eigenKaart(a: Activiteit) {
