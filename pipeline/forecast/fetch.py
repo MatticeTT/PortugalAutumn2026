@@ -228,6 +228,7 @@ def main(argv: list[str]) -> int:
         "golf_gfswave": lambda: golf_met_piek(wave_pts),
         "golf_ibi": lambda: ibi(wave_pts),
         "klim_weer": klim_weer,
+        "meteoalarm": lambda: __import__("pipeline.forecast.waarschuwingen", fromlist=["ophalen"]).ophalen(),
     }
     failed = []
     stamp = datetime.now(UTC).strftime("%Y-%m-%dT%H:%MZ")

@@ -301,11 +301,18 @@ async function andereLanden(dagen: Dag[], v: Verblijf, versie: string) {
     try {
       const r = await fetch(`data/planning_${land}.json?v=${encodeURIComponent(versie)}`)
       if (!r.ok) return
-      const extra = (await r.json()).dagen as Record<string, Partial<Record<Keuze['sport'], Blok[]>>>
-      for (const [dag, sporten] of Object.entries(extra)) {
+      // Compact (pipeline/site/planning.py): plekken {id: [naam, lat, lon]}, per dag per sport [id, van, tot, score].
+      const j = await r.json() as { plekken: Record<string, [string, number, number]>; dagen: Record<string, Record<string, [string, string, string, number | null][]>> }
+      for (const [dag, sporten] of Object.entries(j.dagen)) {
         const d = perDag.get(dag)
         if (!d?.voorspelling || !d.kandidaten) continue
-        for (const [sport, bs] of Object.entries(sporten)) d.kandidaten[sport as Keuze['sport']] = [...(d.kandidaten[sport as Keuze['sport']] ?? []), ...bs!]
+        for (const [sport, rijen] of Object.entries(sporten)) {
+          const bs: Blok[] = rijen.map(([id, van, tot, score]) => {
+            const [plek, lat, lon] = j.plekken[id]
+            return { plek, id, van, tot, km: 0, rij: null, lat, lon, ...(score == null ? {} : { score }) }
+          })
+          d.kandidaten[sport as Keuze['sport']] = [...(d.kandidaten[sport as Keuze['sport']] ?? []), ...bs]
+        }
       }
     } catch { /* dat land dan niet */ }
   }))

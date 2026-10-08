@@ -32,6 +32,7 @@ from pipeline.rules import controle as stranddata
 from pipeline.rules.hulp import controle, krachtigste
 from pipeline.rules.model import NAAM, VOLGORDE, bereken, hoek
 from pipeline.site import planning
+from pipeline.site.inpakken import conclusies_inpakken, inpakken
 from pipeline.site.zon_getij import daglicht, getij_fractie
 from pipeline.tides.interp import interpolate
 
@@ -226,14 +227,12 @@ def strand(f: dict, punten: dict, wsrc: dict, gsrc: dict, getij: dict, ext_by: d
     if land != "pt":
         # Compacter voor de andere landen (duizenden stranden): elke conclusietekst één keer in "conclusies",
         # per uur een volgnummer in "c" (-1 = geen); geen IPMA-waarschuwingen (die gelden alleen voor Portugal).
-        teksten = sorted({c for c in detail["conclusie"] if c is not None})
-        nr = {c: k for k, c in enumerate(teksten)}
-        detail["conclusies"] = teksten
-        detail["c"] = [-1 if c is None else nr[c] for c in detail.pop("conclusie")]
+        conclusies_inpakken(detail)
         detail.pop("ipma")
         detail["land"] = land
         if land in VASTE_NOTA:
             detail["nota"] = VASTE_NOTA[land]
+        inpakken(detail)  # getallen per uur als tekst (pipeline/site/inpakken.py)
     item = {"id": pid, "n": p["naam"], "d": p["district"], "x": lon, "y": lat, **({"l": land} if land != "pt" else {})}
     return item, ww, detail
 
@@ -259,7 +258,7 @@ def landen_stations(axis: list[str]) -> list[dict]:
             for s in json.loads(p.read_text())["stations"]]
 
 
-def andere_landen(axis: list[str], minuten: list[float], ext_by: dict, vlaag_paren: list):
+def andere_landen(axis: list[str], minuten: list[float], ext_by: dict, vlaag_paren: list, gezien: set):
     """Stranden van de andere landen, met hun eigen voorspelling en getij. Ontbreekt iets, dan dat land niet."""
     fc_dir = DATA / "forecast"
     nodig = [fc_dir / "punten_landen.json", fc_dir / "wind_gfs_landen.json", fc_dir / "golf_gfswave_landen.json",
@@ -274,6 +273,9 @@ def andere_landen(axis: list[str], minuten: list[float], ext_by: dict, vlaag_par
         for f in json.loads(path.read_text())["features"]:
             if f["properties"]["id"] not in getij:
                 continue  # geen getijstation binnen bereik: zonder getij geen laag 3 en 4
+            if f["properties"]["id"] in gezien:
+                continue  # strand op een landsgrens, al bij een ander land
+            gezien.add(f["properties"]["id"])
             uit = strand(f, punten, wsrc, gsrc, getij, ext_by, [], axis, minuten, vlaag_paren, land)
             if uit is not None:
                 yield (land, *uit)
@@ -306,7 +308,7 @@ def main(fetch_ipma: bool = True):
     stations_landen = landen_stations(axis)
     for s_ in stations_landen:
         ext_by[s_["id"]] = s_["extremen"]
-    for land, item, ww, detail in andere_landen(axis, minuten, ext_by, vlaag_paren):
+    for land, item, ww, detail in andere_landen(axis, minuten, ext_by, vlaag_paren, {k["id"] for k in kaart}):
         kaart.append(item)
         ww_rijen.append(ww)
         schrijf_detail(detail)

@@ -42,7 +42,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/beaches/landen
+          git add data/beaches/landen data/gebieden
           git diff --cached --quiet && exit 0
           git commit -m "Stranden ${{ matrix.land }} bijgewerkt vanuit GitHub Actions"
           for i in 1 2 3 4 5; do

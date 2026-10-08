@@ -29,6 +29,7 @@ from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
+from pipeline.site.inpakken import conclusies_uitpakken
 from pipeline.site.zon_getij import zon
 
 LIS = ZoneInfo("Europe/Lisbon")
@@ -91,16 +92,19 @@ def maak(axis: list[str], out: Path, klimweer: dict, klimplekken: list[dict]) ->
     # Andere landen: alleen kandidaten (blokken golfsurfen en stille waters), per land een eigen bestand
     # planning_<land>.json; de site laadt een land pas als het binnen de rijtijd van het verblijf kan liggen.
     per_land: dict[str, dict[str, dict[str, list]]] = {}
+    per_land_plekken: dict[str, dict[str, list]] = {}
 
     # 1 en 2: stranden (de conclusie per uur staat in strand/<id>.json)
     for f in sorted((out / "strand").glob("*.json")):
         d = json.loads(f.read_text())
         plek = {"naam": d["naam"], "id": d["id"], "lat": d["lat"], "lon": d["lon"]}
         land = d.get("land")
-        if "c" in d:  # compacte fiche (andere landen): conclusies terug per uur
-            d["conclusie"] = [None if k < 0 else d["conclusies"][k] for k in d["c"]]
+        conclusies_uitpakken(d)  # compacte fiche (andere landen): conclusies en scores terug per uur
+        if land and land in per_land_plekken and d["id"] in per_land_plekken[land]:
+            continue  # al gezien (zelfde strand)
         if land:
             doel = per_land.setdefault(land, {})
+            per_land_plekken.setdefault(land, {})[d["id"]] = [d["naam"], round(d["lat"], 5), round(d["lon"], 5)]
             licht = [telt(d["lat"], d["lon"], t) for t in uren]
             for sport, tekst, kolom in STRAND_SPORT:
                 ok = [licht[i] and (d["conclusie"][i] or "").startswith(tekst) for i in range(len(uren))]
@@ -139,6 +143,7 @@ def maak(axis: list[str], out: Path, klimweer: dict, klimplekken: list[dict]) ->
             bl = blok(kplek, kt, a, b)
             land = kp.get("land")
             if land and land != "pt":
+                per_land_plekken.setdefault(land, {})[kp["id"]] = [kp["naam"], round(kp["lat"], 5), round(kp["lon"], 5)]
                 dagen_land = per_land.setdefault(land, {}).setdefault(bl["dag"], {})
                 dagen_land.setdefault("klim", []).append(bl | {"rij": None})
             else:
@@ -183,9 +188,13 @@ def maak(axis: list[str], out: Path, klimweer: dict, klimplekken: list[dict]) ->
                       "reizen": per_reisdag.get(s, [])})
     uit = {"gemaakt": datetime.now(UTC).strftime("%Y-%m-%dT%H:%MZ"), "dagen": dagen}
     (out / "planning.json").write_text(json.dumps(uit, ensure_ascii=False, separators=(",", ":")))
+    # Compact: elke plek één keer (naam, lat, lon), per dag per sport [id, van, tot, score].
     for land, dagen_land in per_land.items():
+        kort = {dag: {sp: [[b["id"], b["van"], b["tot"], b.get("score")] for b in bs] for sp, bs in sporten.items()}
+                for dag, sporten in dagen_land.items()}
         (out / f"planning_{land}.json").write_text(json.dumps(
-            {"land": land, "dagen": dagen_land}, ensure_ascii=False, separators=(",", ":")))
+            {"land": land, "plekken": per_land_plekken.get(land, {}), "dagen": kort},
+            ensure_ascii=False, separators=(",", ":")))
     return uit
 
 

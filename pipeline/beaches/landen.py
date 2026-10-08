@@ -90,6 +90,13 @@ def ophalen(land: str) -> None:
         provincies.append({"type": "Feature", "geometry": mapping(g), "properties": {"name": p["name"]}})
     (d / "osm_districts.geojson").write_text(json.dumps({"type": "FeatureCollection", "features": provincies}))
     print(f"provincies: {len(provincies)}", flush=True)
+    # Ook vereenvoudigd in git (data/gebieden/<land>.geojson): weerwaarschuwingen per gebied, ook voor klimplekken.
+    gebieden = ROOT / "data" / "gebieden"
+    gebieden.mkdir(parents=True, exist_ok=True)
+    (gebieden / f"{land}.geojson").write_text(json.dumps({
+        "type": "FeatureCollection", "land": land, "bron": "OpenStreetMap (admin_level 6), vereenvoudigd",
+        "features": [f | {"geometry": mapping(shape(f["geometry"]).simplify(0.005, preserve_topology=True))}
+                     for f in provincies]}, ensure_ascii=False, separators=(",", ":")))
 
     # 2. Nauwkeurig land rond het vasteland (zelfde bron als Portugal), ongeknipt per tegel bewaard.
     x0, y0, x1, y1 = cfg["bbox"]
