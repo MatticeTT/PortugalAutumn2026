@@ -92,10 +92,25 @@ def maak(axis: list[str], out: Path, wind_bron: dict, klimweer: dict) -> dict:
     def voeg(dag: str, sport: str, b: dict):
         per_dag.setdefault(dag, {"golfsurfen": [], "stil": [], "windsurf": [], "klim": []})[sport].append(b)
 
+    # Andere landen: alleen kandidaten (blokken golfsurfen en stille waters), per land een eigen bestand
+    # planning_<land>.json; de site laadt een land pas als het binnen de rijtijd van het verblijf kan liggen.
+    per_land: dict[str, dict[str, dict[str, list]]] = {}
+
     # 1 en 2: stranden (de conclusie per uur staat in strand/<id>.json)
     for f in sorted((out / "strand").glob("*.json")):
         d = json.loads(f.read_text())
         plek = {"naam": d["naam"], "id": d["id"], "lat": d["lat"], "lon": d["lon"]}
+        land = d.get("land")
+        if land:
+            doel = per_land.setdefault(land, {})
+            licht = [telt(d["lat"], d["lon"], t) for t in uren]
+            for sport, tekst, kolom in (("golfsurfen", "ideaal golfsurfen", 0), ("stil", "ideaal stille waters", 3)):
+                ok = [licht[i] and (d["conclusie"][i] or "").startswith(tekst) for i in range(len(uren))]
+                for a, b in blokken(uren, ok, 3):
+                    s = [d["scores"][i][kolom] for i in range(a, b + 1)]
+                    bl = blok(plek, uren, a, b, score=round(sum(s) / len(s), 1)) | {"rij": None}
+                    doel.setdefault(uren[a].astimezone(LIS).date().isoformat(), {}).setdefault(sport, []).append(bl)
+            continue
         licht = [telt(d["lat"], d["lon"], t) for t in uren]
         for sport, tekst in (("golfsurfen", "ideaal golfsurfen"), ("stil", "ideaal stille waters")):
             ok = [licht[i] and (d["conclusie"][i] or "").startswith(tekst) for i in range(len(uren))]
@@ -182,6 +197,9 @@ def maak(axis: list[str], out: Path, wind_bron: dict, klimweer: dict) -> dict:
                       "reizen": per_reisdag.get(s, [])})
     uit = {"gemaakt": datetime.now(UTC).strftime("%Y-%m-%dT%H:%MZ"), "dagen": dagen}
     (out / "planning.json").write_text(json.dumps(uit, ensure_ascii=False, separators=(",", ":")))
+    for land, dagen_land in per_land.items():
+        (out / f"planning_{land}.json").write_text(json.dumps(
+            {"land": land, "dagen": dagen_land}, ensure_ascii=False, separators=(",", ":")))
     return uit
 
 

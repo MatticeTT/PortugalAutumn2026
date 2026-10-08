@@ -308,6 +308,7 @@ function render() {
   el().innerHTML = `<button class="sluit" aria-label="Sluiten">×</button>
     <h2>${esc(d.naam)}</h2>
     <div class="sub">${toonDag(ms)}</div>
+    ${d.nota ? `<p class="vastenota">${esc(d.nota)}</p>` : ''}
     ${overzicht(d, idx)}
     <h3 class="kop">Per uur</h3>
     ${dag(d, idx)}

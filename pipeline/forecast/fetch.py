@@ -15,6 +15,12 @@ Schrijft data/forecast/:
 - wind_<model>.json  per windpunt de uurreeksen
 - golf_<model>.json  per golfpunt de uurreeksen
 - klim_weer.json     per klimplek neerslag, luchtvochtigheid, temperatuur en wind, vanaf 1 dag terug
+
+Andere landen (Spanje, Frankrijk, België; data/beaches/landen/): alleen wind GFS en golven GFS-Wave,
+twee keer per dag (zie LANDEN_UREN). Stranden in hetzelfde modelvak delen één aanroep: per vak wordt
+het punt van het eerste strand opgevraagd, en Open-Meteo geeft voor elk punt in dat vak hetzelfde
+rasterpunt terug. Zo blijft het totaal onder de grens van Open-Meteo. Bestanden: punten_landen.json,
+wind_gfs_landen.json, golf_gfswave_landen.json.
 """
 
 from __future__ import annotations
@@ -75,6 +81,29 @@ def points():
     return per_beach, wind, wave
 
 
+LANDEN = ROOT / "data" / "beaches" / "landen"
+WIND_VAK = 0.125   # graden: rastervak van GFS (13 km)
+GOLF_VAK = 0.16    # graden: rastervak van GFS-Wave (ncep_gfswave016)
+LANDEN_UREN = (4, 16)  # UTC-uren van de runs die ook de andere landen ophalen (na de modelruns van 00 en 12)
+
+
+def vak(lon: float, lat: float, r: float) -> str:
+    return f"{round(lat / r)},{round(lon / r)}"
+
+
+def points_landen():
+    per_beach, wind, wave = {}, {}, {}
+    for path in sorted(LANDEN.glob("*.geojson")):
+        for f in json.loads(path.read_text())["features"]:
+            p = f["properties"]
+            lon, lat = f["geometry"]["coordinates"]
+            kw, kg = vak(lon, lat, WIND_VAK), vak(*p["zeevak"], GOLF_VAK)
+            wind.setdefault(kw, (round(lon, 4), round(lat, 4)))
+            wave.setdefault(kg, (round(p["zeevak"][0], 4), round(p["zeevak"][1], 4)))
+            per_beach[p["id"]] = {"wind": kw, "golf": kg}
+    return per_beach, wind, wave
+
+
 def get_json(url: str, params: dict, tries: int = 4):
     full = f"{url}?{urllib.parse.urlencode(params, safe=',')}"
     for i in range(tries):
@@ -89,7 +118,8 @@ def get_json(url: str, params: dict, tries: int = 4):
             time.sleep(2 ** (i + 1))
 
 
-def open_meteo(url: str, pts: dict, model: str | None, variables: list[str], extra: dict | None = None) -> dict:
+def open_meteo(url: str, pts: dict, model: str | None, variables: list[str], extra: dict | None = None,
+               pauze: float = 1) -> dict:
     keys = list(pts)
     out = {}
     for i in range(0, len(keys), PER_AANROEP):
@@ -107,7 +137,7 @@ def open_meteo(url: str, pts: dict, model: str | None, variables: list[str], ext
             h = r["hourly"]
             out[k] = {"rasterpunt": [r["longitude"], r["latitude"]], **{v: h.get(v) for v in variables}}
             out.setdefault("_tijd", h["time"])
-        time.sleep(1)
+        time.sleep(pauze)
     return out
 
 
@@ -116,13 +146,13 @@ def open_meteo(url: str, pts: dict, model: str | None, variables: list[str], ext
 PIEK_VARS = ["swell_wave_peak_period", "secondary_swell_wave_peak_period", "wind_wave_peak_period"]
 
 
-def golf_met_piek(pts: dict) -> dict:
+def golf_met_piek(pts: dict, pauze: float = 1) -> dict:
     url = "https://marine-api.open-meteo.com/v1/marine"
     try:
-        return open_meteo(url, pts, "ncep_gfswave016", WAVE_VARS + PIEK_VARS)
+        return open_meteo(url, pts, "ncep_gfswave016", WAVE_VARS + PIEK_VARS, pauze=pauze)
     except Exception as e:  # noqa: BLE001
         print("piekperiode niet beschikbaar:", e)
-        return open_meteo(url, pts, "ncep_gfswave016", WAVE_VARS)
+        return open_meteo(url, pts, "ncep_gfswave016", WAVE_VARS, pauze=pauze)
 
 
 KLIM = ROOT / "data" / "klim" / "bron_osm.json"
@@ -181,9 +211,20 @@ def main(argv: list[str]) -> int:
     per_beach, wind_pts, wave_pts = points()
     (OUT / "punten.json").write_text(json.dumps(per_beach) + "\n")
     print(f"{len(per_beach)} stranden, {len(wind_pts)} windpunten, {len(wave_pts)} golfpunten", flush=True)
+    lb, lw, lg = points_landen()
+    if lb:
+        (OUT / "punten_landen.json").write_text(json.dumps(lb) + "\n")
+        print(f"andere landen: {len(lb)} stranden, {len(lw)} windvakken, {len(lg)} golfvakken", flush=True)
+    # Andere landen twee keer per dag, of als er nog niets is. Rustiger tempo: Open-Meteo telt een
+    # aanroep met meer dan 10 variabelen als meer, en staat 600 per minuut toe.
+    landen_nu = bool(lb) and (datetime.now(UTC).hour in LANDEN_UREN or not (OUT / "golf_gfswave_landen.json").exists()
+                              or os.environ.get("LANDEN_NU") == "1")
     jobs = {
         "wind_gfs": lambda: open_meteo("https://api.open-meteo.com/v1/forecast", wind_pts, "gfs_seamless",
                                        WIND_VARS, {"wind_speed_unit": "kn"}),
+        **({"wind_gfs_landen": lambda: open_meteo("https://api.open-meteo.com/v1/forecast", lw, "gfs_seamless",
+                                                  WIND_VARS, {"wind_speed_unit": "kn"}, pauze=6),
+            "golf_gfswave_landen": lambda: golf_met_piek(lg, pauze=8)} if landen_nu else {}),
         "wind_ecmwf": lambda: open_meteo("https://api.open-meteo.com/v1/forecast", wind_pts, "ecmwf_ifs",
                                          WIND_VARS, {"wind_speed_unit": "kn"}),
         "golf_gfswave": lambda: golf_met_piek(wave_pts),

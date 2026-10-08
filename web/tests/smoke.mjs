@@ -98,6 +98,17 @@ for (const scheme of ['light', 'dark']) {
     await page.screenshot({ path: `${shots}/zoek-${scheme}.png` })
     await page.fill('#zoek', '')
   }
+  // Andere landen (als er stranden van België zijn): zoeken toont het land, de fiche de vaste nota.
+  const be = await page.evaluate(async () => (await (await fetch('data/kaart.json')).json()).find((s) => s.l === 'be'))
+  if (be) {
+    await page.fill('#zoek', 'oostende')
+    const regel = await page.textContent('#zoeklijst li')
+    await page.locator('#zoeklijst li').first().dispatchEvent('pointerdown')
+    await page.waitForSelector('#fiche .vastenota', { timeout: 5000 })
+    const nota = await page.textContent('#fiche .vastenota')
+    check(`[${scheme}] Belgisch strand: land in de zoeklijst en vaste nota`, /België/.test(regel) && nota === 'Sterke getijstroom aan deze kust; die zit niet in de berekening.', `(${regel.trim()})`)
+    if (shots) await page.screenshot({ path: `${shots}/belgie-${scheme}.png` })
+  }
   // Een klimplek openen (als er klimdata is): discipline, soort, graad, aantal routes.
   const klimId = await page.evaluate(async () => {
     const g = await (await fetch('data/index.json')).json()

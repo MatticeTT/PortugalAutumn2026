@@ -63,7 +63,8 @@ async function stijl(): Promise<StyleSpecification | string> {
 }
 
 // De kaart opent uitgezoomd over heel Portugal; daarna vraagt ze waar je verblijft (eigenaar, 8 oktober 2026).
-const PORTUGAL: [[number, number], [number, number]] = [[-9.6, 36.9], [-6.1, 42.2]]
+// Uitgezoomd over alle landen met stranden: Portugal, Spanje, Frankrijk en België.
+const PORTUGAL: [[number, number], [number, number]] = [[-9.8, 36.0], [8.0, 51.4]]
 
 // Per strand (volgorde van kaart.json) per uur 5 tekens: WIND en WAVE (level 1–4), het rode kader,
 // de conclusie-letter (hoofdletter G/O/S/R = ideaal) en bij ideaal de score (a = 75, b = 76, …).
@@ -270,7 +271,7 @@ async function start() {
 
   kaart = new maplibregl.Map({
     container: 'kaart', style: await stijl(), bounds: PORTUGAL, minZoom: 5, maxZoom: 16,
-    maxBounds: [[-12.5, 35.5], [-4.5, 43.5]], attributionControl: { compact: true },
+    maxBounds: [[-16, 33], [14, 55]], attributionControl: { compact: true },
   })
   kaart.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-left')
   kaart.addControl(new maplibregl.GeolocateControl({ trackUserLocation: false }), 'top-left')

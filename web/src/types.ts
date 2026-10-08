@@ -27,13 +27,16 @@ export interface Index {
 export interface KaartStrand {
   id: string
   n: string
-  d?: string // district
+  d?: string // district of provincie
+  l?: string // land, zonder = Portugal (es, fr, be)
   x: number
   y: number
 }
 
 export interface Detail {
   id: string
+  land?: string // zonder = Portugal
+  nota?: string // vaste nota bij een land (België: getijstroom)
   naam: string
   lat: number
   lon: number

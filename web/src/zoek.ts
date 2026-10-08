@@ -5,6 +5,8 @@ import { staat, vliegNaar } from './main'
 import type { KaartStrand } from './types'
 
 const MAX = 8
+export const LANDNAAM: Record<string, string> = { es: 'Spanje', fr: 'Frankrijk', be: 'België' }
+const waar = (s: KaartStrand) => [s.d, s.l ? LANDNAAM[s.l] : ''].filter(Boolean).join(' · ')
 // Zonder hoofdletters en accenten: "sao" vindt "São", "rocha" vindt "Praia da Rocha".
 const plat = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
 const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!)
@@ -13,7 +15,7 @@ function zoek(q: string): KaartStrand[] {
   const w = plat(q).trim().split(/\s+/).filter(Boolean)
   if (!w.length) return []
   const treffers = staat.stranden.filter((s) => {
-    const t = plat(`${s.n} ${s.d ?? ''}`)
+    const t = plat(`${s.n} ${waar(s)}`)
     return w.every((x) => t.includes(x))
   })
   // Eerst namen die met de zoekterm beginnen (na "Praia d.."), dan de rest, alfabetisch.
@@ -31,7 +33,7 @@ export function zoekveld() {
   const toon = () => {
     lijst.innerHTML = res.length
       ? res.map((s, k) => `<li role="option" id="z${k}" data-k="${k}" aria-selected="${k === actief}">
-          <b>${esc(s.n)}</b>${s.d ? `<small>${esc(s.d)}</small>` : ''}</li>`).join('')
+          <b>${esc(s.n)}</b>${waar(s) ? `<small>${esc(waar(s))}</small>` : ''}</li>`).join('')
       : '<li class="niets">Geen strand gevonden</li>'
     lijst.hidden = !veld.value.trim()
     veld.setAttribute('aria-expanded', String(!lijst.hidden))

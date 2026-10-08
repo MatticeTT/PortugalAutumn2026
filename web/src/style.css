@@ -654,3 +654,9 @@ details.meer[open] > summary { margin-bottom: 8px; }
   border-radius: 50%; color: var(--tekst); border: 1px solid var(--lijn); background: var(--bg); }
 .themaknop:hover, .themaknop:focus-visible { background: var(--zacht-vlak); }
 .themaknop svg { width: 18px; height: 18px; }
+
+/* Vaste nota bij een land (België: getijstroom), bovenaan de fiche */
+.vastenota { margin: 8px 0 4px; padding: 8px 12px; border-radius: 10px; font-size: 14px; font-weight: 600;
+  background: #fff4e0; color: #7a4100; box-shadow: inset 4px 0 0 #f0a020; }
+:root[data-theme="dark"] .vastenota { background: #3a2a10; color: #ffd28a; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .vastenota { background: #3a2a10; color: #ffd28a; } }

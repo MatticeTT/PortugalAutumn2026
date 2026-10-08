@@ -92,8 +92,16 @@ export async function plaatsVan(g: Gevonden): Promise<Gevonden> {
   return { ...g, lat: c.location.y, lon: c.location.x }
 }
 
-// Rijtijd (minuten) over de weg van het verblijf naar elke plek, voor alle plekken (geen vogelvlucht).
+// Rijtijd (minuten) over de weg van het verblijf naar elke plek (OSRM, de echte route).
+// Plekken die je zelfs aan 140 km/h in rechte lijn niet binnen je maximale rijtijd haalt, worden niet
+// opgevraagd: over de weg lukt dat zeker niet (zo blijven het er een paar honderd, ook met vier landen).
 // Resultaten blijven in deze browser bewaard per verblijf.
+export const ONBEREIKBAAR_KMH = 140
+export function hemelsbreed(a: { lat: number; lon: number }, b: { lat: number; lon: number }) {
+  const t = Math.PI / 180
+  const h = Math.sin((b.lat - a.lat) * t / 2) ** 2 + Math.cos(a.lat * t) * Math.cos(b.lat * t) * Math.sin((b.lon - a.lon) * t / 2) ** 2
+  return 2 * 6371 * Math.asin(Math.sqrt(h))
+}
 const geheugen = new Map<string, number | null>()
 const cacheSleutel = (v: Verblijf) => `rij-v2:${v.lat.toFixed(4)},${v.lon.toFixed(4)}`
 function laadCache(v: Verblijf) {
@@ -110,6 +118,7 @@ export async function rijtijden(v: Verblijf, plekken: Plek[]): Promise<Map<strin
   for (const p of plekken) {
     const k = `${p.id}`
     if (k in cache) { uit.set(p.id, cache[k]); continue }
+    if (hemelsbreed(v, p) > (v.max / 60) * ONBEREIKBAAR_KMH) { uit.set(p.id, null); continue } // zeker te ver
     vragen.push(p)
   }
   for (let i = 0; i < vragen.length; i += 90) {

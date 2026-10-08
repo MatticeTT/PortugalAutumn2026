@@ -9,6 +9,7 @@ on:
       - pipeline/rules/**
       - web/**
       - data/beaches/**
+      - data/tides/**
       - data/klim/**
       - data/planning/**
       - pipeline/klim/**

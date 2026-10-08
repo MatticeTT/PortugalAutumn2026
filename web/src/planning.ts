@@ -3,7 +3,7 @@
 import './style.css'
 import { themaKnop } from './thema'
 import { laadActiviteiten, nieuweActiviteit, wisActiviteit, type Activiteit } from './activiteiten'
-import { bewaarVerblijf, leesVerblijf, tabWissel, rijTekst, rijtijden, vraagVerblijf, type Verblijf } from './verblijf'
+import { bewaarVerblijf, hemelsbreed, leesVerblijf, ONBEREIKBAAR_KMH, tabWissel, rijTekst, rijtijden, vraagVerblijf, type Verblijf } from './verblijf'
 
 interface Keuze { sport: 'golfsurfen' | 'stil' | 'windsurf' | 'klim'; plek: string; id: string | null; van: string; tot: string; km: number; rij: number | null; score?: number }
 interface Reis { soort: 'aankomst' | 'terugvlucht'; wie: string[] }
@@ -276,11 +276,35 @@ function kop(v: Verblijf | null, melding = '') {
 tabWissel()
 themaKnop()
 
+// Andere landen (planning_<land>.json): alleen laden als een stuk van dat land binnen je rijtijd kan liggen,
+// en dan hun blokken golfsurfen en stille waters bij de kandidaten van elke dag zetten.
+const LAND_KADER: Record<string, [number, number, number, number]> = {
+  es: [-9.45, 35.95, 3.4, 43.85], fr: [-5.3, 42.3, 8.3, 51.15], be: [2.4, 50.9, 3.5, 51.45],
+}
+async function andereLanden(dagen: Dag[], v: Verblijf, versie: string) {
+  const perDag = new Map(dagen.map((d) => [d.dag, d]))
+  await Promise.all(Object.entries(LAND_KADER).map(async ([land, [x0, y0, x1, y1]]) => {
+    const dichtst = { lat: Math.min(y1, Math.max(y0, v.lat)), lon: Math.min(x1, Math.max(x0, v.lon)) }
+    if (hemelsbreed(v, dichtst) > (v.max / 60) * ONBEREIKBAAR_KMH) return
+    try {
+      const r = await fetch(`data/planning_${land}.json?v=${encodeURIComponent(versie)}`)
+      if (!r.ok) return
+      const extra = (await r.json()).dagen as Record<string, Partial<Record<Keuze['sport'], Blok[]>>>
+      for (const [dag, sporten] of Object.entries(extra)) {
+        const d = perDag.get(dag)
+        if (!d?.voorspelling || !d.kandidaten) continue
+        for (const [sport, bs] of Object.entries(sporten)) d.kandidaten[sport as Keuze['sport']] = [...(d.kandidaten[sport as Keuze['sport']] ?? []), ...bs!]
+      }
+    } catch { /* dat land dan niet */ }
+  }))
+}
+
 async function start() {
   const doel = document.getElementById('dagen')!
   let p: { dagen: Dag[] }
+  let g: { gemaakt: string }
   try {
-    const g = await (await fetch('data/index.json', { cache: 'no-store' })).json()
+    g = await (await fetch('data/index.json', { cache: 'no-store' })).json()
     p = await (await fetch(`data/planning.json?v=${encodeURIComponent(g.gemaakt)}`)).json()
   } catch {
     doel.innerHTML = '<p class="rustig">De planning kon niet worden geladen.</p>'
@@ -308,6 +332,7 @@ async function start() {
   const v = leesVerblijf()
   if (!v) { kop(null); doelTonen(vanafFerragudo, 120); return }
   kop(v, 'rijtijden berekenen…')
+  await andereLanden(p.dagen, v, g.gemaakt)
   const plekken = new Map<string, { id: string; lat: number; lon: number }>()
   for (const d of p.dagen) for (const bs of Object.values(d.kandidaten ?? {})) for (const b of bs) {
     const id = b.id ?? b.plek
