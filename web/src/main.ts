@@ -8,7 +8,7 @@ import { zoekveld } from './zoek'
 import { groepIcoon, laadKlim, openKlim, ververs as klimVervers } from './klim'
 import type { Getij, Index, KaartStrand } from './types'
 import { surfPaneel, toont } from './surf'
-import { bewaarVerblijf, komtViaTab, leesVerblijf, tabWissel, wisVerblijf, rijTekst, rijtijden, route, vraagVerblijf, type Verblijf } from './verblijf'
+import { zoekInDeBuurt, bewaarVerblijf, komtViaTab, leesVerblijf, tabWissel, wisVerblijf, rijTekst, rijtijden, route, vraagVerblijf, type Verblijf } from './verblijf'
 
 const TZ = 'Europe/Lisbon'
 const fmtDag = new Intl.DateTimeFormat('nl-BE', { timeZone: TZ, weekday: 'short', day: 'numeric', month: 'short' })
@@ -194,6 +194,8 @@ async function kiesVerblijf(v: Verblijf | null, vlieg = true) {
 
 // Via de knop bovenaan: het huidige verblijf staat al ingevuld. Bij herladen: een lege vraag.
 async function vraag(leeg = false) {
+  const c = kaart.getCenter()
+  zoekInDeBuurt(c.lng, c.lat) // zoeken: plaatsen rond het midden van de kaart eerst
   const v = await vraagVerblijf(leeg ? null : verblijf ?? leesVerblijf())
   if (v) kiesVerblijf(v)
   else if (leeg) { wisVerblijf(); kiesVerblijf(null) } // overgeslagen na herladen: geen verblijf

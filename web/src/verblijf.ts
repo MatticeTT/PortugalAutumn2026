@@ -43,21 +43,27 @@ export interface Gevonden { naam: string; lat: number; lon: number; titel: strin
 // Suggesties terwijl je typt, eerst rond de Algarve. Antwoorden worden onthouden, zodat terugtypen meteen gaat.
 const bewaard = new Map<string, Gevonden[]>()
 
+// Zoeken zoals Google Maps: overal ter wereld, met plaatsen in de buurt eerst (het midden van de kaart,
+// anders je verblijf, anders de Algarve).
+let buurt = { lon: -8.5, lat: 37.12 }
+export function zoekInDeBuurt(lon: number, lat: number) { buurt = { lon, lat } }
+const zonderLand = (t: string) => t.replace(/, [A-Z]{3}$/, '') // Esri sluit af met de landcode (PRT, ESP, ...)
+
 async function viaEsri(q: string, signal?: AbortSignal): Promise<Gevonden[]> {
-  const url = `${ESRI}/suggest?f=json&countryCode=PRT&location=-8.5,37.12&maxSuggestions=8&text=${encodeURIComponent(q)}`
+  const url = `${ESRI}/suggest?f=json&location=${buurt.lon.toFixed(3)},${buurt.lat.toFixed(3)}&maxSuggestions=8&text=${encodeURIComponent(q)}`
   const r = await fetch(url, { signal })
   if (!r.ok) throw new Error(`Esri ${r.status}`)
   const d = await r.json()
   if (!d.suggestions) throw new Error('Esri')
   return d.suggestions.filter((x: any) => !x.isCollection).map((x: any) => {
-    const delen = String(x.text).replace(/, PRT$/, '').split(', ')
-    return { titel: delen[0], adres: delen.slice(1).join(', '), naam: String(x.text).replace(/, PRT$/, ''),
+    const delen = zonderLand(String(x.text)).split(', ')
+    return { titel: delen[0], adres: delen.slice(1).join(', '), naam: zonderLand(String(x.text)),
       lat: NaN, lon: NaN, sleutel: x.magicKey }
   })
 }
 
 async function viaPhoton(q: string, signal?: AbortSignal): Promise<Gevonden[]> {
-  const url = `${PHOTON}?q=${encodeURIComponent(q)}&limit=8&lat=37.12&lon=-8.5&bbox=-9.6,36.9,-6.1,42.2`
+  const url = `${PHOTON}?q=${encodeURIComponent(q)}&limit=8&lat=${buurt.lat.toFixed(3)}&lon=${buurt.lon.toFixed(3)}`
   const r = await fetch(url, { signal })
   if (!r.ok) throw new Error(`Photon ${r.status}`)
   return (await r.json()).features.map((f: any) => {
@@ -151,6 +157,7 @@ export async function route(v: Verblijf, p: Plek): Promise<any | null> {
 
 // Het venster met de twee vragen. Geeft het gekozen verblijf terug (of null bij sluiten zonder keuze).
 export function vraagVerblijf(huidig: Verblijf | null): Promise<Verblijf | null> {
+  if (huidig) zoekInDeBuurt(huidig.lon, huidig.lat)
   return new Promise((klaar) => {
     const d = document.createElement('dialog')
     d.className = 'verblijfvraag'
@@ -203,7 +210,7 @@ export function vraagVerblijf(huidig: Verblijf | null): Promise<Verblijf | null>
       bezig = new AbortController()
       try {
         resultaten = await zoekPlaats(q, bezig.signal)
-        lijst.innerHTML = resultaten.length ? '' : '<li class="rustig">Niets gevonden in Portugal.</li>'
+        lijst.innerHTML = resultaten.length ? '' : '<li class="rustig">Niets gevonden.</li>'
         resultaten.forEach((g) => {
           const li = document.createElement('li')
           li.innerHTML = `<button type="button" role="option">${PIN}<span><b>${esc(g.titel)}</b><small>${esc(g.adres)}</small></span></button>`
