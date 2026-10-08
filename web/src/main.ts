@@ -6,7 +6,8 @@ import { openFiche, sluitFiche, toonUur } from './fiche'
 import { zoekveld } from './zoek'
 import { groepIcoon, laadKlim, openKlim, ververs as klimVervers } from './klim'
 import type { Getij, Index, KaartStrand } from './types'
-import { bewaarVerblijf, leesVerblijf, rijTekst, rijtijden, route, vraagVerblijf, type Verblijf } from './verblijf'
+import { surfPaneel, toont } from './surf'
+import { bewaarVerblijf, komtViaTab, leesVerblijf, tabWissel, wisVerblijf, rijTekst, rijtijden, route, vraagVerblijf, type Verblijf } from './verblijf'
 
 const TZ = 'Europe/Lisbon'
 const fmtDag = new Intl.DateTimeFormat('nl-BE', { timeZone: TZ, weekday: 'short', day: 'numeric', month: 'short' })
@@ -30,6 +31,10 @@ export const toonTijd = (ms: number) => fmtUur.format(ms)
 export const toonDag = (ms: number) => fmtDag.format(ms)
 
 const OFM = 'https://tiles.openfreemap.org/styles/liberty'
+
+// Wisselen tussen de tabbladen Kaart en Planning: het verblijf onthouden (zie tabWissel in verblijf.ts).
+const viaTab = komtViaTab()
+tabWissel()
 
 function reserveStijl(): StyleSpecification {
   const css = getComputedStyle(document.documentElement)
@@ -64,13 +69,14 @@ function features() {
   const i = staat.i
   return {
     type: 'FeatureCollection' as const,
-    features: staat.stranden.map((s, k) => {
+    features: staat.stranden.flatMap((s, k) => {
       const rij = staat.cijfers[k] ?? ''
       const w = Number(rij[5 * i] ?? 0)
       const v = Number(rij[5 * i + 1] ?? 0)
       const l = rij[5 * i + 2] ?? '0' // rood kader: 1 wind van land, 2 golf komt niet aan, 3 beide
-      return { type: 'Feature' as const, geometry: { type: 'Point' as const, coordinates: [s.x, s.y] },
-        properties: { id: s.id, naam: s.n, w, v, l } }
+      if (!toont(w, v, l, rij[5 * i + 3] ?? '')) return [] // filters van de knop Surfen
+      return [{ type: 'Feature' as const, geometry: { type: 'Point' as const, coordinates: [s.x, s.y] },
+        properties: { id: s.id, naam: s.n, w, v, l } }]
     }),
   }
 }
@@ -182,10 +188,11 @@ async function kiesVerblijf(v: Verblijf | null, vlieg = true) {
   if (verblijf === v) tekenRoutes()
 }
 
-async function vraag() {
-  const v = await vraagVerblijf(verblijf ?? leesVerblijf())
+// Via de knop bovenaan: het huidige verblijf staat al ingevuld. Bij herladen: een lege vraag.
+async function vraag(leeg = false) {
+  const v = await vraagVerblijf(leeg ? null : verblijf ?? leesVerblijf())
   if (v) kiesVerblijf(v)
-  else if (!verblijf) { const oud = leesVerblijf(); if (oud) kiesVerblijf(oud) }
+  else if (leeg) { wisVerblijf(); kiesVerblijf(null) } // overgeslagen na herladen: geen verblijf
 }
 
 function zetDag(k: string) {
@@ -314,23 +321,25 @@ async function start() {
     await laadKlim(kaart)
     dagen()
     zoekveld()
-    document.getElementById('verblijfknop')!.onclick = vraag
+    document.getElementById('verblijfknop')!.onclick = () => vraag()
+    surfPaneel(() => (kaart.getSource('stranden') as GeoJSONSource).setData(features()))
     // Bronvermelding dichtgeklapt (het i-knopje), zodat ze de routes niet bedekt.
     document.querySelector('.maplibregl-ctrl-attrib')?.classList.remove('maplibregl-compact-show')
     const hash = decodeURIComponent(location.hash.slice(1))
     document.body.dataset.klaar = '1'
+    ;(window as any).__kaart = kaart // voor de test
     if (hash && stranden.some((s: KaartStrand) => s.id === hash)) {
       // Rechtstreekse link naar een strand: geen vraag, wel het bewaarde verblijf.
       openFiche(hash)
       const oud = leesVerblijf()
       if (oud) kiesVerblijf(oud, false)
     } else {
-      // De vraag komt bij het eerste bezoek en wanneer je de pagina herlaadt. Kom je terug van de planning
-      // (of open je de kaart opnieuw), dan blijft je bewaarde verblijf gewoon staan.
+      // Kom je via het tabblad terug van de planning (of met de terugknop), dan blijft je verblijf staan.
+      // Herladen of de site opnieuw openen: een lege vraag.
       const oud = leesVerblijf()
-      const herladen = (performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined)?.type === 'reload'
-      if (oud && !herladen) kiesVerblijf(oud)
-      else vraag()
+      const nav = (performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined)?.type
+      if (oud && (viaTab || nav === 'back_forward')) kiesVerblijf(oud)
+      else vraag(true)
     }
   })
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') sluitFiche() })

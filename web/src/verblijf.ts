@@ -22,6 +22,20 @@ export function bewaarVerblijf(v: Verblijf) {
   try { localStorage.setItem(SLEUTEL, JSON.stringify(v)) } catch { /* niet bewaard */ }
 }
 
+export function wisVerblijf() {
+  try { localStorage.removeItem(SLEUTEL) } catch { /* niets */ }
+}
+
+// Klik je op een tabblad (Kaart, Planning), dan zet de pagina een merkteken voor de volgende pagina.
+// Zo weet de kaart dat je van de planning komt (verblijf onthouden) en niet herlaadt (lege vraag).
+export function tabWissel() {
+  document.querySelectorAll<HTMLAnchorElement>('.tabs a').forEach((a) =>
+    a.addEventListener('click', () => { try { sessionStorage.setItem('via-tab', '1') } catch { /* niets */ } }))
+}
+export function komtViaTab() {
+  try { const ja = sessionStorage.getItem('via-tab') === '1'; sessionStorage.removeItem('via-tab'); return ja } catch { return false }
+}
+
 export const rijTekst = (m: number) => m < 60 ? `${m} min` : `${Math.floor(m / 60)}u${m % 60 ? String(m % 60).padStart(2, '0') : ''}`
 
 export interface Gevonden { naam: string; lat: number; lon: number; titel: string; adres: string; id?: string }
@@ -205,7 +219,12 @@ export function vraagVerblijf(huidig: Verblijf | null): Promise<Verblijf | null>
         lijst.innerHTML = ''; toonFout('Zoeken lukt nu niet. Probeer opnieuw of gebruik je locatie.')
       }
     }
-    veld.oninput = () => { clearTimeout(wacht); wacht = setTimeout(zoek, 120) }
+    veld.oninput = () => {
+      clearTimeout(wacht)
+      // Meteen tonen dat er gezocht wordt; de vorige suggesties blijven staan tot de nieuwe er zijn.
+      if (veld.value.trim().length >= 2 && !lijst.querySelector('button')) lijst.innerHTML = '<li class="rustig">Zoeken…</li>'
+      wacht = setTimeout(zoek, 120)
+    }
     veld.onkeydown = (e) => {
       if (e.key === 'ArrowDown' && resultaten.length) { e.preventDefault(); markeer((actief + 1) % resultaten.length) }
       else if (e.key === 'ArrowUp' && resultaten.length) { e.preventDefault(); markeer((actief - 1 + resultaten.length) % resultaten.length) }

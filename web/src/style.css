@@ -397,7 +397,10 @@ details.meer[open] > summary { margin-bottom: 8px; }
 .thecrag { font-weight: 600; }
 
 /* Laag Klimmen: knop, paneel, formulier */
-.klimknop { position: absolute; top: 10px; right: 10px; z-index: 2; font: inherit; font-weight: 700; font-size: 13px;
+.laagknoppen { position: absolute; top: 10px; right: 10px; z-index: 2; display: flex; gap: 6px; }
+.laagknop.surf { background: #0e8fa6; }
+.laagknop[aria-expanded="true"] { outline: 2px solid var(--vlak); outline-offset: -4px; }
+.klimknop, .laagknop { font: inherit; font-weight: 700; font-size: 13px;
   padding: 6px 12px; border-radius: 999px; border: 0; background: #6B4226; color: #fff; box-shadow: 0 1px 4px rgb(0 0 0 / 0.25); cursor: pointer; }
 .klimpaneel { position: absolute; top: 46px; right: 10px; z-index: 2; width: min(320px, calc(100% - 20px)); max-height: calc(100% - 60px);
   overflow: auto; padding: 10px 12px; border-radius: 12px; background: var(--vlak); color: var(--tekst);
@@ -532,3 +535,16 @@ details.meer[open] > summary { margin-bottom: 8px; }
 @media (max-width: 560px) { .verblijfknop { max-width: 120px; } }
 .routes[hidden] { display: none; }
 .routes[hidden] { display: none; }
+
+/* Paneel Surfen */
+.surfpaneel .uitleg { display: block; }
+.surfpaneel .uitleg p { display: flex; align-items: center; gap: 8px; margin: 4px 0; }
+.surfpaneel .uitleg img { flex: none; }
+.surfpaneel .niveaus { list-style: none; margin: 2px 0 6px 38px; padding: 0; display: grid; gap: 1px; }
+.surfpaneel .niveaus b { display: inline-block; width: 1.2em; }
+.surfpaneel .sporten i { width: 12px; height: 12px; border-radius: 50%; background: var(--kleur); display: inline-block; }
+.surfpaneel fieldset[disabled] { opacity: 0.45; }
+.surfpaneel .klein { color: var(--zacht); font-size: 12px; margin: 4px 0 0; }
+.klimpaneel { z-index: 3; }
+.klimpaneel > label.rij { border: 0; padding: 2px 0; display: flex; }
+.klimpaneel > label.rij:hover { background: none; }

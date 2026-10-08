@@ -238,8 +238,15 @@ function paneel() {
   const p = document.createElement('div')
   p.className = 'klimpaneel'
   p.hidden = true
-  document.getElementById('kaart')!.append(knop, p)
-  knop.onclick = () => { p.hidden = !p.hidden; knop.setAttribute('aria-expanded', String(!p.hidden)); if (!p.hidden) vul() }
+  knop.classList.add('laagknop')
+  document.getElementById('laagknoppen')!.append(knop)
+  document.getElementById('kaart')!.append(p)
+  knop.onclick = () => {
+    // Eén paneel tegelijk open (Surfen of Klimmen).
+    document.querySelectorAll<HTMLElement>('.klimpaneel').forEach((x) => { if (x !== p) x.hidden = true })
+    document.querySelectorAll('#laagknoppen button').forEach((b) => { if (b !== knop) b.setAttribute('aria-expanded', 'false') })
+    p.hidden = !p.hidden; knop.setAttribute('aria-expanded', String(!p.hidden)); if (!p.hidden) vul()
+  }
   const vul = () => {
     const opties = (sel: number) => FRANSE.map((g) => `<option value="${rangVan(g)}" ${rangVan(g) === sel ? 'selected' : ''}>${g}</option>`).join('')
     p.innerHTML = `

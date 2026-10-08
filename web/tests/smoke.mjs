@@ -141,16 +141,34 @@ for (const scheme of ['light', 'dark']) {
   const plannen = await page.$$eval('.plandag .waar em', (els) => els.map((e) => e.textContent))
   check(`[${scheme}] planning vanaf het verblijf, max 1 uur`, van.includes('max 1u') && plannen.every((t) => !/1u0[1-9]|1u[1-5]\d|[2-9]u/.test(t)), `(${van}; ${plannen.join(', ')})`)
   if (shots) await page.screenshot({ path: `${shots}/planning-${scheme}.png` })
-  // Terug naar de kaart: het verblijf is onthouden, geen nieuwe vraag.
-  await page.goto(base + '/')
+  // Terug naar de kaart via het tabblad: het verblijf is onthouden, geen nieuwe vraag.
+  await page.click('.tabs a[href="./"]')
   await page.waitForSelector('body[data-klaar="1"]', { timeout: 20000 })
   await page.waitForTimeout(800)
   const terug = await page.textContent('#verblijfknop')
   check(`[${scheme}] verblijf onthouden na planning`, !(await page.$('dialog.verblijfvraag[open]')) && terug.includes('Lagos'), `(${terug.trim()})`)
-  // Herladen: de vraag komt terug, ingevuld met het bewaarde verblijf.
+  // Nog eens heen en terug via de tabbladen.
+  await page.click('.tabs a[href="planning"]')
+  await page.waitForSelector('.plandag, .dagniets', { timeout: 15000 })
+  await page.click('.tabs a[href="./"]')
+  await page.waitForSelector('body[data-klaar="1"]', { timeout: 20000 })
+  await page.waitForTimeout(800)
+  check(`[${scheme}] tweede keer heen en terug: geen vraag`, !(await page.$('dialog.verblijfvraag[open]')))
+  // Knop Surfen: uitleg en filters.
+  await page.click('#laagknoppen .surf')
+  const uitleg = await page.textContent('.surfpaneel')
+  const tel = () => page.evaluate(async () => (await (window).__kaart.getSource('stranden').getData()).features.length)
+  const voor = await tel()
+  await page.check('.surfpaneel input[name=ideaal][value="1"]')
+  await page.waitForTimeout(300)
+  const na = await tel()
+  check(`[${scheme}] knop Surfen: uitleg en filter alleen ideaal`, /Links WIND/.test(uitleg) && /te sterk/.test(uitleg) && na < voor, `(${voor} → ${na} stranden)`)
+  if (shots) await page.screenshot({ path: `${shots}/surfpaneel-${scheme}.png` })
+  await page.check('.surfpaneel input[name=ideaal][value="0"]')
+  // Herladen: de vraag komt terug, leeg.
   await page.reload()
   await page.waitForSelector('dialog.verblijfvraag[open]', { timeout: 10000 })
-  check(`[${scheme}] herladen vraagt opnieuw (ingevuld)`, (await page.inputValue('dialog input[name=q]')) === 'Lagos')
+  check(`[${scheme}] herladen vraagt opnieuw (leeg)`, (await page.inputValue('dialog input[name=q]')) === '')
   await ctx.close()
 }
 check('OSRM nagebootst en gebruikt', osrm > 0, `(${osrm} vragen)`)
