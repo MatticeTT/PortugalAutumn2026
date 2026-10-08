@@ -17,7 +17,7 @@ Schrijft data/forecast/:
 - klim_weer.json     per klimplek neerslag, luchtvochtigheid, temperatuur en wind, vanaf 1 dag terug
 
 Andere landen (Spanje, Frankrijk, België; data/beaches/landen/): alleen wind GFS en golven GFS-Wave,
-twee keer per dag (zie LANDEN_UREN). Stranden in hetzelfde modelvak delen één aanroep: per vak wordt
+bij elke run (één keer per dag, zoals Portugal). Stranden in hetzelfde modelvak delen één aanroep: per vak wordt
 het punt van het eerste strand opgevraagd, en Open-Meteo geeft voor elk punt in dat vak hetzelfde
 rasterpunt terug. Zo blijft het totaal onder de grens van Open-Meteo. Bestanden: punten_landen.json,
 wind_gfs_landen.json, golf_gfswave_landen.json.
@@ -84,7 +84,6 @@ def points():
 LANDEN = ROOT / "data" / "beaches" / "landen"
 WIND_VAK = 0.125   # graden: rastervak van GFS (13 km)
 GOLF_VAK = 0.16    # graden: rastervak van GFS-Wave (ncep_gfswave016)
-LANDEN_UREN = (4, 16)  # UTC-uren van de runs die ook de andere landen ophalen (na de modelruns van 00 en 12)
 
 
 def vak(lon: float, lat: float, r: float) -> str:
@@ -215,10 +214,9 @@ def main(argv: list[str]) -> int:
     if lb:
         (OUT / "punten_landen.json").write_text(json.dumps(lb) + "\n")
         print(f"andere landen: {len(lb)} stranden, {len(lw)} windvakken, {len(lg)} golfvakken", flush=True)
-    # Andere landen twee keer per dag, of als er nog niets is. Rustiger tempo: Open-Meteo telt een
-    # aanroep met meer dan 10 variabelen als meer, en staat 600 per minuut toe.
-    landen_nu = bool(lb) and (datetime.now(UTC).hour in LANDEN_UREN or not (OUT / "golf_gfswave_landen.json").exists()
-                              or os.environ.get("LANDEN_NU") == "1")
+    # Andere landen bij elke run (één keer per dag). Rustiger tempo: Open-Meteo telt een aanroep met
+    # meer dan 10 variabelen als meer, en staat 600 per minuut toe.
+    landen_nu = bool(lb)
     jobs = {
         "wind_gfs": lambda: open_meteo("https://api.open-meteo.com/v1/forecast", wind_pts, "gfs_seamless",
                                        WIND_VARS, {"wind_speed_unit": "kn"}),

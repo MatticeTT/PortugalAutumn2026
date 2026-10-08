@@ -4,10 +4,8 @@
 name: forecast
 on:
   workflow_dispatch:
-    inputs:
-      landen: { description: "andere landen nu ook ophalen (1 = ja)", default: "0" }
   schedule:
-    - cron: "23 4,10,16,22 * * *"   # ongeveer 4 uur na elke modelrun van 00, 06, 12 en 18 UTC
+    - cron: "23 4 * * *"   # één keer per dag (eigenaar), ongeveer 4 uur na de modelrun van 00 UTC
   push:
     paths:
       - pipeline/forecast/**
@@ -19,7 +17,6 @@ jobs:
   forecast:
     runs-on: ubuntu-latest
     env:
-      LANDEN_NU: ${{ github.event.inputs.landen || '0' }}
       COPERNICUSMARINE_SERVICE_USERNAME: ${{ secrets.COPERNICUSMARINE_SERVICE_USERNAME }}
       COPERNICUSMARINE_SERVICE_PASSWORD: ${{ secrets.COPERNICUSMARINE_SERVICE_PASSWORD }}
     steps:
@@ -55,7 +52,7 @@ jobs:
       - name: Archief bijwerken (voor de meting per vooruitzicht, M6)
         continue-on-error: true
         run: |
-          # Twee keer per dag (de runs van 00 en 12 UTC, opgehaald rond 04 en 16 UTC) volstaat.
+          # Bij de dagelijkse run (rond 04 UTC); een run met de hand telt niet mee.
           h=$(date -u +%H)
           if [ "${{ github.event_name }}" = "schedule" ] && [ "$h" != "04" ] && [ "$h" != "16" ]; then exit 0; fi
           if git fetch -q origin archief; then
