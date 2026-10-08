@@ -2,12 +2,12 @@
 // golfsurfen, anders stille waters / e-foil, anders windsurfles, anders klimmen, anders niets.
 import './style.css'
 
-interface Keuze { sport: 'golfsurfen' | 'stil' | 'windsurf' | 'klim'; plek: string; id: string | null; van: string; tot: string; km: number; score?: number }
+interface Keuze { sport: 'golfsurfen' | 'stil' | 'windsurf' | 'klim'; plek: string; id: string | null; van: string; tot: string; km: number; rij: number | null; score?: number }
 interface Dag { dag: string; voorspelling: boolean; keuze?: Keuze | null }
 
 const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!)
 const fmt = (o: Intl.DateTimeFormatOptions) => new Intl.DateTimeFormat('nl-BE', { ...o, timeZone: 'UTC' })
-const WEEKDAG = fmt({ weekday: 'short' }), DAGNR = fmt({ day: 'numeric' }), MAAND = fmt({ month: 'short' })
+const DAGNR = fmt({ day: 'numeric' })
 
 const svg = (inhoud: string) => `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"
   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${inhoud}</svg>`
@@ -60,35 +60,61 @@ const SPORT: Record<Keuze['sport'], { naam: string; kleur: string; foto?: string
   },
 }
 
-const chip = (l: Link) => `<a class="chip" href="${l.url}" target="_blank" rel="noopener" title="${esc(l.uitleg ?? l.label)}">${esc(l.label)}${l.uitleg ? `<small>${esc(l.uitleg)}</small>` : ''}</a>`
+const chip = (l: Link) => `<a class="schoolpil" href="${l.url}" target="_blank" rel="noopener" title="${esc(l.uitleg ?? l.label)}">${esc(l.label)}</a>`
+const rijtijd = (m: number | null) => m == null ? '' : m < 60 ? `${m} min rijden` : `${Math.floor(m / 60)}u${String(m % 60).padStart(2, '0')} rijden`
+const uur = (t: string) => String(Number(t.slice(0, 2)))
+const datumTekst = (d: string, o: Intl.DateTimeFormatOptions) => fmt(o).format(new Date(d + 'T12:00:00Z'))
 
-function datum(d: string) {
-  const t = new Date(d + 'T12:00:00Z')
-  return `<div class="datum"><span>${WEEKDAG.format(t)}</span><b>${DAGNR.format(t)}</b><span>${MAAND.format(t)}</span></div>`
+// Eén dag met een plan: een fotostrook zoals bovenaan de strandfiche, met de links eronder.
+function plan(d: Dag, k: Keuze) {
+  const s = SPORT[k.sport]
+  const strand = k.id && (k.sport === 'golfsurfen' || k.sport === 'stil')
+  // Namen die helemaal in hoofdletters staan (bv. FERRAGUDO) gewoon schrijven.
+  const naam = k.plek === k.plek.toUpperCase() ? k.plek.charAt(0) + k.plek.slice(1).toLowerCase() : k.plek
+  const plek = strand ? `<a href="./#${encodeURIComponent(k.id!)}">${esc(naam)}</a>` : esc(naam)
+  const beeld = s.foto ? `<img src="foto/${s.foto}.webp" alt="">` : `<div class="geenfoto">${ICOON.rots}</div>`
+  return `<article class="plandag" style="--kleur:${s.kleur}">
+    <figure>${beeld}
+      <figcaption>
+        <span class="datumlijn"><b>${datumTekst(d.dag, { weekday: 'short' })} ${DAGNR.format(new Date(d.dag + 'T12:00:00Z'))}</b>${datumTekst(d.dag, { month: 'short' })}</span>
+        <span class="wat">${s.naam}</span>
+        <span class="uren">${uur(k.van)}–${uur(k.tot)}u</span>
+        <span class="waar">${ICOON.plek}${plek}<em>${rijtijd(k.rij) || `${k.km} km`}</em></span>
+      </figcaption>
+    </figure>
+    ${s.nota || s.links.length || s.extra ? `<div class="onder">
+      ${s.nota ? `<p class="nota">${s.nota}</p>` : ''}
+      ${s.links.length ? `<div class="pillen">${s.links.map(chip).join('')}</div>` : ''}
+      ${s.extra ? `<details><summary>${s.extra.titel}</summary><div class="pillen">${s.extra.links.map(chip).join('')}</div></details>` : ''}
+    </div>` : ''}
+  </article>`
 }
 
-function kaartje(d: Dag) {
-  if (!d.voorspelling) return `<article class="dagkaart leeg">${datum(d.dag)}<p class="rustig">${ICOON.wolk} nog geen voorspelling</p></article>`
-  const k = d.keuze
-  if (!k) return `<article class="dagkaart leeg">${datum(d.dag)}<p class="rustig">–</p></article>`
-  const s = SPORT[k.sport]
-  const plek = k.id && (k.sport === 'golfsurfen' || k.sport === 'stil')
-    ? `<a href="./#${encodeURIComponent(k.id)}">${esc(k.plek)}</a>` : esc(k.plek)
-  const beeld = s.foto ? `<img src="foto/${s.foto}.webp" alt="">` : `<span class="icoonbeeld">${ICOON.rots}</span>`
-  return `<article class="dagkaart" style="--kleur:${s.kleur}">
-    ${datum(d.dag)}
-    <div class="inhoud">
-      <div class="kop">${beeld}<div><span class="sport">${s.naam}</span><span class="ideaal">ideaal</span></div></div>
-      <ul class="feiten">
-        <li>${ICOON.klok}<b>${k.van} – ${k.tot}</b></li>
-        <li>${ICOON.plek}<span>${plek}</span></li>
-        <li>${ICOON.afstand}<span>${k.km} km van Ferragudo</span></li>
-      </ul>
-      ${s.nota ? `<p class="nota">${ICOON.info}${s.nota}</p>` : ''}
-      ${s.links.length ? `<div class="chips">${s.links.map(chip).join('')}</div>` : ''}
-      ${s.extra ? `<details class="extra"><summary>${s.extra.titel}</summary><div class="chips">${s.extra.links.map(chip).join('')}</div></details>` : ''}
-    </div>
-  </article>`
+const niets = (d: Dag) => `<p class="dagniets"><b>${datumTekst(d.dag, { weekday: 'short' })} ${DAGNR.format(new Date(d.dag + 'T12:00:00Z'))}</b> niets ideaal</p>`
+
+// Weken: deze week, volgende week, daarna "week van ..."; dagen zonder voorspelling samen op één regel.
+function weekKop(d: string, eerste: string) {
+  const t = new Date(d + 'T12:00:00Z'), t0 = new Date(eerste + 'T12:00:00Z')
+  const maandag = (x: Date) => { const y = new Date(x); y.setUTCDate(y.getUTCDate() - ((y.getUTCDay() + 6) % 7)); return y }
+  const w = Math.round((maandag(t).getTime() - maandag(t0).getTime()) / (7 * 864e5))
+  return w === 0 ? 'Deze week' : w === 1 ? 'Volgende week' : `Week van ${fmt({ day: 'numeric', month: 'long' }).format(maandag(t))}`
+}
+
+function toon(dagen: Dag[]) {
+  const met = dagen.filter((d) => d.voorspelling)
+  const zonder = dagen.filter((d) => !d.voorspelling)
+  let html = '', kop = ''
+  for (const d of met) {
+    const w = weekKop(d.dag, dagen[0].dag)
+    if (w !== kop) { html += `<h2 class="week">${w}</h2>`; kop = w }
+    html += d.keuze ? plan(d, d.keuze) : niets(d)
+  }
+  if (zonder.length) {
+    const a = zonder[0].dag, b = zonder[zonder.length - 1].dag
+    html += `<p class="nogniet">${ICOON.wolk} ${datumTekst(a, { day: 'numeric', month: 'short' })} – ${datumTekst(b, { day: 'numeric', month: 'short' })}:
+      nog geen voorspelling</p>`
+  }
+  return html
 }
 
 async function start() {
@@ -96,7 +122,7 @@ async function start() {
   try {
     const g = await (await fetch('data/index.json', { cache: 'no-store' })).json()
     const p = await (await fetch(`data/planning.json?v=${encodeURIComponent(g.gemaakt)}`)).json()
-    doel.innerHTML = (p.dagen as Dag[]).map(kaartje).join('')
+    doel.innerHTML = toon(p.dagen as Dag[])
   } catch {
     doel.innerHTML = '<p class="rustig">De planning kon niet worden geladen.</p>'
   }

@@ -1,8 +1,9 @@
 """De planning voor de komende 4 weken (tabblad /planning; eigenaar en rekenchat, 8 oktober 2026).
 
 Per dag precies één resultaat, in deze volgorde (eigenaar):
-1 golfsurfen     conclusie "ideaal golfsurfen" (de beste surf): van die blokken het dichtstbijzijnde;
-                 bij gelijke afstand het blok met de hoogste gemiddelde golfsurfscore.
+1 golfsurfen     conclusie "ideaal golfsurfen" (de beste surf), alleen stranden tot 2 uur rijden van
+                 Ferragudo: van die blokken het dichtstbijzijnde (rijtijd); bij gelijke rijtijd de hoogste
+                 gemiddelde golfsurfscore.
 2 stille waters  anders: conclusie "ideaal stille waters", het dichtstbijzijnde blok.
 3 windsurfles    anders: Ria de Alvor (lagune): wind van Alvor, geen swell-venster; WIND level 2,
                  geen "te wild"; de windrichting telt niet mee.
@@ -12,7 +13,7 @@ Anders niets.
 Algemeen
 - Een uur telt alleen mee als het begint tussen 30 min voor zonsopgang en 30 min na zonsondergang.
 - Een blok = minstens 3 opeenvolgende ideale uren op dezelfde plek (klimmen: 4).
-- Afstand = vogelvlucht vanaf Ferragudo (37.1238, -8.5195).
+- Afstand = rijtijd met de auto vanaf Ferragudo (OSRM, data/beaches/rijtijd.json); ook de vogelvlucht staat erbij.
 - Dagen zonder voorspelling: "nog geen voorspelling".
 
 Schrijft web/public/data/planning.json.
@@ -35,7 +36,9 @@ DAGEN = 28
 # Ria de Alvor: de wind van het windpunt van Alvor (dat ook Praia do Alvor gebruikt); als ligging
 # Praia do Alvor Poente, aan de monding van de ria (uit de stranddata).
 ALVOR_WIND = "37.100,-8.600"
-ALVOR = {"naam": "Ria de Alvor", "lat": 37.122296, "lon": -8.59756}
+ALVOR = {"naam": "Ria de Alvor", "id": "ria-de-alvor", "lat": 37.122296, "lon": -8.59756}
+MAX_RIJ_SURF = 120  # minuten (eigenaar: surf alleen tot 2 uur rijden)
+RIJ: dict[str, dict | None] = {}
 BENSAFRIM = "eigen/bensafrim"
 
 
@@ -72,8 +75,10 @@ def blokken(uren: list[datetime], ok: list[bool], minimum: int) -> list[tuple[in
 def blok(plek: dict, uren: list[datetime], a: int, b: int, **extra) -> dict:
     van = uren[a].astimezone(LIS)
     tot = (uren[b] + timedelta(hours=1)).astimezone(LIS)
+    rij = RIJ.get(plek.get("id") or "")
     return {"plek": plek["naam"], "id": plek.get("id"), "van": van.strftime("%H:00"), "tot": tot.strftime("%H:00"),
-            "km": round(km(plek["lat"], plek["lon"])), "dag": van.date().isoformat(), **extra}
+            "km": round(km(plek["lat"], plek["lon"])), "rij": rij["min"] if rij else None,
+            "dag": van.date().isoformat(), **extra}
 
 
 def maak(axis: list[str], out: Path, wind_bron: dict, klimweer: dict) -> dict:
@@ -145,8 +150,10 @@ def maak(axis: list[str], out: Path, wind_bron: dict, klimweer: dict) -> dict:
         p = per_dag.get(s, {"golfsurfen": [], "stil": [], "windsurf": [], "klim": []})
         lengte = lambda b: int(b["tot"][:2]) - int(b["van"][:2])  # noqa: E731
         keuze = None
+        # Surf alleen tot 2 uur rijden; zonder gekende rijtijd telt een strand niet mee.
+        p["golfsurfen"] = [b for b in p["golfsurfen"] if b["rij"] is not None and b["rij"] <= MAX_RIJ_SURF]
         if p["golfsurfen"]:
-            keuze = {"sport": "golfsurfen", **min(p["golfsurfen"], key=lambda b: (b["km"], -b["score"]))}
+            keuze = {"sport": "golfsurfen", **min(p["golfsurfen"], key=lambda b: (b["rij"], -b["score"]))}
         elif p["stil"]:
             keuze = {"sport": "stil", **min(p["stil"], key=lambda b: (b["km"], -lengte(b)))}
         elif p["windsurf"]:
@@ -160,6 +167,12 @@ def maak(axis: list[str], out: Path, wind_bron: dict, klimweer: dict) -> dict:
 
 
 def main(axis: list[str], out: Path, root: Path) -> None:
+    rij = root / "data" / "beaches" / "rijtijd.json"
+    RIJ.clear()
+    if rij.exists():
+        RIJ.update(json.loads(rij.read_text())["plekken"])
+    else:
+        print("planning: nog geen rijtijden (data/beaches/rijtijd.json); geen surf in de planning")
     fc = root / "data" / "forecast"
     wind = json.loads((fc / "wind_gfs.json").read_text()) if (fc / "wind_gfs.json").exists() else {}
     kw = json.loads((fc / "klim_weer.json").read_text()) if (fc / "klim_weer.json").exists() else {}
