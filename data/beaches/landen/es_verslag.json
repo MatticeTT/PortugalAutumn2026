@@ -1,0 +1,34 @@
+{
+ "land": "Spanje",
+ "osm_stranden_vasteland": 4737,
+ "osm_met_naam_bij_kust": 3520,
+ "eea_toegevoegd": 69,
+ "eea_kustzwemwateren": 1594,
+ "stranden_totaal": 3478,
+ "onzeker": 1491,
+ "kandidaat_besloten_water": 727,
+ "weggelaten": {
+  "buiten Spanje (in geen enkele provincie)": 9
+ },
+ "per_provincie": {
+  "A Coruña": 657,
+  "Alacant / Alicante": 196,
+  "Almería": 159,
+  "Asturias / Asturies": 228,
+  "Barcelona": 137,
+  "Bizkaia": 46,
+  "Cantabria": 108,
+  "Castelló / Castellón": 100,
+  "Cádiz": 104,
+  "Gipuzkoa": 33,
+  "Girona": 300,
+  "Granada": 55,
+  "Huelva": 50,
+  "Lugo": 108,
+  "Málaga": 143,
+  "Pontevedra": 620,
+  "Región de Murcia": 200,
+  "Tarragona": 163,
+  "València / Valencia": 71
+ }
+}
