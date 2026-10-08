@@ -228,13 +228,38 @@ def uit_c2c(data: dict) -> list[dict]:
     return uit
 
 
+# Andere landen (data/klim/<land>/): zelfde bronnen en dezelfde verwerking; alleen het vasteland, zoals
+# bij de stranden (zonder de Balearen en Corsica).
+ANDERE_LANDEN = ("es", "fr", "be")
+
+
+def vasteland(land: str, lon: float, lat: float) -> bool:
+    if land == "es":
+        return not (lat < 40.5 and lon > 0.5) and lat >= 35.95
+    if land == "fr":
+        return lon <= 8.0
+    return True
+
+
 def alle() -> list[dict]:
     lijsten = []
     for naam, functie in (("osm", uit_osm), ("c2c", uit_c2c)):
         pad = MAP / f"bron_{naam}.json"
         if pad.exists():
             lijsten.append(functie(json.loads(pad.read_text())))
-    return eigen_voor(samenvoegen(lijsten), eigen())
+    uit = eigen_voor(samenvoegen(lijsten), eigen())
+    gezien = {q["id"] for q in uit}
+    for land in ANDERE_LANDEN:
+        lijsten = []
+        for naam, functie in (("osm", uit_osm), ("c2c", uit_c2c)):
+            pad = MAP / land / f"bron_{naam}.json"
+            if pad.exists():
+                lijsten.append(functie(json.loads(pad.read_text())))
+        for q in samenvoegen(lijsten):
+            if q["id"] not in gezien and vasteland(land, q["lon"], q["lat"]):
+                gezien.add(q["id"])
+                uit.append(q | {"land": land})
+    return uit
 
 
 # Bron 2 en 3 hieronder.

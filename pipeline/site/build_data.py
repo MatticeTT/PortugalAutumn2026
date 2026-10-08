@@ -31,6 +31,7 @@ from pipeline.klim import bouw as klim
 from pipeline.rules import controle as stranddata
 from pipeline.rules.hulp import controle, krachtigste
 from pipeline.rules.model import NAAM, VOLGORDE, bereken, hoek, stroomfactor
+from pipeline.site import gebied as G
 from pipeline.site import planning
 from pipeline.site.inpakken import conclusies_inpakken, inpakken
 from pipeline.site.zon_getij import daglicht, getij_fractie
@@ -147,6 +148,8 @@ def meldingen(paren: list[tuple[float, float]]) -> list[str]:
 # Stroming per vakje van het strand (rekenchat, alle kusten): data/forecast/stroom.json en punten_stroom.json.
 STROOM: dict = {}
 STROOM_PUNTEN: dict = {}
+# Weerwaarschuwingen van MeteoAlarm (alle landen): data/forecast/meteoalarm.json.
+WAARSCHUWINGEN: list = []
 
 
 def strand(f: dict, punten: dict, wsrc: dict, gsrc: dict, getij: dict, ext_by: dict, warn: list, axis: list[str],
@@ -233,6 +236,8 @@ def strand(f: dict, punten: dict, wsrc: dict, gsrc: dict, getij: dict, ext_by: d
         "venster": p["venster"], "district": p["district"], "getij": g, "controle": c, "piekperiode": piek,
         "wind": ws, "vlagen": wg, "windrichting": wd, "WAVE": "".join(wave), "WIND": "".join(wind),
         "stroom": stroom_kn, "stroom_naar": stroom_naar,
+        **dict(zip(("waarschuwing", "waarschuwingen"),
+                   G.per_uur(WAARSCHUWINGEN, land, p.get("district"), G.SOORT_STRAND, axis), strict=True)),
         "WAVE_strand": "".join(laag3), "letter": "".join(letter), "rood": "".join(rood),
         "licht": "".join(licht), **rij,
         "ipma": [warning_at(warn, p.get("ipma_area"), t) for t in axis],
@@ -297,6 +302,8 @@ def andere_landen(axis: list[str], minuten: list[float], ext_by: dict, vlaag_par
 def main(fetch_ipma: bool = True):
     fc = json.loads((DATA / "beaches" / "stranden.geojson").read_text())
     punten = load("punten")
+    if (DATA / "forecast" / "meteoalarm.json").exists():
+        WAARSCHUWINGEN[:] = load("meteoalarm").get("waarschuwingen", [])
     if (DATA / "forecast" / "stroom.json").exists() and (DATA / "forecast" / "punten_stroom.json").exists():
         STROOM.update(load("stroom"))
         STROOM_PUNTEN.update(load("punten_stroom"))

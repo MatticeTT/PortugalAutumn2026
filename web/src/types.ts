@@ -38,6 +38,8 @@ export interface Detail {
   land?: string // zonder = Portugal
   nota?: string // vaste nota bij een land (België: getijstroom)
   stroom?: (number | null)[] // stroming (kn), per uur
+  waarschuwing?: string // per uur het hoogste niveau van MeteoAlarm (0 geen, 1 geel, 2 oranje, 3 rood)
+  waarschuwingen?: { niveau: number; soort: string; van: string; tot: string }[]
   stroom_naar?: (number | null)[] // richting waarheen de stroom gaat (graden)
   stroom_pct?: (number | null)[] // golf zoveel % hoger (+) of lager (-) door de stroming
   naam: string

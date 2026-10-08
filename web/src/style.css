@@ -660,3 +660,10 @@ details.meer[open] > summary { margin-bottom: 8px; }
   background: #fff4e0; color: #7a4100; box-shadow: inset 4px 0 0 #f0a020; }
 :root[data-theme="dark"] .vastenota { background: #3a2a10; color: #ffd28a; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .vastenota { background: #3a2a10; color: #ffd28a; } }
+
+/* Weerwaarschuwing (MeteoAlarm) bovenaan de fiche */
+.waarschuwing { margin: 8px 0 4px; padding: 8px 12px; border-radius: 10px; font-size: 14px; display: flex; flex-wrap: wrap; gap: 2px 8px; align-items: baseline; }
+.waarschuwing small { color: inherit; opacity: 0.8; }
+.waarschuwing.w1 { background: #fff6c2; color: #6b5300; box-shadow: inset 4px 0 0 #f5c400; }
+.waarschuwing.w2 { background: #ffe1c2; color: #7a3500; box-shadow: inset 4px 0 0 #f08000; }
+.waarschuwing.w3 { background: #ffd2d2; color: #7a0010; box-shadow: inset 4px 0 0 #d0021b; }

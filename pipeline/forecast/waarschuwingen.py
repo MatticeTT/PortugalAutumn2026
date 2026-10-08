@@ -29,6 +29,19 @@ def _param(info: dict, naam: str) -> str | None:
     return None
 
 
+def utc(t: str | None) -> str | None:
+    """CAP-tijd met tijdzone ("2026-10-08T18:00:00+02:00") -> UTC zoals de tijdas van de site ("2026-10-08T16:00")."""
+    if not t:
+        return None
+    try:
+        d = datetime.fromisoformat(t.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    if d.tzinfo is None:
+        d = d.replace(tzinfo=UTC)
+    return d.astimezone(UTC).strftime("%Y-%m-%dT%H:%M")
+
+
 def lees(land: str, feed: dict) -> list[dict]:
     uit = []
     for w in feed.get("warnings") or []:
@@ -56,10 +69,12 @@ def lees(land: str, feed: dict) -> list[dict]:
                     if (g.get("valueName") or "").upper() == "EMMA_ID" and g.get("value"):
                         emma.add(g["value"])
         info = infos[0]
+        van, tot = utc(info.get("onset") or info.get("effective")), utc(info.get("expires"))
+        if not van or not tot:
+            continue
         uit.append({"land": land, "niveau": niveau,
                     "soort": soort.split(";")[-1].strip().lower() if soort else "",
-                    "van": (info.get("onset") or info.get("effective") or "")[:16],
-                    "tot": (info.get("expires") or "")[:16],
+                    "van": van, "tot": tot,
                     "gebieden": sorted(namen), "emma": sorted(emma)})
     return uit
 

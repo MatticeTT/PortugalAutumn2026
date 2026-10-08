@@ -4,6 +4,7 @@
 // - filter op discipline en op graadbereik; clusters bij uitzoomen
 // - rode rand: het regent dat uur (pipeline/klim/weer.py)
 // - eigen invoer (import CSV/GeoJSON of formulier) wordt in deze browser bewaard en gaat altijd voor
+import { waarschuwingBalk } from './waarschuwing'
 import type { GeoJSONSource, Map as Kaart } from 'maplibre-gl'
 import { data, staat, toonDag, toonTijd, utc, vliegNaar } from './main'
 
@@ -13,6 +14,7 @@ export interface KlimPlek {
   id: string; naam: string | null; lat: number; lon: number; soort: string; disciplines: string[]
   routes: number | string | null; schaal: 'frans' | 'font'; graad: Graad | null; frans: Graad | null; font: Graad | null
   rots: string | null; richting: string | null; bronnen: Bron[]; w?: string | null; eigen?: boolean; lokaal?: boolean; let_op?: string | null
+  wa?: string; wl?: { niveau: number; soort: string; van: string; tot: string }[] // waarschuwingen (MeteoAlarm)
 }
 interface Weer {
   neerslag: (number | null)[]; vocht: (number | null)[]; temp: (number | null)[]; wind: (number | null)[]
@@ -406,6 +408,7 @@ async function render() {
     <div class="klimkop" style="--kleur:${isBoulder(p) ? LICHTBRUIN : BRUIN}">
       <span class="graadpil ${isBoulder(p) ? 'boulder' : ''} ${r === '1' || r === '2' ? 'rood' : ''}">${esc(kort(g))}</span>
       ${reden ? `<b class="reden">Slecht weer: ${reden}</b>` : ''}</div>
+    ${waarschuwingBalk(p.wa?.[i], p.wl, staat.index.tijd[i])}
     ${p.let_op ? `<p class="klimmelding">Let op: ${esc(p.let_op)}</p>` : ''}
     <table class="klimtabel">
       ${rij('Discipline', p.disciplines.map((d) => DISC[d]).join(', '))}

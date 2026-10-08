@@ -208,9 +208,33 @@ def klim_weer() -> dict:
     luchtvochtigheid, temperatuur en wind, plus de voorbije 24 uur (past_days=1)."""
     from pipeline.klim.plekken import alle
 
-    pts = {q["id"]: (q["lon"], q["lat"]) for q in alle()}
+    pts = {q["id"]: (q["lon"], q["lat"]) for q in alle() if not q.get("land")}  # Portugal: per plek
     return open_meteo("https://api.open-meteo.com/v1/forecast", pts, None, KLIM_VARS,
                       {"wind_speed_unit": "kn", "past_days": 1})
+
+
+KLIM_VAK = 0.05  # graden (ongeveer 5 km): klimplekken van de andere landen delen het weer per vak
+
+
+def punten_klim_landen():
+    from pipeline.klim.plekken import alle
+
+    per_plek, pts = {}, {}
+    for q in alle():
+        if q.get("land"):
+            k = vak(q["lon"], q["lat"], KLIM_VAK)
+            pts.setdefault(k, (round(q["lon"], 4), round(q["lat"], 4)))
+            per_plek[q["id"]] = k
+    return per_plek, pts
+
+
+def klim_weer_landen() -> dict:
+    """Zelfde weer als klim_weer (rekenchat), voor de klimplekken van Spanje, Frankrijk en België, per vak."""
+    per_plek, pts = punten_klim_landen()
+    (OUT / "punten_klim_landen.json").write_text(json.dumps(per_plek) + "\n")
+    print(f"klimweer andere landen: {len(per_plek)} plekken, {len(pts)} vakken", flush=True)
+    return open_meteo("https://api.open-meteo.com/v1/forecast", pts, None, KLIM_VARS,
+                      {"wind_speed_unit": "kn", "past_days": 1}, pauze=6)
 
 
 def ibi(pts: dict) -> dict:
@@ -277,6 +301,7 @@ def main(argv: list[str]) -> int:
         "golf_ibi": lambda: ibi(wave_pts),
         "klim_weer": klim_weer,
         "stroom": lambda: stroom(sp),
+        "klim_weer_landen": klim_weer_landen,
         "meteoalarm": lambda: __import__("pipeline.forecast.waarschuwingen", fromlist=["ophalen"]).ophalen(),
     }
     failed = []

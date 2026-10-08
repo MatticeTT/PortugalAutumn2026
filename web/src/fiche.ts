@@ -7,6 +7,7 @@
 import { BLAUW, CYAAN, LICHT } from './kleuren'
 import { extremen, hoogte } from './getij'
 import { uitpakken } from './inpakken'
+import { waarschuwingBalk } from './waarschuwing'
 import { data, kiesUur, lisDag, lisUur, staat, toonDag, toonTijd, utc, vliegNaar } from './main'
 import type { Detail } from './types'
 
@@ -321,6 +322,7 @@ function render() {
     <h2>${esc(d.naam)}</h2>
     <div class="sub">${toonDag(ms)}</div>
     ${d.nota ? `<p class="vastenota">${esc(d.nota)}</p>` : ''}
+    ${waarschuwingBalk(d.waarschuwing?.[i], d.waarschuwingen, I.tijd[i])}
     ${overzicht(d, idx)}
     <h3 class="kop">Per uur</h3>
     ${dag(d, idx)}
