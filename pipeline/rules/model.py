@@ -3,7 +3,8 @@
 De code hieronder is de referentiecode uit het document "Surfkaart rekenmodel v2", letterlijk overgenomen.
 Aanpassing van de rekenchat (antwoord c, 7 oktober 2026): vensterfactor krijgt een lijst vensters (0 tot 3)
 en geeft het deel van de 45 graden rond de golfrichting dat binnen een venster valt.
-Update van de eigenaar (8 oktober 2026): WAVE-grenzen 100 / 1000 / 3000 kJ, WIND-grenzen 5 / 15 / 25 kn.
+Update van de eigenaar (8 oktober 2026): WAVE-grenzen 100 / 1000 / 3000 kJ, WIND-grenzen 5 / 15 / 25 kn,
+golfdeel van te wild 1000 -> 0, 5000 -> 1. Vergeleken met het document (33 tests) op 8 oktober 2026.
 bij twijfel geldt deze code. Niets eigens toegevoegd of weggelaten. De 27 testgevallen van het document
 staan in tests/test_model.py. Alles wat de site extra nodig heeft (welke deining het krachtigst is, de
 controles op de stranddata), staat in pipeline/rules/hulp.py, niet hier.
@@ -31,8 +32,8 @@ def hoek(a, b):
     return 360 - x if x > 180 else x
 
 def vensterfactor(richting, vensters):
-    """Deel van de 45 graden rond de golfrichting (22,5 links en
-    rechts) dat binnen een venster valt."""
+    """Deel van de 45 graden rond de golfrichting (22,5 links en rechts) dat binnen een venster valt.
+    Werkt voor 0, 1, 2 of meer vensters; geen venster geeft 0."""
     start = richting - 22.5
     stukken = []
     for (van, tot) in vensters:
@@ -116,7 +117,7 @@ def bereken(kust, vensters, wind, vlaag, windrichting, deiningen,
     # ---- te wild: optellen, niet vermenigvuldigen ----
     winddeel = max(lijn(wind, [(15, 0), (25, .5), (35, 1)]),
                    lijn(vlaag, [(25, 0), (35, .5), (45, 1)]))
-    golfdeel = lijn(E, [(300, 0), (1000, .5), (5000, 1)])
+    golfdeel = lijn(E, [(1000, 0), (5000, 1)])
 
     def product(factoren):
         p = 1.0

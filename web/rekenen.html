@@ -54,7 +54,7 @@
     <div class="tabel"><table><tr><th>Factor</th><th>Invoer</th><th>Punten</th></tr><tr><td>windkracht</td><td>wind</td><td>5 → 1 · 12 → 0</td></tr><tr><td>vlagen</td><td>vlaagverschil</td><td>Gedeelde factor.</td></tr><tr><td>golfslag</td><td>H_strand</td><td>0,1 → 1 · 0,5 → 0,5 · 1,25 → 0</td></tr><tr><td>windrichting</td><td>φ en wind</td><td>Land: φ 90 → 1 · 180 → 0,5. Sterkte: wind 0 → 0 · 5 → 1. Factor = 1 − (1 − land) × sterkte. Bij wind van land drijven SUP en luchtbedden af.</td></tr><tr><td>getij</td><td>tij_pct</td><td>Laag: 15 → 1 · 35 → 0. Factor = 1 − tijgewicht × 0,25 × laag × golfslag. Rond laagwater zijn muistromen het sterkst.</td></tr></table></div>
     <h3>Te wild</h3>
     <p>Er is te veel wind, te veel golf, of de twee samen zijn te veel.</p>
-    <div class="tabel"><table><tr><th>Deel</th><th>Invoer</th><th>Punten</th></tr><tr><td>winddeel</td><td>wind en vlaag</td><td>De grootste van twee: wind 15 → 0 · 25 → 0,5 · 35 → 1, en vlaag 25 → 0 · 35 → 0,5 · 45 → 1.</td></tr><tr><td>golfdeel</td><td>E</td><td>300 → 0 · 1000 → 0,5 · 5000 → 1</td></tr></table></div>
+    <div class="tabel"><table><tr><th>Deel</th><th>Invoer</th><th>Punten</th></tr><tr><td>winddeel</td><td>wind en vlaag</td><td>De grootste van twee: wind 15 → 0 · 25 → 0,5 · 35 → 1, en vlaag 25 → 0 · 35 → 0,5 · 45 → 1.</td></tr><tr><td>golfdeel</td><td>E</td><td>1000 → 0 · 5000 → 1</td></tr></table></div>
     <p>Score = 100 × (winddeel + golfdeel), hoogstens 100. Windrichting en getij tellen hier niet mee: daar is geen onderbouwde regel voor gevonden.</p>
     <h2>Wat de app toont</h2>
     <p>De app toont de vier lagen onder elkaar, zodat elk uur te volgen is van de zee tot de conclusie.</p>
