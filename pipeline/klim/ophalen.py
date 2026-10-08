@@ -8,6 +8,13 @@ Bron 2  Camptocamp: de lijst van waypoints (wtyp=climbing_outdoor, area 14123) e
 
 Schrijft data/klim/bron_osm.json en data/klim/bron_c2c.json. Lukt een bron niet, dan blijft het vorige
 bestand staan en staat de fout in data/klim/status.json (de site toont dan een melding).
+
+Andere landen (Spanje, Frankrijk, België; het vasteland, zoals bij de stranden): dezelfde twee bronnen,
+in data/klim/<land>/bron_osm.json en bron_c2c.json. Overpass per vak van 2 x 2 graden (een heel land in
+één keer loopt vast), Camptocamp met het gebied van dat land.
+
+Gebruik: python -m pipeline.klim.ophalen            Portugal (zoals altijd)
+         python -m pipeline.klim.ophalen es fr be   andere landen
 """
 
 from __future__ import annotations
@@ -32,6 +39,24 @@ area["ISO3166-1"="PT"][admin_level=2]->.pt;
 );
 out center tags;"""
 C2C = "https://api.camptocamp.org"
+# Andere landen: ISO-code, rechthoek (lon0, lat0, lon1, lat1) en de naam van het land bij Camptocamp.
+LANDEN = {
+    "es": {"iso": "ES", "bbox": (-9.4, 35.95, 3.4, 43.85), "c2c": ("Espagne", "España", "Spain")},
+    "fr": {"iso": "FR", "bbox": (-5.2, 42.3, 8.3, 51.15), "c2c": ("France",)},
+    "be": {"iso": "BE", "bbox": (2.5, 49.45, 6.45, 51.55), "c2c": ("Belgique", "België", "Belgium")},
+}
+VAK = 2.0
+
+
+def vakken(bbox):
+    x0, y0, x1, y1 = bbox
+    x = x0
+    while x < x1:
+        y = y0
+        while y < y1:
+            yield (y, x, min(y + VAK, y1), min(x + VAK, x1))  # zuid, west, noord, oost (Overpass)
+            y += VAK
+        x += VAK
 
 
 def http(url: str, data: bytes | None = None, timeout: int = 300) -> bytes:
@@ -40,13 +65,12 @@ def http(url: str, data: bytes | None = None, timeout: int = 300) -> bytes:
         return r.read()
 
 
-def osm() -> dict:
+def overpass(query: str) -> list[dict]:
     fout = None
     for poging in range(6):
         url = OVERPASS[poging % len(OVERPASS)]
         try:
-            antwoord = json.loads(http(url, urllib.parse.urlencode({"data": QUERY}).encode()))
-            return {"elementen": antwoord["elements"]}
+            return json.loads(http(url, urllib.parse.urlencode({"data": query}).encode()))["elements"]
         except Exception as e:  # noqa: BLE001
             fout = e
             print(f"{url}: {e}; opnieuw", flush=True)
@@ -54,10 +78,45 @@ def osm() -> dict:
     raise RuntimeError(f"Overpass: {fout}")
 
 
-def c2c() -> dict:
+def osm() -> dict:
+    return {"elementen": overpass(QUERY)}
+
+
+def osm_land(land: str) -> dict:
+    cfg, uit, gezien = LANDEN[land], [], set()
+    for s, w, n, o in vakken(cfg["bbox"]):
+        q = (f'[out:json][timeout:300];area["ISO3166-1"="{cfg["iso"]}"][admin_level=2]->.a;'
+             f'(nwr["climbing"](area.a)({s},{w},{n},{o});nwr["sport"="climbing"](area.a)({s},{w},{n},{o}););'
+             "out center tags;")
+        for e in overpass(q):
+            k = (e["type"], e["id"])
+            if k not in gezien:
+                gezien.add(k)
+                uit.append(e)
+        print(f"overpass {land} {s},{w}: {len(uit)} elementen", flush=True)
+        time.sleep(5)
+    return {"elementen": uit}
+
+
+def c2c_gebied(namen: tuple[str, ...]) -> int:
+    """Het gebied (land) van Camptocamp met een van deze namen."""
+    offset = 0
+    while True:
+        p = json.loads(http(f"{C2C}/areas?limit=100&offset={offset}"))
+        for d in p.get("documents", []):
+            titels = {loc.get("title") for loc in d.get("locales", [])}
+            if d.get("area_type") == "country" and titels & set(namen):
+                return d["document_id"]
+        if not p.get("documents"):
+            raise RuntimeError(f"geen Camptocamp-gebied voor {namen}")
+        offset += 100
+        time.sleep(0.5)
+
+
+def c2c(gebied: int = 14123) -> dict:
     lijst, offset = [], 0
     while True:
-        p = json.loads(http(f"{C2C}/waypoints?a=14123&wtyp=climbing_outdoor&limit=100&offset={offset}"))
+        p = json.loads(http(f"{C2C}/waypoints?a={gebied}&wtyp=climbing_outdoor&limit=100&offset={offset}"))
         lijst += p.get("documents", [])
         print(f"camptocamp: {len(lijst)} van {p.get('total')}", flush=True)
         if not p.get("documents") or len(lijst) >= (p.get("total") or 0):
@@ -71,25 +130,32 @@ def c2c() -> dict:
     return {"lijst": lijst, "documenten": documenten}
 
 
-def main():
-    MAP.mkdir(parents=True, exist_ok=True)
+def main(land: str | None = None):
+    doel = MAP / land if land else MAP
+    doel.mkdir(parents=True, exist_ok=True)
     statuspad = MAP / "status.json"
     status = json.loads(statuspad.read_text()) if statuspad.exists() else {}
     nu = datetime.now(UTC).strftime("%Y-%m-%dT%H:%MZ")
-    for naam, functie in (("osm", osm), ("c2c", c2c)):
+    bronnen = (("osm", osm), ("c2c", c2c)) if not land else (
+        ("osm", lambda: osm_land(land)), ("c2c", lambda: c2c(c2c_gebied(LANDEN[land]["c2c"]))))
+    for naam, functie in bronnen:
+        sleutel = f"{naam}_{land}" if land else naam
         try:
             data = functie()
             data["opgehaald"] = nu
-            (MAP / f"bron_{naam}.json").write_text(json.dumps(data, ensure_ascii=False) + "\n")
-            status[naam] = {"ok": True, "opgehaald": nu}
-            print(f"OK   {naam}", flush=True)
+            (doel / f"bron_{naam}.json").write_text(json.dumps(data, ensure_ascii=False) + "\n")
+            status[sleutel] = {"ok": True, "opgehaald": nu}
+            print(f"OK   {sleutel}", flush=True)
         except Exception as e:  # noqa: BLE001
-            vorige = status.get(naam, {}).get("opgehaald")
-            status[naam] = {"ok": False, "fout": f"{type(e).__name__}: {e}"[:300], "geprobeerd": nu,
-                            "opgehaald": vorige}
-            print(f"FOUT {naam}: {e}", flush=True)
+            vorige = status.get(sleutel, {}).get("opgehaald")
+            status[sleutel] = {"ok": False, "fout": f"{type(e).__name__}: {e}"[:300], "geprobeerd": nu,
+                               "opgehaald": vorige}
+            print(f"FOUT {sleutel}: {e}", flush=True)
     statuspad.write_text(json.dumps(status, indent=1) + "\n")
 
 
 if __name__ == "__main__":
-    main()
+    import sys
+
+    for land in sys.argv[1:] or [None]:
+        main(land)
