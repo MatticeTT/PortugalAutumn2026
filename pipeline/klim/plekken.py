@@ -271,9 +271,10 @@ def eigen_plek(r: dict, nr: int) -> dict | None:
     if routes and routes.isdigit():
         routes = int(routes)
     bron = (r.get("bron") or "").strip()
+    sleutel = _naam(r.get("naam")).replace(" ", "-") or str(nr)  # vaste id: het weer blijft bij de juiste plek
     p = plek(naam=r.get("naam") or None, lat=lat, lon=lon, soort="onbekend", disciplines=disc, routes=routes,
              frans=None if font else graad, font=graad if font else None,
-             bron={"bron": "eigen invoer" + (f" ({bron})" if bron else ""), "id": f"eigen/{nr}",
+             bron={"bron": "eigen invoer" + (f" ({bron})" if bron else ""), "id": f"eigen/{sleutel}",
                    "link": (r.get("bron_url") or "").strip() or None, "datum": None})
     p["schaal"] = "font" if font else "frans"
     p["graad"] = graad
@@ -291,7 +292,16 @@ def eigen() -> list[dict]:
         for ft in json.loads((MAP / "eigen.geojson").read_text()).get("features", []):
             lon, lat = ft["geometry"]["coordinates"][:2]
             rijen.append({**ft.get("properties", {}), "lat": lat, "lon": lon})
-    return [p for k, r in enumerate(rijen) if (p := eigen_plek(r, k))]
+    uit, gezien = [], set()
+    for k, r in enumerate(rijen):
+        p = eigen_plek(r, k)
+        if p is None:
+            continue
+        if p["id"] in gezien:  # zelfde naam twee keer: volgnummer erbij, zodat het weer bij de juiste plek blijft
+            p["id"] = p["bronnen"][0]["id"] = f"{p['id']}-{k}"
+        gezien.add(p["id"])
+        uit.append(p)
+    return uit
 
 
 def eigen_voor(plekken: list[dict], eigen_lijst: list[dict]) -> list[dict]:
