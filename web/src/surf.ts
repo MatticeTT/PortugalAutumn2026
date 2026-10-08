@@ -53,7 +53,7 @@ export function surfPaneel(opnieuw: () => void) {
       </fieldset>
       <fieldset class="uitleg"><legend>Zo lees je een bolletje</legend>
         <p>${voorbeeld(2, 3)}<span>Links <b>WIND</b>, rechts <b>WAVE</b> (golf op zee).</span></p>
-        <ol class="niveaus">${NIVEAU.map((n, i) => `<li><b>${i + 1}</b> ${n}</li>`).join('')}</ol>
+        <ol class="niveaus">${NIVEAU.map((n, i) => `<li><b>${i}</b> ${n}</li>`).join('')}</ol>
         <p>${voorbeeld(2, 2, 1)}<span>Rode rand links: wind van land.</span></p>
         <p>${voorbeeld(2, 2, 2)}<span>Rode rand rechts: genoeg golf op zee, maar die komt hier niet aan.</span></p>
         <p class="klein">Een getal in een wit bolletje is het aantal stranden. Tik op een strand voor de fiche.</p>

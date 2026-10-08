@@ -33,6 +33,8 @@ const SCORE_LETTER = ['G', 'O', 'S', 'R', 'W']
 
 // Labels voor WAVE en WIND (eigenaar, 8 oktober 2026).
 const LEVEL = ['', 'niets', 'ideaal – ook voor beginners', 'sterk – ervaring nodig', 'te sterk']
+// Het rekenmodel geeft levels 1–4; de app toont ze als 0–3 (eigenaar, 8 oktober 2026).
+const toonLevel = (n: number) => n - 1
 const kompas = (d: number) => ['N', 'NNO', 'NO', 'ONO', 'O', 'OZO', 'ZO', 'ZZO', 'Z', 'ZZW', 'ZW', 'WZW', 'W', 'WNW', 'NW', 'NNW'][Math.round(d / 22.5) % 16]
 // Naam van de windhoek φ (tabel in laag 3 van het document).
 const windNaam = (phi: number) => phi < 22.5 ? 'recht aanlandig' : phi < 67.5 ? 'schuin aanlandig' : phi < 112.5 ? 'zijwind'
@@ -126,7 +128,7 @@ function dag(d: Detail, idx: number[]) {
   }
   const level = (i: number, reeks: string, pal: string[]) => {
     const n = Number(reeks[i] ?? 0)
-    return `<td class="${kol(i)}" style="${n ? `background:${pal[n - 1]};color:${LICHT(n) ? '#0d2530' : '#fff'}` : ''}"><b>${n || '–'}</b></td>`
+    return `<td class="${kol(i)}" style="${n ? `background:${pal[n - 1]};color:${LICHT(n) ? '#0d2530' : '#fff'}` : ''}"><b>${n ? toonLevel(n) : '–'}</b></td>`
   }
   const getij = (i: number) => {
     const t = utc(T[i]) / 60000
@@ -171,7 +173,7 @@ function conclusie(d: Detail, i: number) {
 function tegel(naam: 'WAVE' | 'WIND', n: number, gegevens: string, rood = false) {
   const kleur = (naam === 'WIND' ? CYAAN : BLAUW)[n - 1] ?? '#ccc'
   return `<div class="tegel ${LICHT(n) ? 'licht' : ''} ${n === 4 ? 'gevaar' : ''} ${rood ? 'verkeerd' : ''}" style="background:${kleur}">
-    <span class="soort">${naam}</span><b>${n}</b><span class="betekenis">${LEVEL[n]}</span>
+    <span class="soort">${naam}</span><b>${toonLevel(n)}</b><span class="betekenis">${LEVEL[n]}</span>
     <span class="gegevens">${gegevens}</span></div>`
 }
 
@@ -268,7 +270,7 @@ function opStrand(d: Detail, i: number) {
   if (d.bereikt?.[i] == null) return ''
   const n = Number(d.WAVE_strand[i])
   return `<p class="opstrand">Op dit strand komt <b>${d.bereikt[i]}%</b> van de golfkracht aan
-    (E ${d.E[i]} kJ): <span class="lvl" style="background:${BLAUW[n - 1]};color:${LICHT(n) ? '#0d2530' : '#fff'}">WAVE_strand ${n}</span> ${LEVEL[n]}</p>
+    (E ${d.E[i]} kJ): <span class="lvl" style="background:${BLAUW[n - 1]};color:${LICHT(n) ? '#0d2530' : '#fff'}">WAVE_strand ${toonLevel(n)}</span> ${LEVEL[n]}</p>
     ${stroming(d, i)}`
 }
 

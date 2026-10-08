@@ -25,7 +25,7 @@ export function bolletje(n: number, size = 30, groep = false): ImageData {
   g.font = `700 ${Math.round(size * 0.5)}px system-ui, sans-serif`
   g.textAlign = 'center'; g.textBaseline = 'middle'
   g.fillStyle = n ? tekstKleur(n) : '#6f838b'
-  g.fillText(n ? String(n) : '–', cx, cx + 1)
+  g.fillText(n ? String(n - 1) : '–', cx, cx + 1) // level 1–4 getoond als 0–3 (eigenaar)
   return g.getImageData(0, 0, c.width, c.height)
 }
 
@@ -58,8 +58,9 @@ export function bolletjeWW(w: number, v: number, size = 44, letOp = false, rood 
   g.font = `700 ${Math.round(size * 0.36)}px system-ui, sans-serif`
   g.textAlign = 'center'; g.textBaseline = 'middle'
   if (!leeg) {
-    g.fillStyle = LICHT(w) ? '#0d2530' : '#fff'; g.fillText(String(w), cx - r / 2.1, cy + 1)
-    g.fillStyle = LICHT(v) ? '#0d2530' : '#fff'; g.fillText(String(v), cx + r / 2.1, cy + 1)
+    // Levels 1–4 uit het rekenmodel worden getoond als 0–3 (eigenaar, 8 oktober 2026).
+    g.fillStyle = LICHT(w) ? '#0d2530' : '#fff'; g.fillText(String(w - 1), cx - r / 2.1, cy + 1)
+    g.fillStyle = LICHT(v) ? '#0d2530' : '#fff'; g.fillText(String(v - 1), cx + r / 2.1, cy + 1)
   } else {
     g.fillStyle = '#4a545c'; g.fillText('–', cx, cy + 1)
   }

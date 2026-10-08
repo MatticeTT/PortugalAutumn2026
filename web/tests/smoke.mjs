@@ -140,7 +140,8 @@ for (const scheme of ['light', 'dark']) {
     const k = (await (await fetch('data/kaart.json' + v)).json()).findIndex((s) => s.id === id)
     return (await (await fetch('data/sport/ww.json' + v)).json())[k].slice(5 * i, 5 * i + 3)
   }, [id, i])
-  const ficheCijfers = (await page.$$eval('#fiche .tegel > b', (els) => els.map((e) => e.textContent))).reverse().join('')
+  // De fiche toont levels 0–3, de kaartdata bevat 1–4 (eigenaar): +1 om te vergelijken.
+  const ficheCijfers = (await page.$$eval('#fiche .tegel > b', (els) => els.map((e) => String(Number(e.textContent) + 1)))).reverse().join('')
     + await page.$$eval('#fiche .tegel', (els) => String((els[1].classList.contains('verkeerd') ? 1 : 0) + (els[0].classList.contains('verkeerd') ? 2 : 0)))
   check(`[${scheme}] kaart en fiche gelijk (WIND, WAVE, rood kader)`, kaartCijfers === ficheCijfers, `(kaart ${kaartCijfers}, fiche ${ficheCijfers})`)
   const rijen = await page.$$eval('#fiche .dag th', (els) => els.map((e) => e.textContent))
