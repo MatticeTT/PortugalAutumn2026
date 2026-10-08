@@ -84,3 +84,10 @@ def test_vensterfactor_meerdere_vensters(richting, factor):
 
 def test_vensterfactor_geen_venster():
     assert vensterfactor(150, []) == 0.0
+
+
+def test_34_korte_periode_niet_ideaal():
+    """Test 34 (8 oktober 2026): golfsurfen haalt 78, maar de periode op het strand is korter dan 9 s."""
+    r = bereken(*MEIA, 3, 5, 322, [(2.0, 7, 160)], tij_pct=50, verval=2.4)
+    assert (r["WAVE"], r["bereikt_pct"], r["E"], r["golfsurfen"], r["te_wild"]) == (2, 95, 365, 78, 0)
+    assert r["conclusie"] == "andere: golfsurfen 78/100, niet ideaal door korte, rommelige golven"

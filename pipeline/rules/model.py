@@ -5,6 +5,8 @@ Aanpassing van de rekenchat (antwoord c, 7 oktober 2026): vensterfactor krijgt e
 en geeft het deel van de 45 graden rond de golfrichting dat binnen een venster valt.
 Update van de eigenaar (8 oktober 2026): WAVE-grenzen 100 / 1000 / 3000 kJ, WIND-grenzen 5 / 15 / 25 kn,
 golfdeel van te wild 1000 -> 0, 5000 -> 1. Vergeleken met het document (33 tests) op 8 oktober 2026.
+Update 8 oktober 2026: "ideaal golfsurfen" alleen bij een periode op het strand van minstens 9 s
+(Surfertoday en Rapture Camps: 8 s en minder is windzee).
 bij twijfel geldt deze code. Niets eigens toegevoegd of weggelaten. De 27 testgevallen van het document
 staan in tests/test_model.py. Alles wat de site extra nodig heeft (welke deining het krachtigst is, de
 controles op de stranddata), staat in pipeline/rules/hulp.py, niet hier.
@@ -202,6 +204,8 @@ def conclusie(r):
         if ruw[beste] >= 50 - MARGE:
             return "te wild; %s %d/100 alleen voor ervaren" % (NAAM[beste], score)
         return "te wild"
+    if beste == "golfsurfen" and ruw[beste] >= 75 - MARGE and r["periode"] < 9:
+        return "andere: golfsurfen %d/100, niet ideaal door korte, rommelige golven" % score
     if ruw[beste] >= 75 - MARGE:
         return "ideaal " + NAAM[beste]
     return "andere: %s %d/100, niet ideaal door %s" % (NAAM[beste], score, nota(beste, zwakste(beste), r))
