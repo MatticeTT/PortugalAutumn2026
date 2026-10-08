@@ -5,8 +5,9 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - pipeline/beaches/**
-      - .github/workflows/beaches.yml
+      # Alleen de Portugese bouw; landen.py heeft een eigen workflow (landen.yml).
+      - pipeline/beaches/build.py
+      - pipeline/beaches/fetch.py
 permissions:
   contents: write
 concurrency: { group: beaches, cancel-in-progress: false }
