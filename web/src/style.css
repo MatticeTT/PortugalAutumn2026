@@ -38,7 +38,7 @@
 }
 :root[data-theme="dark"] {
   --bg: #0f1419; --vlak: #182029; --tekst: #e6edf3; --zacht: #9aa7b2; --lijn: #2c3742; --accent: #7aa2ff;
-  --wind: #4fd3ea; --golf: #8fb0ff; --gevaar: #ff5a6a; --zee: #0e2233; --land: #1d252c; --sea: #2c6673; --sand: #6f6443; --zacht-vlak: #1f2a33; color-scheme: dark;
+  --wind: #4fd3ea; --golf: #8fb0ff; --gevaar: #ff5a6a; --zee: #0e2233; --land: #1d252c; --sea: #2c6673; --sand: #6f6443; --zacht-vlak: #1f2a33; --schaduw: 0 4px 24px rgb(0 0 0 / 0.5); color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
@@ -472,7 +472,6 @@ details.meer[open] > summary { margin-bottom: 8px; }
   background: #fff4d6; color: #5c4300; }
 .reis.terugvlucht { background: #eceaf9; color: #3b2f7a; }
 .reis svg { flex: none; }
-@media (prefers-color-scheme: dark) { .reis { background: #3a2f12; color: #f5d98a; } .reis.terugvlucht { background: #26223f; color: #c9c0ff; } }
 .nogniet.klein-na-reis { margin: 0 0 12px; }
 .klimfoto { margin: 6px 0 8px; border-radius: 14px; overflow: hidden; aspect-ratio: 16 / 7; }
 .klimfoto img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; display: block; }
@@ -649,3 +648,9 @@ details.meer[open] > summary { margin-bottom: 8px; }
 .activiteitvraag .gevonden:empty { display: none; }
 .daglijst li.leeg .stil svg { display: none; }
 .daglijst li.leeg { gap: 8px; }
+
+/* Knop dag/nacht in de balk */
+.themaknop { all: unset; box-sizing: border-box; cursor: pointer; flex: none; display: grid; place-items: center; width: 34px; height: 34px;
+  border-radius: 50%; color: var(--tekst); border: 1px solid var(--lijn); background: var(--bg); }
+.themaknop:hover, .themaknop:focus-visible { background: var(--zacht-vlak); }
+.themaknop svg { width: 18px; height: 18px; }

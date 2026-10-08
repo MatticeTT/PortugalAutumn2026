@@ -189,6 +189,15 @@ for (const scheme of ['light', 'dark']) {
     await page.waitForFunction(() => !document.querySelector('.plandag.eigen'))
     check(`[${scheme}] activiteit verwijderd`, opslag.length === 0)
   }
+  // Knop dag/nacht: wisselt het thema en onthoudt de keuze.
+  const bgVoor = await page.evaluate(() => getComputedStyle(document.body).backgroundColor)
+  await page.click('#thema')
+  const bgNa = await page.evaluate(() => getComputedStyle(document.body).backgroundColor)
+  const bewaard = await page.evaluate(() => localStorage.getItem('thema'))
+  check(`[${scheme}] knop dag/nacht`, bgVoor !== bgNa && bewaard === (scheme === 'dark' ? 'licht' : 'donker'), `(${bgVoor} → ${bgNa})`)
+  if (shots) await page.screenshot({ path: `${shots}/thema-${scheme}.png` })
+  await page.click('#thema')
+  await page.evaluate(() => localStorage.removeItem('thema'))
   // Volgorde van voorrang: Klimmen naar boven zetten.
   const vooraf = await page.$$eval('.plandag .wat', (els) => els.map((e) => e.textContent))
   for (let k = 0; k < 3; k++) await page.click('#voorrang li:has-text("Klimmen") button[data-r="-1"]')

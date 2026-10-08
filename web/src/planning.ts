@@ -1,6 +1,7 @@
 // Tabblad Planning: 4 weken, per dag één resultaat (pipeline/site/planning.py):
 // golfsurfen, anders windsurfles, anders stille waters / e-foil, anders klimmen, anders niets.
 import './style.css'
+import { themaKnop } from './thema'
 import { laadActiviteiten, nieuweActiviteit, wisActiviteit, type Activiteit } from './activiteiten'
 import { bewaarVerblijf, leesVerblijf, tabWissel, rijTekst, rijtijden, vraagVerblijf, type Verblijf } from './verblijf'
 
@@ -273,6 +274,7 @@ function kop(v: Verblijf | null, melding = '') {
 }
 
 tabWissel()
+themaKnop()
 
 async function start() {
   const doel = document.getElementById('dagen')!

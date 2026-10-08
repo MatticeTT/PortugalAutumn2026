@@ -1,6 +1,7 @@
 import maplibregl, { type GeoJSONSource, type StyleSpecification } from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import './style.css'
+import { themaKnop } from './thema'
 import { bolletjeWW } from './kleuren'
 import { openFiche, sluitFiche, toonUur } from './fiche'
 import { zoekveld } from './zoek'
@@ -35,6 +36,7 @@ const OFM = 'https://tiles.openfreemap.org/styles/liberty'
 // Wisselen tussen de tabbladen Kaart en Planning: het verblijf onthouden (zie tabWissel in verblijf.ts).
 const viaTab = komtViaTab()
 tabWissel()
+themaKnop()
 
 function reserveStijl(): StyleSpecification {
   const css = getComputedStyle(document.documentElement)

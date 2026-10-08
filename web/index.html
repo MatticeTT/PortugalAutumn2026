@@ -7,6 +7,7 @@
   <meta name="color-scheme" content="light dark" />
   <title>Surfkaart Portugal</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><path d='M16 2a14 14 0 0 0 0 28z' fill='%2312b5d3'/><path d='M16 2a14 14 0 0 1 0 28z' fill='%233a6fe0'/></svg>" />
+  <script>try { const t = localStorage.getItem('thema'); if (t === 'licht' || t === 'donker') document.documentElement.dataset.theme = t === 'licht' ? 'light' : 'dark' } catch {}</script>
 </head>
 <body>
   <header class="balk">
@@ -19,6 +20,7 @@
           role="combobox" aria-expanded="false" aria-controls="zoeklijst" aria-autocomplete="list" />
         <ul id="zoeklijst" role="listbox" hidden></ul>
       </div>
+      <button id="thema" class="themaknop" type="button" aria-label="Dag of nacht"></button>
     </div>
     <div class="uurrij">
       <label><span class="sr">Dag</span><select id="datum"></select></label>
