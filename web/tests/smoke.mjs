@@ -134,6 +134,12 @@ for (const scheme of ['light', 'dark']) {
   const plannen = await page.$$eval('.plandag .waar em', (els) => els.map((e) => e.textContent))
   check(`[${scheme}] planning vanaf het verblijf, max 1 uur`, van.includes('max 1u') && plannen.every((t) => !/1u0[1-9]|1u[1-5]\d|[2-9]u/.test(t)), `(${van}; ${plannen.join(', ')})`)
   if (shots) await page.screenshot({ path: `${shots}/planning-${scheme}.png` })
+  // Terug naar de kaart: het verblijf is onthouden, geen nieuwe vraag.
+  await page.goto(base + '/')
+  await page.waitForSelector('body[data-klaar="1"]', { timeout: 20000 })
+  await page.waitForTimeout(800)
+  const terug = await page.textContent('#verblijfknop')
+  check(`[${scheme}] verblijf onthouden na planning`, !(await page.$('dialog.verblijfvraag[open]')) && terug.includes('Lagos'), `(${terug.trim()})`)
   await ctx.close()
 }
 check('OSRM nagebootst en gebruikt', osrm > 0, `(${osrm} vragen)`)

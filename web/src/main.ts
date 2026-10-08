@@ -76,6 +76,7 @@ function features() {
 }
 
 let kaart: maplibregl.Map
+const BOL = 36 // diameter van een strandbolletje in px (was 44, iets kleiner op vraag van de eigenaar)
 const perDag = new Map<string, number[]>()
 const slider = () => document.getElementById('uur') as HTMLInputElement
 const datumKeuze = () => document.getElementById('datum') as HTMLSelectElement
@@ -94,10 +95,10 @@ function ververs() {
 // Per sport de route naar de beste ideale plek dit uur binnen je rijtijd: eerst de hoogste score,
 // dan de kortste rijtijd. De lijn krijgt de kleur van de sport.
 const SPORTEN = [
-  { letter: 'G', naam: 'Golfsurfen', kleur: '#2a6fdb', tekst: '#2a6fdb' },
-  { letter: 'O', naam: 'Windsurfen op golven', kleur: '#f5c400', tekst: '#b38f00' },
-  { letter: 'S', naam: 'Windsurfen', kleur: '#14b8d4', tekst: '#0e8fa6' },
-  { letter: 'R', naam: 'Stille waters', kleur: '#8a949c', tekst: '#6b757d' },
+  { letter: 'G', naam: 'Golfsurfen', kleur: '#2a6fdb', tekst: '#2a6fdb', prio: 4 },
+  { letter: 'O', naam: 'Windsurfen op golven', kleur: '#f5c400', tekst: '#b38f00', prio: 3 },
+  { letter: 'S', naam: 'Windsurfen', kleur: '#14b8d4', tekst: '#0e8fa6', prio: 2 },
+  { letter: 'R', naam: 'Stille waters', kleur: '#8a949c', tekst: '#6b757d', prio: 1 },
 ]
 let verblijf: Verblijf | null = null
 let rij = new Map<string, number | null>()
@@ -134,7 +135,7 @@ async function tekenRoutes() {
   if (beurt !== routeBeurt) return // intussen een ander uur gekozen
   // Alleen echte routes over de weg; lukt een route niet, dan geen lijn (nooit vogelvlucht).
   src.setData({ type: 'FeatureCollection', features: beste.flatMap((b, k) => lijnen[k]
-    ? [{ type: 'Feature' as const, geometry: lijnen[k], properties: { kleur: b.sport.kleur } }] : []) })
+    ? [{ type: 'Feature' as const, geometry: lijnen[k], properties: { kleur: b.sport.kleur, prio: b.sport.prio } }] : []) })
   const naam = (n: string) => n === n.toUpperCase() ? n.charAt(0) + n.slice(1).toLowerCase() : n
   lijst.innerHTML = beste.length
     ? beste.map((b) => `<li><button type="button" data-id="${b.s.id}" style="--kleur:${b.sport.kleur};--tekstkleur:${b.sport.tekst}"><b>${b.sport.naam}</b>
@@ -268,8 +269,8 @@ async function start() {
     staat.cijfers = await eerste
     for (let w = 0; w <= 4; w++) for (let v = 0; v <= 4; v++) {
       if ((w === 0) !== (v === 0)) continue
-      kaart.addImage(`b${w}${v}`, bolletjeWW(w, v, 44), { pixelRatio: 2 })
-      for (let rood = 0; rood <= 3; rood++) kaart.addImage(`b${w}${v}${rood}`, bolletjeWW(w, v, 44, false, rood), { pixelRatio: 2 })
+      kaart.addImage(`b${w}${v}`, bolletjeWW(w, v, BOL), { pixelRatio: 2 })
+      for (let rood = 0; rood <= 3; rood++) kaart.addImage(`b${w}${v}${rood}`, bolletjeWW(w, v, BOL, false, rood), { pixelRatio: 2 })
     }
     kaart.addSource('stranden', {
       type: 'geojson', data: features(), cluster: true, clusterRadius: 30, clusterMaxZoom: 9,
@@ -284,9 +285,12 @@ async function start() {
     })
     // Routes vanaf het verblijf, onder de bolletjes.
     kaart.addSource('routes', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } })
+    // Waar routes over dezelfde weg lopen, ligt de sport met voorrang bovenop:
+    // golfsurfen, dan windsurfen op golven, dan windsurfen, dan stille waters.
     kaart.addLayer({ id: 'routes-rand', type: 'line', source: 'routes', layout: { 'line-cap': 'round', 'line-join': 'round' },
       paint: { 'line-color': '#ffffff', 'line-width': 7, 'line-opacity': 0.9 } })
-    kaart.addLayer({ id: 'routes', type: 'line', source: 'routes', layout: { 'line-cap': 'round', 'line-join': 'round' },
+    kaart.addLayer({ id: 'routes', type: 'line', source: 'routes',
+      layout: { 'line-cap': 'round', 'line-join': 'round', 'line-sort-key': ['get', 'prio'] },
       paint: { 'line-color': ['get', 'kleur'], 'line-width': 4 } })
     kaart.addLayer({ id: 'groepen', type: 'symbol', source: 'stranden', filter: ['has', 'point_count'],
       layout: { 'icon-image': ['concat', 'sg|', ['to-string', ['get', 'point_count']]] as any, 'icon-allow-overlap': true } })
@@ -320,7 +324,12 @@ async function start() {
       openFiche(hash)
       const oud = leesVerblijf()
       if (oud) kiesVerblijf(oud, false)
-    } else vraag()
+    } else {
+      // Al een verblijf bewaard: meteen gebruiken, zonder opnieuw te vragen (wijzigen kan met de knop bovenaan).
+      const oud = leesVerblijf()
+      if (oud) kiesVerblijf(oud)
+      else vraag()
+    }
   })
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') sluitFiche() })
   window.addEventListener('hashchange', () => {
