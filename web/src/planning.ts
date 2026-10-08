@@ -54,7 +54,7 @@ const SPORT: Record<Keuze['sport'], { naam: string; kleur: string; foto?: string
     },
   },
   klim: {
-    naam: 'Klimmen', kleur: '#6B4226',
+    naam: 'Klimmen', kleur: '#6B4226', foto: 'klimmen',
     links: [
       { url: 'https://climbingalgarve.pt/trips/climbing-in-lagos/', label: 'Climbing Algarve · halve dag', uitleg: '4 u · routes IV+ tot 6a+ · beginners' },
       { url: 'https://climbingalgarve.pt/courses/top-rope-course/', label: 'Top rope · volledige dag', uitleg: '8 u' },

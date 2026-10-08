@@ -395,6 +395,7 @@ async function render() {
   el().innerHTML = `<button class="sluit" aria-label="Sluiten">×</button>
     <h2>${esc(p.naam ?? 'Naam onbekend')}</h2>
     <div class="sub">${p.disciplines.map((d) => DISC[d]).join(', ')} · ${toonDag(ms)}</div>
+    <figure class="klimfoto"><img src="foto/klimmen.webp" alt=""></figure>
     <div class="klimkop" style="--kleur:${isBoulder(p) ? LICHTBRUIN : BRUIN}">
       <span class="graadpil ${isBoulder(p) ? 'boulder' : ''} ${r === '1' || r === '2' ? 'rood' : ''}">${esc(kort(g))}</span>
       ${reden ? `<b class="reden">Slecht weer: ${reden}</b>` : ''}</div>

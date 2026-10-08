@@ -10,6 +10,7 @@ on:
       - web/**
       - data/beaches/**
       - data/klim/**
+      - data/planning/**
       - pipeline/klim/**
       - .github/workflows/site.yml
 permissions:
