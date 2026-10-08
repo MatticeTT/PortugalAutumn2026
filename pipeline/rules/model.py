@@ -1,17 +1,3 @@
-"""Surfkaart rekenmodel v2 (eigenaar, 7 oktober 2026).
-
-De code hieronder is de referentiecode uit het document "Surfkaart rekenmodel v2", letterlijk overgenomen.
-Aanpassing van de rekenchat (antwoord c, 7 oktober 2026): vensterfactor krijgt een lijst vensters (0 tot 3)
-en geeft het deel van de 45 graden rond de golfrichting dat binnen een venster valt.
-Update van de eigenaar (8 oktober 2026): WAVE-grenzen 100 / 1000 / 3000 kJ, WIND-grenzen 5 / 15 / 25 kn,
-golfdeel van te wild 1000 -> 0, 5000 -> 1. Vergeleken met het document (33 tests) op 8 oktober 2026.
-Update 8 oktober 2026: "ideaal golfsurfen" alleen bij een periode op het strand van minstens 9 s
-(Surfertoday en Rapture Camps: 8 s en minder is windzee).
-bij twijfel geldt deze code. Niets eigens toegevoegd of weggelaten. De 27 testgevallen van het document
-staan in tests/test_model.py. Alles wat de site extra nodig heeft (welke deining het krachtigst is, de
-controles op de stranddata), staat in pipeline/rules/hulp.py, niet hier.
-"""
-# ruff: noqa
 import math
 
 MARGE = 1e-9   # twee getallen die minder verschillen gelden als gelijk (rekenafwijking)
@@ -55,12 +41,12 @@ def vensterfactor(richting, vensters):
     return totaal / 45.0
 
 def stroomfactor(periode, richting, stroom_kn, stroom_naar):
-    """Factor op de golfhoogte door de stroming (rekenchat): stroom tegen de golf in maakt ze hoger, mee lager.
-    richting = waar de deining vandaan komt; stroom_naar = waarheen de stroom gaat."""
+    """Hoogtefactor door stroom (Longuet-Higgins & Stewart 1961, diep water).
+    Stroom tegen de golf in maakt ze hoger, stroom mee lager, dwars doet niets."""
     if stroom_kn <= 0 or periode <= 0: return 1.0
-    c0 = 9.81 * periode / (2 * math.pi)
+    c0 = 9.81 * periode / (2 * math.pi)                               # golfsnelheid (m/s)
     U = stroom_kn * 0.5144 * math.cos(math.radians(stroom_naar - (richting + 180)))
-    u = max(U / c0, -0.2)
+    u = max(U / c0, -0.2)                                             # afkappen vlak voor blokkering (-0,25)
     c = 0.5 * (1 + math.sqrt(1 + 4 * u))
     return 1 / math.sqrt(c * (c + 2 * u))
 
@@ -98,7 +84,7 @@ def bereken(kust, vensters, wind, vlaag, windrichting, deiningen,
     van_zee  = lijn(wind, [(5, 1), (15, .5), (25, 0)])
     van_land = lijn(wind, [(15, 1), (25, .5), (35, 0)])
     s = max(0.0, min(1.0, (phi - 90) / 22.5))
-    golfsurfen = {"grootte": f_grootte,
+    golfsurfen = {"grootte": lijn(E, [(0, 0), (100, .75), (150, 1), (1000, 1), (5000, 0)]),
                   "periode": lijn(T, [(6, .7), (10, 1)]),
                   "wind": (1 - s) * van_zee + s * van_land,
                   "getij": f_tij}
@@ -113,7 +99,7 @@ def bereken(kust, vensters, wind, vlaag, windrichting, deiningen,
 
     # ---- windsurfen ----
     windsurfen = {
-        "windkracht": lijn(wind, [(5, 0), (8, .5), (15, 1), (25, 1), (35, 0)]),
+        "windkracht": lijn(wind, [(3, 0), (5, .75), (6, 1), (15, 1), (25, 0)]),
         "vlagen": f_vlagen,
         "windrichting": lijn(phi, [(0, .75), (45, 1), (90, 1), (135, .5), (180, 0)]),
         "vlak water": lijn(E, [(100, 1), (300, 0)]),
@@ -138,7 +124,7 @@ def bereken(kust, vensters, wind, vlaag, windrichting, deiningen,
         return 100 * p
 
     def level(e):
-        return 1 if e < 100 else 2 if e < 1000 else 3 if e < 3000 else 4
+        return 0 if e < 100 else 1 if e < 1000 else 2 if e < 3000 else 3
 
     factoren = {"golfsurfen": golfsurfen, "windsurfen_op_golven": windsurfen_op_golven,
                 "windsurfen": windsurfen, "stille_waters": stille_waters}
@@ -150,7 +136,7 @@ def bereken(kust, vensters, wind, vlaag, windrichting, deiningen,
         "E_zee": rond(E_zee), "WAVE": level(E_zee),
         # laag 2: WIND = wind + vlagen
         "wind": wind, "vlaag": vlaag,
-        "WIND": 4 if (wind > 25 or vlaag > 35) else 1 if wind < 5 else 2 if wind < 15 else 3,
+        "WIND": 3 if (wind > 25 or vlaag > 35) else 0 if wind < 5 else 1 if wind < 15 else 2,
         # laag 3: de extra's per strand
         "bereikt_pct": rond(100 * E / E_zee) if E_zee > 0 else 0,
         "E": rond(E), "WAVE_strand": level(E),
@@ -171,7 +157,7 @@ NAAM = {"golfsurfen": "golfsurfen", "windsurfen_op_golven": "windsurfen op golve
 
 def nota(uitkomst, factor, r):
     """De reden in gewone taal bij de zwakste factor van een uitkomst."""
-    if factor == "grootte":    return "te weinig golf op dit strand" if r["E"] < 200 else "te grote golven"
+    if factor == "grootte":    return "te weinig golf op dit strand" if r["E"] < 100 else "te grote golven"
     if factor == "periode":    return "korte, rommelige golven"
     if factor == "wind":       return "wind van zee of opzij" if r["windhoek"] < 101.25 else "te harde wind van land"
     if factor == "vlagen":     return "vlagerige wind"
@@ -179,7 +165,7 @@ def nota(uitkomst, factor, r):
     if factor == "golfslag":   return "te veel golfslag"
     if factor == "windkracht":
         if uitkomst == "stille_waters": return "te veel wind"
-        ideaal_vanaf = 18 if uitkomst == "windsurfen_op_golven" else 15
+        ideaal_vanaf = 18 if uitkomst == "windsurfen_op_golven" else 5
         return "te weinig wind" if r["wind"] < ideaal_vanaf else "te veel wind"
     if factor == "windrichting":
         if uitkomst == "stille_waters": return "wind van land"
@@ -215,8 +201,17 @@ def conclusie(r):
         if ruw[beste] >= 50 - MARGE:
             return "te wild; %s %d/100 alleen voor ervaren" % (NAAM[beste], score)
         return "te wild"
-    if beste == "golfsurfen" and ruw[beste] >= 75 - MARGE and r["periode"] < 9:
-        return "andere: golfsurfen %d/100, niet ideaal door korte, rommelige golven" % score
-    if ruw[beste] >= 75 - MARGE:
-        return "ideaal " + NAAM[beste]
-    return "andere: %s %d/100, niet ideaal door %s" % (NAAM[beste], score, nota(beste, zwakste(beste), r))
+    def blokkade(naam):                           # waarom een score van 75+ toch niet ideaal mag heten
+        if naam == "golfsurfen":
+            if r["WAVE_strand"] >= 2: return "sterke golven, ervaring nodig"
+            if r["WAVE_strand"] == 0: return "te weinig golf op dit strand"
+            if r["periode"] < 9:      return "korte, rommelige golven"
+        if naam == "windsurfen":
+            if r["WIND"] >= 2: return "sterke wind, ervaring nodig"
+            if r["WIND"] == 0: return "te weinig wind"
+        return None
+    for naam in sorted(VOLGORDE, key=lambda n: -ruw[n]):      # beste ideale uitkomst eerst
+        if ruw[naam] >= 75 - MARGE and blokkade(naam) is None:
+            return "ideaal " + NAAM[naam] + (" (ervaring nodig)" if naam == "windsurfen_op_golven" else "")
+    reden = blokkade(beste) if ruw[beste] >= 75 - MARGE else nota(beste, zwakste(beste), r)
+    return "andere: %s %d/100, niet ideaal door %s" % (NAAM[beste], score, reden)
