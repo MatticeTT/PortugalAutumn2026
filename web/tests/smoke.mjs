@@ -148,6 +148,9 @@ for (const scheme of ['light', 'dark']) {
   const plannen = await page.$$eval('.plandag .waar em', (els) => els.map((e) => e.textContent))
   check(`[${scheme}] planning vanaf het verblijf, max 1 uur`, van.includes('max 1u') && plannen.every((t) => !/1u0[1-9]|1u[1-5]\d|[2-9]u/.test(t)), `(${van}; ${plannen.join(', ')})`)
   if (shots) await page.screenshot({ path: `${shots}/planning-${scheme}.png` })
+  if (shots) await page.screenshot({ path: `${shots}/planning-vol-${scheme}.png`, fullPage: true })
+  const regels = await page.$$eval('.daglijst li', (els) => els.map((e) => e.textContent.replace(/\s+/g, ' ').trim()))
+  check(`[${scheme}] dagen zonder plan als regels per week`, regels.some((r) => /Aankomst/.test(r)) && regels.some((r) => /Nog geen voorspelling/.test(r)), `(${regels.length} regels)`)
   // Volgorde van voorrang: Klimmen naar boven zetten.
   const vooraf = await page.$$eval('.plandag .wat', (els) => els.map((e) => e.textContent))
   for (let k = 0; k < 3; k++) await page.click('#voorrang li:has-text("Klimmen") button[data-r="-1"]')
@@ -165,7 +168,7 @@ for (const scheme of ['light', 'dark']) {
   check(`[${scheme}] verblijf onthouden na planning`, !(await page.$('dialog.verblijfvraag[open]')) && terug.includes('Lagos'), `(${terug.trim()})`)
   // Nog eens heen en terug via de tabbladen.
   await page.click('.tabs a[href="planning"]')
-  await page.waitForSelector('.plandag, .dagniets', { timeout: 15000 })
+  await page.waitForSelector('.plandag, .daglijst', { timeout: 15000 })
   await page.click('.tabs a[href="./"]')
   await page.waitForSelector('body[data-klaar="1"]', { timeout: 20000 })
   await page.waitForTimeout(800)

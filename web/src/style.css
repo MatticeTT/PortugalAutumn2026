@@ -595,3 +595,27 @@ details.meer[open] > summary { margin-bottom: 8px; }
 .plandag details { margin-top: 10px; color: var(--zacht); }
 .plandag details summary { cursor: pointer; font-weight: 600; padding: 2px 0; }
 .plandag details .links { margin-top: 8px; }
+
+/* Planning: dagen zonder plan — per week één kader met regels; links een vaste datumkolom */
+.daglijst { list-style: none; margin: 0 0 14px; padding: 0; background: var(--vlak); border: 1px solid var(--lijn); border-radius: 14px; overflow: hidden; }
+.daglijst li { display: grid; grid-template-columns: 92px 1fr; gap: 12px; align-items: start; padding: 11px 14px; }
+.daglijst li + li { border-top: 1px solid var(--lijn); }
+.daglijst .datum { font-weight: 700; font-size: 14px; line-height: 22px; white-space: nowrap; }
+.daglijst .datum::first-letter { text-transform: uppercase; }
+.daglijst li > div { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.daglijst .stil { display: inline-flex; align-items: center; gap: 6px; color: var(--zacht); font-size: 14px; line-height: 22px; }
+.daglijst .stil svg { width: 16px; height: 16px; flex: none; }
+.daglijst .reis { display: flex; align-items: flex-start; gap: 8px; margin: 0; padding: 0; background: none; border-radius: 0; font-size: 14px; line-height: 22px; color: var(--tekst); }
+.daglijst .reis svg { flex: none; width: 18px; height: 18px; color: #b07d00; }
+.daglijst .reis.terugvlucht svg { color: #6b5bd6; }
+.daglijst .reis b { font-weight: 700; }
+.daglijst .reis span { color: var(--zacht); }
+.daglijst .reis b { color: var(--tekst); margin-right: 2px; }
+.daglijst .reis svg { margin-top: 2px; }
+.daglijst .reisregel { box-shadow: inset 4px 0 0 #e0b100; }
+.daglijst .reisregel:has(.terugvlucht) { box-shadow: inset 4px 0 0 #7d6ee6; }
+@media (prefers-color-scheme: dark) { .daglijst .reis { background: none; color: var(--tekst); } .daglijst .reis svg { color: #f5c400; } .daglijst .reis.terugvlucht svg { color: #a99bff; } }
+@media (max-width: 380px) { .daglijst li { grid-template-columns: 80px 1fr; gap: 8px; } }
+.daglijst li.leeg { display: flex; align-items: center; justify-content: space-between; gap: 12px; background: var(--zacht-vlak); }
+.daglijst .periode { font-weight: 700; font-size: 14px; white-space: nowrap; color: var(--tekst); }
+.daglijst .periode::first-letter { text-transform: uppercase; }

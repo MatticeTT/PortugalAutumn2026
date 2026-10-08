@@ -98,8 +98,6 @@ function plan(d: Dag, k: Keuze) {
   </article>`
 }
 
-const niets = (d: Dag) => `<p class="dagniets"><b>${datumTekst(d.dag, { weekday: 'short' })} ${DAGNR.format(new Date(d.dag + 'T12:00:00Z'))}</b> niets ideaal</p>`
-
 // Weken: deze week, volgende week, daarna "week van ..."; dagen zonder voorspelling samen op één regel.
 function weekKop(d: string, eerste: string) {
   const t = new Date(d + 'T12:00:00Z'), t0 = new Date(eerste + 'T12:00:00Z')
@@ -108,31 +106,66 @@ function weekKop(d: string, eerste: string) {
   return w === 0 ? 'Deze week' : w === 1 ? 'Volgende week' : `Week van ${fmt({ day: 'numeric', month: 'long' }).format(maandag(t))}`
 }
 
-// Aankomst of terugvlucht: een balk boven de dag.
+// Aankomst of terugvlucht: één regel met icoon.
 const reis = (r: Reis) => `<p class="reis ${r.soort}">${r.soort === 'aankomst' ? ICOON.aankomst : ICOON.vertrek}
-  <b>${r.soort === 'aankomst' ? 'Aankomst' : 'Terugvlucht'}</b> ${esc(r.wie.join(', '))}</p>`
+  <span><b>${r.soort === 'aankomst' ? 'Aankomst' : 'Terugvlucht'}</b> ${esc(r.wie.join(', '))}</span></p>`
+
+// Dagen zonder plan staan per week in één kader, als regels met links altijd dezelfde datumkolom:
+// reisdagen, "niets ideaal", en opeenvolgende dagen zonder voorspelling samen op één regel.
+const kortDag = (d: string) => `${datumTekst(d, { weekday: 'short' })} ${DAGNR.format(new Date(d + 'T12:00:00Z'))} ${datumTekst(d, { month: 'short' })}`
+function bereik(a: string, b: string) {
+  if (a === b) return kortDag(a)
+  const ma = datumTekst(a, { month: 'short' }), mb = datumTekst(b, { month: 'short' })
+  const na = DAGNR.format(new Date(a + 'T12:00:00Z')), nb = DAGNR.format(new Date(b + 'T12:00:00Z'))
+  return ma === mb ? `${na} – ${nb} ${mb}` : `${na} ${ma} – ${nb} ${mb}`
+}
+const regel = (datum: string, inhoud: string, soort = '') => soort === 'leeg'
+  // Periode zonder voorspelling: kopregel van het kader, tekst links en de periode rechts (past altijd).
+  ? `<li class="leeg">${inhoud}<span class="periode">${datum}</span></li>`
+  : `<li class="${soort}"><span class="datum">${datum}</span><div>${inhoud}</div></li>`
 
 function toon(dagen: Dag[]) {
-  let html = '', kop = '', zonder: Dag[] = []
-  const sluitZonder = () => {
-    if (!zonder.length) return
-    const a = zonder[0].dag, b = zonder[zonder.length - 1].dag
-    const tekst = a === b ? datumTekst(a, { weekday: 'short', day: 'numeric', month: 'short' })
-      : `${datumTekst(a, { day: 'numeric', month: 'short' })} – ${datumTekst(b, { day: 'numeric', month: 'short' })}`
-    html += `<p class="nogniet">${ICOON.wolk} ${tekst}: nog geen voorspelling</p>`
-    zonder = []
-  }
+  // Per week: is er voor geen enkele dag een voorspelling, dan staat dat één keer bovenaan het kader
+  // en tonen de regels eronder alleen nog de reisdagen.
+  const weken = new Map<string, Dag[]>()
   for (const d of dagen) {
     const w = weekKop(d.dag, dagen[0].dag)
-    if (w !== kop) { sluitZonder(); html += `<h2 class="week">${w}</h2>`; kop = w }
-    const reizen = d.reizen ?? []
-    if (!d.voorspelling && !reizen.length) { zonder.push(d); continue }
-    sluitZonder()
-    if (reizen.length) html += `<div class="reisdag"><span class="reisdatum">${datumTekst(d.dag, { weekday: 'short' })} ${DAGNR.format(new Date(d.dag + 'T12:00:00Z'))} ${datumTekst(d.dag, { month: 'short' })}</span>${reizen.map(reis).join('')}</div>`
-    if (!d.voorspelling) html += `<p class="nogniet klein-na-reis">${ICOON.wolk} nog geen voorspelling</p>`
-    else html += d.keuze ? plan(d, d.keuze) : niets(d)
+    if (!weken.has(w)) weken.set(w, [])
+    weken.get(w)!.push(d)
   }
-  sluitZonder()
+  const geenVoorspelling = `<span class="stil">${ICOON.wolk} Nog geen voorspelling</span>`
+  let html = ''
+  for (const [w, ds] of weken) {
+    html += `<h2 class="week">${w}</h2>`
+    if (ds.every((d) => !d.voorspelling)) {
+      const rijen = [regel(bereik(ds[0].dag, ds[ds.length - 1].dag), geenVoorspelling, 'leeg')]
+      for (const d of ds) if (d.reizen?.length) rijen.push(regel(kortDag(d.dag), d.reizen.map(reis).join(''), 'reisregel'))
+      html += `<ul class="daglijst">${rijen.join('')}</ul>`
+      continue
+    }
+    let lijst: string[] = [], zonder: Dag[] = []
+    const sluitZonder = () => {
+      if (zonder.length) lijst.push(regel(bereik(zonder[0].dag, zonder[zonder.length - 1].dag), geenVoorspelling, 'leeg'))
+      zonder = []
+    }
+    const sluitLijst = () => { sluitZonder(); if (lijst.length) html += `<ul class="daglijst">${lijst.join('')}</ul>`; lijst = [] }
+    for (const d of ds) {
+      const reizen = d.reizen ?? []
+      if (!d.voorspelling && !reizen.length) { zonder.push(d); continue }
+      sluitZonder()
+      const reisHtml = reizen.map(reis).join('')
+      if (d.voorspelling && d.keuze) {
+        // Een dag met plan: eventuele reis als regel net boven de fotokaart.
+        if (reizen.length) lijst.push(regel(kortDag(d.dag), reisHtml, 'reisregel'))
+        sluitLijst()
+        html += plan(d, d.keuze)
+      } else {
+        const status = d.voorspelling ? '<span class="stil">Niets ideaal</span>' : geenVoorspelling
+        lijst.push(regel(kortDag(d.dag), reisHtml + status, reizen.length ? 'reisregel' : ''))
+      }
+    }
+    sluitLijst()
+  }
   return html
 }
 
