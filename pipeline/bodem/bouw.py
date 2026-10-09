@@ -40,8 +40,9 @@ GCC_MAX_M = 1500
 WCS = ("https://ows.emodnet-bathymetry.eu/wcs?service=WCS&version=1.0.0&request=GetCoverage&coverage=emodnet:mean"
        "&crs=EPSG:4326&bbox={x0},{y0},{x1},{y1}&format=image/tiff&resx={r}&resy={r}")
 RES = 1 / 960  # 1/16 boogminuut
-# coast_type_flag van GCC -> bodem_type. Ingevuld na de verkenning (verkenning2.json).
-BODEM = {"sandy": "zand", "rocky": "rots", "muddy": "slik"}
+# coast_type_flag van GCC (Hulskamp e.a. 2023): Sandy, Rocky, Muddy, Vegetated, Other of leeg (verkenning2.json).
+# Leeg = geen klasse: bodem_type blijft dan leeg.
+BODEM = {"sandy": "zand", "rocky": "rots", "muddy": "slik", "vegetated": "anders", "other": "anders"}
 
 VOORKEUR = {("zand", "vlak"): "half tot hoog", ("zand", "gemiddeld"): "half", ("zand", "steil"): "laag"}
 
@@ -202,9 +203,9 @@ def bodem(rooster, s: dict) -> dict:
                     beste = (d, flag, gid)
     if beste is None or beste[0] > GCC_MAX_M:
         return {"bodem_type": None, "bodem_afstand_m": round(beste[0]) if beste else None, "gcc_kusttype": None}
-    flag = beste[1]
-    return {"bodem_type": BODEM.get((flag or "").strip().lower(), "anders"), "bodem_afstand_m": round(beste[0]),
-            "gcc_kusttype": flag, "gcc_id": beste[2]}
+    flag = (beste[1] or "").strip()
+    return {"bodem_type": BODEM.get(flag.lower()), "bodem_afstand_m": round(beste[0]),
+            "gcc_kusttype": flag or None, "gcc_id": beste[2]}
 
 
 # ---------- stap 3: getij ----------
