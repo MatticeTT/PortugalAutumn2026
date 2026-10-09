@@ -567,7 +567,7 @@ details.meer[open] > summary { margin-bottom: 8px; }
 .voorrang .kopregel { display: flex; align-items: center; justify-content: space-between; min-height: 28px; margin-bottom: 4px; }
 .voorrang .kopregel span { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--zacht); }
 .voorrang ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
-.voorrang li { display: grid; grid-template-columns: 24px 1fr 36px 36px; align-items: center; gap: 8px; min-height: 42px;
+.voorrang li { display: grid; grid-template-columns: 24px minmax(0, 1fr) 36px 36px; align-items: center; gap: 8px; min-height: 42px;
   padding: 0 4px 0 10px; border-radius: 10px; background: var(--bg); box-shadow: inset 4px 0 0 var(--kleur); }
 .voorrang li b { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--kleur); color: #fff; font-size: 12px; }
 .voorrang li span { font-weight: 600; font-size: 15px; }
@@ -700,3 +700,7 @@ b.storm { font-size: 10px; padding: 1px 3px; border-radius: 3px; }
 .gegevens-tegels .tegel { background: var(--vlak); border: 1px solid var(--lijn); color: var(--tekst); }
 .surfpaneel .gewicht input { width: 70px; font: inherit; padding: 4px 6px; border: 1px solid var(--lijn); border-radius: 6px;
   background: var(--bg); color: var(--tekst); }
+.voorrang li select { display: block; margin-top: 3px; width: 100%; max-width: 100%; font: inherit; font-size: 13px; padding: 3px 4px;
+  border: 1px solid var(--lijn); border-radius: 6px; background: var(--bg); color: var(--tekst); }
+.pagina { width: 100%; min-width: 0; box-sizing: border-box; }
+.pagina .tabel { max-width: 100%; }

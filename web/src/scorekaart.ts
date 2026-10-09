@@ -112,3 +112,15 @@ export function beeldUitNaam(naam: string): ImageData | null {
   if (!m) return null
   return cirkel(leesTeken(m[1]), leesTeken(m[2]), 36, m[3] === '1')
 }
+
+// Naam van een categorie: "kitesurfen_golven_ervaren" -> "Kitesurfen op golven · ervaren".
+const SPORTNAAM: Record<string, string> = {
+  golfsurfen: 'Golfsurfen', longboard: 'Longboard', shortboard: 'Shortboard', windsurfen: 'Windsurfen',
+  kitesurfen: 'Kitesurfen',
+}
+export function categorieNaam(k: string): string {
+  const delen = k.split('_')
+  const nv = delen[delen.length - 1]
+  const golven = delen.includes('golven') ? ' op golven' : ''
+  return `${SPORTNAAM[delen[0]] ?? delen[0]}${golven} · ${nv}`
+}

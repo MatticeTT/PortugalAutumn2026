@@ -130,26 +130,26 @@ for (const scheme of ['light', 'dark']) {
   await page.waitForSelector('#fiche .tegel b', { timeout: 5000 })
   const ms = Date.now() - t1
   check(`[${scheme}] fiche open`, ms < 1000, `(${ms} ms na het laden van de kaart)`)
-  const tegels = await page.$$eval('#fiche .tegel .soort', (els) => els.map((e) => e.textContent))
-  check(`[${scheme}] fiche: WAVE en WIND`, tegels.join() === 'WAVE,WIND', `(${tegels.join(', ')})`)
-  // Het bolletje op de kaart en de fiche tonen hetzelfde WIND- en WAVE-cijfer.
+  const tegels = await page.$$eval('#fiche .groep .tegel .soort', (els) => els.map((e) => e.textContent))
+  check(`[${scheme}] fiche: WIND, WAVE en stille waters`, tegels.join() === 'WIND,WAVE,Stille waters', `(${tegels.join(', ')})`)
+  // De cirkel op de kaart en de fiche tonen hetzelfde WIND- en WAVE-cijfer (score van de rekenchat, alle niveaus).
   const i = Number(await page.getAttribute('#fiche .dag td.nu a[data-i]', 'data-i'))
   const kaartCijfers = await page.evaluate(async ([id, i]) => {
     const g = await (await fetch('data/index.json')).json()
     const v = `?v=${encodeURIComponent(g.gemaakt)}`
     const k = (await (await fetch('data/kaart.json' + v)).json()).findIndex((s) => s.id === id)
-    return (await (await fetch('data/sport/ww.json' + v)).json())[k].slice(5 * i, 5 * i + 3)
+    const rij = (await (await fetch('data/sport/score_alle.json' + v)).json())[k]
+    const cijfer = (t) => (/[0-2]/.test(t) ? t : /[a-c]/.test(t) ? String(t.charCodeAt(0) - 97) : /[gor]/.test(t) ? '3' : '4')
+    return cijfer(rij[2 * i + 1]) + cijfer(rij[2 * i])
   }, [id, i])
-  // De fiche toont levels 0–3, de kaartdata bevat 1–4 (eigenaar): +1 om te vergelijken.
-  const ficheCijfers = (await page.$$eval('#fiche .tegel > b', (els) => els.map((e) => String(Number(e.textContent) + 1)))).reverse().join('')
-    + await page.$$eval('#fiche .tegel', (els) => String((els[1].classList.contains('verkeerd') ? 1 : 0) + (els[0].classList.contains('verkeerd') ? 2 : 0)))
-  check(`[${scheme}] kaart en fiche gelijk (WIND, WAVE, rood kader)`, kaartCijfers === ficheCijfers, `(kaart ${kaartCijfers}, fiche ${ficheCijfers})`)
+  const ficheCijfers = (await page.$$eval('#fiche .groep .tegel > b', (els) => els.map((e) => e.textContent))).slice(0, 2).join('')
+  check(`[${scheme}] kaart en fiche gelijk (WIND, WAVE)`, kaartCijfers === ficheCijfers, `(kaart ${kaartCijfers}, fiche ${ficheCijfers})`)
   const rijen = await page.$$eval('#fiche .dag th', (els) => els.map((e) => e.textContent))
   const uren = await page.$$eval('#fiche .dag a[data-i]', (els) => els.length)
-  check(`[${scheme}] fiche: de dag met WAVE, WIND en getij`, ['WAVE', 'WIND', 'getij'].every((r) => rijen.includes(r)) && uren >= 20, `(${uren} uren)`)
+  check(`[${scheme}] fiche: de dag met WAVE, WIND en getij`, ['WAVE', 'WIND', 'stil', 'getij'].every((r) => rijen.includes(r)) && uren >= 20, `(${uren} uren)`)
   const held = await page.textContent('#fiche .held .zin')
   const rest = await page.$$eval('#fiche .rest li', (els) => els.length)
-  check(`[${scheme}] fiche: bovenaan wat je vandaag kan, met de andere eronder`, !!held && rest >= 3, `(${held}; ${rest} andere)`)
+  check(`[${scheme}] fiche: bovenaan wat je vandaag kan, met de andere eronder`, !!held && rest >= 2, `(${held}; ${rest} andere)`)
   if (shots) {
     await page.screenshot({ path: `${shots}/fiche-${scheme}.png` })
     await page.locator('#fiche').screenshot({ path: `${shots}/fiche-vol-${scheme}.png` }).catch(() => {})
@@ -237,14 +237,19 @@ for (const scheme of ['light', 'dark']) {
   const uitleg = await page.textContent('.surfpaneel')
   const tel = () => page.evaluate(async () => (await (window).__kaart.getSource('stranden').getData()).features.length)
   const voor = await tel()
-  await page.check('.surfpaneel input[name=surfkeuze][value="R"]')
+  await page.check('.surfpaneel input[name=surftoon][value="golf"]')
   await page.waitForTimeout(300)
   const na = await tel()
-  const keuzes = await page.$$eval('.surfpaneel .keuzes label', (els) => els.map((e) => e.textContent.trim()))
-  check(`[${scheme}] knop Surfen: 5 keuzes en filter werkt`, keuzes.join('|') === 'Alles|Ideale golfsurfdag|Ideale windsurfdag|Windsurfen op golven|Ideale stille waters'
+  const keuzes = await page.$$eval('.surfpaneel input[name=surftoon]', (els) => els.map((e) => e.value))
+  check(`[${scheme}] knop Surfen: tonen (4 keuzes) en filter werkt`, keuzes.join('|') === 'alles|golf|wind|stil'
     && /Links WIND/.test(uitleg) && na < voor, `(${voor} → ${na} stranden)`)
+  await page.check('.surfpaneel input[name=surfniveau][value="beginner"]')
+  await page.waitForTimeout(800)
+  const beginner = await tel()
+  check(`[${scheme}] niveaufilter laadt en filtert`, beginner <= na, `(${na} → ${beginner} stranden)`)
   if (shots) await page.screenshot({ path: `${shots}/surfpaneel-${scheme}.png` })
-  await page.check('.surfpaneel input[name=surfkeuze][value="alles"]')
+  await page.check('.surfpaneel input[name=surfniveau][value=""]')
+  await page.check('.surfpaneel input[name=surftoon][value="alles"]')
   // Herladen: de vraag komt terug, leeg.
   await page.reload()
   await page.waitForSelector('dialog.verblijfvraag[open]', { timeout: 10000 })

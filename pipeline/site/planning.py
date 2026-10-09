@@ -1,24 +1,23 @@
-"""De planning voor de komende 4 weken (tabblad /planning; eigenaar en rekenchat, 8 oktober 2026).
+"""De planning voor de komende 4 weken (tabblad /planning; eigenaar en rekenchat).
 
-Per dag precies één resultaat, in deze volgorde (eigenaar; de site laat de volgorde aanpassen):
-1 golfsurfen     conclusie "ideaal golfsurfen", alleen stranden tot 2 uur rijden van Ferragudo; daarvan
-                 eerst de beste condities (hoogste gemiddelde golfsurfscore over het blok, afgerond), en van
-                 die het blok met de kortste rijtijd.
-2 windsurfen     anders: conclusie "ideaal windsurfen", zelfde werkwijze als golfsurfen (score windsurfen).
-3 stille waters  anders: conclusie "ideaal stille waters", zelfde werkwijze (score stille waters).
-4 klimmen        anders: elke klimplek (sport of trad) tot 2 uur rijden, minstens 4 opeenvolgende uren zonder
-                 regen en geen regen in de 24 uur ervoor; eerst het langste blok, dan de kortste rijtijd.
-Anders niets. Dezelfde regels in alle landen.
+Score van de rekenchat (versie 2.1, pipeline/rules/score.py). Per strand en per categorie (17 categorieën:
+7 golfsporten, 10 windsporten) en voor stille waters: de blokken van minstens 3 opeenvolgende uren met een score
+van 60 of meer ("ga", cijfer 3 of 4), met de gemiddelde score over het blok. Klimmen: elke klimplek (sport of
+trad), minstens 4 opeenvolgende uren zonder regen en geen regen in de 24 uur ervoor.
+
+De site kiest per dag één plan: de bezoeker kiest een categorie voor golfsporten en een voor windsporten, en de
+volgorde van voorrang (standaard golfsporten, windsporten, stille waters, klimmen). Per sport eerst de beste
+gemiddelde score (afgerond), dan de kortste rijtijd vanaf het verblijf; klimmen: het langste blok, dan de kortste
+rijtijd. De scores zijn gerekend met het standaardgewicht (75 kg).
 
 Algemeen
 - Een uur telt alleen mee als het begint tussen 30 min voor zonsopgang en 30 min na zonsondergang.
-- Een blok = minstens 3 opeenvolgende ideale uren op dezelfde plek (klimmen: 4).
-- Afstand = rijtijd met de auto vanaf Ferragudo (OSRM, data/beaches/rijtijd.json); ook de vogelvlucht staat erbij.
+- Afstand = rijtijd met de auto vanaf Ferragudo (OSRM, data/beaches/rijtijd.json) zolang er geen verblijf is.
 - Dagen zonder voorspelling: "nog geen voorspelling".
 - Aankomsten en terugvluchten (data/planning/reizen.json) staan bij hun dag; de planning loopt minstens 4 weken
   en zeker tot de laatste vlucht.
 
-Schrijft web/public/data/planning.json.
+Schrijft web/public/data/planning.json (Portugal en klimmen) en planning_<land>.json (compact, andere landen).
 """
 
 from __future__ import annotations
@@ -29,17 +28,16 @@ from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
-from pipeline.site.inpakken import conclusies_uitpakken
+from pipeline.rules.score import GO
 from pipeline.site.zon_getij import zon
 
 LIS = ZoneInfo("Europe/Lisbon")
 FERRAGUDO = (37.1238, -8.5195)
 DAGEN = 28
-MAX_RIJ_SURF = 120  # minuten (eigenaar: alleen tot 2 uur rijden)
 RIJ: dict[str, dict | None] = {}
-# Per strand-sport: de conclusie die telt en de kolom van zijn score in "scores" (volgorde van model.VOLGORDE).
-STRAND_SPORT = (("golfsurfen", "ideaal golfsurfen", 0), ("windsurf", "ideaal windsurfen", 2),
-                ("stil", "ideaal stille waters", 3))
+# Per strand: naam, ligging, land en per categorie (en "stil") de score per uur (0-100, 255 = geen score).
+# Gevuld door build_data.strand().
+SCORES: dict[str, dict] = {}
 
 
 def km(lat: float, lon: float) -> float:
@@ -87,40 +85,29 @@ def maak(axis: list[str], out: Path, klimweer: dict, klimplekken: list[dict]) ->
     per_dag: dict[str, dict[str, list]] = {}
 
     def voeg(dag: str, sport: str, b: dict):
-        per_dag.setdefault(dag, {"golfsurfen": [], "stil": [], "windsurf": [], "klim": []})[sport].append(b)
+        per_dag.setdefault(dag, {}).setdefault(sport, []).append(b)
 
-    # Andere landen: alleen kandidaten (blokken golfsurfen en stille waters), per land een eigen bestand
-    # planning_<land>.json; de site laadt een land pas als het binnen de rijtijd van het verblijf kan liggen.
+    # Andere landen: per land een eigen, compact bestand planning_<land>.json; de site laadt een land pas als
+    # het binnen de rijtijd van het verblijf kan liggen.
     per_land: dict[str, dict[str, dict[str, list]]] = {}
     per_land_plekken: dict[str, dict[str, list]] = {}
 
-    # 1 en 2: stranden (de conclusie per uur staat in strand/<id>.json)
-    for f in sorted((out / "strand").glob("*.json")):
-        d = json.loads(f.read_text())
-        plek = {"naam": d["naam"], "id": d["id"], "lat": d["lat"], "lon": d["lon"]}
-        land = d.get("land")
-        conclusies_uitpakken(d)  # compacte fiche (andere landen): conclusies en scores terug per uur
-        if land and land in per_land_plekken and d["id"] in per_land_plekken[land]:
-            continue  # al gezien (zelfde strand)
+    # Stranden: per categorie de blokken van minstens 3 uur met een score van 60 of meer.
+    for pid, st in SCORES.items():
+        plek = {"naam": st["naam"], "id": pid, "lat": st["lat"], "lon": st["lon"]}
+        land = st["land"] if st["land"] != "pt" else None
+        licht = [telt(st["lat"], st["lon"], t) for t in uren]
         if land:
-            doel = per_land.setdefault(land, {})
-            per_land_plekken.setdefault(land, {})[d["id"]] = [d["naam"], round(d["lat"], 5), round(d["lon"], 5)]
-            licht = [telt(d["lat"], d["lon"], t) for t in uren]
-            for sport, tekst, kolom in STRAND_SPORT:
-                ok = [licht[i] and (d["conclusie"][i] or "").startswith(tekst) for i in range(len(uren))]
-                for a, b in blokken(uren, ok, 3):
-                    s = [d["scores"][i][kolom] for i in range(a, b + 1)]
-                    bl = blok(plek, uren, a, b, score=round(sum(s) / len(s), 1)) | {"rij": None}
-                    doel.setdefault(uren[a].astimezone(LIS).date().isoformat(), {}).setdefault(sport, []).append(bl)
-            continue
-        licht = [telt(d["lat"], d["lon"], t) for t in uren]
-        for sport, tekst, kolom in STRAND_SPORT:
-            ok = [licht[i] and (d["conclusie"][i] or "").startswith(tekst) for i in range(len(uren))]
+            per_land_plekken.setdefault(land, {})[pid] = [st["naam"], round(st["lat"], 5), round(st["lon"], 5)]
+        for sport, reeks in st["scores"].items():
+            ok = [licht[i] and reeks[i] != 255 and reeks[i] >= GO for i in range(len(uren))]
             for a, b in blokken(uren, ok, 3):
-                # gemiddelde score van die activiteit over het blok
-                s = [d["scores"][i][kolom] for i in range(a, b + 1)]
-                voeg(uren[a].astimezone(LIS).date().isoformat(), sport,
-                     blok(plek, uren, a, b, score=round(sum(s) / len(s), 1)))
+                sc = [reeks[i] for i in range(a, b + 1)]
+                bl = blok(plek, uren, a, b, score=round(sum(sc) / len(sc), 1))
+                if land:
+                    per_land.setdefault(land, {}).setdefault(bl["dag"], {}).setdefault(sport, []).append(bl)
+                else:
+                    voeg(bl["dag"], sport, bl)
 
     # Klimmen: elke klimplek met sport of trad (boulderen wordt niet gepland), per plek de droge blokken.
     kt = [datetime.fromisoformat(t).replace(tzinfo=UTC) for t in klimweer.get("_tijd", [])]
@@ -166,24 +153,9 @@ def maak(axis: list[str], out: Path, klimweer: dict, klimplekken: list[dict]) ->
         if dag > laatste:
             dagen.append({"dag": s, "voorspelling": False, "reizen": per_reisdag.get(s, [])})
             continue
-        p = per_dag.get(s, {"golfsurfen": [], "stil": [], "windsurf": [], "klim": []})
-        # Alle blokken per sport, vóór de keuze: de site kiest daarmee opnieuw vanaf het verblijf van de bezoeker
-        # (eigen plaats en maximale rijtijd); "keuze" is de keuze vanaf Ferragudo met 2 uur rijden.
-        kandidaten = {k: [dict(b) for b in v] for k, v in p.items()}
-        lengte = lambda b: int(b["tot"][:2]) - int(b["van"][:2])  # noqa: E731
+        # Alle blokken per sport (categorie, stil, klim); de site kiest daarmee vanaf het verblijf van de bezoeker.
+        kandidaten = {k: [dict(b) for b in v] for k, v in per_dag.get(s, {}).items()}
         keuze = None
-        # Alleen tot 2 uur rijden; zonder gekende rijtijd telt een plek niet mee.
-        for sport in ("golfsurfen", "windsurf", "stil", "klim"):
-            bs = [b for b in p[sport] if b["rij"] is not None and b["rij"] <= MAX_RIJ_SURF]
-            if not bs:
-                continue
-            if sport == "klim":  # eerst het langste blok, dan de kortste rijtijd
-                langst = max(lengte(b) for b in bs)
-                keuze = {"sport": sport, **min([b for b in bs if lengte(b) == langst], key=lambda b: b["rij"])}
-            else:  # eerst de beste condities (gemiddelde score, afgerond zoals getoond), dan de kortste rijtijd
-                beste = max(round(b["score"]) for b in bs)
-                keuze = {"sport": sport, **min([b for b in bs if round(b["score"]) == beste], key=lambda b: b["rij"])}
-            break
         dagen.append({"dag": s, "voorspelling": True, "keuze": keuze, "kandidaten": kandidaten,
                       "reizen": per_reisdag.get(s, [])})
     uit = {"gemaakt": datetime.now(UTC).strftime("%Y-%m-%dT%H:%MZ"), "dagen": dagen}
@@ -209,8 +181,9 @@ def main(axis: list[str], out: Path, root: Path) -> None:
     kw = json.loads((fc / "klim_weer.json").read_text()) if (fc / "klim_weer.json").exists() else {}
     from pipeline.klim.plekken import alle
     p = maak(axis, out, kw, alle())
-    n = sum(1 for d in p["dagen"] if (d.get("keuze") or {}).get("sport") == "golfsurfen")
-    print(f"planning: {len(p['dagen'])} dagen, {n} met golfsurfen")
+    n = sum(1 for d in p["dagen"] if any(k.startswith(("golfsurfen", "longboard", "shortboard"))
+                                         for k in d.get("kandidaten") or {}))
+    print(f"planning: {len(p['dagen'])} dagen, {n} met een golfsportblok in Portugal")
 
 
 if __name__ == "__main__":  # pragma: no cover

@@ -192,6 +192,7 @@ def strand(f: dict, punten: dict, wsrc: dict, gsrc: dict, getij: dict, ext_by: d
     sc_tekens = {nv: [] for nv in invoer.NIVEAUS}
     stil_tekens = []
     onzeker = BODEM_ONZEKER.get(pid)
+    plan = None if onzeker else {k: bytearray([255]) * n for k in (*invoer.CATEGORIES, "stil")}
     for i in range(n):
         licht.append("1" if daglicht(lat, lon, minuten[i]) else "0")
         dein = [(golf[h][i], golf[tp][i] if golf[tp][i] is not None else golf[t][i], golf[r][i])
@@ -221,6 +222,9 @@ def strand(f: dict, punten: dict, wsrc: dict, gsrc: dict, getij: dict, ext_by: d
             stil_tekens.append("?")
         else:
             u = invoer.uur(cond)
+            for k, v in u["scores"].items():
+                plan[k][i] = round(v)
+            plan["stil"][i] = round(u["stil"])
             for nv in invoer.NIVEAUS:
                 sc_tekens[nv].append(invoer.teken(u[nv][0]) + invoer.teken(u[nv][1]))
             stil_tekens.append(invoer.stil_teken(u["stil_cijfer"], u["storm"]))
@@ -283,6 +287,8 @@ def strand(f: dict, punten: dict, wsrc: dict, gsrc: dict, getij: dict, ext_by: d
             detail["nota"] = VASTE_NOTA[land]
         inpakken(detail)  # getallen per uur als tekst (pipeline/site/inpakken.py)
     item = {"id": pid, "n": p["naam"], "d": p["district"], "x": lon, "y": lat, **({"l": land} if land != "pt" else {})}
+    if plan is not None:
+        planning.SCORES[pid] = {"naam": p["naam"], "lat": lat, "lon": lon, "land": land, "scores": plan}
     srij = {nv: "".join(sc_tekens[nv]) + ("".join(stil_tekens) if nv is None else "") for nv in invoer.NIVEAUS}
     return item, ww, detail, srij
 

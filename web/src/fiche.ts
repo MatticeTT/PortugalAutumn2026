@@ -7,7 +7,7 @@
 import { extremen, hoogte } from './getij'
 import { uitpakken } from './inpakken'
 import { conditiesUur } from './invoer'
-import { BETEKENIS, BLAUW5, CYAAN5, RANDKLEUR, RANDUITLEG, STIL5, donkerCijfer } from './scorekaart'
+import { BETEKENIS, BLAUW5, CYAAN5, RANDKLEUR, RANDUITLEG, STIL5, categorieNaam, donkerCijfer } from './scorekaart'
 import { CATEGORIES, GOLF, WIND, isStorm, score, strandUur, waarschuwingen, type Cond, type Groep, type StrandUur } from './score'
 import { gewicht, niveau } from './surf'
 import { waarschuwingBalk } from './waarschuwing'
@@ -55,16 +55,6 @@ export function toonUur() {
 const uurNr = (i: number) => lisUur(utc(staat.index.tijd[i]))
 
 // ---- Namen ----
-const SPORTNAAM: Record<string, string> = {
-  golfsurfen: 'Golfsurfen', longboard: 'Longboard', shortboard: 'Shortboard', windsurfen: 'Windsurfen',
-  kitesurfen: 'Kitesurfen',
-}
-export function categorieNaam(k: string): string {
-  const delen = k.split('_')
-  const nv = delen[delen.length - 1]
-  const golven = delen.includes('golven') ? ' op golven' : ''
-  return `${SPORTNAAM[delen[0]] ?? delen[0]}${golven} · ${nv}`
-}
 const DEEL: Record<string, string> = {
   golf: 'golfhoogte', wind: 'wind', periode: 'periode', windrichting: 'windrichting', vlagen: 'vlagen',
   water: 'water aan het strand', golfrichting: 'golfrichting', zuiverheid: 'zuivere deining', stroming: 'stroming',

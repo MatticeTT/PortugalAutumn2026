@@ -1,14 +1,17 @@
-// Tabblad Planning: 4 weken, per dag één resultaat (pipeline/site/planning.py):
-// golfsurfen, anders windsurfen, anders stille waters / e-foil, anders klimmen, anders niets (volgorde aanpasbaar).
+// Tabblad Planning: 4 weken, per dag één resultaat (pipeline/site/planning.py, score van de rekenchat 2.1):
+// golfsporten (gekozen categorie), anders windsporten (gekozen categorie), anders stille waters, anders klimmen,
+// anders niets (volgorde aanpasbaar). Een blok = minstens 3 uur na elkaar een score van 60 of meer.
 import './style.css'
 import { themaKnop } from './thema'
 import { laadActiviteiten, nieuweActiviteit, wisActiviteit, type Activiteit } from './activiteiten'
+import { GOLF, WIND } from './score'
+import { categorieNaam } from './scorekaart'
 import { bewaarVerblijf, hemelsbreed, leesVerblijf, ONBEREIKBAAR_KMH, tabWissel, rijTekst, rijtijden, vraagVerblijf, type Verblijf } from './verblijf'
 
-interface Keuze { sport: 'golfsurfen' | 'stil' | 'windsurf' | 'klim'; plek: string; id: string | null; van: string; tot: string; km: number; rij: number | null; score?: number; lat?: number; lon?: number }
+interface Keuze { sport: 'golf' | 'stil' | 'wind' | 'klim'; plek: string; id: string | null; van: string; tot: string; km: number; rij: number | null; score?: number; lat?: number; lon?: number }
 interface Reis { soort: 'aankomst' | 'terugvlucht'; wie: string[] }
 type Blok = Omit<Keuze, 'sport'> & { lat: number; lon: number }
-interface Dag { dag: string; voorspelling: boolean; keuze?: Keuze | null; reizen?: Reis[]; kandidaten?: Record<Keuze['sport'], Blok[]> }
+interface Dag { dag: string; voorspelling: boolean; keuze?: Keuze | null; reizen?: Reis[]; kandidaten?: Record<string, Blok[]> }
 
 const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!)
 const fmt = (o: Intl.DateTimeFormatOptions) => new Intl.DateTimeFormat('nl-BE', { ...o, timeZone: 'UTC' })
@@ -31,17 +34,17 @@ const ICOON = {
 // Per sport: naam, kleur, foto (zoals op de kaart) en de links (kort label, uitleg in de tooltip).
 interface Link { url: string; label: string; uitleg?: string }
 const SPORT: Record<Keuze['sport'], { naam: string; kleur: string; foto?: string; nota?: string; links: Link[]; extra?: { titel: string; links: Link[] } }> = {
-  golfsurfen: { naam: 'Golfsurfen', kleur: '#2a6fdb', foto: 'golfsurfen', links: [] },
+  golf: { naam: 'Golfsporten', kleur: '#3f6fe0', foto: 'golfsurfen', links: [] },
   stil: {
-    naam: 'Stille waters / e-foil', kleur: '#6b757d', foto: 'plat-water',
+    naam: 'Stille waters', kleur: '#6b757d', foto: 'plat-water',
     nota: 'E-foil: vraag de school waar en of de les doorgaat.',
     links: [
       { url: 'https://www.efoilalgarve.com/', label: 'eFoil Algarve', uitleg: 'WhatsApp +351 912 991 460 · 1 u · beginners welkom · reserveren verplicht' },
       { url: 'https://www.efoil-riders.com/pages/lesson-location-algarve-portugal', label: 'eFoil Riders', uitleg: 'beginnerscursus 90 min' },
     ],
   },
-  windsurf: {
-    naam: 'Windsurfen', kleur: '#0e8fa6', foto: 'windsurfen',
+  wind: {
+    naam: 'Windsporten', kleur: '#0e8fa6', foto: 'windsurfen',
     nota: 'De school bevestigt de avond ervoor of de les doorgaat.',
     links: [
       { url: 'https://algarvewatersport.com/en/lagos-windsurf-school/', label: 'Algarve Watersport', uitleg: 'Ria de Alvor · beginners · 2,5 u · start rond 10:00' },
@@ -88,6 +91,12 @@ function plan(d: Dag, k: Keuze) {
   const plek = doel ? `<a href="./#${encodeURIComponent(doel)}">${esc(naam)}</a>` : esc(naam)
   // Scholen en lessen (Algarve): alleen tonen als de plek in de buurt ligt.
   const s = { ...SPORT[k.sport] }
+  if (k.sport === 'golf' || k.sport === 'wind') {
+    const cat = k.sport === 'golf' ? categorie.golf : categorie.wind
+    s.naam = categorieNaam(cat)
+    if (cat.includes('_golven_')) s.foto = 'golven-en-wind'
+    if (cat.startsWith('kite') && s.extra) { s.links = s.extra.links; s.nota = 'De school beslist op de dag zelf.'; s.extra = undefined }
+  }
   if (!(k.lat != null && k.lon != null && hemelsbreed({ lat: k.lat, lon: k.lon }, ALGARVE_SCHOLEN) <= 45)) {
     s.links = []; s.extra = undefined; s.nota = undefined
   }
@@ -201,7 +210,7 @@ function toon(dagen: Dag[]) {
         sluitLijst()
         html += kaarten(d.dag)
       } else {
-        const status = d.voorspelling ? '<span class="stil">Niets ideaal</span>' : geenVoorspelling
+        const status = d.voorspelling ? '<span class="stil">Niets met 3 uur na elkaar 60+</span>' : geenVoorspelling
         lijst.push(regel(kortDag(d.dag), reisHtml + status, reizen.length ? 'reisregel' : '', d.dag))
         if (eigenHier) { sluitLijst(); html += kaarten(d.dag) }
       }
@@ -217,10 +226,10 @@ function toon(dagen: Dag[]) {
 const rondPy = (x: number) => { const f = Math.floor(x), d = x - f; return d > 0.5 ? f + 1 : d < 0.5 ? f : f % 2 === 0 ? f : f + 1 }
 const lengte = (b: Blok) => Number(b.tot.slice(0, 2)) - Number(b.van.slice(0, 2))
 
-// Volgorde van voorrang: standaard golfsurfen, windsurfen, stille waters, klimmen; aanpasbaar en bewaard.
+// Volgorde van voorrang: standaard golfsporten, windsporten, stille waters, klimmen; aanpasbaar en bewaard.
 type Sport = Keuze['sport']
-const STANDAARD: Sport[] = ['golfsurfen', 'windsurf', 'stil', 'klim']
-const VOLGORDE_SLEUTEL = 'planning-volgorde-v1'
+const STANDAARD: Sport[] = ['golf', 'wind', 'stil', 'klim']
+const VOLGORDE_SLEUTEL = 'planning-volgorde-v2'
 function leesVolgorde(): Sport[] {
   try {
     const v = JSON.parse(localStorage.getItem(VOLGORDE_SLEUTEL) ?? 'null')
@@ -229,6 +238,16 @@ function leesVolgorde(): Sport[] {
   return [...STANDAARD]
 }
 let volgorde = leesVolgorde()
+
+// Gekozen categorie voor golfsporten en voor windsporten (bewaard in deze browser).
+const CATEGORIE_SLEUTEL = 'planning-categorie-v1'
+const categorie = { golf: 'golfsurfen_beginner', wind: 'windsurfen_beginner' }
+try {
+  const c = JSON.parse(localStorage.getItem(CATEGORIE_SLEUTEL) ?? '{}')
+  if (GOLF.includes(c.golf)) categorie.golf = c.golf
+  if (WIND.includes(c.wind)) categorie.wind = c.wind
+} catch { /* standaard */ }
+const sleutel = (s: Sport) => s === 'golf' ? categorie.golf : s === 'wind' ? categorie.wind : s
 
 function kies(d: Dag, rij: (b: Blok) => number | null, max: number): Keuze | null {
   const k = d.kandidaten!
@@ -243,20 +262,22 @@ function kies(d: Dag, rij: (b: Blok) => number | null, max: number): Keuze | nul
     return bs.filter((b) => lengte(b) === top).reduce((a, b) => (b.rij! < a.rij! ? b : a))
   }
   for (const sport of volgorde) {
-    const bs = binnen(k[sport] ?? [])
+    const bs = binnen(k[sleutel(sport)] ?? [])
     if (bs.length) return { sport, ...(sport === 'klim' ? langste(bs) : beste(bs)) }
   }
   return null
 }
 
-const KORT: Record<Sport, string> = { golfsurfen: 'Golfsurfen', windsurf: 'Windsurfen', stil: 'Stille waters', klim: 'Klimmen' }
+const KORT: Record<Sport, string> = { golf: 'Golfsporten', wind: 'Windsporten', stil: 'Stille waters', klim: 'Klimmen' }
 function voorrang(opnieuw: () => void) {
   const el = document.getElementById('voorrang')!
   const pijl = (r: string) => `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${r}"/></svg>`
   const anders = volgorde.join() !== STANDAARD.join()
   el.innerHTML = `<div class="kopregel"><span>Voorrang</span>${anders ? '<button type="button" class="terug" data-a="standaard">Standaard</button>' : ''}</div>
     <ol>${volgorde.map((s, i) => `<li style="--kleur:${SPORT[s].kleur}">
-      <b>${i + 1}</b><span>${KORT[s]}</span>
+      <b>${i + 1}</b><span>${KORT[s]}${s === 'golf' || s === 'wind' ? `<select data-cat="${s}" aria-label="Categorie ${KORT[s]}">
+        ${(s === 'golf' ? GOLF : WIND).map((c) => `<option value="${c}" ${categorie[s] === c ? 'selected' : ''}>${categorieNaam(c)}</option>`).join('')}
+      </select>` : ''}</span>
       <button type="button" data-i="${i}" data-r="-1" ${i === 0 ? 'disabled' : ''} aria-label="${KORT[s]} hoger">${pijl('M6 15l6-6 6 6')}</button>
       <button type="button" data-i="${i}" data-r="1" ${i === volgorde.length - 1 ? 'disabled' : ''} aria-label="${KORT[s]} lager">${pijl('M6 9l6 6 6-6')}</button>
     </li>`).join('')}</ol>`
@@ -265,6 +286,11 @@ function voorrang(opnieuw: () => void) {
     ;[volgorde[i], volgorde[j]] = [volgorde[j], volgorde[i]]
     try { localStorage.setItem(VOLGORDE_SLEUTEL, JSON.stringify(volgorde)) } catch { /* niet bewaard */ }
     voorrang(opnieuw); opnieuw()
+  })
+  el.querySelectorAll<HTMLSelectElement>('select[data-cat]').forEach((sel) => sel.onchange = () => {
+    categorie[sel.dataset.cat as 'golf' | 'wind'] = sel.value
+    try { localStorage.setItem(CATEGORIE_SLEUTEL, JSON.stringify(categorie)) } catch { /* niet bewaard */ }
+    opnieuw()
   })
   const st = el.querySelector<HTMLButtonElement>('[data-a=standaard]')
   if (st) st.onclick = () => {
@@ -289,7 +315,7 @@ tabWissel()
 themaKnop()
 
 // Andere landen (planning_<land>.json): alleen laden als een stuk van dat land binnen je rijtijd kan liggen,
-// en dan hun blokken golfsurfen en stille waters bij de kandidaten van elke dag zetten.
+// en dan hun blokken (per categorie, stille waters en klimmen) bij de kandidaten van elke dag zetten.
 const LAND_KADER: Record<string, [number, number, number, number]> = {
   es: [-9.45, 35.95, 3.4, 43.85], fr: [-5.3, 42.3, 8.3, 51.15], be: [2.4, 50.9, 3.5, 51.45],
 }
@@ -311,7 +337,7 @@ async function andereLanden(dagen: Dag[], v: Verblijf, versie: string) {
             const [plek, lat, lon] = j.plekken[id]
             return { plek, id, van, tot, km: 0, rij: null, lat, lon, ...(score == null ? {} : { score }) }
           })
-          d.kandidaten[sport as Keuze['sport']] = [...(d.kandidaten[sport as Keuze['sport']] ?? []), ...bs]
+          d.kandidaten[sport] = [...(d.kandidaten[sport] ?? []), ...bs]
         }
       }
     } catch { /* dat land dan niet */ }
