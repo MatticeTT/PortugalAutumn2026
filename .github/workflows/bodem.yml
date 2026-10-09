@@ -1,0 +1,41 @@
+# Bodemgegevens per strand (rekenchat): diepteprofiel uit EMODnet Bathymetry, bodemtype uit
+# Global Coastal Characteristics, getijverschil uit TICON-4. Voegt alleen velden toe; de score verandert niet.
+name: bodem
+on:
+  workflow_dispatch:
+    inputs:
+      stap: { description: "verken of bouw", default: "verken" }
+permissions:
+  contents: write
+concurrency: { group: bodem, cancel-in-progress: false }
+jobs:
+  bodem:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - uses: actions/setup-node@v4
+        with: { node-version: "22", cache: npm }
+      - run: pip install -e . numpy rasterio openpyxl
+      - run: npm ci
+      - name: Verkennen
+        if: github.event.inputs.stap == 'verken'
+        run: python -m pipeline.bodem.verken
+      - name: Bouwen
+        if: github.event.inputs.stap == 'bouw'
+        run: |
+          node pipeline/bodem/getij.mjs
+          python -m pipeline.bodem.bouw
+      - name: Commit resultaat
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/beaches/bodem
+          git diff --cached --quiet && exit 0
+          git commit -m "Bodemgegevens per strand (${{ github.event.inputs.stap }}) vanuit GitHub Actions"
+          for i in 1 2 3 4 5; do
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && break
+            sleep $((i * 10))
+          done
