@@ -106,7 +106,8 @@ def points_landen():
 
 
 STROOM_VAK = 0.08   # graden: rastervak van de stroming bij Open-Meteo Marine (SMOC, 1/12 graad)
-STROOM_VARS = ["ocean_current_velocity", "ocean_current_direction"]
+# Stroming en watertemperatuur (rekenchat), uit dezelfde aanroep naar Open-Meteo Marine.
+STROOM_VARS = ["ocean_current_velocity", "ocean_current_direction", "sea_surface_temperature"]
 NAAR_KN = {"km/h": 1 / 1.852, "m/s": 3.6 / 1.852, "kn": 1.0, "mph": 1.609344 / 1.852}
 
 
@@ -126,7 +127,8 @@ def points_stroom():
 
 
 def stroom(pts: dict) -> dict:
-    """Snelheid (kn) en richting waarheen, per uur. Open-Meteo zegt in hourly_units welke eenheid het geeft."""
+    """Snelheid (kn), richting waarheen en watertemperatuur (°C), per uur. Open-Meteo zegt in hourly_units welke
+    eenheid het geeft voor de snelheid."""
     keys = list(pts)
     out = {}
     for i in range(0, len(keys), PER_AANROEP):
@@ -141,10 +143,13 @@ def stroom(pts: dict) -> dict:
             if eenheid not in NAAR_KN:
                 raise RuntimeError(f"onbekende eenheid voor de stroming: {eenheid}")
             f = NAAR_KN[eenheid]
+            if (r.get("hourly_units") or {}).get("sea_surface_temperature", "°C") != "°C":
+                raise RuntimeError("watertemperatuur niet in °C")
             snelheid = h.get("ocean_current_velocity") or []
             out[k] = {"rasterpunt": [r["longitude"], r["latitude"]],
                       "stroom_kn": [None if v is None else round(v * f, 2) for v in snelheid],
-                      "stroom_naar": h.get("ocean_current_direction")}
+                      "stroom_naar": h.get("ocean_current_direction"),
+                      "water_c": h.get("sea_surface_temperature")}
             out.setdefault("_tijd", h["time"])
         time.sleep(4)
     return out

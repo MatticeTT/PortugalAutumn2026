@@ -23,5 +23,6 @@ export function conditiesUur(d: Detail, i: number): Cond | null {
   if (od & 1) c.onweer = true
   if (od & 2) c.donker = true
   if (d.ud?.[i] != null) c.uur_tot_donker = d.ud[i]!
+  if (d.wt?.[i] != null) c.watertemperatuur = d.wt[i]!
   return c
 }

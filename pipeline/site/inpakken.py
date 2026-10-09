@@ -16,7 +16,7 @@ VELDEN = {
     "windhoek": (10, 2), "tij": (1, 2), "tijgewicht": (100, 2), "verval": (100, 2),
     # invoer voor de score van de rekenchat (pipeline/site/invoer.py, BEWAAR)
     "wh": (1, 2), "gh": (100, 2), "gt": (10, 2), "gk": (1, 2), "ga": (100, 2), "gs": (100, 2), "ns": (10, 2),
-    "ud": (10, 2),
+    "ud": (10, 2), "wt": (10, 2),
 }
 
 

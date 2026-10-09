@@ -3,11 +3,12 @@ import 'maplibre-gl/dist/maplibre-gl.css'
 import './style.css'
 import { themaKnop } from './thema'
 import { beeldNaam, beeldUitNaam, leesStil, leesTeken } from './scorekaart'
+import { ontpak } from './inpakken'
 import { openFiche, sluitFiche, toonUur } from './fiche'
 import { zoekveld } from './zoek'
 import { groepIcoon, laadKlim, openKlim, ververs as klimVervers } from './klim'
 import type { Getij, Index, KaartStrand } from './types'
-import { instelling, surfPaneel, toont } from './surf'
+import { gewicht, instelling, surfPaneel, toont } from './surf'
 import { zoekInDeBuurt, bewaarVerblijf, komtViaTab, leesVerblijf, tabWissel, wisVerblijf, rijTekst, rijtijden, route, vraagVerblijf, type Verblijf } from './verblijf'
 
 const TZ = 'Europe/Lisbon'
@@ -20,7 +21,6 @@ export const staat = {
   index: null as unknown as Index,
   stranden: [] as KaartStrand[],
   getij: null as unknown as Getij,
-  cijfers: [] as string[], // oud (model v3): per strand per uur 5 tekens; nog voor de planning
   // Score van de rekenchat (2.1), standaardgewicht. alle: per strand per uur golf- en windteken, daarna per uur
   // stille waters en storm. Per niveau (beginner, gemiddeld, ervaren): alleen golf- en windteken.
   score: {} as Record<string, string[]>,
@@ -70,11 +70,26 @@ async function stijl(): Promise<StyleSpecification | string> {
 const PORTUGAL: [[number, number], [number, number]] = [[-9.8, 36.0], [8.0, 51.4]]
 
 // Per strand per uur: golf- en windteken (van het gekozen niveau) en stille waters met storm.
+// Bij een ander gewicht dan 75 kg: de uren waar het windteken anders is, uit sport/gewicht_<kg>.json
+// (per strand stukjes van 6 tekens: uur in 2 tekens, dan het windteken voor alle, beginner, gemiddeld, ervaren).
+const NIVEAU_KOLOM: Record<string, number> = { '': 0, beginner: 1, gemiddeld: 2, ervaren: 3 }
+const gewichtVerschil = new Map<number, Map<number, string>[]>()
 export function tekensUur(k: number, i: number): { g: string; w: string; s: string } {
   const alle = staat.score.alle?.[k] ?? ''
   const rij = (instelling.niveau ? staat.score[instelling.niveau]?.[k] : null) ?? alle
   const n = staat.index.tijd.length
-  return { g: rij[2 * i] ?? '-', w: rij[2 * i + 1] ?? '-', s: alle[2 * n + i] ?? '-' }
+  const anders = gewicht() ? gewichtVerschil.get(gewicht()!)?.[k]?.get(i) : undefined
+  const w = anders ? anders[NIVEAU_KOLOM[instelling.niveau] ?? 0] : rij[2 * i + 1]
+  return { g: rij[2 * i] ?? '-', w: w ?? '-', s: alle[2 * n + i] ?? '-' }
+}
+async function laadGewicht(g: number) {
+  if (gewichtVerschil.has(g)) return
+  const rijen: string[] = await data(`sport/gewicht_${g}.json`)
+  gewichtVerschil.set(g, rijen.map((r) => {
+    const m = new Map<number, string>()
+    for (let j = 0; j < r.length; j += 6) m.set(ontpak(r.slice(j, j + 2), 1, 2)[0]!, r.slice(j + 2, j + 6))
+    return m
+  }))
 }
 
 const rang = (t: string) => leesTeken(t).cijfer ?? -1
@@ -94,8 +109,8 @@ function features() {
 }
 
 async function laadNiveau(nv: string) {
-  if (!nv || staat.score[nv]) return
-  staat.score[nv] = await data(`sport/score_${nv}.json`)
+  await Promise.all([nv && !staat.score[nv] ? data(`sport/score_${nv}.json`).then((r) => { staat.score[nv] = r }) : null,
+    gewicht() ? laadGewicht(gewicht()!) : null])
 }
 
 let kaart: maplibregl.Map
@@ -280,7 +295,7 @@ async function start() {
   staat.index = index
   const [stranden, getij] = await Promise.all([data('kaart.json'), data('getij.json')])
   Object.assign(staat, { stranden, getij })
-  const eerste = Promise.all([data('sport/ww.json'), data('sport/score_alle.json'), laadNiveau(instelling.niveau)])
+  const eerste = Promise.all([data('sport/score_alle.json'), laadNiveau(instelling.niveau)])
   setInterval(nieuweBerekening, 5 * 60 * 1000)
   document.addEventListener('visibilitychange', () => { if (!document.hidden) nieuweBerekening() })
 
@@ -292,8 +307,7 @@ async function start() {
   kaart.addControl(new maplibregl.GeolocateControl({ trackUserLocation: false }), 'top-left')
 
   kaart.on('load', async () => {
-    const [ww, alle] = await eerste
-    staat.cijfers = ww
+    const [alle] = await eerste
     staat.score.alle = alle
     kaart.addSource('stranden', {
       type: 'geojson', data: features(), cluster: true, clusterRadius: 30, clusterMaxZoom: 9,

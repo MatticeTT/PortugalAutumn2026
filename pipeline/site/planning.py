@@ -109,6 +109,34 @@ def maak(axis: list[str], out: Path, klimweer: dict, klimplekken: list[dict]) ->
                 else:
                     voeg(bl["dag"], sport, bl)
 
+    # Andere gewichten (klassen van 5 kg): de blokken van de windsporten opnieuw, per gewicht een compact bestand
+    # planning_wind_<kg>.json voor alle landen samen. De site vervangt daarmee de windsporten als je gewicht anders is.
+    per_gewicht: dict[int, dict] = {}
+    plekken_gw: dict[str, list] = {}
+    for pid, st in SCORES.items():
+        licht = None
+        for w, cats in (st.get("gewicht") or {}).items():
+            licht = licht or [telt(st["lat"], st["lon"], t) for t in uren]
+            for sport, reeks in cats.items():
+                ok = [licht[i] and reeks[i] != 255 and reeks[i] >= GO for i in range(len(uren))]
+                for a, b in blokken(uren, ok, 3):
+                    sc = [reeks[i] for i in range(a, b + 1)]
+                    dag = uren[a].astimezone(LIS).date().isoformat()
+                    van = uren[a].astimezone(LIS).strftime("%H:00")
+                    tot = (uren[b] + timedelta(hours=1)).astimezone(LIS).strftime("%H:00")
+                    per_gewicht.setdefault(w, {}).setdefault(dag, {}).setdefault(sport, []).append(
+                        [pid, van, tot, round(sum(sc) / len(sc), 1)])
+                    if pid not in plekken_gw:
+                        rij = RIJ.get(pid)
+                        plekken_gw[pid] = [st["naam"], round(st["lat"], 5), round(st["lon"], 5),
+                                           rij["min"] if rij else None]
+    for w in {w for st in SCORES.values() for w in (st.get("gewicht") or {})}:
+        dagen_w = per_gewicht.get(w, {})
+        nodig = {r[0] for sp in dagen_w.values() for rs in sp.values() for r in rs}
+        (out / f"planning_wind_{w}.json").write_text(json.dumps(
+            {"gewicht": w, "plekken": {k: v for k, v in plekken_gw.items() if k in nodig}, "dagen": dagen_w},
+            ensure_ascii=False, separators=(",", ":")))
+
     # Klimmen: elke klimplek met sport of trad (boulderen wordt niet gepland), per plek de droge blokken.
     kt = [datetime.fromisoformat(t).replace(tzinfo=UTC) for t in klimweer.get("_tijd", [])]
     for kp in klimplekken:

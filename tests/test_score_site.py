@@ -22,11 +22,20 @@ def test_fiche_gelijk_aan_kaart(tmp_path):
 import {{ readFileSync }} from 'node:fs'
 import {{ conditiesUur }} from '{ROOT}/web/src/invoer'
 import {{ strandUur }} from '{ROOT}/web/src/score'
-import {{ uitpakken }} from '{ROOT}/web/src/inpakken'
+import {{ ontpak, uitpakken }} from '{ROOT}/web/src/inpakken'
 import {{ tekenVan }} from '{ROOT}/web/src/scorekaart'
 const [kaartPad, scorePad, dataDir, nrs] = process.argv.slice(2)
 const kaart = JSON.parse(readFileSync(kaartPad, 'utf8'))
 const sc = Object.fromEntries(['alle', 'beginner', 'gemiddeld', 'ervaren'].map((n) => [n, JSON.parse(readFileSync(scorePad.replace('alle', n), 'utf8'))]))
+// gewicht_<kg>.json: per strand stukjes [uur (2 tekens), windteken alle, beginner, gemiddeld, ervaren]
+const KOL = {{ alle: 0, beginner: 1, gemiddeld: 2, ervaren: 3 }}
+const gwVerschil = Object.fromEntries([60, 95, 50].map((w) => [w, JSON.parse(readFileSync(scorePad.replace('score_alle', `gewicht_${{w}}`), 'utf8'))]))
+const windBij = (w, nv, k, i) => {{
+  const r = gwVerschil[w][k]
+  for (let j = 0; j < r.length; j += 6) if (ontpak(r.slice(j, j + 2), 1, 2)[0] === i) return r[j + 2 + KOL[nv]]
+  const basis = nv === 'alle' ? sc.alle[k] : sc[nv][k]
+  return basis[2 * i + 1]
+}}
 let fout = 0, getest = 0
 for (const k of JSON.parse(nrs)) {{
   const s = kaart[k]
@@ -44,6 +53,13 @@ for (const k of JSON.parse(nrs)) {{
       const got = g + w + (nv === 'alle' ? st : '')
       getest++
       if (want !== got) {{ fout++; if (fout < 5) console.error(s.id, i, nv, want, got, JSON.stringify(c)) }}
+    }}
+    for (const [w, nv] of [[60, 'alle'], [95, 'beginner'], [50, 'ervaren']]) {{
+      const u = strandUur({{ ...c, gewicht: w }}, nv === 'alle' ? null : nv as any)
+      const want = windBij(w, nv, k, i)
+      const got = tekenVan(u)[1]
+      getest++
+      if (want !== got) {{ fout++; if (fout < 5) console.error('gewicht', w, s.id, i, nv, want, got) }}
     }}
   }}
 }}

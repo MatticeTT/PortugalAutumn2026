@@ -21,6 +21,8 @@ Schrijft web/public/data/:
 from __future__ import annotations
 
 import json
+import multiprocessing
+import os
 import re
 import sys
 import urllib.request
@@ -33,7 +35,7 @@ from pipeline.rules.hulp import controle, krachtigste
 from pipeline.rules.model import NAAM, VOLGORDE, bereken, hoek, stroomfactor
 from pipeline.site import gebied as G
 from pipeline.site import invoer, planning
-from pipeline.site.inpakken import conclusies_inpakken, inpakken
+from pipeline.site.inpakken import inpakken, pak
 from pipeline.site.zon_getij import daglicht, getij_fractie
 from pipeline.tides.interp import interpolate
 
@@ -184,15 +186,20 @@ def strand(f: dict, punten: dict, wsrc: dict, gsrc: dict, getij: dict, ext_by: d
     sk = STROOM_PUNTEN.get(pid)
     stroom_kn = rnd(align(STROOM, sk, "stroom_kn", axis), 1) if sk else [None] * n
     stroom_naar = rnd(align(STROOM, sk, "stroom_naar", axis), 0) if sk else [None] * n
+    water = rnd(align(STROOM, sk, "water_c", axis), 1) if sk else [None] * n
     wave, wind, laag3, letter, licht, rood = [], [], [], [], [], []
     # Score van de rekenchat (versie 2.1): invoer per uur (afgerond zoals bewaard, zodat de fiche exact
     # hetzelfde narekent) en per niveau één teken voor golf en wind; stille waters en storm apart.
-    inv = {k: [None] * n for k in ("wh", "gh", "gt", "gk", "ga", "gs", "ns", "ud")}
+    inv = {k: [None] * n for k in invoer.BEWAAR}
     inv_st, inv_od = [], []
     sc_tekens = {nv: [] for nv in invoer.NIVEAUS}
     stil_tekens = []
     onzeker = BODEM_ONZEKER.get(pid)
     plan = None if onzeker else {k: bytearray([255]) * n for k in (*invoer.CATEGORIES, "stil")}
+    # Andere gewichten (klassen van 5 kg): alleen de windsporten veranderen.
+    andere = [w for w in invoer.GEWICHTEN if w != invoer.STANDAARD_GEWICHT]
+    gw_tekens = {(w, nv): [] for w in andere for nv in invoer.NIVEAUS}
+    plan_gw = None if onzeker else {w: {k: bytearray([255]) * n for k in invoer.WIND_CATS} for w in andere}
     for i in range(n):
         licht.append("1" if daglicht(lat, lon, minuten[i]) else "0")
         dein = [(golf[h][i], golf[tp][i] if golf[tp][i] is not None else golf[t][i], golf[r][i])
@@ -202,6 +209,8 @@ def strand(f: dict, punten: dict, wsrc: dict, gsrc: dict, getij: dict, ext_by: d
             inv_st.append("-"), inv_od.append("-"), stil_tekens.append("-")
             for nv in invoer.NIVEAUS:
                 sc_tekens[nv].append("--")
+            for lijst in gw_tekens.values():
+                lijst.append("-")
             continue
         # Een deining zonder hoogte, periode of richting bestaat op dit uur niet.
         dein = [d for d in dein if None not in d and d[0] > 0 and d[1] > 0]
@@ -210,16 +219,19 @@ def strand(f: dict, punten: dict, wsrc: dict, gsrc: dict, getij: dict, ext_by: d
         heeft_getij = tij is not None
         skn, snr = stroom_kn[i] or 0.0, stroom_naar[i] or 0.0  # geen stroomdata: geen stroom (factor 1)
         cond = invoer.condities(p["kijkrichting"], vensters, lat, lon, minuten[i], ws[i], wg[i], wd[i] or 0, dein,
-                                stroom_kn[i], stroom_naar[i], neerslag[i], weercode[i])
+                                stroom_kn[i], stroom_naar[i], neerslag[i], weercode[i], water[i])
         cond = invoer.afronden(cond)
         for k, v in invoer.BEWAAR.items():
             inv[k][i] = cond.get(v)
-        inv_st.append(invoer.TOV.get(cond.get("stroming_tov_wind"), "-"))
+        # x = geen stroomdata voor dit uur (de fiche meldt dan dat stroming niet meetelt)
+        inv_st.append(invoer.TOV.get(cond.get("stroming_tov_wind"), "x"))
         inv_od.append(str(bool(cond.get("onweer")) + 2 * bool(cond.get("donker"))))
         if onzeker:
             for nv in invoer.NIVEAUS:
                 sc_tekens[nv].append("??")
             stil_tekens.append("?")
+            for lijst in gw_tekens.values():
+                lijst.append("?")
         else:
             u = invoer.uur(cond)
             for k, v in u["scores"].items():
@@ -228,6 +240,19 @@ def strand(f: dict, punten: dict, wsrc: dict, gsrc: dict, getij: dict, ext_by: d
             for nv in invoer.NIVEAUS:
                 sc_tekens[nv].append(invoer.teken(u[nv][0]) + invoer.teken(u[nv][1]))
             stil_tekens.append(invoer.stil_teken(u["stil_cijfer"], u["storm"]))
+            vast = cond.get("onweer") or cond.get("donker")  # dan is alles 0, bij elk gewicht
+            for w in andere:
+                if vast:
+                    for nv in invoer.NIVEAUS:
+                        gw_tekens[(w, nv)].append(invoer.teken(u[nv][1]))
+                    for k in invoer.WIND_CATS:
+                        plan_gw[w][k][i] = plan[k][i]
+                    continue
+                scw, gr = invoer.wind_gewicht(cond, w)
+                for k, v in scw.items():
+                    plan_gw[w][k][i] = round(v)
+                for nv in invoer.NIVEAUS:
+                    gw_tekens[(w, nv)].append(invoer.teken(gr[nv]))
         r = bereken(p["kijkrichting"], vensters, ws[i], wg[i], wd[i] or 0, dein,
                     tij_pct=tij if heeft_getij else 50, verval=verval if heeft_getij else 2.4,
                     stroom_kn=skn, stroom_naar=snr)
@@ -275,29 +300,29 @@ def strand(f: dict, punten: dict, wsrc: dict, gsrc: dict, getij: dict, ext_by: d
         "ipma": [warning_at(warn, p.get("ipma_area"), t) for t in axis],
         # invoer voor de score (rekenchat 2.1); de fiche rekent hiermee na, met gewicht en niveau
         **inv, "st": "".join(inv_st), "od": "".join(inv_od), "neerslag_bron": any(x is not None for x in neerslag),
+        "stroom_bron": any(x is not None for x in stroom_kn),
         **({"onzeker": onzeker} if onzeker else {}),
     }
+    # Model v3 (conclusies, oude levels) toont de site niet meer sinds de score 2.1: niet meer in de fiche.
+    for k in ("WAVE", "WIND", "WAVE_strand", "letter", "rood", "scores", "conclusie", "E_zee", "bereikt", "E",
+              "periode", "H", "windhoek", "tijgewicht"):
+        detail.pop(k, None)
     if land != "pt":
-        # Compacter voor de andere landen (duizenden stranden): elke conclusietekst één keer in "conclusies",
-        # per uur een volgnummer in "c" (-1 = geen); geen IPMA-waarschuwingen (die gelden alleen voor Portugal).
-        conclusies_inpakken(detail)
+        # Compacter voor de andere landen (duizenden stranden); geen IPMA-waarschuwingen (alleen Portugal).
         detail.pop("ipma")
         detail["land"] = land
-        if land in VASTE_NOTA:
-            detail["nota"] = VASTE_NOTA[land]
         inpakken(detail)  # getallen per uur als tekst (pipeline/site/inpakken.py)
     item = {"id": pid, "n": p["naam"], "d": p["district"], "x": lon, "y": lat, **({"l": land} if land != "pt" else {})}
-    if plan is not None:
-        planning.SCORES[pid] = {"naam": p["naam"], "lat": lat, "lon": lon, "land": land, "scores": plan}
+    plan_item = None if plan is None else {"naam": p["naam"], "lat": lat, "lon": lon, "land": land, "scores": plan,
+                                           "gewicht": plan_gw}
     srij = {nv: "".join(sc_tekens[nv]) + ("".join(stil_tekens) if nv is None else "") for nv in invoer.NIVEAUS}
-    return item, ww, detail, srij
+    gwrij = {k: "".join(v) for k, v in gw_tekens.items()}
+    return item, ww, detail, srij, gwrij, plan_item
 
 
 # Stranden waar de rekenchat geen score wil (bodem: lijn raakt echt land, of op 100 m al dieper dan 10 m).
 BODEM_ONZEKER: dict = {}
 
-# Vaste nota per land (rekenchat, 8 oktober 2026).
-VASTE_NOTA = {"be": "Sterke getijstroom aan deze kust; die zit niet in de berekening."}
 LANDEN_DIR = DATA / "beaches" / "landen"
 
 
@@ -317,27 +342,41 @@ def landen_stations(axis: list[str]) -> list[dict]:
             for s in json.loads(p.read_text())["stations"]]
 
 
-def andere_landen(axis: list[str], minuten: list[float], ext_by: dict, vlaag_paren: list, gezien: set):
-    """Stranden van de andere landen, met hun eigen voorspelling en getij. Ontbreekt iets, dan dat land niet."""
+def andere_landen(gezien: set) -> list[tuple[dict, str]]:
+    """Stranden van de andere landen (met getijstation), met hun land. Ontbreekt een bronbestand: geen."""
     fc_dir = DATA / "forecast"
     nodig = [fc_dir / "punten_landen.json", fc_dir / "wind_gfs_landen.json", fc_dir / "golf_gfswave_landen.json",
              DATA / "tides" / "stranden_getij_landen.json"]
     if not LANDEN_DIR.exists() or not all(x.exists() for x in nodig):
-        return
-    punten = load("punten_landen")
-    wsrc, gsrc = load("wind_gfs_landen"), load("golf_gfswave_landen")
+        return []
     getij = json.loads((DATA / "tides" / "stranden_getij_landen.json").read_text())
+    uit = []
     for path in sorted(LANDEN_DIR.glob("*.geojson")):
-        land = path.stem
         for f in json.loads(path.read_text())["features"]:
-            if f["properties"]["id"] not in getij:
-                continue  # geen getijstation binnen bereik: zonder getij geen laag 3 en 4
-            if f["properties"]["id"] in gezien:
-                continue  # strand op een landsgrens, al bij een ander land
-            gezien.add(f["properties"]["id"])
-            uit = strand(f, punten, wsrc, gsrc, getij, ext_by, [], axis, minuten, vlaag_paren, land)
-            if uit is not None:
-                yield (land, *uit)
+            pid = f["properties"]["id"]
+            if pid not in getij or pid in gezien:
+                continue  # geen getijstation binnen bereik, of strand op een landsgrens (al bij een ander land)
+            gezien.add(pid)
+            uit.append((f, path.stem))
+    return uit
+
+
+# Gedeeld met de rekenprocessen (fork): bronnen per groep ("pt" of "landen"), tijdas, getij-extremen.
+CTX: dict = {}
+
+
+def _bouw(taak: tuple[dict, str]):
+    """Eén strand in een rekenproces: schrijft de fiche en geeft terug wat de kaart en de planning nodig hebben."""
+    f, land = taak
+    c = CTX["pt" if land == "pt" else "landen"]
+    vlaag: list = []
+    uit = strand(f, c["punten"], c["wsrc"], c["gsrc"], c["getij"], CTX["ext_by"], c["warn"], CTX["axis"],
+                 CTX["minuten"], vlaag, land)
+    if uit is None:
+        return None
+    item, ww, detail, srij, gwrij, plan = uit
+    schrijf_detail(detail)
+    return item, ww, srij, gwrij, plan, vlaag, (detail["stroom_bron"], any(x != "-" for x in detail["st"]))
 
 
 def main(fetch_ipma: bool = True):
@@ -364,34 +403,67 @@ def main(fetch_ipma: bool = True):
     if bodem.exists():
         BODEM_ONZEKER.update({k: v["onzeker_redenen"] for k, v in json.loads(bodem.read_text()).items()
                               if v.get("onzeker")})
-    kaart, ww_rijen = [], []
-    s_rijen: dict = {nv: [] for nv in invoer.NIVEAUS}
-    vlaag_paren: list[tuple[float, float]] = []
-    for f in fc["features"]:
-        uit = strand(f, punten, wsrc, gsrc, getij, ext_by, warn, axis, minuten, vlaag_paren)
-        if uit is None:
-            continue
-        item, ww, detail, srij = uit
-        kaart.append(item)
-        ww_rijen.append(ww)
-        for nv in invoer.NIVEAUS:
-            s_rijen[nv].append(srij[nv])
-        schrijf_detail(detail)
-    # Andere landen (Spanje, Frankrijk, België): zelfde berekening, eigen bronbestanden.
     stations_landen = landen_stations(axis)
     for s_ in stations_landen:
         ext_by[s_["id"]] = s_["extremen"]
-    for _land, item, ww, detail, srij in andere_landen(axis, minuten, ext_by, vlaag_paren, {k["id"] for k in kaart}):
-        kaart.append(item)
-        ww_rijen.append(ww)
-        for nv in invoer.NIVEAUS:
-            s_rijen[nv].append(srij[nv])
-        schrijf_detail(detail)
-    (OUT / "sport" / "ww.json").write_text(json.dumps(ww_rijen, separators=(",", ":")))
+    CTX.update(axis=axis, minuten=minuten, ext_by=ext_by,
+               pt={"punten": punten, "wsrc": wsrc, "gsrc": gsrc, "getij": getij, "warn": warn})
+    taken = [(f, "pt") for f in fc["features"]]
+    # Andere landen (Spanje, Frankrijk, België): zelfde berekening, eigen bronbestanden.
+    landen = andere_landen({f["properties"]["id"] for f in fc["features"] if f["properties"]["id"] in punten})
+    if landen:
+        CTX["landen"] = {"punten": load("punten_landen"), "wsrc": load("wind_gfs_landen"),
+                         "gsrc": load("golf_gfswave_landen"), "warn": [],
+                         "getij": json.loads((DATA / "tides" / "stranden_getij_landen.json").read_text())}
+        taken += landen
+
+    kaart, ww_rijen = [], []
+    s_rijen: dict = {nv: [] for nv in invoer.NIVEAUS}
+    gw_rijen: dict = {}
+    vlaag_paren: list[tuple[float, float]] = []
+    zonder_stroom, zonder_voorspelling = [], []
+    planning.SCORES.clear()
+    # Rekenen over alle processors (het rekenwerk per strand is onafhankelijk; volgorde blijft behouden).
+    with multiprocessing.get_context("fork").Pool(os.cpu_count() or 1) as pool:
+        for uit in pool.imap(_bouw, taken, chunksize=16):
+            if uit is None:
+                continue
+            item, ww, srij, gwrij, plan, vlaag, met_stroom = uit  # met_stroom: (stroomdata, voorspelling)
+            kaart.append(item)
+            ww_rijen.append(ww)
+            vlaag_paren += vlaag
+            for nv in invoer.NIVEAUS:
+                s_rijen[nv].append(srij[nv])
+            for k, v in gwrij.items():
+                gw_rijen.setdefault(k, []).append(v)
+            if plan is not None:
+                planning.SCORES[item["id"]] = plan
+            if not met_stroom[0]:
+                zonder_stroom.append(item["id"])
+            if not met_stroom[1]:
+                zonder_voorspelling.append(item["id"])
+    print(f"stroming: {len(kaart) - len(zonder_stroom)} van de {len(kaart)} stranden met waarden; "
+          f"zonder: {len(zonder_stroom)} {zonder_stroom[:10]}")
+    print(f"geen enkele voorspelling (wind of golf) op {len(zonder_voorspelling)} stranden {zonder_voorspelling[:10]}")
     # Score van de rekenchat per niveau (standaardgewicht 75 kg): per strand per uur twee tekens (golf, wind),
     # bij "alle" daarna nog per uur stille waters en storm (pipeline/site/invoer.py, teken en stil_teken).
     for nv in invoer.NIVEAUS:
         (OUT / "sport" / f"score_{nv or 'alle'}.json").write_text(json.dumps(s_rijen[nv], separators=(",", ":")))
+    # Andere gewichten: alleen de uren waar het windteken anders is dan bij 75 kg (meestal 2 tot 8%). Per gewicht
+    # per strand een tekst van stukjes van 6 tekens: het uur (2 tekens uit inpakken.ALFABET) en het windteken voor
+    # alle niveaus, beginner, gemiddeld en ervaren (golf en stille waters veranderen niet met het gewicht).
+    n = len(axis)
+    for w in sorted({w for w, _nv in gw_rijen}):
+        rijen = []
+        for k in range(len(kaart)):
+            stukken = []
+            for i in range(n):
+                nu = [gw_rijen[(w, nv)][k][i] for nv in invoer.NIVEAUS]
+                basis = [s_rijen[nv][k][2 * i + 1] for nv in invoer.NIVEAUS]
+                if nu != basis:
+                    stukken.append(pak([i], 1, 2) + "".join(nu))
+            rijen.append("".join(stukken))
+        (OUT / "sport" / f"gewicht_{w}.json").write_text(json.dumps(rijen, separators=(",", ":")))
     (OUT / "getij.json").write_text(json.dumps(
         {"stations": {s["id"]: {"naam": s["naam"], "lat": s["lat"], "lon": s["lon"], "e": s["extremen"]}
                       for s in [*stations["stations"], *stations_landen]}}, separators=(",", ":")))
@@ -400,6 +472,7 @@ def main(fetch_ipma: bool = True):
         "gemaakt": datetime.now(UTC).strftime("%Y-%m-%dT%H:%MZ"),
         "opgehaald": {WIND: wsrc.get("_opgehaald"), GOLF: gsrc.get("_opgehaald")},
         "tijd": axis, "bron": BRON, "namen": NAAM, "ipma": warn, "meldingen": meldingen(vlaag_paren),
+        "stroming_zonder": len(zonder_stroom),
     }
     stranddata.main()
     klim.main(axis, OUT)

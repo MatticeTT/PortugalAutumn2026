@@ -188,7 +188,8 @@ function gekozenUur(d: Detail, i: number) {
   if (!c) return '<p class="klein">Geen voorspelling voor dit uur.</p>'
   const u = strandUur(c, niveau())
   const st = u.stille_waters
-  const melding = [u.storm ? '<p class="melding storm">Storm: wind vanaf 41 knopen of vlagen vanaf 48 knopen.</p>' : '',
+  const melding = [d.st?.[i] === 'x' ? '<p class="melding">Geen stroomdata voor dit uur: stroming zit niet in de berekening.</p>' : '',
+    u.storm ? '<p class="melding storm">Storm: wind vanaf 41 knopen of vlagen vanaf 48 knopen.</p>' : '',
     c.onweer ? '<p class="melding">Onweer: elke categorie 0.</p>' : '',
     c.donker ? '<p class="melding">Donker: elke categorie 0.</p>' : ''].join('')
   const stDeel = Object.entries({ ...st.essentieel, ...st.bijkomend }).filter(([, v]) => v != null)

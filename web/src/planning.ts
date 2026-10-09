@@ -6,6 +6,7 @@ import { themaKnop } from './thema'
 import { laadActiviteiten, nieuweActiviteit, wisActiviteit, type Activiteit } from './activiteiten'
 import { GOLF, WIND } from './score'
 import { categorieNaam } from './scorekaart'
+import { gewicht } from './surf'
 import { bewaarVerblijf, hemelsbreed, leesVerblijf, ONBEREIKBAAR_KMH, tabWissel, rijTekst, rijtijden, vraagVerblijf, type Verblijf } from './verblijf'
 
 interface Keuze { sport: 'golf' | 'stil' | 'wind' | 'klim'; plek: string; id: string | null; van: string; tot: string; km: number; rij: number | null; score?: number; lat?: number; lon?: number }
@@ -333,6 +334,7 @@ async function andereLanden(dagen: Dag[], v: Verblijf, versie: string) {
         const d = perDag.get(dag)
         if (!d?.voorspelling || !d.kandidaten) continue
         for (const [sport, rijen] of Object.entries(sporten)) {
+          if (gewicht() && WIND.includes(sport)) continue // zit al in planning_wind_<kg>.json
           const bs: Blok[] = rijen.map(([id, van, tot, score]) => {
             const [plek, lat, lon] = j.plekken[id]
             return { plek, id, van, tot, km: 0, rij: null, lat, lon, ...(score == null ? {} : { score }) }
@@ -342,6 +344,25 @@ async function andereLanden(dagen: Dag[], v: Verblijf, versie: string) {
       }
     } catch { /* dat land dan niet */ }
   }))
+}
+
+// Ander gewicht dan 75 kg (knop Surfen op de kaart): de blokken van de windsporten uit planning_wind_<kg>.json.
+async function windVoorGewicht(dagen: Dag[], versie: string) {
+  const g = gewicht()
+  if (!g) return
+  const r = await fetch(`data/planning_wind_${g}.json?v=${encodeURIComponent(versie)}`)
+  if (!r.ok) return
+  const j = await r.json() as { plekken: Record<string, [string, number, number, number | null]>; dagen: Record<string, Record<string, [string, string, string, number][]>> }
+  for (const d of dagen) {
+    if (!d.voorspelling || !d.kandidaten) continue
+    for (const k of WIND) delete d.kandidaten[k]
+    for (const [sport, rijen] of Object.entries(j.dagen[d.dag] ?? {})) {
+      d.kandidaten[sport] = rijen.map(([id, van, tot, score]) => {
+        const [plek, lat, lon, rij] = j.plekken[id]
+        return { plek, id, van, tot, km: 0, rij, lat, lon, score }
+      })
+    }
+  }
 }
 
 async function start() {
@@ -355,6 +376,7 @@ async function start() {
     doel.innerHTML = '<p class="rustig">De planning kon niet worden geladen.</p>'
     return
   }
+  await windVoorGewicht(p.dagen, g.gemaakt)
   eigen = await laadActiviteiten()
   const doelTonen = (rij: (b: Blok) => number | null, max: number) => {
     const teken = () => { doel.innerHTML = toon(p.dagen.map((d) => (d.voorspelling && d.kandidaten ? { ...d, keuze: kies(d, rij, max) } : d))) }

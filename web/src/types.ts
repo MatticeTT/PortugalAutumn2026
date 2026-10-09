@@ -87,9 +87,11 @@ export interface Detail {
   gs?: (number | null)[] // golf aan het strand (m)
   ns?: (number | null)[] // neerslag (mm per uur)
   ud?: (number | null)[] // uur tot donker
-  st?: string // stroming tegenover de wind: t tegen, m mee, d dwars, - geen data
+  wt?: (number | null)[] // watertemperatuur (°C)
+  st?: string // stroming tegenover de wind: t tegen, m mee, d dwars, x geen stroomdata, - geen voorspelling
   od?: string // 1 onweer, 2 donker, 3 beide
   neerslag_bron?: boolean
+  stroom_bron?: boolean
   onzeker?: string[] // redenen: geen score (rekenchat)
 }
 

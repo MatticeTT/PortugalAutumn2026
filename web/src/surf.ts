@@ -21,7 +21,11 @@ export const NIVEAUS = [
 export const instelling = { toon: 'alles' as string, niveau: '' as string, gewicht: null as number | null }
 try { Object.assign(instelling, JSON.parse(localStorage.getItem(SLEUTEL) ?? '{}')) } catch { /* standaard */ }
 export const niveau = (): Niveau | null => (instelling.niveau || null) as Niveau | null
-export const gewicht = (): number | undefined => instelling.gewicht ?? undefined
+// Gewicht in klassen van 5 kg (pipeline/site/invoer.py, GEWICHTEN); kaart, fiche en planning rekenen ermee.
+export const GEWICHTEN = Array.from({ length: 13 }, (_, i) => 50 + 5 * i)
+const klasse = (g: number) => Math.min(110, Math.max(50, Math.round(g / 5) * 5))
+if (instelling.gewicht != null) instelling.gewicht = klasse(instelling.gewicht)
+export const gewicht = (): number | undefined => (instelling.gewicht && instelling.gewicht !== 75 ? instelling.gewicht : undefined)
 const bewaar = () => { try { localStorage.setItem(SLEUTEL, JSON.stringify(instelling)) } catch { /* niet bewaard */ } }
 
 // Telt dit strand mee op het gekozen uur? g = golfteken, w = windteken, s = stille waters.
@@ -39,13 +43,14 @@ const voorbeeld = (w: string, v: string, storm = false) =>
 const knopTekst = () => {
   const t = TOON.find((k) => k.waarde === instelling.toon)
   const n = NIVEAUS.find((k) => k.waarde === instelling.niveau)
-  const delen = [instelling.toon !== 'alles' ? t?.naam.replace(/ \(.*\)$/, '') : '', instelling.niveau ? n?.naam : '']
+  const delen = [instelling.toon !== 'alles' ? t?.naam.replace(/ \(.*\)$/, '') : '', instelling.niveau ? n?.naam : '',
+    gewicht() ? `${gewicht()} kg` : '']
     .filter(Boolean)
   return delen.length ? `Surfen · ${delen.join(' · ')}` : 'Surfen'
 }
 
-// opnieuw(niveauVeranderd): de kaart opnieuw tekenen (en bij een ander niveau eerst dat bestand laden).
-export function surfPaneel(opnieuw: (niveauVeranderd: boolean) => void) {
+// opnieuw(bestandNodig): de kaart opnieuw tekenen (bij een ander niveau of gewicht eerst dat bestand laden).
+export function surfPaneel(opnieuw: (bestandNodig: boolean) => void) {
   const knop = document.createElement('button')
   knop.className = 'laagknop surf'
   knop.textContent = knopTekst()
@@ -72,9 +77,9 @@ export function surfPaneel(opnieuw: (niveauVeranderd: boolean) => void) {
         <p class="klein">Met een niveau telt alleen dat niveau mee: zo zie je ook wat te veel is voor beginners.</p>
       </fieldset>
       <fieldset class="keuzes"><legend>Je gewicht</legend>
-        <label class="gewicht"><input type="number" name="gewicht" min="30" max="150" step="1" inputmode="numeric"
-          placeholder="75" value="${instelling.gewicht ?? ''}"> kg</label>
-        <p class="klein">Telt mee voor kite- en windsurfen in de fiche. De kaart rekent met 75 kg.</p>
+        <label class="gewicht"><select name="gewicht">${GEWICHTEN.map((g) => `<option value="${g}"
+          ${(instelling.gewicht ?? 75) === g ? 'selected' : ''}>${g}</option>`).join('')}</select> kg</label>
+        <p class="klein">Telt mee voor kite- en windsurfen, op de kaart, in de fiche en in de planning (per 5 kg).</p>
       </fieldset>
       <fieldset class="uitleg"><legend>Zo lees je een cirkel</legend>
         <p>${voorbeeld('2', 'G')}<span>Links <b>WIND</b> (windsporten), rechts <b>WAVE</b> (golfsporten).</span></p>
@@ -93,11 +98,11 @@ export function surfPaneel(opnieuw: (niveauVeranderd: boolean) => void) {
     p.querySelectorAll<HTMLInputElement>('input[name=surfniveau]').forEach((i) => i.onchange = () => {
       instelling.niveau = i.value; bewaar(); knop.textContent = knopTekst(); opnieuw(true)
     })
-    const gw = p.querySelector<HTMLInputElement>('input[name=gewicht]')!
+    const gw = p.querySelector<HTMLSelectElement>('select[name=gewicht]')!
     gw.onchange = () => {
       const v = Number(gw.value)
-      instelling.gewicht = gw.value && v >= 30 && v <= 150 ? v : null
-      bewaar(); opnieuw(false)
+      instelling.gewicht = v === 75 ? null : v
+      bewaar(); knop.textContent = knopTekst(); opnieuw(true)
     }
   }
 }

@@ -98,15 +98,16 @@ for (const scheme of ['light', 'dark']) {
     await page.screenshot({ path: `${shots}/zoek-${scheme}.png` })
     await page.fill('#zoek', '')
   }
-  // Andere landen (als er stranden van België zijn): zoeken toont het land, de fiche de vaste nota.
+  // Andere landen (als er stranden van België zijn): zoeken toont het land; geen vaste nota meer over de
+  // getijstroom (stroming zit in de berekening; alleen een melding op uren zonder stroomdata).
   const be = await page.evaluate(async () => (await (await fetch('data/kaart.json')).json()).find((s) => s.l === 'be'))
   if (be) {
     await page.fill('#zoek', 'oostende')
     const regel = await page.textContent('#zoeklijst li')
     await page.locator('#zoeklijst li').first().dispatchEvent('pointerdown')
-    await page.waitForSelector('#fiche .vastenota', { timeout: 5000 })
-    const nota = await page.textContent('#fiche .vastenota')
-    check(`[${scheme}] Belgisch strand: land in de zoeklijst en vaste nota`, /België/.test(regel) && nota === 'Sterke getijstroom aan deze kust; die zit niet in de berekening.', `(${regel.trim()})`)
+    await page.waitForSelector('#fiche .groep', { timeout: 5000 })
+    const nota = await page.$('#fiche .vastenota')
+    check(`[${scheme}] Belgisch strand: land in de zoeklijst, geen vaste nota`, /België/.test(regel) && !nota, `(${regel.trim()})`)
     if (shots) await page.screenshot({ path: `${shots}/belgie-${scheme}.png` })
   }
   // Een klimplek openen (als er klimdata is): discipline, soort, graad, aantal routes.

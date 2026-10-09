@@ -38,9 +38,14 @@ NIVEAUS = (None, "beginner", "gemiddeld", "ervaren")
 
 # Bewaarde invoer in de fiche (kort veld: sleutel in condities) en de afronding ervan.
 BEWAAR = {"wh": "windhoek", "gh": "golfhoogte", "gt": "periode", "gk": "golfhoek", "ga": "aandeel_hoofdgolf",
-          "gs": "golf_aan_strand", "ns": "neerslag", "ud": "uur_tot_donker"}
+          "gs": "golf_aan_strand", "ns": "neerslag", "ud": "uur_tot_donker", "wt": "watertemperatuur"}
 AFRONDING = {"windhoek": 0, "golfhoogte": 2, "periode": 1, "golfhoek": 0, "aandeel_hoofdgolf": 2,
-             "golf_aan_strand": 2, "neerslag": 1, "uur_tot_donker": 1, "stroming": 1, "wind": 1, "vlaag": 1}
+             "golf_aan_strand": 2, "neerslag": 1, "uur_tot_donker": 1, "stroming": 1, "wind": 1, "vlaag": 1,
+             "watertemperatuur": 1}
+# Gewicht van de gebruiker: in klassen van 5 kg. Kaart, fiche en planning rekenen met dezelfde klasse; 75 kg is
+# het standaardgewicht van de rekenchat. Het gewicht telt alleen bij de windsporten (kite- en windsurfen).
+GEWICHTEN = list(range(50, 115, 5))
+STANDAARD_GEWICHT = 75
 TOV = {"tegen": "t", "mee": "m", "dwars": "d"}
 
 
@@ -83,7 +88,7 @@ def uur_tot_donker(lat: float, lon: float, t_min: float) -> float | None:
 
 def condities(kust: float, vensters: list, lat: float, lon: float, t_min: float, wind: float, vlaag: float,
               windrichting: float, deiningen: list, stroom_kn: float | None, stroom_naar: float | None,
-              neerslag: float | None, weercode: float | None) -> dict:
+              neerslag: float | None, weercode: float | None, watertemperatuur: float | None = None) -> dict:
     sk, sn = stroom_kn or 0.0, stroom_naar or 0.0
     sys_ = golfsystemen(kust, vensters, deiningen, sk, sn)
     c = {"wind": wind, "vlaag": vlaag, "windhoek": hoek(windrichting, kust)}
@@ -98,6 +103,8 @@ def condities(kust: float, vensters: list, lat: float, lon: float, t_min: float,
         c.update(stroming=stroom_kn, stroming_tov_wind=tov_wind(sn, windrichting))
     if neerslag is not None:
         c["neerslag"] = neerslag
+    if watertemperatuur is not None:
+        c["watertemperatuur"] = watertemperatuur
     if weercode is not None and int(weercode) in ONWEER_CODES:
         c["onweer"] = True
     if not daglicht(lat, lon, t_min):
@@ -141,6 +148,13 @@ def uur(c: dict) -> dict:
     for n in NIVEAUS:
         uit[n] = (groep(scores, GOLF_CATS, c, n), groep(scores, WIND_CATS, c, n))
     return uit
+
+
+def wind_gewicht(c: dict, gewicht: int) -> tuple[dict, dict]:
+    """De windsporten bij een ander gewicht: de 10 scores en per niveau de windgroep."""
+    cg = {**c, "gewicht": gewicht}
+    scores = {k: score(k, cg)["score"] for k in WIND_CATS}
+    return scores, {n: groep(scores, WIND_CATS, cg, n) for n in NIVEAUS}
 
 
 __all__ = ["condities", "uur", "teken", "stil_teken", "groep", "algemeen", "NIVEAUS"]
