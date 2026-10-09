@@ -1,3 +1,4 @@
+# ruff: noqa: E501
 """Verkenning van de bodembronnen (vanuit GitHub Actions; de sandbox kan ze niet bereiken).
 
 - EMODnet Bathymetry: depth_sample op enkele punten (zee, strand, land) om het teken en het referentievlak te zien,

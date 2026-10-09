@@ -60,7 +60,9 @@ def get(url: str, timeout: int = 600) -> bytes:
 
 def stranden() -> list[dict]:
     uit = []
-    for land, path in [("pt", BEACHES / "stranden.geojson"), *[(p.stem, p) for p in sorted((BEACHES / "landen").glob("*.geojson"))]]:
+    bestanden = [("pt", BEACHES / "stranden.geojson")]
+    bestanden += [(p.stem, p) for p in sorted((BEACHES / "landen").glob("*.geojson"))]
+    for land, path in bestanden:
         for f in json.loads(path.read_text())["features"]:
             p = f["properties"]
             lon, lat = f["geometry"]["coordinates"]
@@ -268,7 +270,8 @@ def main() -> None:
                 vreemd.append({"id": s["id"], "land": s["land"], "naam": s["naam"], "soort": "dieper dan 10 m op 100 m",
                                "diepte_100": r["diepte_profiel"]["100"]})
             if r["afstand_tot_5m_m"] is None and all(d is not None for d in ruw.values()):
-                vreemd.append({"id": s["id"], "land": s["land"], "naam": s["naam"], "soort": "geen 5 m diep binnen 2 km",
+                vreemd.append({"id": s["id"], "land": s["land"], "naam": s["naam"],
+                               "soort": "geen 5 m diep binnen 2 km",
                                "diepte_2000": ruw[2000]})
         uit[s["id"]] = r
 
@@ -299,8 +302,8 @@ def main() -> None:
     for land, naam in namen.items():
         for s in ss:
             if s["land"] == land and s["naam"] == naam:
-                rapport["voorbeelden"][f"{land}: {naam}"] = {"id": s["id"], "lon": s["lon"], "lat": s["lat"],
-                                                              "kijkrichting": s["kijkrichting"], **uit[s["id"]]}
+                rapport["voorbeelden"][f"{land}: {naam}"] = {
+                    "id": s["id"], "lon": s["lon"], "lat": s["lat"], "kijkrichting": s["kijkrichting"], **uit[s["id"]]}
                 break
     (OUT / "rapport.json").write_text(json.dumps(rapport, ensure_ascii=False, indent=1) + "\n")
     print(json.dumps({k: v for k, v in rapport.items() if k != "onlogisch"}, ensure_ascii=False, indent=1)[:15000])

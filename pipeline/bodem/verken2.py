@@ -1,3 +1,4 @@
+# ruff: noqa: E501
 """Tweede verkenning: metadata van GCC, waarden van coast_type_flag in onze landen, en een werkende manier om
 het EMODnet-raster in blokken te downloaden (WCS 1.0.0 en 2.0.1, en de download-index)."""
 
@@ -25,7 +26,7 @@ def main() -> None:
     def gcc():
         b = get("https://zenodo.org/api/records/11072020/files/GCC_geophysical.csv/content", timeout=900)
         r = csv.DictReader(io.StringIO(b.decode("utf8")))
-        ct, veg, land = Counter(), Counter(), Counter()
+        ct, veg = Counter(), Counter()
         voorbeeld = []
         for row in r:
             lon, lat = float(row["lon"]), float(row["lat"])
