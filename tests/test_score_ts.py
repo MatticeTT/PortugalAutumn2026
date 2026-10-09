@@ -1,3 +1,4 @@
+# ruff: noqa: E501
 """De TypeScript-versie (web/src/score.ts) geeft exact dezelfde uitkomst als pipeline/rules/score.py.
 
 Bundelt score.ts met esbuild, draait het met node op duizenden willekeurige gevallen en vergelijkt."""

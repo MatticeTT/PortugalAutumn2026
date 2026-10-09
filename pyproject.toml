@@ -14,6 +14,8 @@ testpaths = ["tests"]
 
 [tool.ruff]
 line-length = 120
+# Letterlijk overgenomen van de rekenchat: niet herschrijven.
+extend-exclude = ["tests/rekenchat_score/tests.py", "docs/rekenchat", "pipeline/rules/model.py"]
 
 [build-system]
 requires = ["setuptools>=68"]
