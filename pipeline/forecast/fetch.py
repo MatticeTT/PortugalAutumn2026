@@ -43,6 +43,8 @@ DAGEN = 10
 PER_AANROEP = 50     # locaties per aanroep naar Open-Meteo
 
 WIND_VARS = ["wind_speed_10m", "wind_gusts_10m", "wind_direction_10m"]
+# GFS ook neerslag (mm per uur) en weercode (95, 96, 99 = onweer) voor de score van de rekenchat.
+GFS_VARS = [*WIND_VARS, "precipitation", "weather_code"]
 WAVE_VARS = [
     "wave_height", "wave_period", "wave_direction",
     "swell_wave_height", "swell_wave_period", "swell_wave_direction",
@@ -291,9 +293,9 @@ def main(argv: list[str]) -> int:
     landen_nu = bool(lb)
     jobs = {
         "wind_gfs": lambda: open_meteo("https://api.open-meteo.com/v1/forecast", wind_pts, "gfs_seamless",
-                                       WIND_VARS, {"wind_speed_unit": "kn"}),
+                                       GFS_VARS, {"wind_speed_unit": "kn"}),
         **({"wind_gfs_landen": lambda: open_meteo("https://api.open-meteo.com/v1/forecast", lw, "gfs_seamless",
-                                                  WIND_VARS, {"wind_speed_unit": "kn"}, pauze=6),
+                                                  GFS_VARS, {"wind_speed_unit": "kn"}, pauze=6),
             "golf_gfswave_landen": lambda: golf_met_piek(lg, pauze=8)} if landen_nu else {}),
         "wind_ecmwf": lambda: open_meteo("https://api.open-meteo.com/v1/forecast", wind_pts, "ecmwf_ifs",
                                          WIND_VARS, {"wind_speed_unit": "kn"}),

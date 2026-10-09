@@ -78,6 +78,19 @@ export interface Detail {
   rood: string // per uur: 0 niets, 1 wind van land, 2 golf komt niet aan, 3 beide (rood kader)
   licht: string // per uur 1 = daglicht
   ipma: string[]
+  // invoer voor de score van de rekenchat (2.1), zie pipeline/site/invoer.py
+  wh?: (number | null)[] // windhoek 0-180 (0 = recht aanlandig)
+  gh?: (number | null)[] // hoogte van het hoofdgolfsysteem op het strand (m)
+  gt?: (number | null)[] // periode van het hoofdgolfsysteem (s)
+  gk?: (number | null)[] // golfhoek 0-90
+  ga?: (number | null)[] // aandeel hoofdgolf 0-1
+  gs?: (number | null)[] // golf aan het strand (m)
+  ns?: (number | null)[] // neerslag (mm per uur)
+  ud?: (number | null)[] // uur tot donker
+  st?: string // stroming tegenover de wind: t tegen, m mee, d dwars, - geen data
+  od?: string // 1 onweer, 2 donker, 3 beide
+  neerslag_bron?: boolean
+  onzeker?: string[] // redenen: geen score (rekenchat)
 }
 
 export interface Getij {

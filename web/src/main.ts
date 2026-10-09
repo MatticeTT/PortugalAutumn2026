@@ -2,12 +2,12 @@ import maplibregl, { type GeoJSONSource, type StyleSpecification } from 'maplibr
 import 'maplibre-gl/dist/maplibre-gl.css'
 import './style.css'
 import { themaKnop } from './thema'
-import { bolletjeWW } from './kleuren'
+import { beeldNaam, beeldUitNaam, leesStil, leesTeken } from './scorekaart'
 import { openFiche, sluitFiche, toonUur } from './fiche'
 import { zoekveld } from './zoek'
 import { groepIcoon, laadKlim, openKlim, ververs as klimVervers } from './klim'
 import type { Getij, Index, KaartStrand } from './types'
-import { surfPaneel, toont } from './surf'
+import { instelling, surfPaneel, toont } from './surf'
 import { zoekInDeBuurt, bewaarVerblijf, komtViaTab, leesVerblijf, tabWissel, wisVerblijf, rijTekst, rijtijden, route, vraagVerblijf, type Verblijf } from './verblijf'
 
 const TZ = 'Europe/Lisbon'
@@ -20,7 +20,10 @@ export const staat = {
   index: null as unknown as Index,
   stranden: [] as KaartStrand[],
   getij: null as unknown as Getij,
-  cijfers: [] as string[], // per strand (volgorde van kaart.json) per uur 5 tekens, zie features()
+  cijfers: [] as string[], // oud (model v3): per strand per uur 5 tekens; nog voor de planning
+  // Score van de rekenchat (2.1), standaardgewicht. alle: per strand per uur golf- en windteken, daarna per uur
+  // stille waters en storm. Per niveau (beginner, gemiddeld, ervaren): alleen golf- en windteken.
+  score: {} as Record<string, string[]>,
   i: 0, // index in index.tijd
   open: null as string | null,
 }
@@ -66,26 +69,36 @@ async function stijl(): Promise<StyleSpecification | string> {
 // Uitgezoomd over alle landen met stranden: Portugal, Spanje, Frankrijk en België.
 const PORTUGAL: [[number, number], [number, number]] = [[-9.8, 36.0], [8.0, 51.4]]
 
-// Per strand (volgorde van kaart.json) per uur 5 tekens: WIND en WAVE (level 1–4), het rode kader,
-// de conclusie-letter (hoofdletter G/O/S/R = ideaal) en bij ideaal de score (a = 75, b = 76, …).
+// Per strand per uur: golf- en windteken (van het gekozen niveau) en stille waters met storm.
+export function tekensUur(k: number, i: number): { g: string; w: string; s: string } {
+  const alle = staat.score.alle?.[k] ?? ''
+  const rij = (instelling.niveau ? staat.score[instelling.niveau]?.[k] : null) ?? alle
+  const n = staat.index.tijd.length
+  return { g: rij[2 * i] ?? '-', w: rij[2 * i + 1] ?? '-', s: alle[2 * n + i] ?? '-' }
+}
+
+const rang = (t: string) => leesTeken(t).cijfer ?? -1
+
 function features() {
   const i = staat.i
   return {
     type: 'FeatureCollection' as const,
     features: staat.stranden.flatMap((s, k) => {
-      const rij = staat.cijfers[k] ?? ''
-      const w = Number(rij[5 * i] ?? 0)
-      const v = Number(rij[5 * i + 1] ?? 0)
-      const l = rij[5 * i + 2] ?? '0' // rood kader: 1 wind van land, 2 golf komt niet aan, 3 beide
-      if (!toont(rij[5 * i + 3] ?? '')) return [] // filters van de knop Surfen
+      const { g, w, s: stil } = tekensUur(k, i)
+      if (!toont(g, w, stil)) return [] // filters van de knop Surfen
+      const storm = leesStil(stil).storm
       return [{ type: 'Feature' as const, geometry: { type: 'Point' as const, coordinates: [s.x, s.y] },
-        properties: { id: s.id, naam: s.n, w, v, l } }]
+        properties: { id: s.id, naam: s.n, beeld: beeldNaam(w, g, storm), r: Math.max(rang(g), rang(w)) } }]
     }),
   }
 }
 
+async function laadNiveau(nv: string) {
+  if (!nv || staat.score[nv]) return
+  staat.score[nv] = await data(`sport/score_${nv}.json`)
+}
+
 let kaart: maplibregl.Map
-const BOL = 36 // diameter van een strandbolletje in px (was 44, iets kleiner op vraag van de eigenaar)
 const perDag = new Map<string, number[]>()
 const slider = () => document.getElementById('uur') as HTMLInputElement
 const datumKeuze = () => document.getElementById('datum') as HTMLSelectElement
@@ -101,14 +114,13 @@ function ververs() {
 }
 
 // ---- Verblijf: waar je verblijft en hoe lang je wil rijden ----
-// Per sport de route naar de beste ideale plek dit uur binnen je rijtijd: eerst de hoogste score,
-// dan de kortste rijtijd. De lijn krijgt de kleur van de sport.
+// Per groep de route naar de beste plek dit uur binnen je rijtijd (cijfer 3 of 4): eerst het hoogste cijfer,
+// dan de kortste rijtijd. Golfsporten gaan voor windsporten, die voor stille waters.
 const SPORTEN = [
-  { letter: 'G', naam: 'Golfsurfen', kleur: '#2a6fdb', tekst: '#2a6fdb', prio: 4 },
-  { letter: 'O', naam: 'Windsurfen op golven', kleur: '#f5c400', tekst: '#b38f00', prio: 3 },
-  { letter: 'S', naam: 'Windsurfen', kleur: '#14b8d4', tekst: '#0e8fa6', prio: 2 },
-  { letter: 'R', naam: 'Stille waters', kleur: '#8a949c', tekst: '#6b757d', prio: 1 },
-]
+  { groep: 'golf', naam: 'Golfsporten', kleur: '#3f6fe0', tekst: '#2f5bc4', prio: 3 },
+  { groep: 'wind', naam: 'Windsporten', kleur: '#16b3d0', tekst: '#0e8fa6', prio: 2 },
+  { groep: 'stil', naam: 'Stille waters', kleur: '#8a949c', tekst: '#6b757d', prio: 1 },
+] as const
 let verblijf: Verblijf | null = null
 let rij = new Map<string, number | null>()
 let verblijfPunt: maplibregl.Marker | null = null
@@ -119,13 +131,14 @@ function besteDitUur() {
   const i = staat.i, max = verblijf?.max ?? 0
   const uit: { sport: (typeof SPORTEN)[number]; s: KaartStrand; score: number; min: number }[] = []
   for (const sport of SPORTEN) {
+    if (instelling.toon !== 'alles' && instelling.toon !== sport.groep) continue
     let best: (typeof uit)[number] | null = null
     staat.stranden.forEach((s, k) => {
-      const c = staat.cijfers[k] ?? ''
-      if (c[5 * i + 3] !== sport.letter) return
+      const t = tekensUur(k, i)
+      const score = sport.groep === 'stil' ? leesStil(t.s).cijfer : leesTeken(sport.groep === 'golf' ? t.g : t.w).cijfer
+      if (score === null || score < 3) return
       const m = rij.get(s.id)
       if (m == null || m > max) return
-      const score = 75 + c.charCodeAt(5 * i + 4) - 97
       if (!best || score > best.score || (score === best.score && m < best.min)) best = { sport, s, score, min: m }
     })
     if (best) uit.push(best)
@@ -149,7 +162,7 @@ async function tekenRoutes() {
   lijst.innerHTML = beste.length
     ? beste.map((b) => `<li><button type="button" data-id="${b.s.id}" style="--kleur:${b.sport.kleur};--tekstkleur:${b.sport.tekst}"><b>${b.sport.naam}</b>
         <span>${naam(b.s.n).replace(/</g, '&lt;')}</span><em>${rijTekst(b.min)}</em></button></li>`).join('')
-    : `<li class="rustig">Dit uur niets ideaal binnen ${rijTekst(v.max)}</li>`
+    : `<li class="rustig">Dit uur niets met 3 of 4 binnen ${rijTekst(v.max)}</li>`
   lijst.querySelectorAll<HTMLButtonElement>('button[data-id]').forEach((k) => { k.onclick = () => openFiche(k.dataset.id!) })
   lijst.hidden = false
   if (inBeeld && beste.length) {
@@ -267,7 +280,7 @@ async function start() {
   staat.index = index
   const [stranden, getij] = await Promise.all([data('kaart.json'), data('getij.json')])
   Object.assign(staat, { stranden, getij })
-  const eerste = data('sport/ww.json')
+  const eerste = Promise.all([data('sport/ww.json'), data('sport/score_alle.json'), laadNiveau(instelling.niveau)])
   setInterval(nieuweBerekening, 5 * 60 * 1000)
   document.addEventListener('visibilitychange', () => { if (!document.hidden) nieuweBerekening() })
 
@@ -279,22 +292,22 @@ async function start() {
   kaart.addControl(new maplibregl.GeolocateControl({ trackUserLocation: false }), 'top-left')
 
   kaart.on('load', async () => {
-    staat.cijfers = await eerste
-    for (let w = 0; w <= 4; w++) for (let v = 0; v <= 4; v++) {
-      if ((w === 0) !== (v === 0)) continue
-      kaart.addImage(`b${w}${v}`, bolletjeWW(w, v, BOL), { pixelRatio: 2 })
-      for (let rood = 0; rood <= 3; rood++) kaart.addImage(`b${w}${v}${rood}`, bolletjeWW(w, v, BOL, false, rood), { pixelRatio: 2 })
-    }
+    const [ww, alle] = await eerste
+    staat.cijfers = ww
+    staat.score.alle = alle
     kaart.addSource('stranden', {
       type: 'geojson', data: features(), cluster: true, clusterRadius: 30, clusterMaxZoom: 9,
-      clusterProperties: { w: ['max', ['get', 'w']], v: ['max', ['get', 'v']] },
+      clusterProperties: { r: ['max', ['get', 'r']] },
     })
     // Links WIND, rechts WAVE.
-    const ww = ['concat', 'b', ['to-string', ['get', 'w']], ['to-string', ['get', 'v']]]
     // Samengeklonterd: het aantal stranden in een wit bolletje met cyaan rand en cijfer.
+    // De cirkels zelf worden pas getekend als de kaart ze nodig heeft (veel combinaties).
     kaart.on('styleimagemissing', (e) => {
+      if (kaart.hasImage(e.id)) return
       const n = /^sg\|(\d+)$/.exec(e.id)
-      if (n && !kaart.hasImage(e.id)) kaart.addImage(e.id, groepIcoon(Number(n[1]), '#0e8fa6'), { pixelRatio: 2 })
+      if (n) { kaart.addImage(e.id, groepIcoon(Number(n[1]), '#0e8fa6'), { pixelRatio: 2 }); return }
+      const c = beeldUitNaam(e.id)
+      if (c) kaart.addImage(e.id, c, { pixelRatio: 2 })
     })
     // Routes vanaf het verblijf, onder de bolletjes.
     kaart.addSource('routes', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } })
@@ -308,8 +321,7 @@ async function start() {
     kaart.addLayer({ id: 'groepen', type: 'symbol', source: 'stranden', filter: ['has', 'point_count'],
       layout: { 'icon-image': ['concat', 'sg|', ['to-string', ['get', 'point_count']]] as any, 'icon-allow-overlap': true } })
     kaart.addLayer({ id: 'stranden', type: 'symbol', source: 'stranden', filter: ['!', ['has', 'point_count']],
-      layout: { 'icon-image': ['concat', ww, ['get', 'l']] as any, 'icon-allow-overlap': true,
-        'symbol-sort-key': ['+', ['get', 'w'], ['get', 'v']] } })
+      layout: { 'icon-image': ['get', 'beeld'] as any, 'icon-allow-overlap': true, 'symbol-sort-key': ['get', 'r'] } })
     kaart.on('click', 'stranden', (e) => {
       const id = e.features?.[0]?.properties?.id
       if (id) openFiche(id)
@@ -328,7 +340,12 @@ async function start() {
     dagen()
     zoekveld()
     document.getElementById('verblijfknop')!.onclick = () => vraag()
-    surfPaneel(() => (kaart.getSource('stranden') as GeoJSONSource).setData(features()))
+    surfPaneel(async (niveauAnders) => {
+      if (niveauAnders) await laadNiveau(instelling.niveau)
+      ;(kaart.getSource('stranden') as GeoJSONSource).setData(features())
+      toonUur()
+      tekenRoutes()
+    })
     // Bronvermelding dichtgeklapt (het i-knopje), zodat ze de routes niet bedekt.
     document.querySelector('.maplibregl-ctrl-attrib')?.classList.remove('maplibregl-compact-show')
     const hash = decodeURIComponent(location.hash.slice(1))

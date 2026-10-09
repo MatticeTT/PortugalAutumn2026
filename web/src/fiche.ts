@@ -1,12 +1,15 @@
-// De fiche van een strand, met het rekenmodel v2 (pipeline/rules/model.py). De vier lagen staan apart:
-//   bovenaan  de dag: per conclusie de uren, en per uur de conclusie, WAVE, WIND, op het strand en het getij
-//   laag 4    de conclusie van het gekozen uur, met de vijf scores
-//   laag 1-2  de vlakken WAVE (zee: hoogte en periode) en WIND (wind en vlaag)
-//   laag 3    wat dit strand met die zee en die wind doet: golfrichting, windrichting, getij
-// Alles wordt in de pipeline berekend; hier wordt alleen getoond.
-import { BLAUW, CYAAN, LICHT } from './kleuren'
+// De fiche van een strand, met de score van de rekenchat (versie 2.1, web/src/score.ts).
+//   bovenaan  de dag: per groep (golfsporten, windsporten, stille waters) de uren met 3 of 4
+//   per uur   de cirkels WIND en WAVE en stille waters
+//   gekozen uur  per groep het cijfer, de rand en de scores van de categorieën (uitklapbaar: de deelscores)
+//   gegevens  wind, golven op zee en op het strand, stroming, getij
+// De fiche rekent zelf na met de invoer per uur (zelfde als de kaart), maar met jouw niveau en gewicht.
 import { extremen, hoogte } from './getij'
 import { uitpakken } from './inpakken'
+import { conditiesUur } from './invoer'
+import { BETEKENIS, BLAUW5, CYAAN5, RANDKLEUR, RANDUITLEG, STIL5, donkerCijfer } from './scorekaart'
+import { CATEGORIES, GOLF, WIND, isStorm, score, strandUur, waarschuwingen, type Cond, type Groep, type StrandUur } from './score'
+import { gewicht, niveau } from './surf'
 import { waarschuwingBalk } from './waarschuwing'
 import { data, kiesUur, lisDag, lisUur, staat, toonDag, toonTijd, utc, vliegNaar } from './main'
 import type { Detail } from './types'
@@ -16,28 +19,7 @@ let huidig: Detail | null = null
 
 const el = () => document.getElementById('fiche')!
 const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!)
-
-// Per conclusie een letter (zie build_data.py): hoofdletter = ideaal, kleine letter = andere (de beste
-// activiteit, niet ideaal), W = te wild. Kleuren (eigenaar): golfsurf blauw, windsurf op golven geel,
-// windsurf cyaan, stille waters grijs, te wild rood. `tekst` = dezelfde kleur, leesbaar als tekst.
-interface Soort { letter: string; naam: string; zin: string; foto: string; kleur: string; tekst: string }
-const SOORTEN: Soort[] = [
-  { letter: 'G', naam: 'golfsurfen', zin: 'Ideaal golfsurfen', foto: 'golfsurfen', kleur: '#2a6fdb', tekst: '#2a6fdb' },
-  { letter: 'O', naam: 'windsurfen op golven', zin: 'Ideaal windsurfen op golven', foto: 'golven-en-wind', kleur: '#f5c400', tekst: '#b38f00' },
-  { letter: 'S', naam: 'windsurfen', zin: 'Ideaal windsurfen', foto: 'windsurfen', kleur: '#14b8d4', tekst: '#0e8fa6' },
-  { letter: 'R', naam: 'stille waters', zin: 'Ideaal stille waters', foto: 'plat-water', kleur: '#8a949c', tekst: '#6b757d' },
-  { letter: 'W', naam: 'te wild', zin: 'Te wild', foto: 'af-te-raden', kleur: '#d0312d', tekst: '#d0312d' },
-]
-const soort = (l: string) => SOORTEN.find((s) => s.letter === l.toUpperCase())
-const SCORES = ['golfsurfen', 'windsurfen op golven', 'windsurfen', 'stille waters', 'te wild']
-const SCORE_LETTER = ['G', 'O', 'S', 'R', 'W']
-
-// Labels voor WAVE en WIND (eigenaar, 8 oktober 2026).
-const LEVEL = ['', 'niets', 'ideaal – ook voor beginners', 'sterk – ervaring nodig', 'te sterk']
-// Het rekenmodel geeft levels 1–4; de app toont ze als 0–3 (eigenaar, 8 oktober 2026).
-const toonLevel = (n: number) => n - 1
 const kompas = (d: number) => ['N', 'NNO', 'NO', 'ONO', 'O', 'OZO', 'ZO', 'ZZO', 'Z', 'ZZW', 'ZW', 'WZW', 'W', 'WNW', 'NW', 'NNW'][Math.round(d / 22.5) % 16]
-// Naam van de windhoek φ (tabel in laag 3 van het document).
 const windNaam = (phi: number) => phi < 22.5 ? 'recht aanlandig' : phi < 67.5 ? 'schuin aanlandig' : phi < 112.5 ? 'zijwind'
   : phi < 157.5 ? 'schuin aflandig' : 'recht aflandig'
 const getal = (x: number | null | undefined, nd = 0) => (x == null ? '–' : x.toFixed(nd).replace('.', ','))
@@ -72,65 +54,92 @@ export function toonUur() {
 
 const uurNr = (i: number) => lisUur(utc(staat.index.tijd[i]))
 
-// ---- De dag: per conclusie de uren ----
+// ---- Namen ----
+const SPORTNAAM: Record<string, string> = {
+  golfsurfen: 'Golfsurfen', longboard: 'Longboard', shortboard: 'Shortboard', windsurfen: 'Windsurfen',
+  kitesurfen: 'Kitesurfen',
+}
+export function categorieNaam(k: string): string {
+  const delen = k.split('_')
+  const nv = delen[delen.length - 1]
+  const golven = delen.includes('golven') ? ' op golven' : ''
+  return `${SPORTNAAM[delen[0]] ?? delen[0]}${golven} · ${nv}`
+}
+const DEEL: Record<string, string> = {
+  golf: 'golfhoogte', wind: 'wind', periode: 'periode', windrichting: 'windrichting', vlagen: 'vlagen',
+  water: 'water aan het strand', golfrichting: 'golfrichting', zuiverheid: 'zuivere deining', stroming: 'stroming',
+  getij: 'getij', neerslag: 'neerslag',
+}
 
-// Uren na elkaar met dezelfde conclusie (letter), dag en nacht: [eerste, laatste].
-function vensters(d: Detail, idx: number[], past: (l: string) => boolean): [number, number][] {
-  const out: [number, number][] = []
+// ---- Rekenen per uur (met niveau en gewicht van de gebruiker) ----
+function cond(d: Detail, i: number): Cond | null {
+  const c = conditiesUur(d, i)
+  if (!c) return null
+  const g = gewicht()
+  return g ? { ...c, gewicht: g } : c
+}
+function uurScore(d: Detail, i: number): StrandUur | null {
+  const c = cond(d, i)
+  return c ? strandUur(c, niveau()) : null
+}
+
+// ---- De dag: per groep de uren met 3 of 4 ----
+type Venster = [number, number]
+function vensters(idx: number[], goed: (i: number) => boolean): Venster[] {
+  const out: Venster[] = []
   for (const i of idx) {
-    if (!past(d.letter[i])) continue
+    if (!goed(i)) continue
     const laatste = out[out.length - 1]
     if (laatste && laatste[1] === i - 1) laatste[1] = i
     else out.push([i, i])
   }
   return out
 }
-const urenTekst = (v: [number, number][]) => v.map(([a, b]) => `<span class="venster">${uurNr(a)}–${uurNr(b) + 1}u</span>`).join('')
-const telUren = (v: [number, number][]) => v.reduce((n, [a, b]) => n + b - a + 1, 0)
+const urenTekst = (v: Venster[]) => v.map(([a, b]) => `<span class="venster">${uurNr(a)}–${uurNr(b) + 1}u</span>`).join('')
 
-function overzicht(d: Detail, idx: number[]) {
-  if (d.controle?.blokkerend?.length) {
-    return `<div class="held leeg"><span class="zin">Voor dit strand rekent het model nog niet</span>
-      <small>${esc(d.controle.blokkerend.join(', '))}</small></div>`
-  }
-  const ideaal = SOORTEN.filter((s) => s.letter !== 'W').map((s) => ({ s, v: vensters(d, idx, (l) => l === s.letter) }))
-  const wild = { s: soort('W')!, v: vensters(d, idx, (l) => l === 'W') }
-  const andere = vensters(d, idx, (l) => /[gosr]/.test(l))
-  // Bovenaan met foto: de ideale activiteit met de meeste uren; geen ideaal uur, dan te wild.
-  const hoofd = ideaal.filter((x) => x.v.length).sort((a, b) => telUren(b.v) - telUren(a.v))[0] ?? (wild.v.length ? wild : null)
+function overzicht(per: Map<number, StrandUur>, idx: number[]) {
+  const groepen = [
+    { naam: 'Golfsporten', kleur: BLAUW5[3], foto: 'golfsurfen', cijfer: (u: StrandUur) => u.golf.cijfer },
+    { naam: 'Windsporten', kleur: CYAAN5[3], foto: 'windsurfen', cijfer: (u: StrandUur) => u.wind.cijfer },
+    { naam: 'Stille waters', kleur: STIL5[3], foto: 'plat-water', cijfer: (u: StrandUur) => u.stille_waters.cijfer },
+  ]
+  const rij = groepen.map((g) => {
+    const v = vensters(idx, (i) => { const u = per.get(i); return !!u && g.cijfer(u) >= 3 })
+    const max = Math.max(-1, ...idx.map((i) => { const u = per.get(i); return u ? g.cijfer(u) : -1 }))
+    return { ...g, v, max }
+  })
+  const hoofd = rij.filter((r) => r.v.length).sort((a, b) => b.max - a.max)[0]
   const held = hoofd
-    ? `<figure class="held" style="--kleur:${hoofd.s.kleur}"><img src="foto/${hoofd.s.foto}.webp" alt="">
-        <figcaption><span class="zin">${hoofd.s.zin}</span><span class="uren">${urenTekst(hoofd.v)}</span></figcaption></figure>`
-    : '<div class="held leeg"><span class="zin">Vandaag geen ideaal uur</span></div>'
-  const rij = (s: Soort, v: [number, number][]) => `
-    <li class="${v.length ? '' : 'niet'}" style="--kleur:${s.kleur};--uren:${s.tekst}">
-      <img src="foto/${s.foto}.webp" alt=""><span class="kort">${s.zin}</span>
-      <span class="uren">${v.length ? urenTekst(v) : 'niet vandaag'}</span></li>`
-  const rest = [...ideaal, wild].filter((x) => x !== hoofd).map((x) => rij(x.s, x.v)).join('')
-  const ander = `<li class="${andere.length ? '' : 'niet'} andere" style="--kleur:var(--lijn)">
-      <span class="stip-andere"></span><span class="kort">Andere <small>niet ideaal</small></span>
-      <span class="uren">${andere.length ? urenTekst(andere) : 'niet vandaag'}</span></li>`
-  return `${held}<ul class="rest">${rest}${ander}</ul>`
+    ? `<figure class="held" style="--kleur:${hoofd.kleur}"><img src="foto/${hoofd.foto}.webp" alt="">
+        <figcaption><span class="zin">${hoofd.naam}: ${hoofd.max} ${BETEKENIS[hoofd.max]}</span><span class="uren">${urenTekst(hoofd.v)}</span></figcaption></figure>`
+    : '<div class="held leeg"><span class="zin">Vandaag nergens 3 of 4</span></div>'
+  const rest = rij.filter((r) => r !== hoofd).map((r) => `
+    <li class="${r.v.length ? '' : 'niet'}" style="--kleur:${r.kleur};--uren:${r.kleur}">
+      <img src="foto/${r.foto}.webp" alt=""><span class="kort">${r.naam}${r.max >= 0 ? ` <small>hoogste ${r.max}</small>` : ''}</span>
+      <span class="uren">${r.v.length ? urenTekst(r.v) : 'geen 3 of 4'}</span></li>`).join('')
+  return `${held}<ul class="rest">${rest}</ul>`
 }
 
 // ---- Per uur ----
+function cel(g: Groep | null, pal: string[], kol: string) {
+  if (!g) return `<td class="${kol}">–</td>`
+  const kleur = g.te_veel ? '#111' : pal[g.cijfer]
+  const tekst = g.te_veel ? '#fff' : donkerCijfer(g.cijfer) ? '#0d2530' : '#fff'
+  const rand = g.rand ? `box-shadow:inset 0 0 0 3px ${RANDKLEUR[g.rand]};` : ''
+  return `<td class="${kol}" style="background:${kleur};color:${tekst};${rand}" title="${g.te_veel ? 'te veel' : BETEKENIS[g.cijfer]}${g.rand ? ', ' + RANDUITLEG[g.rand] : ''}"><b>${g.cijfer}</b></td>`
+}
 
-function dag(d: Detail, idx: number[]) {
+function dag(d: Detail, idx: number[], per: Map<number, StrandUur>) {
   const T = staat.index.tijd
   const ex = d.getij ? extremen(staat.getij, d.getij.a, d.getij.b, d.getij.w) : []
   const kol = (i: number) => [i === staat.i ? 'nu' : '', d.licht[i] === '0' ? 'nacht' : ''].join(' ')
-  const wat = (i: number) => {
-    const l = d.letter[i] ?? '.'
-    const s = soort(l)
-    const ideaal = s && (l === 'W' || l === l.toUpperCase())
-    const titel = d.conclusie?.[i] ?? ''
-    return `<td class="${kol(i)}"><span class="wat ${s && !ideaal ? 'andere' : ''}" style="${s ? `--kleur:${s.kleur}` : ''}"
-      title="${esc(titel)}"></span></td>`
+  const stil = (i: number) => {
+    const u = per.get(i)
+    if (!u) return `<td class="${kol(i)}">–</td>`
+    const n = u.stille_waters.cijfer
+    return `<td class="${kol(i)}" style="background:${STIL5[n]};color:${n <= 2 ? '#0d2530' : '#fff'}"><b>${n}</b></td>`
   }
-  const level = (i: number, reeks: string, pal: string[]) => {
-    const n = Number(reeks[i] ?? 0)
-    return `<td class="${kol(i)}" style="${n ? `background:${pal[n - 1]};color:${LICHT(n) ? '#0d2530' : '#fff'}` : ''}"><b>${n ? toonLevel(n) : '–'}</b></td>`
-  }
+  const storm = (i: number) => `<td class="${kol(i)}">${per.get(i)?.storm ? '<b class="storm">storm</b>' : ''}</td>`
   const getij = (i: number) => {
     const t = utc(T[i]) / 60000
     const h = ex.length ? hoogte(ex, t) : null
@@ -138,46 +147,74 @@ function dag(d: Detail, idx: number[]) {
     const pct = h == null ? 0 : Math.max(4, Math.min(100, (h / 4) * 100))
     return `<td class="${kol(i)}">${h == null ? '–' : `<span class="peil"><i style="height:${pct}%"></i></span>`}<small>${e ? (e.hoog ? 'hoog' : 'laag') : ''}</small></td>`
   }
+  const heeftStorm = idx.some((i) => per.get(i)?.storm)
   return `<div class="dag"><table>
     <tr><th></th>${idx.map((i) => `<td class="${kol(i)}"><a href="#" data-i="${i}">${lisUur(utc(T[i]))}</a></td>`).join('')}</tr>
-    <tr class="r-wat"><th></th>${idx.map(wat).join('')}</tr>
-    <tr class="r-cijfer"><th>WAVE</th>${idx.map((i) => level(i, d.WAVE, BLAUW)).join('')}</tr>
-    <tr class="r-cijfer"><th>WIND</th>${idx.map((i) => level(i, d.WIND, CYAAN)).join('')}</tr>
-    <tr class="r-cijfer"><th title="WAVE op het strand">strand</th>${idx.map((i) => level(i, d.WAVE_strand, BLAUW)).join('')}</tr>
+    <tr class="r-cijfer"><th>WIND</th>${idx.map((i) => cel(per.get(i)?.wind ?? null, CYAAN5, kol(i))).join('')}</tr>
+    <tr class="r-cijfer"><th>WAVE</th>${idx.map((i) => cel(per.get(i)?.golf ?? null, BLAUW5, kol(i))).join('')}</tr>
+    <tr class="r-cijfer"><th title="stille waters">stil</th>${idx.map(stil).join('')}</tr>
+    ${heeftStorm ? `<tr><th></th>${idx.map(storm).join('')}</tr>` : ''}
     <tr class="r-getij"><th>getij</th>${idx.map(getij).join('')}</tr>
   </table></div>`
 }
 
-// ---- Laag 4: de conclusie en de vijf scores ----
+// ---- Het gekozen uur: per groep het cijfer en de categorieën ----
+const pct = (x: number | null | undefined) => (x == null ? '–' : `${Math.round(x * 100)}%`)
 
-function conclusie(d: Detail, i: number) {
-  const tekst = d.conclusie?.[i]
-  const scores = d.scores?.[i]
-  if (!tekst || !scores) return ''
-  const s = soort(d.letter[i])
-  const ideaal = d.letter[i] === 'W' || d.letter[i] === d.letter[i].toUpperCase()
-  const balk = (k: number) => {
-    const ks = soort(SCORE_LETTER[k])!
-    return `<li><span>${SCORES[k]}</span><span class="balk"><i style="width:${scores[k]}%;background:${ks.kleur}"></i>
-      <em style="left:${k === 4 ? 50 : 75}%"></em></span><b>${scores[k]}</b></li>`
+function categorieLijst(c: Cond, g: Groep) {
+  const namen = Object.keys(g.scores).sort((a, b) => g.scores[b] - g.scores[a])
+  return `<ul class="categorieen">${namen.map((k) => {
+    const r = score(k, c)
+    const w = waarschuwingen(k, c)
+    const deel = (o: Record<string, number | null>) => Object.entries(o).filter(([, v]) => v != null)
+      .map(([n, v]) => `<li><span>${DEEL[n] ?? n}</span><b>${pct(v)}</b></li>`).join('')
+    return `<li><details><summary><span class="cat">${categorieNaam(k)}${r.profiel ? ` <small>${esc(r.profiel)}</small>` : ''}</span>
+        <span class="balk"><i style="width:${r.score}%"></i><em style="left:60%"></em></span><b>${Math.round(r.score)}</b></summary>
+      ${r.veto ? `<p class="klein">0 door ${r.veto}</p>` : `<div class="deel"><h4>Essentieel</h4><ul>${deel(r.essentieel)}</ul>
+        <h4>Bijkomend</h4><ul>${deel(r.bijkomend) || '<li><span>geen gegevens</span></li>'}</ul></div>`}
+      ${w.length ? `<ul class="let-op">${w.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}
+    </details></li>`
+  }).join('')}</ul>`
+}
+
+function groepKaart(naam: string, g: Groep, pal: string[], c: Cond) {
+  const kleur = g.te_veel ? '#111' : pal[g.cijfer]
+  const tekst = g.te_veel || !donkerCijfer(g.cijfer) ? '#fff' : '#0d2530'
+  const rand = g.rand ? `outline:4px solid ${RANDKLEUR[g.rand]};outline-offset:-4px;` : ''
+  const zin = g.te_veel ? 'te veel: te gevaarlijk' : BETEKENIS[g.cijfer]
+  return `<div class="groep">
+    <div class="tegel" style="background:${kleur};color:${tekst};${rand}">
+      <span class="soort">${naam}</span><b>${g.cijfer}</b><span class="betekenis">${zin}</span>
+      ${g.rand ? `<span class="gegevens">${RANDUITLEG[g.rand]}</span>` : ''}
+      ${g.cijfer >= 1 ? `<span class="gegevens">beste: ${categorieNaam(g.beste)}</span>` : ''}</div>
+    ${categorieLijst(c, g)}</div>`
+}
+
+function gekozenUur(d: Detail, i: number) {
+  if (d.onzeker?.length) {
+    return `<div class="held leeg"><span class="zin">Geen score voor dit strand</span><small>${esc(d.onzeker.join('; '))}</small></div>`
   }
-  return `<div class="conclusie ${ideaal ? '' : 'andere'}" style="--kleur:${s?.kleur ?? 'var(--lijn)'}">
-      <span class="laag">Conclusie</span><p>${esc(tekst)}</p>
-      <ul class="scores">${[0, 1, 2, 3, 4].map(balk).join('')}</ul>
-      <small>Ideaal vanaf 75 · te wild vanaf 50</small></div>`
+  const c = cond(d, i)
+  if (!c) return '<p class="klein">Geen voorspelling voor dit uur.</p>'
+  const u = strandUur(c, niveau())
+  const st = u.stille_waters
+  const melding = [u.storm ? '<p class="melding storm">Storm: wind vanaf 41 knopen of vlagen vanaf 48 knopen.</p>' : '',
+    c.onweer ? '<p class="melding">Onweer: elke categorie 0.</p>' : '',
+    c.donker ? '<p class="melding">Donker: elke categorie 0.</p>' : ''].join('')
+  const stDeel = Object.entries({ ...st.essentieel, ...st.bijkomend }).filter(([, v]) => v != null)
+    .map(([n, v]) => `<li><span>${DEEL[n] ?? n}</span><b>${pct(v as number)}</b></li>`).join('')
+  return `${melding}<div class="groepen">
+    ${groepKaart('WIND', u.wind, CYAAN5, c)}
+    ${groepKaart('WAVE', u.golf, BLAUW5, c)}
+    <div class="groep"><div class="tegel" style="background:${STIL5[st.cijfer]};color:${st.cijfer <= 2 ? '#0d2530' : '#fff'}">
+      <span class="soort">Stille waters</span><b>${st.cijfer}</b><span class="betekenis">${BETEKENIS[st.cijfer]} · ${Math.round(st.score)}/100</span>
+      <span class="gegevens">zwemmen, snorkelen, duiken, sup, e-foil</span></div>
+      ${st.veto ? '' : `<details class="stil"><summary>deelscores</summary><div class="deel"><ul>${stDeel}</ul></div></details>`}</div>
+  </div>
+  ${niveau() || gewicht() ? `<p class="klein">Gerekend ${niveau() ? `voor niveau ${niveau()}` : ''}${niveau() && gewicht() ? ' en ' : ''}${gewicht() ? `met ${gewicht()} kg` : ''} (knop Surfen).</p>` : ''}`
 }
 
-// ---- Laag 1 en 2: de vlakken WAVE en WIND ----
-
-// rood: het vlak staat rood omkaderd als de richting verkeerd is (wind van land; golf die op zee staat maar
-// op het strand te weinig aankomt). Zie build_data.py.
-function tegel(naam: 'WAVE' | 'WIND', n: number, gegevens: string, rood = false) {
-  const kleur = (naam === 'WIND' ? CYAAN : BLAUW)[n - 1] ?? '#ccc'
-  return `<div class="tegel ${LICHT(n) ? 'licht' : ''} ${n === 4 ? 'gevaar' : ''} ${rood ? 'verkeerd' : ''}" style="background:${kleur}">
-    <span class="soort">${naam}</span><b>${toonLevel(n)}</b><span class="betekenis">${LEVEL[n]}</span>
-    <span class="gegevens">${gegevens}</span></div>`
-}
-
+// ---- Gegevens van het gekozen uur ----
 // ---- Icoontjes voor de WAVE- en WIND-vakken (lijnen in de tekstkleur) ----
 
 const svg = (inhoud: string) =>
@@ -253,9 +290,6 @@ function getijTekening(p: number, stijgt: boolean) {
 const rijtje = (icoon: string, waarde: string, woord: string) =>
   `<span class="rijtje">${icoon}<b>${waarde}</b><small>${woord}</small></span>`
 
-// WAVE: het level komt alleen uit E_zee = 1,96 × hoogte² × periode² van de krachtigste deining, zonder
-// richting. Het vlak toont precies die deining: hoogte, periode, richting (evenveel regels als WIND). Wat het strand
-// ervan krijgt (bereikt, WAVE_strand), staat in de regel onder de vlakken.
 function waveGegevens(d: Detail, i: number) {
   const r = d.zee_r?.[i]
   return `<span class="rijtjes">
@@ -266,14 +300,6 @@ function waveGegevens(d: Detail, i: number) {
       <small>golf uit ${kompas(r)}</small></span>`}`
 }
 
-// De regel onder de vlakken: wat dit strand van de zee krijgt.
-function opStrand(d: Detail, i: number) {
-  if (d.bereikt?.[i] == null) return ''
-  const n = Number(d.WAVE_strand[i])
-  return `<p class="opstrand">Op dit strand komt <b>${d.bereikt[i]}%</b> van de golfkracht aan
-    (E ${d.E[i]} kJ): <span class="lvl" style="background:${BLAUW[n - 1]};color:${LICHT(n) ? '#0d2530' : '#fff'}">WAVE_strand ${toonLevel(n)}</span> ${LEVEL[n]}</p>
-    ${stroming(d, i)}`
-}
 
 // Stroming (rekenchat): snelheid, richting waarheen, en hoeveel hoger of lager de golf daardoor wordt.
 function stroming(d: Detail, i: number) {
@@ -295,6 +321,18 @@ function windGegevens(d: Detail, i: number) {
       <small>wind uit ${kompas(r)}${phi == null ? '' : `<span>${windNaam(phi)}</span>`}</small></span>`}`
 }
 
+function opStrand(d: Detail, i: number) {
+  if (d.gh?.[i] == null) return ''
+  const stroom = d.st?.[i] && 'tmd'.includes(d.st[i]) ? { t: 'tegen de wind in', m: 'mee met de wind', d: 'dwars op de wind' }[d.st[i] as 't' | 'm' | 'd'] : null
+  return `<h3 class="kop">Op dit strand</h3><ul class="extras opstrand-lijst">
+    <li><span>hoofdgolf</span><b>${getal(d.gh[i], 2)} m · ${getal(d.gt?.[i], 1)} s</b><small>golfhoek ${getal(d.gk?.[i])}°</small></li>
+    <li><span>alle golven samen</span><b>${getal(d.gs?.[i], 2)} m</b><small>${d.ga?.[i] == null ? '' : `hoofdgolf ${pct(d.ga[i])} van de energie`}</small></li>
+    <li><span>windhoek</span><b>${getal(d.wh?.[i])}°</b><small>${d.wh?.[i] == null ? '' : windNaam(d.wh[i]!)}</small></li>
+    ${stroom ? `<li><span>stroming</span><b>${getal(d.stroom?.[i], 1)} kn</b><small>${stroom}</small></li>` : ''}
+    ${d.ns?.[i] != null ? `<li><span>neerslag</span><b>${getal(d.ns[i], 1)} mm</b><small>per uur</small></li>` : ''}
+  </ul>${stroming(d, i)}`
+}
+
 // ---- Laag 3: de extra's per strand ----
 
 function extras(d: Detail, i: number) {
@@ -305,8 +343,8 @@ function extras(d: Detail, i: number) {
   const stijgt = k > 0 ? ex[k].hoog : null
   return `<h3 class="kop">Getij op dit strand</h3><ul class="extras">
     <li>${stijgt == null ? '' : getijTekening(d.tij[i]! / 100, stijgt)}<span><b>${d.tij[i]}%</b>${stijgt == null ? '' : `, ${stijgt ? 'opkomend' : 'afgaand'}`}
-      · verval ${getal(d.verval[i], 1)} m · tijgewicht ${getal(d.tijgewicht[i], 2)}
-      <small>${k > 0 ? `${ex[k].hoog ? 'hoog' : 'laag'} om ${toonTijd(ex[k].t * 60000)} · ` : ''}E ${d.E[i]} kJ · H op het strand ${getal(d.H[i], 2)} m · periode ${getal(d.periode[i], 1)} s</small></span></li></ul>`
+      · verval ${getal(d.verval[i], 1)} m
+      <small>${k > 0 ? `${ex[k].hoog ? 'hoog' : 'laag'} om ${toonTijd(ex[k].t * 60000)}` : ''}</small></span></li></ul>`
 }
 
 function render() {
@@ -315,22 +353,24 @@ function render() {
   const i = staat.i
   const ms = utc(I.tijd[i])
   const idx = I.tijd.map((_, k) => k).filter((k) => lisDag(utc(I.tijd[k])) === lisDag(ms))
-  const wave = Number(d.WAVE[i] ?? 0), wind = Number(d.WIND[i] ?? 0)
-  const nakijken = d.controle?.nakijken?.length
-    ? `<p class="klein nakijken">Stranddata nakijken: ${esc(d.controle.nakijken.join('; '))}</p>` : ''
+  const per = new Map<number, StrandUur>()
+  if (!d.onzeker?.length) for (const k of idx) { const u = uurScore(d, k); if (u) per.set(k, u) }
+  const wind = d.wind[i] != null
   el().innerHTML = `<button class="sluit" aria-label="Sluiten">×</button>
     <h2>${esc(d.naam)}</h2>
     <div class="sub">${toonDag(ms)}</div>
     ${d.nota ? `<p class="vastenota">${esc(d.nota)}</p>` : ''}
     ${waarschuwingBalk(d.waarschuwing?.[i], d.waarschuwingen, I.tijd[i])}
-    ${overzicht(d, idx)}
+    ${d.onzeker?.length ? '' : overzicht(per, idx)}
     <h3 class="kop">Per uur</h3>
-    ${dag(d, idx)}
+    ${dag(d, idx, per)}
     <h3 class="kop">Om ${toonTijd(ms)}${d.licht[i] === '0' ? ' <small>(donker)</small>' : ''}</h3>
-    ${conclusie(d, i)}
-    ${wave && wind ? `<div class="tegels">${tegel('WAVE', wave, waveGegevens(d, i), (Number(d.rood?.[i] ?? 0) & 2) > 0)}${tegel('WIND', wind, windGegevens(d, i), (Number(d.rood?.[i] ?? 0) & 1) > 0)}</div>${opStrand(d, i)}` : ''}
+    ${gekozenUur(d, i)}
+    ${wind ? `<h3 class="kop">Wind en golven op zee</h3><div class="tegels gegevens-tegels">
+      <div class="tegel licht"><span class="soort">golven op zee</span>${waveGegevens(d, i)}</div>
+      <div class="tegel licht"><span class="soort">wind</span>${windGegevens(d, i)}</div></div>` : ''}
+    ${opStrand(d, i)}
     ${extras(d, i)}
-    ${nakijken}
     <p class="klein"><a href="rekenen.html">Hoe berekend?</a> · <a href="controle.html#${encodeURIComponent(d.id)}">Stranddata</a>
       · Geen veiligheidsadvies: volg de redders en de vlaggen.</p>`
   bind()
@@ -344,3 +384,6 @@ function bind() {
   const nu = v?.querySelector<HTMLElement>('td.nu')
   if (v && nu) v.scrollLeft = Math.max(0, nu.offsetLeft - v.clientWidth / 2)
 }
+
+// voor tests en de planning
+export { CATEGORIES, GOLF, WIND, isStorm }

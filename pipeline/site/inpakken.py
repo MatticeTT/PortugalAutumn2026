@@ -14,6 +14,9 @@ VELDEN = {
     "wind": (10, 2), "vlagen": (10, 2), "windrichting": (1, 2), "zee_h": (100, 2), "zee_t": (10, 2),
     "zee_r": (1, 2), "E_zee": (1, 3), "bereikt": (1, 2), "E": (1, 3), "periode": (10, 2), "H": (100, 2),
     "windhoek": (10, 2), "tij": (1, 2), "tijgewicht": (100, 2), "verval": (100, 2),
+    # invoer voor de score van de rekenchat (pipeline/site/invoer.py, BEWAAR)
+    "wh": (1, 2), "gh": (100, 2), "gt": (10, 2), "gk": (1, 2), "ga": (100, 2), "gs": (100, 2), "ns": (10, 2),
+    "ud": (10, 2),
 }
 
 
