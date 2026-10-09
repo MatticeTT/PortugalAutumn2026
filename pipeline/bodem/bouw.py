@@ -135,34 +135,46 @@ class Raster:
         return float((w[m] * g[m]).sum() / g[m].sum())
 
 
-def profiel(rs: Raster, s: dict) -> dict:
-    stappen = list(range(0, 2001, STAP_M))
-    h = [rs.hoogte(*verplaats(s["lon"], s["lat"], s["kijkrichting"], m)) for m in stappen]
-    diepte = {m: (None if v is None else round(-v, 2)) for m, v in zip(stappen, h, strict=True)}
-    if all(v is None for v in diepte.values()):
+STAPPEN = list(range(0, 2001, STAP_M))
+
+
+def ruw_profiel(rs: Raster, s: dict) -> list[float | None]:
+    """Diepte om de 25 m van het kustpunt tot 2.000 m, in de kijkrichting (positief = onder het referentievlak)."""
+    h = [rs.hoogte(*verplaats(s["lon"], s["lat"], s["kijkrichting"], m)) for m in STAPPEN]
+    return [None if v is None else round(-v, 2) for v in h]
+
+
+def eerste(diepte: dict[int, float | None], grens: float, vanaf: int = 0) -> int | None:
+    """Eerste afstand vanaf `vanaf` waar de diepte de grens haalt, lineair geïnterpoleerd tussen de stappen."""
+    vorige_m, vorige_d = None, None
+    for m in STAPPEN:
+        d = diepte[m]
+        if m < vanaf or d is None:
+            continue
+        if d >= grens:
+            if vorige_d is None or vorige_d >= grens:
+                return m
+            return round(vorige_m + (grens - vorige_d) / (d - vorige_d) * (m - vorige_m))
+        vorige_m, vorige_d = m, d
+    return None
+
+
+def profiel(lijst: list[float | None] | None) -> dict:
+    if not lijst or all(v is None for v in lijst):
         return {"diepte_profiel": None}
-
-    def eerste(grens: float):
-        vorige_m, vorige_d = None, None
-        for m in stappen:
-            d = diepte[m]
-            if d is None:
-                continue
-            if d >= grens:
-                if vorige_d is None or vorige_d >= grens:
-                    return m
-                return round(vorige_m + (grens - vorige_d) / (d - vorige_d) * (m - vorige_m))
-            vorige_m, vorige_d = m, d
-        return None
-
-    a5, a10 = eerste(5), eerste(10)
+    diepte = dict(zip(STAPPEN, lijst, strict=True))
+    # Nullijn: eerste plek waar de diepte 0 wordt (het referentievlak). Daarvoor ligt droogvallend strand.
+    nul = eerste(diepte, 0)
+    a5, a10 = eerste(diepte, 5), eerste(diepte, 10)
     return {
         "diepte_profiel": {str(m): diepte[m] for m in AFSTANDEN},
         "diepte_kustpunt": diepte[0],
-        "afstand_tot_5m_m": a5, "afstand_tot_10m_m": a10,
-        "helling_0_5m": round(5 / a5, 4) if a5 else None,
-        "helling_0_10m": round(10 / a10, 4) if a10 else None,
-        "_ruw": diepte,
+        "droogval_breedte_m": nul,
+        "afstand_tot_5m_m": a5, "afstand_tot_10m_m": a10,  # vanaf het kustpunt
+        # helling vanaf de nullijn (rekenchat): 5 m over de afstand nullijn - 5 m-diepte
+        "helling_0_5m": round(5 / (a5 - nul), 4) if a5 is not None and nul is not None and a5 > nul else None,
+        "helling_0_10m": round(10 / (a10 - nul), 4) if a10 is not None and nul is not None and a10 > nul else None,
+        "ondiepe_vooroever": a5 is None,
     }
 
 
@@ -237,46 +249,85 @@ def klasse_helling(h: float | None) -> str | None:
 
 # ---------- alles ----------
 
+NIET_IN_SCORE = "niet gebruiken in de score"
+
+
+def mediaan(xs: list) -> float | None:
+    xs = sorted(x for x in xs if x is not None)
+    return xs[len(xs) // 2] if xs else None
+
+
 def main() -> None:
+    """Zonder argument: alles opnieuw ophalen (EMODnet en GCC). Met --lokaal: de bewaarde profielen
+    (profielen.json) en de GCC-koppeling uit bodem.json hergebruiken en alleen de afgeleide velden herberekenen."""
+    lokaal = "--lokaal" in sys.argv
     ss = stranden()
     print(len(ss), "stranden", Counter(s["land"] for s in ss), flush=True)
     rs = Raster()
-    rooster = gcc_punten(ss)
+    if lokaal:
+        profielen = json.loads((OUT / "profielen.json").read_text())["profielen"]
+        oud = json.loads((OUT / "bodem.json").read_text())
+    else:
+        rooster = gcc_punten(ss)
+        profielen = {}
     gv = getij()
     uit, vreemd = {}, []
     for i, s in enumerate(ss):
         if i % 500 == 0:
             print(i, flush=True)
-        r = profiel(rs, s)
-        ruw = r.pop("_ruw", None)
-        r.update(bodem(rooster, s))
+        if not lokaal:
+            profielen[s["id"]] = ruw_profiel(rs, s)
+        lijst = profielen.get(s["id"])
+        ruw = dict(zip(STAPPEN, lijst, strict=True)) if lijst else None
+        r = profiel(lijst)
+        if lokaal:
+            r.update({k: oud[s["id"]].get(k) for k in ("bodem_type", "bodem_afstand_m", "gcc_kusttype", "gcc_id")
+                      if k in oud[s["id"]]})
+        else:
+            r.update(bodem(rooster, s))
         r["getijverschil_m"] = gv.get(s["id"])
         r["getij_klasse"] = klasse_getij(r["getijverschil_m"])
+
+        # onlogisch: land waar zee verwacht wordt, of al diep vlak bij het strand
+        redenen = []
+        if ruw:
+            hw = (r["getijverschil_m"] or 0) + 0.5  # boven hoogwater (ruim): echt land, geen droogvallend strand
+            droog = [m for m, d in ruw.items() if d is not None and d < 0 and m >= 300]
+            if droog:
+                echt = -ruw[droog[0]] > hw
+                vreemd.append({"id": s["id"], "land": s["land"], "naam": s["naam"],
+                               "soort": "land in de kijkrichting" if echt else "droogvallend verder dan 300 m",
+                               "vanaf_m": droog[0], "hoogte_m": -ruw[droog[0]]})
+                if echt:
+                    redenen.append(f"lijn in de kijkrichting raakt land op {droog[0]} m ({-ruw[droog[0]]:.1f} m hoog)")
+            d100 = ruw.get(100)
+            if d100 is not None and d100 > 10:
+                vreemd.append({"id": s["id"], "land": s["land"], "naam": s["naam"], "soort": "dieper dan 10 m op 100 m",
+                               "diepte_100": d100})
+                redenen.append(f"op 100 m al {d100:.1f} m diep")
+            if r["ondiepe_vooroever"]:
+                vreemd.append({"id": s["id"], "land": s["land"], "naam": s["naam"],
+                               "soort": "geen 5 m diep binnen 2 km", "diepte_2000": ruw[2000]})
+        r["onzeker"] = bool(redenen)
+        r["onzeker_redenen"] = redenen
+
         if not s["besloten_water"]:
             r["helling_klasse"] = klasse_helling(r.get("helling_0_5m"))
+            r["helling_klasse_nota"] = NIET_IN_SCORE if r["helling_klasse"] else None
             if s["getij_voorkeur"] is None:
-                r["getij_voorkeur"] = VOORKEUR.get((r["bodem_type"], r["helling_klasse"]))
+                r["getij_voorkeur"] = None if r["onzeker"] else VOORKEUR.get((r.get("bodem_type"), r["helling_klasse"]))
                 r["getij_voorkeur_bron"] = "geschat" if r["getij_voorkeur"] else None
+                r["getij_voorkeur_nota"] = NIET_IN_SCORE if r["getij_voorkeur"] else None
             d100 = (r.get("diepte_profiel") or {}).get("100")
-            ontbreekt = r.get("diepte_profiel") is None or r["bodem_type"] is None
+            ontbreekt = r.get("diepte_profiel") is None or r.get("bodem_type") is None
             r["bodem_zekerheid"] = "laag" if ontbreekt or (d100 is not None and d100 > 10) else "middel"
-        # onlogisch: land waar zee verwacht wordt
-        if ruw:
-            land_ver = [m for m, d in ruw.items() if d is not None and d < 0 and m >= 300]
-            if land_ver:
-                vreemd.append({"id": s["id"], "land": s["land"], "naam": s["naam"], "soort": "land in de kijkrichting",
-                               "vanaf_m": land_ver[0], "hoogte_m": -ruw[land_ver[0]]})
-            if (r.get("diepte_profiel") or {}).get("100") is not None and r["diepte_profiel"]["100"] > 10:
-                vreemd.append({"id": s["id"], "land": s["land"], "naam": s["naam"], "soort": "dieper dan 10 m op 100 m",
-                               "diepte_100": r["diepte_profiel"]["100"]})
-            if r["afstand_tot_5m_m"] is None and all(d is not None for d in ruw.values()):
-                vreemd.append({"id": s["id"], "land": s["land"], "naam": s["naam"],
-                               "soort": "geen 5 m diep binnen 2 km",
-                               "diepte_2000": ruw[2000]})
         uit[s["id"]] = r
 
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / "bodem.json").write_text(json.dumps(uit, ensure_ascii=False) + "\n")
+    if not lokaal:
+        kop = {"stap_m": STAP_M, "eenheid": "m diepte, positief onder het referentievlak"}
+        (OUT / "profielen.json").write_text(json.dumps({**kop, "profielen": profielen}) + "\n")
 
     rapport: dict = {"per_land": {}, "raster_fouten": rs.fouten, "onlogisch": vreemd}
     for land in sorted({s["land"] for s in ss}):
@@ -285,15 +336,16 @@ def main() -> None:
         rapport["per_land"][land] = {
             "stranden": len(ids),
             "met_profiel": sum(r["diepte_profiel"] is not None for r in rr),
-            "met_afstand_5m": sum(r["afstand_tot_5m_m"] is not None for r in rr if r["diepte_profiel"]),
-            "met_bodem_type": sum(r["bodem_type"] is not None for r in rr),
+            "ondiepe_vooroever": sum(bool(r.get("ondiepe_vooroever")) for r in rr if r["diepte_profiel"]),
+            "met_bodem_type": sum(r.get("bodem_type") is not None for r in rr),
             "met_getijverschil": sum(r["getijverschil_m"] is not None for r in rr),
+            "onzeker": sum(r["onzeker"] for r in rr),
             "helling_klasse": Counter(str(r.get("helling_klasse")) for r in rr).most_common(),
-            "bodem_type": Counter(str(r["bodem_type"]) for r in rr).most_common(),
-            "gcc_kusttype": Counter(str(r.get("gcc_kusttype")) for r in rr).most_common(),
+            "bodem_type": Counter(str(r.get("bodem_type")) for r in rr).most_common(),
             "getij_klasse": Counter(str(r["getij_klasse"]) for r in rr).most_common(),
             "getij_voorkeur": Counter(str(r.get("getij_voorkeur")) for r in rr).most_common(),
             "bodem_zekerheid": Counter(str(r.get("bodem_zekerheid")) for r in rr).most_common(),
+            "droogval_breedte_mediaan": mediaan([r.get("droogval_breedte_m") for r in rr]),
             "onlogisch": Counter(v["soort"] for v in vreemd if v["land"] == land).most_common(),
         }
     namen = {"be": "KNOKKE-HEIST LEKKERBEK", "fr": "Plage de la Gravière", "es": "Zurriola",
