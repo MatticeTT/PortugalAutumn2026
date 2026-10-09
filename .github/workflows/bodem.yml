@@ -22,7 +22,7 @@ jobs:
       - run: npm ci
       - name: Verkennen
         if: github.event.inputs.stap == 'verken'
-        run: python -m pipeline.bodem.verken
+        run: python -m pipeline.bodem.verken2
       - name: Bouwen
         if: github.event.inputs.stap == 'bouw'
         run: |
