@@ -295,6 +295,107 @@
     ]
    ]
   },
+  "nl": {
+   "stranden": 112,
+   "met_profiel": 112,
+   "ondiepe_vooroever": 25,
+   "met_bodem_type": 110,
+   "met_getijverschil": 112,
+   "onzeker": 3,
+   "helling_klasse": [
+    [
+     "vlak",
+     57
+    ],
+    [
+     "None",
+     25
+    ],
+    [
+     "steil",
+     16
+    ],
+    [
+     "gemiddeld",
+     14
+    ]
+   ],
+   "bodem_type": [
+    [
+     "zand",
+     95
+    ],
+    [
+     "slik",
+     11
+    ],
+    [
+     "anders",
+     4
+    ],
+    [
+     "None",
+     2
+    ]
+   ],
+   "getij_klasse": [
+    [
+     "middel",
+     60
+    ],
+    [
+     "klein",
+     45
+    ],
+    [
+     "groot",
+     7
+    ]
+   ],
+   "getij_voorkeur": [
+    [
+     "half tot hoog",
+     52
+    ],
+    [
+     "None",
+     36
+    ],
+    [
+     "laag",
+     13
+    ],
+    [
+     "half",
+     11
+    ]
+   ],
+   "bodem_zekerheid": [
+    [
+     "middel",
+     110
+    ],
+    [
+     "laag",
+     2
+    ]
+   ],
+   "droogval_breedte_mediaan": 121,
+   "onlogisch": [
+    [
+     "droogvallend verder dan 300 m",
+     28
+    ],
+    [
+     "geen 5 m diep binnen 2 km",
+     25
+    ],
+    [
+     "land in de kijkrichting",
+     3
+    ]
+   ]
+  },
   "pt": {
    "stranden": 682,
    "met_profiel": 682,
@@ -18797,6 +18898,429 @@
    "soort": "land in de kijkrichting",
    "vanaf_m": 300,
    "hoogte_m": 0.93
+  },
+  {
+   "id": "relation/20705923",
+   "land": "nl",
+   "naam": "Balg",
+   "soort": "geen 5 m diep binnen 2 km",
+   "diepte_2000": 4.64
+  },
+  {
+   "id": "way/917446034",
+   "land": "nl",
+   "naam": "Oosterstrand",
+   "soort": "droogvallend verder dan 300 m",
+   "vanaf_m": 300,
+   "hoogte_m": 0.15
+  },
+  {
+   "id": "way/917446034",
+   "land": "nl",
+   "naam": "Oosterstrand",
+   "soort": "geen 5 m diep binnen 2 km",
+   "diepte_2000": 4.74
+  },
+  {
+   "id": "relation/20733569",
+   "land": "nl",
+   "naam": "Noorderstrand",
+   "soort": "geen 5 m diep binnen 2 km",
+   "diepte_2000": 3.27
+  },
+  {
+   "id": "relation/18743064",
+   "land": "nl",
+   "naam": "Westerstrand",
+   "soort": "droogvallend verder dan 300 m",
+   "vanaf_m": 1050,
+   "hoogte_m": 0.04
+  },
+  {
+   "id": "relation/18743131",
+   "land": "nl",
+   "naam": "Buitenrif-Oost",
+   "soort": "geen 5 m diep binnen 2 km",
+   "diepte_2000": 3.5
+  },
+  {
+   "id": "relation/18743130",
+   "land": "nl",
+   "naam": "Buitenrif-West",
+   "soort": "droogvallend verder dan 300 m",
+   "vanaf_m": 300,
+   "hoogte_m": 0.78
+  },
+  {
+   "id": "relation/18743130",
+   "land": "nl",
+   "naam": "Buitenrif-West",
+   "soort": "geen 5 m diep binnen 2 km",
+   "diepte_2000": 1.3
+  },
+  {
+   "id": "relation/18748226",
+   "land": "nl",
+   "naam": "Westelijke washover",
+   "soort": "droogvallend verder dan 300 m",
+   "vanaf_m": 375,
+   "hoogte_m": 0.6
+  },
+  {
+   "id": "relation/18748226",
+   "land": "nl",
+   "naam": "Westelijke washover",
+   "soort": "geen 5 m diep binnen 2 km",
+   "diepte_2000": 0.76
+  },
+  {
+   "id": "relation/18743244",
+   "land": "nl",
+   "naam": "Middenrif",
+   "soort": "droogvallend verder dan 300 m",
+   "vanaf_m": 375,
+   "hoogte_m": 0.6
+  },
+  {
+   "id": "relation/18743244",
+   "land": "nl",
+   "naam": "Middenrif",
+   "soort": "geen 5 m diep binnen 2 km",
+   "diepte_2000": 0.76
+  },
+  {
+   "id": "relation/18743246",
+   "land": "nl",
+   "naam": "Oostrif",
+   "soort": "droogvallend verder dan 300 m",
+   "vanaf_m": 300,
+   "hoogte_m": 0.91
+  },
+  {
+   "id": "relation/18743246",
+   "land": "nl",
+   "naam": "Oostrif",
+   "soort": "geen 5 m diep binnen 2 km",
+   "diepte_2000": -2.46
+  },
+  {
+   "id": "relation/18743245",
+   "land": "nl",
+   "naam": "Oostelijke washover",
+   "soort": "droogvallend verder dan 300 m",
+   "vanaf_m": 300,
+   "hoogte_m": 1.01
+  },
+  {
+   "id": "relation/18743245",
+   "land": "nl",
+   "naam": "Oostelijke washover",
+   "soort": "geen 5 m diep binnen 2 km",
+   "diepte_2000": -2.08
+  },
+  {
+   "id": "relation/1488509",
+   "land": "nl",
+   "naam": "De Hôn",
+   "soort": "droogvallend verder dan 300 m",
+   "vanaf_m": 300,
+   "hoogte_m": 0.81
+  },
+  {
+   "id": "relation/1488509",
+   "land": "nl",
+   "naam": "De Hôn",
+   "soort": "geen 5 m diep binnen 2 km",
+   "diepte_2000": 0.9
+  },
+  {
+   "id": "relation/18743243",
+   "land": "nl",
+   "naam": "Westrif",
+   "soort": "droogvallend verder dan 300 m",
+   "vanaf_m": 300,
+   "hoogte_m": 0.81
+  },
+  {
+   "id": "way/93123925",
+   "land": "nl",
+   "naam": "Bierumer strand",
+   "soort": "droogvallend verder dan 300 m",
+   "vanaf_m": 300,
+   "hoogte_m": 2.21
+  },
+  {
+   "id": "relation/6482837",
+   "land": "nl",
+   "naam": "Noordsvaarder",
+   "soort": "droogvallend verder dan 300 m",
+   "vanaf_m": 1025,
+   "hoogte_m": 0.11
+  },
+  {
+   "id": "way/878065974",
+   "land": "nl",
+   "naam": "ZEESTRAND EEMSHOTEL, DELFZIJL",
+   "soort": "droogvallend verder dan 300 m",
+   "vanaf_m": 425,
+   "hoogte_m": 0.33
+  },
+  {
+   "id": "way/878065974",
+   "land": "nl",
+   "naam": "ZEESTRAND EEMSHOTEL, DELFZIJL",
+   "soort": "geen 5 m diep binnen 2 km",
+   "diepte_2000": -1.04
+  },
+  {
+   "id": "way/93751165",
+   "land": "nl",
+   "naam": "ZEESTRAND TERMUNTEN",
+   "soort": "droogvallend verder dan 300 m",
+   "vanaf_m": 300,
+   "hoogte_m": 2.1
+  },
+  {
+   "id": "way/547234559",
+   "land": "nl",
+   "naam": "Hengst",
+   "soort": "droogvallend verder dan 300 m",
+   "vanaf_m": 300,
+   "hoogte_m": 0.87
+  },
+  {
+   "id": "way/547234559",
+   "land": "nl",
+   "naam": "Hengst",
+   "soort": "geen 5 m diep binnen 2 km",
+   "diepte_2000": -1.54
+  },
+  {
+   "id": "way/754941201",
+   "land": "nl",
+   "naam": "DE KRIM",
+   "soort": "geen 5 m diep binnen 2 km",
+   "diepte_2000": 4.14
+  },
+  {
+   "id": "eea/NLBW81_HARLGSBSD",
+   "land": "nl",
+   "naam": "HARLINGERSTRAND, HARLINGEN",
+   "soort": "droogvallend verder dan 300 m",
+   "vanaf_m": 300,
+   "hoogte_m": 0.23
+  },
+  {
+   "id": "eea/NLBW81_HARLGSBSD",
+   "land": "nl",
+   "naam": "HARLINGERSTRAND, HARLINGEN",
+   "soort": "geen 5 m diep binnen 2 km",
+   "diepte_2000": 1.7
+  },
+  {
+   "id": "way/152867296",
+   "land": "nl",
+   "naam": "De Zandmotor",
+   "soort": "droogvallend verder dan 300 m",
+   "vanaf_m": 300,
+   "hoogte_m": 0.36
+  },
+  {
+   "id": "way/1049620700",
+   "land": "nl",
+   "naam": "Slufterstrand",
+   "soort": "geen 5 m diep binnen 2 km",
+   "diepte_2000": 1.04
+  },
+  {
+   "id": "way/940981484",
+   "land": "nl",
+   "naam": "Rockanje Naaktstrand",
+   "soort": "geen 5 m diep binnen 2 km",
+   "diepte_2000": 0.74
+  },
+  {
+   "id": "way/671610371",
+   "land": "nl",
+   "naam": "Rockanje Strand",
+   "soort": "geen 5 m diep binnen 2 km",
+   "diepte_2000": 3.4
+  },
+  {
+   "id": "way/943577353",
+   "land": "nl",
+   "naam": "QUACKSTRAND",
+   "soort": "geen 5 m diep binnen 2 km",
+   "diepte_2000": 1.2
+  },
+  {
+   "id": "way/141559562",
+   "land": "nl",
+   "naam": "VUURTOREN BADSTRAND HELLEVOETSLUIS",
+   "soort": "geen 5 m diep binnen 2 km",
+   "diepte_2000": 1.22
+  },
+  {
+   "id": "eea/NLBW89_KRAMMSLBKBSD",
+   "land": "nl",
+   "naam": "KRAMMERSLUIS LAAGBEKKEN BADSTRAND",
+   "soort": "droogvallend verder dan 300 m",
+   "vanaf_m": 650,
+   "hoogte_m": 0.25
+  },
+  {
+   "id": "eea/NLBW89_KRAMMSLBKBSD",
+   "land": "nl",
+   "naam": "KRAMMERSLUIS LAAGBEKKEN BADSTRAND",
+   "soort": "geen 5 m diep binnen 2 km",
+   "diepte_2000": -1.41
+  },
+  {
+   "id": "way/141929080",
+   "land": "nl",
+   "naam": "GREVELINGENDAM PLAAT VAN OUDE TONGE BADSTRAND",
+   "soort": "droogvallend verder dan 300 m",
+   "vanaf_m": 650,
+   "hoogte_m": 0.25
+  },
+  {
+   "id": "way/141929080",
+   "land": "nl",
+   "naam": "GREVELINGENDAM PLAAT VAN OUDE TONGE BADSTRAND",
+   "soort": "geen 5 m diep binnen 2 km",
+   "diepte_2000": -1.41
+  },
+  {
+   "id": "way/152383716",
+   "land": "nl",
+   "naam": "Strand Ouddorp",
+   "soort": "droogvallend verder dan 300 m",
+   "vanaf_m": 1800,
+   "hoogte_m": 0.03
+  },
+  {
+   "id": "way/152383716",
+   "land": "nl",
+   "naam": "Strand Ouddorp",
+   "soort": "geen 5 m diep binnen 2 km",
+   "diepte_2000": -0.32
+  },
+  {
+   "id": "way/61728057",
+   "land": "nl",
+   "naam": "BROUWERSDAM KABBELAARSBANK",
+   "soort": "geen 5 m diep binnen 2 km",
+   "diepte_2000": 1.61
+  },
+  {
+   "id": "way/1396605663",
+   "land": "nl",
+   "naam": "SCHARENDIJKE BADSTRAND",
+   "soort": "geen 5 m diep binnen 2 km",
+   "diepte_2000": 3.41
+  },
+  {
+   "id": "eea/NLBW89_STAVNSBSD",
+   "land": "nl",
+   "naam": "STAVENISSE BADSTRAND",
+   "soort": "droogvallend verder dan 300 m",
+   "vanaf_m": 300,
+   "hoogte_m": 2.72
+  },
+  {
+   "id": "way/706953759",
+   "land": "nl",
+   "naam": "WEMELDINGE BADSTRAND",
+   "soort": "droogvallend verder dan 300 m",
+   "vanaf_m": 300,
+   "hoogte_m": 2.73
+  },
+  {
+   "id": "way/98476706",
+   "land": "nl",
+   "naam": "SINT ANNALAND BADSTRAND",
+   "soort": "droogvallend verder dan 300 m",
+   "vanaf_m": 300,
+   "hoogte_m": 1.87
+  },
+  {
+   "id": "way/98651525",
+   "land": "nl",
+   "naam": "SINT PHILIPSLAND BADSTRAND",
+   "soort": "droogvallend verder dan 300 m",
+   "vanaf_m": 300,
+   "hoogte_m": 1.87
+  },
+  {
+   "id": "eea/NLBW89_YERSKPWBSD",
+   "land": "nl",
+   "naam": "YERSEKE POSTWEG BADSTRAND",
+   "soort": "droogvallend verder dan 300 m",
+   "vanaf_m": 300,
+   "hoogte_m": 1.87
+  },
+  {
+   "id": "way/98385039",
+   "land": "nl",
+   "naam": "SINT MAARTENSDIJK MUIEPOLDER BADSTRAND",
+   "soort": "droogvallend verder dan 300 m",
+   "vanaf_m": 300,
+   "hoogte_m": 1.87
+  },
+  {
+   "id": "way/78607152",
+   "land": "nl",
+   "naam": "KATSE VEER BADSTRAND",
+   "soort": "land in de kijkrichting",
+   "vanaf_m": 300,
+   "hoogte_m": 4.47
+  },
+  {
+   "id": "way/82124180",
+   "land": "nl",
+   "naam": "BERGSE DIEPSLUIS NOORD BADSTRAND",
+   "soort": "land in de kijkrichting",
+   "vanaf_m": 300,
+   "hoogte_m": 4.5
+  },
+  {
+   "id": "eea/NLBW89_OESTDWZDBSD",
+   "land": "nl",
+   "naam": "OESTERDAM WESTZIJDE BADSTRAND",
+   "soort": "land in de kijkrichting",
+   "vanaf_m": 300,
+   "hoogte_m": 4.49
+  },
+  {
+   "id": "way/1267665951",
+   "land": "nl",
+   "naam": "KRABBENDIJKE ROELSHOEK BADSTRAND",
+   "soort": "droogvallend verder dan 300 m",
+   "vanaf_m": 300,
+   "hoogte_m": 2.88
+  },
+  {
+   "id": "way/1267665951",
+   "land": "nl",
+   "naam": "KRABBENDIJKE ROELSHOEK BADSTRAND",
+   "soort": "geen 5 m diep binnen 2 km",
+   "diepte_2000": -4.48
+  },
+  {
+   "id": "way/74394345",
+   "land": "nl",
+   "naam": "BRESKENS BADSTRAND",
+   "soort": "droogvallend verder dan 300 m",
+   "vanaf_m": 300,
+   "hoogte_m": 0.67
+  },
+  {
+   "id": "way/264444452",
+   "land": "nl",
+   "naam": "BAARLAND BADSTRAND",
+   "soort": "droogvallend verder dan 300 m",
+   "vanaf_m": 1800,
+   "hoogte_m": 0.27
   }
  ],
  "voorbeelden": {
