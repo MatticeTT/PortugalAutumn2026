@@ -294,7 +294,8 @@ def strand(f: dict, punten: dict, wsrc: dict, gsrc: dict, getij: dict, ext_by: d
         "wind": ws, "vlagen": wg, "windrichting": wd, "WAVE": "".join(wave), "WIND": "".join(wind),
         "stroom": stroom_kn, "stroom_naar": stroom_naar,
         **dict(zip(("waarschuwing", "waarschuwingen"),
-                   G.per_uur(WAARSCHUWINGEN, land, p.get("district"), G.SOORT_STRAND, axis), strict=True)),
+                   G.per_uur(WAARSCHUWINGEN, land, gebied_naam(land, p.get("district"), lat), G.SOORT_STRAND, axis),
+                   strict=True)),
         "WAVE_strand": "".join(laag3), "letter": "".join(letter), "rood": "".join(rood),
         "licht": "".join(licht), **rij,
         "ipma": [warning_at(warn, p.get("ipma_area"), t) for t in axis],
@@ -318,6 +319,13 @@ def strand(f: dict, punten: dict, wsrc: dict, gsrc: dict, getij: dict, ext_by: d
     srij = {nv: "".join(sc_tekens[nv]) + ("".join(stil_tekens) if nv is None else "") for nv in invoer.NIVEAUS}
     gwrij = {k: "".join(v) for k, v in gw_tekens.items()}
     return item, ww, detail, srij, gwrij, plan_item
+
+
+def gebied_naam(land: str, district: str | None, lat: float) -> str | None:
+    """Gebied voor de weerwaarschuwingen; in Nederland liggen de stranden boven 52,99° N op de Waddeneilanden."""
+    if land == "nl" and district and lat > 52.99:
+        return f"{district}|Waddeneilanden"
+    return district
 
 
 # Stranden waar de rekenchat geen score wil (bodem: lijn raakt echt land, of op 100 m al dieper dan 10 m).

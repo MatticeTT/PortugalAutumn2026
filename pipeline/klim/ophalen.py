@@ -44,6 +44,7 @@ LANDEN = {
     "es": {"iso": "ES", "bbox": (-9.4, 35.95, 3.4, 43.85), "c2c": ("Espagne", "España", "Spain")},
     "fr": {"iso": "FR", "bbox": (-5.2, 42.3, 8.3, 51.15), "c2c": ("France",)},
     "be": {"iso": "BE", "bbox": (2.5, 49.45, 6.45, 51.55), "c2c": ("Belgique", "België", "Belgium")},
+    "nl": {"iso": "NL", "bbox": (3.3, 50.7, 7.25, 53.7), "c2c": ("Pays-Bas", "Nederland", "Netherlands")},
 }
 VAK = 2.0
 

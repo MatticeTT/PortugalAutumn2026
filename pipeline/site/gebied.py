@@ -5,6 +5,7 @@
   gebruiken de namen van district, departement of provincie: die moeten gelijk zijn. Spanje gebruikt kustzones
   en delen van een provincie ("Litoral de Cádiz"): daar volstaat de provincienaam als woord in de zonenaam.
   Een Belgische kustwaarschuwing ("kust", "côte", "coast") geldt voor alle Belgische stranden.
+  Nederland: provincies (admin_level 4); een strand op de Waddeneilanden telt ook als gebied "Waddeneilanden".
 """
 
 from __future__ import annotations
@@ -71,10 +72,15 @@ def gebied(land: str, lon: float, lat: float) -> str | None:
     return None
 
 
+# Nederland: OpenStreetMap schrijft de provincie in het Fries, MeteoAlarm (KNMI) in het Nederlands.
+NL_NAAM = {"fryslan": "friesland"}
+
+
 def geldt(w: dict, land: str, naam: str | None) -> bool:
+    """naam mag meerdere gebieden bevatten, gescheiden door "|" (bv. "Fryslân|Waddeneilanden")."""
     if w["land"] != land or not naam:
         return False
-    eigen = delen(naam)
+    eigen = [NL_NAAM.get(d, d) if land == "nl" else d for n in naam.split("|") for d in delen(n)]
     for g in w["gebieden"]:
         gp = plat(g)
         if land == "be" and re.search(r"\b(kust|cote|coast|kuste)\b", gp):

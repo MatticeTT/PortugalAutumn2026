@@ -66,8 +66,8 @@ async function stijl(): Promise<StyleSpecification | string> {
 }
 
 // De kaart opent uitgezoomd over heel Portugal; daarna vraagt ze waar je verblijft (eigenaar, 8 oktober 2026).
-// Uitgezoomd over alle landen met stranden: Portugal, Spanje, Frankrijk en België.
-const PORTUGAL: [[number, number], [number, number]] = [[-9.8, 36.0], [8.0, 51.4]]
+// Uitgezoomd over alle landen met stranden: Portugal, Spanje, Frankrijk, België en Nederland.
+const PORTUGAL: [[number, number], [number, number]] = [[-9.8, 36.0], [8.0, 53.7]]
 
 // Per strand per uur: golf- en windteken (van het gekozen niveau) en stille waters met storm.
 // Bij een ander gewicht dan 75 kg: de uren waar het windteken anders is, uit sport/gewicht_<kg>.json

@@ -1,4 +1,4 @@
-// Getij voor Spanje, Frankrijk en België: hoog- en laagwater voor elk TICON-4-station langs die kusten,
+// Getij voor Spanje, Frankrijk, België en Nederland: hoog- en laagwater voor elk TICON-4-station langs die kusten,
 // 2026 en 2027, met Neaps (zelfde bron en methode als predict.mjs voor Portugal).
 // Hoogtes in cm boven het laagste laagwater van 2026-2027 van dat station (zoals een kaartnul, ongeveer LAT):
 // het rekenmodel gebruikt alleen het verval en de stand tussen laag- en hoogwater, dus het nulpunt verandert
@@ -7,10 +7,10 @@
 import { mkdirSync, writeFileSync } from 'node:fs'
 import { stationsNear } from 'neaps'
 
-const LANDEN = { Spain: 'es', France: 'fr', Belgium: 'be' }
+const LANDEN = { Spain: 'es', France: 'fr', Belgium: 'be', Netherlands: 'nl' }
 // Punten langs de kusten; met een straal van 400 km vallen alle stations van die landen erbinnen.
 const ZOEK = [[43.5, -3], [41.5, 2.5], [37, -1], [36.5, -5], [42.5, -8.9], [47.5, -3.5], [49.5, 0], [43.3, 5],
-  [45.5, -1.2], [51.2, 2.9], [50.8, 1.6], [43.4, 3.6]]
+  [45.5, -1.2], [51.2, 2.9], [50.8, 1.6], [43.4, 3.6], [52.3, 4.5], [53.2, 5.5], [53.4, 6.6]]
 const START = new Date('2026-01-01T00:00:00Z')
 const END = new Date('2028-01-01T00:00:00Z')
 

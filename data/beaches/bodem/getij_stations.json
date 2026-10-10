@@ -83,6 +83,12 @@
   "verschil_m": 0.27,
   "bron": "datums"
  },
+ "amelander_westgat_platform-awgpfm-nld-rws": {
+  "mhws": 1.268,
+  "mlws": -1.116,
+  "verschil_m": 2.38,
+  "bron": "datums"
+ },
  "arcachon_eyrac-190-fra-refmar": {
   "mhws": 4.268,
   "mlws": 0.718,
@@ -173,6 +179,12 @@
   "verschil_m": 2.81,
   "bron": "datums"
  },
+ "cadzand-cadzd-nld-rws": {
+  "mhws": 2.197,
+  "mlws": -2.077,
+  "verschil_m": 4.27,
+  "bron": "datums"
+ },
  "calais-55-fra-refmar": {
   "mhws": 7.326,
   "mlws": 0.834,
@@ -233,6 +245,18 @@
   "verschil_m": 3.19,
   "bron": "datums"
  },
+ "delfzijltg-del-nld-cmems": {
+  "mhws": 1.853,
+  "mlws": -1.495,
+  "verschil_m": 3.35,
+  "bron": "datums"
+ },
+ "denoeverbuitentg-den-nld-cmems": {
+  "mhws": 0.925,
+  "mlws": -0.697,
+  "verschil_m": 1.62,
+  "bron": "datums"
+ },
  "dielette-628-fra-refmar": {
   "mhws": 9.569,
   "mlws": 1.505,
@@ -255,6 +279,24 @@
   "mhws": 6.119,
   "mlws": 0.523,
   "verschil_m": 5.6,
+  "bron": "datums"
+ },
+ "eemshaven-eemshvn-nld-rws": {
+  "mhws": 1.617,
+  "mlws": -1.377,
+  "verschil_m": 2.99,
+  "bron": "datums"
+ },
+ "eemshaventg-eem-nld-cmems": {
+  "mhws": 1.579,
+  "mlws": -1.383,
+  "verschil_m": 2.96,
+  "bron": "datums"
+ },
+ "eemsmeetpaaltg-eem-nld-cmems": {
+  "mhws": 1.671,
+  "mlws": -1.313,
+  "verschil_m": 2.98,
   "bron": "datums"
  },
  "etaplesvigicruestg_06minute-eta-fra-cmems": {
@@ -287,6 +329,18 @@
   "verschil_m": 0.04,
   "bron": "datums"
  },
+ "gouda_brug-goudbg-nld-rws": {
+  "mhws": 1.123,
+  "mlws": -0.503,
+  "verschil_m": 1.63,
+  "bron": "datums"
+ },
+ "harlingentg-har-nld-cmems": {
+  "mhws": 1.173,
+  "mlws": -0.891,
+  "verschil_m": 2.06,
+  "bron": "datums"
+ },
  "havregpmrouentg_05minute-hav-fra-cmems": {
   "mhws": 8.499,
   "mlws": 1.503,
@@ -297,6 +351,48 @@
   "mhws": 5.889,
   "mlws": 1.299,
   "verschil_m": 4.59,
+  "bron": "datums"
+ },
+ "hoekvanhollandtg-hoe-nld-cmems": {
+  "mhws": 1.104,
+  "mlws": -0.83,
+  "verschil_m": 1.93,
+  "bron": "datums"
+ },
+ "hollandsebrugtg-hol-nld-cmems": {
+  "mhws": -0.276,
+  "mlws": -0.282,
+  "verschil_m": 0.01,
+  "bron": "datums"
+ },
+ "huibertgattg-hui-nld-cmems": {
+  "mhws": 1.379,
+  "mlws": -1.189,
+  "verschil_m": 2.57,
+  "bron": "datums"
+ },
+ "ijmuiden_buitenhaven-ijmdbthvn-nld-rws": {
+  "mhws": 0.937,
+  "mlws": -0.763,
+  "verschil_m": 1.7,
+  "bron": "datums"
+ },
+ "ijmuiden_stroommeetpaal-ijmdsmpl-nld-rws": {
+  "mhws": 0.879,
+  "mlws": -0.801,
+  "verschil_m": 1.68,
+  "bron": "datums"
+ },
+ "kornwerderzandbinnentg-kor-nld-cmems": {
+  "mhws": -0.18,
+  "mlws": -0.196,
+  "verschil_m": 0.02,
+  "bron": "datums"
+ },
+ "kornwerderzandtg-kor-nld-cmems": {
+  "mhws": 1.096,
+  "mlws": -0.838,
+  "verschil_m": 1.93,
   "bron": "datums"
  },
  "la_coruna-830-esp-uhslc_fd": {
@@ -329,6 +425,12 @@
   "verschil_m": 3.86,
   "bron": "datums"
  },
+ "lauwersoog-lauwog-nld-rws": {
+  "mhws": 1.46,
+  "mlws": -1.2,
+  "verschil_m": 2.66,
+  "bron": "datums"
+ },
  "le_crouesty-185-fra-refmar": {
   "mhws": 5.562,
   "mlws": 1.132,
@@ -345,6 +447,18 @@
   "mhws": 0.83,
   "mlws": 0.656,
   "verschil_m": 0.17,
+  "bron": "datums"
+ },
+ "lemmertg-lem-nld-cmems": {
+  "mhws": -0.18,
+  "mlws": -0.2,
+  "verschil_m": 0.02,
+  "bron": "datums"
+ },
+ "maeslantkering_zeezijde-maeslkrzzde-nld-rws": {
+  "mhws": 1.086,
+  "mlws": -0.804,
+  "verschil_m": 1.89,
   "bron": "datums"
  },
  "malaga-mala-esp-ieo": {
@@ -395,6 +509,12 @@
   "verschil_m": 0.43,
   "bron": "datums"
  },
+ "nestg-nes-nld-cmems": {
+  "mhws": 1.294,
+  "mlws": -1.08,
+  "verschil_m": 2.37,
+  "bron": "datums"
+ },
  "nieuwpoorttg-nie-bel-cmems": {
   "mhws": 2.56,
   "mlws": -2.424,
@@ -423,6 +543,12 @@
   "mhws": -0.059,
   "mlws": -0.137,
   "verschil_m": 0.08,
+  "bron": "datums"
+ },
+ "parksluis-parkss-nld-rws": {
+  "mhws": 1.15,
+  "mlws": -0.696,
+  "verschil_m": 1.85,
   "bron": "datums"
  },
  "pasaiatg-pas-esp-cmems": {
@@ -497,6 +623,12 @@
   "verschil_m": 4.27,
   "bron": "datums"
  },
+ "rotterdamtg-rot-nld-cmems": {
+  "mhws": 1.168,
+  "mlws": -0.612,
+  "verschil_m": 1.78,
+  "bron": "datums"
+ },
  "royan-308-fra-refmar": {
   "mhws": 5.448,
   "mlws": 1.418,
@@ -527,6 +659,18 @@
   "verschil_m": 3.53,
   "bron": "datums"
  },
+ "schellingwoudetg-sch-nld-cmems": {
+  "mhws": -0.27,
+  "mlws": -0.278,
+  "verschil_m": 0.01,
+  "bron": "datums"
+ },
+ "scheveningen-schevngn-nld-rws": {
+  "mhws": 1.021,
+  "mlws": -0.841,
+  "verschil_m": 1.86,
+  "bron": "datums"
+ },
  "sete-250-fra-refmar": {
   "mhws": 0.556,
   "mlws": 0.386,
@@ -555,6 +699,12 @@
   "mhws": 0.394,
   "mlws": 0.288,
   "verschil_m": 0.11,
+  "bron": "datums"
+ },
+ "terschelling_noordzee-terslnze-nld-rws": {
+  "mhws": 1.222,
+  "mlws": -1.062,
+  "verschil_m": 2.28,
   "bron": "datums"
  },
  "toulon-68-fra-refmar": {
@@ -603,6 +753,30 @@
   "mhws": 4.325,
   "mlws": 1.703,
   "verschil_m": 2.62,
+  "bron": "datums"
+ },
+ "vlaktevdraantg-vla-nld-cmems": {
+  "mhws": 1.926,
+  "mlws": -1.884,
+  "verschil_m": 3.81,
+  "bron": "datums"
+ },
+ "vlielandhaventg-vli-nld-cmems": {
+  "mhws": 1.041,
+  "mlws": -0.955,
+  "verschil_m": 2,
+  "bron": "datums"
+ },
+ "west_terschelling-westtslg-nld-rws": {
+  "mhws": 1.076,
+  "mlws": -0.87,
+  "verschil_m": 1.95,
+  "bron": "datums"
+ },
+ "westkapelle-westkple-nld-rws": {
+  "mhws": 2.016,
+  "mlws": -1.894,
+  "verschil_m": 3.91,
   "bron": "datums"
  },
  "zeebruggetg-zee-bel-cmems": {

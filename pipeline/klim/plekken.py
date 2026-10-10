@@ -230,7 +230,7 @@ def uit_c2c(data: dict) -> list[dict]:
 
 # Andere landen (data/klim/<land>/): zelfde bronnen en dezelfde verwerking; alleen het vasteland, zoals
 # bij de stranden (zonder de Balearen en Corsica).
-ANDERE_LANDEN = ("es", "fr", "be")
+ANDERE_LANDEN = ("es", "fr", "be", "nl")
 
 
 def vasteland(land: str, lon: float, lat: float) -> bool:

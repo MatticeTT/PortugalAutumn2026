@@ -21,10 +21,15 @@ LANDEN = ROOT / "data" / "beaches" / "landen"
 OUT = ROOT / "data" / "tides" / "stranden_getij_landen.json"
 
 # Niet aan open zee: riviermondingen en havens landinwaarts (Seine, Adour, Gironde, Loire, Seudre,
-# Canche, Odet, Guadalquivir), en eilanden of Afrika (Balearen, Alborán, Ceuta, Melilla).
+# Canche, Odet, Guadalquivir), eilanden of Afrika (Balearen, Alborán, Ceuta, Melilla), en in Nederland de
+# stations aan rivieren, kanalen, het IJsselmeer en de Waddenzee.
 NIET = ("Balise a Rouen", "Bayonne Pont Blanc", "Villefranque", "Donges", "Montoir-de-Bretagne", "Pauillac",
         "Lamena", "Richard", "Pont Seudre", "Etaples Vigicrues", "Benodet Vigicrues", "Sevilla", "Bonanza",
-        "Alboran", "Alcudia", "Formentera", "Palma", "POLLENSA", "COLONIA SANT PERE", "Ceuta", "Melilla")
+        "Alboran", "Alcudia", "Formentera", "Palma", "POLLENSA", "COLONIA SANT PERE", "Ceuta", "Melilla",
+        # Nederland: rivieren, kanalen, IJsselmeer en de Waddenzee- of Eemszijde (niet aan open zee)
+        "Gouda Brug", "Hollandse Brug", "Kornwerderzand", "Lemmer", "Parksluis", "Rotterdam", "Schellingwoude",
+        "Maeslantkering", "Delfzijl", "Eemshaven", "Harlingen", "Lauwersoog", "Nes", "Vlieland Haven",
+        "West Terschelling", "Den Oever")
 MAX_KM = 160  # Côte d'Azur: Toulon is het dichtste station; het getij is er maar enkele decimeter
 
 

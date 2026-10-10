@@ -318,7 +318,7 @@ themaKnop()
 // Andere landen (planning_<land>.json): alleen laden als een stuk van dat land binnen je rijtijd kan liggen,
 // en dan hun blokken (per categorie, stille waters en klimmen) bij de kandidaten van elke dag zetten.
 const LAND_KADER: Record<string, [number, number, number, number]> = {
-  es: [-9.45, 35.95, 3.4, 43.85], fr: [-5.3, 42.3, 8.3, 51.15], be: [2.4, 50.9, 3.5, 51.45],
+  es: [-9.45, 35.95, 3.4, 43.85], fr: [-5.3, 42.3, 8.3, 51.15], be: [2.4, 50.9, 3.5, 51.45], nl: [3.3, 51.2, 7.3, 53.7],
 }
 async function andereLanden(dagen: Dag[], v: Verblijf, versie: string) {
   const perDag = new Map(dagen.map((d) => [d.dag, d]))

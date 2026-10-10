@@ -1,4 +1,4 @@
-"""Stranden van andere landen (Spanje, Frankrijk, België), met dezelfde meetkunde als Portugal.
+"""Stranden van andere landen (Spanje, Frankrijk, België, Nederland), met dezelfde meetkunde als Portugal.
 
 Portugal blijft in data/beaches/stranden.geojson (build.py, ongewijzigd). Elk ander land krijgt
 data/beaches/landen/<land>.geojson met dezelfde eigenschappen per strand, plus "land".
@@ -36,6 +36,9 @@ LANDEN = {
     "es": {"naam": "Spanje", "geofabrik": "europe/spain", "eea": "ES", "bbox": (-9.45, 35.95, 3.4, 43.85)},
     "fr": {"naam": "Frankrijk", "geofabrik": "europe/france", "eea": "FR", "bbox": (-5.3, 42.3, 8.3, 51.15)},
     "be": {"naam": "België", "geofabrik": "europe/belgium", "eea": "BE", "bbox": (2.4, 50.9, 3.5, 51.45)},
+    # Nederland: met de Waddeneilanden (vlak voor de kust). Provincies zijn er admin_level 4 (6 = gemeenten).
+    "nl": {"naam": "Nederland", "geofabrik": "europe/netherlands", "eea": "NL", "bbox": (3.3, 51.2, 7.3, 53.7),
+           "admin_level": "4"},
 }
 # Ruime rechthoek voor de stralen (300 km): van de Atlantische Oceaan tot Italië en de Noordzee.
 RAY_BBOX = (-16.0, 30.0, 16.0, 58.0)
@@ -74,7 +77,7 @@ def ophalen(land: str) -> None:
     # 1. OSM: stranden en provincies
     pbf = fetch.download(f"https://download.geofabrik.de/{cfg['geofabrik']}-latest.osm.pbf", d / "land.osm.pbf")
     for name, expr, geom in [("osm_beaches", "nwr/natural=beach", "point,polygon"),
-                             ("osm_districts_raw", "r/admin_level=6", "point,polygon")]:
+                             ("osm_districts_raw", f"r/admin_level={cfg.get('admin_level', '6')}", "point,polygon")]:
         flt = d / f"{name}.osm.pbf"
         fetch.run("osmium", "tags-filter", "--overwrite", "-o", str(flt), str(pbf), expr)
         fetch.run("osmium", "export", "--overwrite", "-a", "type,id", f"--geometry-types={geom}",
@@ -83,7 +86,7 @@ def ophalen(land: str) -> None:
     provincies = []
     for f in fetch_seq(d / "osm_districts_raw.geojsonseq"):
         p = f["properties"]
-        if (p.get("boundary") != "administrative" or str(p.get("admin_level")) != "6"
+        if (p.get("boundary") != "administrative" or str(p.get("admin_level")) != cfg.get("admin_level", "6")
                 or f["geometry"]["type"] not in ("Polygon", "MultiPolygon") or not p.get("name")):
             continue
         g = shape(f["geometry"]).simplify(0.0005, preserve_topology=True)
@@ -93,8 +96,9 @@ def ophalen(land: str) -> None:
     # Ook vereenvoudigd in git (data/gebieden/<land>.geojson): weerwaarschuwingen per gebied, ook voor klimplekken.
     gebieden = ROOT / "data" / "gebieden"
     gebieden.mkdir(parents=True, exist_ok=True)
+    niveau = cfg.get("admin_level", "6")
     (gebieden / f"{land}.geojson").write_text(json.dumps({
-        "type": "FeatureCollection", "land": land, "bron": "OpenStreetMap (admin_level 6), vereenvoudigd",
+        "type": "FeatureCollection", "land": land, "bron": f"OpenStreetMap (admin_level {niveau}), vereenvoudigd",
         "features": [f | {"geometry": mapping(shape(f["geometry"]).simplify(0.005, preserve_topology=True))}
                      for f in provincies]}, ensure_ascii=False, separators=(",", ":")))
 

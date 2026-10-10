@@ -20,15 +20,15 @@ jobs:
       - uses: actions/setup-python@v5
         with: { python-version: "3.12" }
       - run: python -m pipeline.klim.ophalen
-      - name: Andere landen (Spanje, Frankrijk, België)
+      - name: Andere landen (Spanje, Frankrijk, België, Nederland)
         continue-on-error: true
-        run: python -m pipeline.klim.ophalen es fr be
+        run: python -m pipeline.klim.ophalen es fr be nl
       - name: Vastleggen
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           for f in bron_osm bron_c2c status; do [ -f data/klim/$f.json ] && git add data/klim/$f.json; done
-          for l in es fr be; do for f in bron_osm bron_c2c; do [ -f data/klim/$l/$f.json ] && git add data/klim/$l/$f.json; done; done
+          for l in es fr be nl; do for f in bron_osm bron_c2c; do [ -f data/klim/$l/$f.json ] && git add data/klim/$l/$f.json; done; done
           git diff --cached --quiet || git commit -q -m "Klimplekken uit OpenStreetMap $(date -u +%F)"
           for i in 1 2 3 4; do
             git pull -q --rebase origin "${{ github.ref_name }}" || true

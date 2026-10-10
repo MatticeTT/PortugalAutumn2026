@@ -5,7 +5,7 @@ import { staat, vliegNaar } from './main'
 import type { KaartStrand } from './types'
 
 const MAX = 8
-export const LANDNAAM: Record<string, string> = { es: 'Spanje', fr: 'Frankrijk', be: 'België' }
+export const LANDNAAM: Record<string, string> = { es: 'Spanje', fr: 'Frankrijk', be: 'België', nl: 'Nederland' }
 const waar = (s: KaartStrand) => [s.d, s.l ? LANDNAAM[s.l] : ''].filter(Boolean).join(' · ')
 // Zonder hoofdletters en accenten: "sao" vindt "São", "rocha" vindt "Praia da Rocha".
 const plat = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()

@@ -15,7 +15,7 @@ import json
 import urllib.request
 from datetime import UTC, datetime
 
-FEEDS = {"pt": "portugal", "es": "spain", "fr": "france", "be": "belgium"}
+FEEDS = {"pt": "portugal", "es": "spain", "fr": "france", "be": "belgium", "nl": "netherlands"}
 URL = "https://feeds.meteoalarm.org/api/v1/warnings/feeds-{}"
 UA = "surfkaart-portugal/0.1 (niet-commercieel, besloten)"
 # awareness_level in CAP van MeteoAlarm: 1 groen (geen), 2 geel, 3 oranje, 4 rood.

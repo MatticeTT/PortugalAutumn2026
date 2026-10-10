@@ -1,13 +1,11 @@
-# Stranden van andere landen (Spanje, Frankrijk, België): zelfde meetkunde als Portugal,
+# Stranden van andere landen (Spanje, Frankrijk, België, Nederland): zelfde meetkunde als Portugal,
 # eigen bestanden in data/beaches/landen/ (pipeline/beaches/landen.py). Portugal blijft ongewijzigd.
 name: landen
 on:
+  # Alleen met de hand: een wijziging aan landen.py mag niet alle landen opnieuw bouwen (dat duurt uren).
   workflow_dispatch:
     inputs:
-      landen: { description: "landen, bv. es,fr,be", default: "es,fr,be" }
-  push:
-    paths:
-      - pipeline/beaches/landen.py
+      landen: { description: "landen, bv. es,fr,be,nl", default: "nl" }
 permissions:
   contents: write
 jobs:
@@ -18,7 +16,7 @@ jobs:
     steps:
       - id: k
         run: |
-          l="${{ github.event.inputs.landen || 'be,es,fr' }}"
+          l="${{ github.event.inputs.landen || 'nl' }}"
           echo "landen=$(echo "$l" | python3 -c 'import sys,json;print(json.dumps(sys.stdin.read().strip().split(",")))')" >> "$GITHUB_OUTPUT"
   stranden:
     needs: kies
