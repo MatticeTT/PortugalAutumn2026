@@ -1,16 +1,7 @@
-.env
 node_modules/
 __pycache__/
 *.pyc
 .venv/
 .pytest_cache/
-.ruff_cache/
-dist/
-*.nc
-*.egg-info/
-data/raw/
-data/forecast/
-web/public/data/
-web/node_modules/
 web/dist/
-data/validate/insitu/
+web/public/data/

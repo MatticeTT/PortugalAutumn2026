@@ -1,396 +1,192 @@
-import maplibregl, { type GeoJSONSource, type StyleSpecification } from 'maplibre-gl'
-import 'maplibre-gl/dist/maplibre-gl.css'
-import './style.css'
-import { themaKnop } from './thema'
-import { beeldNaam, beeldUitNaam, leesStil, leesTeken } from './scorekaart'
-import { ontpak } from './inpakken'
-import { openFiche, sluitFiche, toonUur } from './fiche'
-import { zoekveld } from './zoek'
-import { groepIcoon, laadKlim, openKlim, ververs as klimVervers } from './klim'
-import type { Getij, Index, KaartStrand } from './types'
-import { gewicht, instelling, surfPaneel, toont } from './surf'
-import { zoekInDeBuurt, bewaarVerblijf, komtViaTab, leesVerblijf, tabWissel, wisVerblijf, rijTekst, rijtijden, route, vraagVerblijf, type Verblijf } from './verblijf'
+import maplibregl from 'maplibre-gl'
+import { FieldSet, type Kind, type Manifest } from './field'
+import { ParticleLayer } from './particles'
 
-const TZ = 'Europe/Lisbon'
-const fmtDag = new Intl.DateTimeFormat('nl-BE', { timeZone: TZ, weekday: 'short', day: 'numeric', month: 'short' })
-const fmtUur = new Intl.DateTimeFormat('nl-BE', { timeZone: TZ, hour: '2-digit', minute: '2-digit' })
-const fmtSleutel = new Intl.DateTimeFormat('en-CA', { timeZone: TZ, year: 'numeric', month: '2-digit', day: '2-digit' })
-const fmtUurNr = new Intl.DateTimeFormat('en-GB', { timeZone: TZ, hour: '2-digit', hourCycle: 'h23' })
+const DATA = './data'
+const FINE_ZOOM = 3 // vanaf dit zoomniveau het fijne raster (0,25 graad) voor het zichtbare gebied
+const PLAY_MS = 900
 
-export const staat = {
-  index: null as unknown as Index,
-  stranden: [] as KaartStrand[],
-  getij: null as unknown as Getij,
-  // Score van de rekenchat (2.1), standaardgewicht. alle: per strand per uur golf- en windteken, daarna per uur
-  // stille waters en storm. Per niveau (beginner, gemiddeld, ervaren): alleen golf- en windteken.
-  score: {} as Record<string, string[]>,
-  i: 0, // index in index.tijd
-  open: null as string | null,
-}
+const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T
+const slider = $<HTMLInputElement>('schuif')
+const label = $('tijd')
+const playBtn = $('afspelen')
+const windBtn = $('knop-wind')
+const waveBtn = $('knop-golven')
 
-export const utc = (s: string) => Date.parse(s + ':00Z')
-export const lisDag = (ms: number) => fmtSleutel.format(ms)
-export const lisUur = (ms: number) => Number(fmtUurNr.format(ms))
-export const toonTijd = (ms: number) => fmtUur.format(ms)
-export const toonDag = (ms: number) => fmtDag.format(ms)
+const carto = (style: string) => ['a', 'b', 'c', 'd'].map((s) => `https://${s}.basemaps.cartocdn.com/${style}/{z}/{x}/{y}@2x.png`)
 
-const OFM = 'https://tiles.openfreemap.org/styles/liberty'
-
-// Wisselen tussen de tabbladen Kaart en Planning: het verblijf onthouden (zie tabWissel in verblijf.ts).
-const viaTab = komtViaTab()
-tabWissel()
-themaKnop()
-
-function reserveStijl(): StyleSpecification {
-  const css = getComputedStyle(document.documentElement)
-  return {
+const map = new maplibregl.Map({
+  container: 'kaart',
+  style: {
     version: 8,
-    sources: { land: { type: 'geojson', data: '/basis/land.geojson', attribution: '© OpenStreetMap-bijdragers' } },
+    sources: {
+      basis: { type: 'raster', tiles: carto('dark_nolabels'), tileSize: 256, maxzoom: 18,
+        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> © <a href="https://carto.com/attributions">CARTO</a>' },
+      namen: { type: 'raster', tiles: carto('dark_only_labels'), tileSize: 256, maxzoom: 18 },
+    },
     layers: [
-      { id: 'zee', type: 'background', paint: { 'background-color': css.getPropertyValue('--zee').trim() || '#cfe6f5' } },
-      { id: 'land', type: 'fill', source: 'land', paint: { 'fill-color': css.getPropertyValue('--land').trim() || '#eef0e8' } },
-      { id: 'kust', type: 'line', source: 'land', paint: { 'line-color': '#8aa0b0', 'line-width': 0.6 } },
+      { id: 'achtergrond', type: 'background', paint: { 'background-color': '#0e1013' } },
+      { id: 'basis', type: 'raster', source: 'basis', paint: { 'raster-saturation': -1, 'raster-brightness-max': 0.85 } },
+      { id: 'namen', type: 'raster', source: 'namen', paint: { 'raster-opacity': 0.7 } },
     ],
-  } as StyleSpecification
-}
+  },
+  center: [-12, 41],
+  zoom: 3.6,
+  minZoom: 1,
+  maxZoom: 10,
+  dragRotate: false,
+  pitchWithRotate: false,
+  touchPitch: false,
+  renderWorldCopies: true,
+  attributionControl: { compact: true, customAttribution: 'Wind en golven: NOAA GFS / WaveWatch III' },
+})
+map.touchZoomRotate.disableRotation()
+map.keyboard.disableRotation()
 
-async function stijl(): Promise<StyleSpecification | string> {
-  try {
-    const ctl = new AbortController()
-    const t = setTimeout(() => ctl.abort(), 4000)
-    const r = await fetch(OFM, { signal: ctl.signal })
-    clearTimeout(t)
-    if (r.ok) return OFM
-  } catch { /* geen OpenFreeMap: eigen eenvoudige kaart */ }
-  return reserveStijl()
-}
+const layer = new ParticleLayer()
+let manifest: Manifest
+let idx = 0
+let playing: number | null = null
+const show: Record<Kind, boolean> = { wind: true, wave: true }
 
-// De kaart opent uitgezoomd over heel Portugal; daarna vraagt ze waar je verblijft (eigenaar, 8 oktober 2026).
-// Uitgezoomd over alle landen met stranden: Portugal, Spanje, Frankrijk, België en Nederland.
-const PORTUGAL: [[number, number], [number, number]] = [[-9.8, 36.0], [8.0, 53.7]]
-
-// Per strand per uur: golf- en windteken (van het gekozen niveau) en stille waters met storm.
-// Bij een ander gewicht dan 75 kg: de uren waar het windteken anders is, uit sport/gewicht_<kg>.json
-// (per strand stukjes van 6 tekens: uur in 2 tekens, dan het windteken voor alle, beginner, gemiddeld, ervaren).
-const NIVEAU_KOLOM: Record<string, number> = { '': 0, beginner: 1, gemiddeld: 2, ervaren: 3 }
-const gewichtVerschil = new Map<number, Map<number, string>[]>()
-export function tekensUur(k: number, i: number): { g: string; w: string; s: string } {
-  const alle = staat.score.alle?.[k] ?? ''
-  const rij = (instelling.niveau ? staat.score[instelling.niveau]?.[k] : null) ?? alle
-  const n = staat.index.tijd.length
-  const anders = gewicht() ? gewichtVerschil.get(gewicht()!)?.[k]?.get(i) : undefined
-  const w = anders ? anders[NIVEAU_KOLOM[instelling.niveau] ?? 0] : rij[2 * i + 1]
-  return { g: rij[2 * i] ?? '-', w: w ?? '-', s: alle[2 * n + i] ?? '-' }
-}
-async function laadGewicht(g: number) {
-  if (gewichtVerschil.has(g)) return
-  const rijen: string[] = await data(`sport/gewicht_${g}.json`)
-  gewichtVerschil.set(g, rijen.map((r) => {
-    const m = new Map<number, string>()
-    for (let j = 0; j < r.length; j += 6) m.set(ontpak(r.slice(j, j + 2), 1, 2)[0]!, r.slice(j + 2, j + 6))
-    return m
-  }))
-}
-
-const rang = (t: string) => leesTeken(t).cijfer ?? -1
-
-function features() {
-  const i = staat.i
-  return {
-    type: 'FeatureCollection' as const,
-    features: staat.stranden.flatMap((s, k) => {
-      const { g, w, s: stil } = tekensUur(k, i)
-      if (!toont(g, w, stil)) return [] // filters van de knop Surfen
-      const storm = leesStil(stil).storm
-      return [{ type: 'Feature' as const, geometry: { type: 'Point' as const, coordinates: [s.x, s.y] },
-        properties: { id: s.id, naam: s.n, beeld: beeldNaam(w, g, storm), r: Math.max(rang(g), rang(w)) } }]
-    }),
+// Velden per soort en uur; de laatste paar bewaren zodat terugschuiven direct werkt.
+const cache = new Map<string, FieldSet>()
+function fieldSet(kind: Kind, i: number): FieldSet {
+  const h = manifest.times[i].h
+  const key = `${kind}:${h}`
+  let fs = cache.get(key)
+  if (!fs) {
+    fs = new FieldSet(kind, h, manifest, DATA, () => map.triggerRepaint())
+    cache.set(key, fs)
+    while (cache.size > 24) cache.delete(cache.keys().next().value!)
+  } else {
+    cache.delete(key)
+    cache.set(key, fs) // als laatst gebruikt markeren
   }
+  return fs
 }
 
-async function laadNiveau(nv: string) {
-  await Promise.all([nv && !staat.score[nv] ? data(`sport/score_${nv}.json`).then((r) => { staat.score[nv] = r }) : null,
-    gewicht() ? laadGewicht(gewicht()!) : null])
+function updateFine() {
+  const fine = map.getZoom() >= FINE_ZOOM
+  const b = map.getBounds()
+  for (const fs of [layer.wind, layer.wave]) fs?.useFine(fine, b.getWest(), b.getSouth(), b.getEast(), b.getNorth())
 }
 
-let kaart: maplibregl.Map
-const perDag = new Map<string, number[]>()
-const slider = () => document.getElementById('uur') as HTMLInputElement
-const datumKeuze = () => document.getElementById('datum') as HTMLSelectElement
-
-function ververs() {
-  const src = kaart?.getSource('stranden') as GeoJSONSource | undefined
-  src?.setData(features())
-  const ms = utc(staat.index.tijd[staat.i])
-  ;(document.getElementById('uurlabel') as HTMLOutputElement).value = toonTijd(ms)
-  toonUur()
-  klimVervers()
-  tekenRoutes()
-}
-
-// ---- Verblijf: waar je verblijft en hoe lang je wil rijden ----
-// Per groep de route naar de beste plek dit uur binnen je rijtijd (cijfer 3 of 4): eerst het hoogste cijfer,
-// dan de kortste rijtijd. Golfsporten gaan voor windsporten, die voor stille waters.
-const SPORTEN = [
-  { groep: 'golf', naam: 'Golfsporten', kleur: '#3f6fe0', tekst: '#2f5bc4', prio: 3 },
-  { groep: 'wind', naam: 'Windsporten', kleur: '#16b3d0', tekst: '#0e8fa6', prio: 2 },
-  { groep: 'stil', naam: 'Stille waters', kleur: '#8a949c', tekst: '#6b757d', prio: 1 },
-] as const
-let verblijf: Verblijf | null = null
-let rij = new Map<string, number | null>()
-let verblijfPunt: maplibregl.Marker | null = null
-let routeBeurt = 0
-let inBeeld = false // na een nieuwe keuze één keer verblijf en bestemmingen samen in beeld brengen
-
-function besteDitUur() {
-  const i = staat.i, max = verblijf?.max ?? 0
-  const uit: { sport: (typeof SPORTEN)[number]; s: KaartStrand; score: number; min: number }[] = []
-  for (const sport of SPORTEN) {
-    if (instelling.toon !== 'alles' && instelling.toon !== sport.groep) continue
-    let best: (typeof uit)[number] | null = null
-    staat.stranden.forEach((s, k) => {
-      const t = tekensUur(k, i)
-      const score = sport.groep === 'stil' ? leesStil(t.s).cijfer : leesTeken(sport.groep === 'golf' ? t.g : t.w).cijfer
-      if (score === null || score < 3) return
-      const m = rij.get(s.id)
-      if (m == null || m > max) return
-      if (!best || score > best.score || (score === best.score && m < best.min)) best = { sport, s, score, min: m }
-    })
-    if (best) uit.push(best)
-  }
-  return uit
-}
-
-async function tekenRoutes() {
-  const src = kaart?.getSource('routes') as GeoJSONSource | undefined
-  const lijst = document.getElementById('routes')!
-  if (!src || !verblijf) { lijst.hidden = true; return }
-  const beurt = ++routeBeurt
-  const v = verblijf
-  const beste = besteDitUur()
-  const lijnen = await Promise.all(beste.map((b) => route(v, { id: b.s.id, lat: b.s.y, lon: b.s.x }).catch(() => null)))
-  if (beurt !== routeBeurt) return // intussen een ander uur gekozen
-  // Alleen echte routes over de weg; lukt een route niet, dan geen lijn (nooit vogelvlucht).
-  src.setData({ type: 'FeatureCollection', features: beste.flatMap((b, k) => lijnen[k]
-    ? [{ type: 'Feature' as const, geometry: lijnen[k], properties: { kleur: b.sport.kleur, prio: b.sport.prio } }] : []) })
-  const naam = (n: string) => n === n.toUpperCase() ? n.charAt(0) + n.slice(1).toLowerCase() : n
-  lijst.innerHTML = beste.length
-    ? beste.map((b) => `<li><button type="button" data-id="${b.s.id}" style="--kleur:${b.sport.kleur};--tekstkleur:${b.sport.tekst}"><b>${b.sport.naam}</b>
-        <span>${naam(b.s.n).replace(/</g, '&lt;')}</span><em>${rijTekst(b.min)}</em></button></li>`).join('')
-    : `<li class="rustig">Dit uur niets met 3 of 4 binnen ${rijTekst(v.max)}</li>`
-  lijst.querySelectorAll<HTMLButtonElement>('button[data-id]').forEach((k) => { k.onclick = () => openFiche(k.dataset.id!) })
-  lijst.hidden = false
-  if (inBeeld && beste.length) {
-    // Je verblijf blijft in het midden; zo ver uitzoomen dat ook de bestemmingen in beeld zijn
-    // (maar niet verder dan zoom 10, zodat je de stranden zelf blijft zien).
-    inBeeld = false
-    const b = new maplibregl.LngLatBounds([v.lon, v.lat], [v.lon, v.lat])
-    beste.forEach((x) => { b.extend([x.s.x, x.s.y]); b.extend([2 * v.lon - x.s.x, 2 * v.lat - x.s.y]) })
-    const c = kaart.cameraForBounds(b, { padding: { top: 60, bottom: 40 + lijst.offsetHeight, left: 40, right: 40 }, maxZoom: 11 })
-    kaart.easeTo({ center: [v.lon, v.lat], zoom: Math.max(10, c?.zoom ?? 10), duration: 1000 })
-  }
-}
-
-function toonVerblijfKnop() {
-  const k = document.getElementById('verblijfknop') as HTMLButtonElement
-  k.innerHTML = verblijf
-    ? `<span class="huisje" aria-hidden="true"></span>${verblijf.naam.split(',')[0].replace(/</g, '&lt;')} · ${rijTekst(verblijf.max)}`
-    : 'Waar verblijf je?'
-}
-
-async function kiesVerblijf(v: Verblijf | null, vlieg = true) {
-  verblijf = v
-  toonVerblijfKnop()
-  verblijfPunt?.remove(); verblijfPunt = null
-  if (!v) { rij = new Map(); tekenRoutes(); return }
-  bewaarVerblijf(v)
-  const el = document.createElement('div')
-  el.className = 'verblijfpunt'
-  el.title = v.naam
-  verblijfPunt = new maplibregl.Marker({ element: el }).setLngLat([v.lon, v.lat]).addTo(kaart)
-  if (vlieg) { kaart.flyTo({ center: [v.lon, v.lat], zoom: v.max <= 45 ? 10.5 : 10, speed: 1.4 }); inBeeld = true }
-  try {
-    rij = await rijtijden(v, staat.stranden.map((s) => ({ id: s.id, lat: s.y, lon: s.x })))
-  } catch {
-    rij = new Map()
-    document.getElementById('routes')!.innerHTML = '<li class="rustig">Rijtijden lukken nu niet (OpenStreetMap-routeplanner). Probeer later opnieuw.</li>'
-    document.getElementById('routes')!.hidden = false
-    return
-  }
-  if (verblijf === v) tekenRoutes()
-}
-
-// Via de knop bovenaan: het huidige verblijf staat al ingevuld. Bij herladen: een lege vraag.
-async function vraag(leeg = false) {
-  const c = kaart.getCenter()
-  zoekInDeBuurt(c.lng, c.lat) // zoeken: plaatsen rond het midden van de kaart eerst
-  const v = await vraagVerblijf(leeg ? null : verblijf ?? leesVerblijf())
-  if (v) kiesVerblijf(v)
-  else if (leeg) { wisVerblijf(); kiesVerblijf(null) } // overgeslagen na herladen: geen verblijf
-}
-
-function zetDag(k: string) {
-  const idx = perDag.get(k)!
-  const T = staat.index.tijd
-  const huidig = lisUur(utc(T[staat.i]))
-  const best = idx.reduce((a, b) => (Math.abs(lisUur(utc(T[b])) - huidig) < Math.abs(lisUur(utc(T[a])) - huidig) ? b : a))
-  staat.i = best
-  datumKeuze().value = k
-  const s = slider()
-  s.min = String(lisUur(utc(T[idx[0]])))
-  s.max = String(lisUur(utc(T[idx[idx.length - 1]])))
-  s.value = String(lisUur(utc(T[best])))
-  ververs()
-}
-
-function dagen() {
-  staat.index.tijd.forEach((t, i) => {
-    const k = lisDag(utc(t))
-    if (!perDag.has(k)) perDag.set(k, [])
-    perDag.get(k)!.push(i)
+/** Tijdstip kiezen: het oude veld blijft zichtbaar tot het nieuwe binnen is. */
+async function setTime(i: number) {
+  idx = i
+  slider.value = String(i)
+  label.textContent = fmtTime(manifest.times[i].time)
+  const jobs = (['wind', 'wave'] as Kind[]).filter((k) => show[k]).map(async (k) => {
+    const fs = await fieldSet(k, i).loadCoarse()
+    if (idx !== i) return
+    if (k === 'wind') layer.wind = fs
+    else layer.wave = fs
   })
-  const sel = datumKeuze()
-  for (const [k, idx] of perDag) {
-    const o = document.createElement('option')
-    o.value = k
-    o.textContent = toonDag(utc(staat.index.tijd[idx[0]]))
-    sel.appendChild(o)
+  await Promise.allSettled(jobs)
+  if (idx === i) {
+    updateFine()
+    map.triggerRepaint()
   }
-  sel.onchange = () => zetDag(sel.value)
-  slider().oninput = () => {
-    const idx = perDag.get(lisDag(utc(staat.index.tijd[staat.i])))!
-    const want = Number(slider().value)
-    staat.i = idx.find((i) => lisUur(utc(staat.index.tijd[i])) === want) ?? staat.i
-    ververs()
-  }
-  // Standaard het huidige uur.
-  const nu = Date.now()
-  staat.i = staat.index.tijd.reduce((a, t, i) => (Math.abs(utc(t) - nu) < Math.abs(utc(staat.index.tijd[a]) - nu) ? i : a), 0)
-  zetDag(lisDag(utc(staat.index.tijd[staat.i])))
 }
 
-export function kiesUur(i: number) {
-  staat.i = i
-  datumKeuze().value = lisDag(utc(staat.index.tijd[i]))
-  zetDag(datumKeuze().value)
+const fmtDay = new Intl.DateTimeFormat('nl-NL', { weekday: 'short', day: 'numeric', month: 'short' })
+const fmtHour = new Intl.DateTimeFormat('nl-NL', { hour: '2-digit', minute: '2-digit' })
+function fmtTime(iso: string) {
+  const d = new Date(iso)
+  return `${fmtDay.format(d)} · ${fmtHour.format(d)}`
 }
 
+function buildDayTicks() {
+  const box = $('dagen')
+  box.textContent = ''
+  const n = manifest.times.length - 1
+  let prev = ''
+  manifest.times.forEach((t, i) => {
+    const d = new Date(t.time)
+    const day = d.toDateString()
+    if (day === prev) return
+    prev = day
+    // Alleen een streepje bij middernacht (lokale tijd) of het eerste tijdstip.
+    if (i > 0 && d.getHours() >= 3) return
+    const s = document.createElement('span')
+    s.style.left = `${(i / n) * 100}%`
+    s.textContent = new Intl.DateTimeFormat('nl-NL', { weekday: 'short', day: 'numeric' }).format(d)
+    box.append(s)
+  })
+  // Labels die elkaar raken (bv. eerste dag kort voor middernacht) weglaten.
+  let lastRight = -Infinity
+  for (const s of Array.from(box.children) as HTMLElement[]) {
+    const r = s.getBoundingClientRect()
+    if (r.left < lastRight + 4) s.remove()
+    else lastRight = r.right
+  }
+}
 
+function togglePlay(on = playing === null) {
+  if (playing !== null) clearInterval(playing)
+  playing = null
+  playBtn.classList.toggle('speelt', on)
+  playBtn.setAttribute('aria-label', on ? 'Pauzeren' : 'Afspelen')
+  if (!on) return
+  let busy = false
+  playing = window.setInterval(async () => {
+    if (busy) return
+    busy = true
+    const next = (idx + 1) % manifest.times.length
+    await setTime(next)
+    // Alvast het volgende tijdstip ophalen.
+    const after = (next + 1) % manifest.times.length
+    for (const k of ['wind', 'wave'] as Kind[]) if (show[k]) fieldSet(k, after).loadCoarse().catch(() => {})
+    busy = false
+  }, PLAY_MS)
+}
 
-
-// Kaart en fiche moeten uit dezelfde berekening komen. Daarom haalt de app elk databestand op met het
-// tijdstip van de berekening (index.json, "gemaakt") erbij. Komt er een nieuwe berekening terwijl de
-// pagina openstaat, dan laadt de pagina opnieuw: anders toont de kaart de oude en de fiche de nieuwe.
-const vers = () => fetch('data/index.json', { cache: 'no-store' }).then((r) => r.json())
-export const data = (pad: string) => fetch(`data/${pad}?v=${encodeURIComponent(staat.index.gemaakt)}`).then((r) => r.json())
-
-async function nieuweBerekening() {
-  try {
-    if ((await vers()).gemaakt !== staat.index.gemaakt) location.reload()
-  } catch { /* offline: de huidige gegevens blijven staan */ }
+function setLayer(kind: Kind, on: boolean) {
+  show[kind] = on
+  const btn = kind === 'wind' ? windBtn : waveBtn
+  btn.classList.toggle('aan', on)
+  btn.setAttribute('aria-pressed', String(on))
+  if (kind === 'wind') layer.showWind = on
+  else layer.showWaves = on
+  if (on) setTime(idx)
+  map.triggerRepaint()
 }
 
 async function start() {
-  const index = await vers()
-  staat.index = index
-  const [stranden, getij] = await Promise.all([data('kaart.json'), data('getij.json')])
-  Object.assign(staat, { stranden, getij })
-  const eerste = Promise.all([data('sport/score_alle.json'), laadNiveau(instelling.niveau)])
-  setInterval(nieuweBerekening, 5 * 60 * 1000)
-  document.addEventListener('visibilitychange', () => { if (!document.hidden) nieuweBerekening() })
-
-  kaart = new maplibregl.Map({
-    container: 'kaart', style: await stijl(), bounds: PORTUGAL, minZoom: 5, maxZoom: 16,
-    maxBounds: [[-16, 33], [14, 55]], attributionControl: { compact: true },
+  const res = await fetch(`${DATA}/manifest.json`, { cache: 'no-cache' })
+  if (!res.ok) {
+    label.textContent = 'Geen voorspelling gevonden'
+    return
+  }
+  manifest = await res.json()
+  slider.max = String(manifest.times.length - 1)
+  // Het tijdstip dat het dichtst bij nu ligt.
+  const now = Date.now()
+  let best = 0
+  manifest.times.forEach((t, i) => {
+    if (Math.abs(Date.parse(t.time) - now) < Math.abs(Date.parse(manifest.times[best].time) - now)) best = i
   })
-  kaart.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-left')
-  kaart.addControl(new maplibregl.GeolocateControl({ trackUserLocation: false }), 'top-left')
-
-  kaart.on('load', async () => {
-    const [alle] = await eerste
-    staat.score.alle = alle
-    kaart.addSource('stranden', {
-      type: 'geojson', data: features(), cluster: true, clusterRadius: 30, clusterMaxZoom: 9,
-      clusterProperties: { r: ['max', ['get', 'r']] },
-    })
-    // Links WIND, rechts WAVE.
-    // Samengeklonterd: het aantal stranden in een wit bolletje met cyaan rand en cijfer.
-    // De cirkels zelf worden pas getekend als de kaart ze nodig heeft (veel combinaties).
-    kaart.on('styleimagemissing', (e) => {
-      if (kaart.hasImage(e.id)) return
-      const n = /^sg\|(\d+)$/.exec(e.id)
-      if (n) { kaart.addImage(e.id, groepIcoon(Number(n[1]), '#0e8fa6'), { pixelRatio: 2 }); return }
-      const c = beeldUitNaam(e.id)
-      if (c) kaart.addImage(e.id, c, { pixelRatio: 2 })
-    })
-    // Routes vanaf het verblijf, onder de bolletjes.
-    kaart.addSource('routes', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } })
-    // Waar routes over dezelfde weg lopen, ligt de sport met voorrang bovenop:
-    // golfsurfen, dan windsurfen op golven, dan windsurfen, dan stille waters.
-    kaart.addLayer({ id: 'routes-rand', type: 'line', source: 'routes', layout: { 'line-cap': 'round', 'line-join': 'round' },
-      paint: { 'line-color': '#ffffff', 'line-width': 7, 'line-opacity': 0.9 } })
-    kaart.addLayer({ id: 'routes', type: 'line', source: 'routes',
-      layout: { 'line-cap': 'round', 'line-join': 'round', 'line-sort-key': ['get', 'prio'] },
-      paint: { 'line-color': ['get', 'kleur'], 'line-width': 4 } })
-    kaart.addLayer({ id: 'groepen', type: 'symbol', source: 'stranden', filter: ['has', 'point_count'],
-      layout: { 'icon-image': ['concat', 'sg|', ['to-string', ['get', 'point_count']]] as any, 'icon-allow-overlap': true } })
-    kaart.addLayer({ id: 'stranden', type: 'symbol', source: 'stranden', filter: ['!', ['has', 'point_count']],
-      layout: { 'icon-image': ['get', 'beeld'] as any, 'icon-allow-overlap': true, 'symbol-sort-key': ['get', 'r'] } })
-    kaart.on('click', 'stranden', (e) => {
-      const id = e.features?.[0]?.properties?.id
-      if (id) openFiche(id)
-    })
-    kaart.on('click', 'groepen', async (e) => {
-      const f = e.features![0]
-      const src = kaart.getSource('stranden') as GeoJSONSource
-      const z = await src.getClusterExpansionZoom(f.properties!.cluster_id)
-      kaart.easeTo({ center: (f.geometry as any).coordinates, zoom: z })
-    })
-    for (const l of ['stranden', 'groepen']) {
-      kaart.on('mouseenter', l, () => (kaart.getCanvas().style.cursor = 'pointer'))
-      kaart.on('mouseleave', l, () => (kaart.getCanvas().style.cursor = ''))
-    }
-    await laadKlim(kaart)
-    dagen()
-    zoekveld()
-    document.getElementById('verblijfknop')!.onclick = () => vraag()
-    surfPaneel(async (niveauAnders) => {
-      if (niveauAnders) await laadNiveau(instelling.niveau)
-      ;(kaart.getSource('stranden') as GeoJSONSource).setData(features())
-      toonUur()
-      tekenRoutes()
-    })
-    // Bronvermelding dichtgeklapt (het i-knopje), zodat ze de routes niet bedekt.
-    document.querySelector('.maplibregl-ctrl-attrib')?.classList.remove('maplibregl-compact-show')
-    const hash = decodeURIComponent(location.hash.slice(1))
-    document.body.dataset.klaar = '1'
-    ;(window as any).__kaart = kaart // voor de test
-    if (hash && stranden.some((s: KaartStrand) => s.id === hash)) {
-      // Rechtstreekse link naar een strand: geen vraag, wel het bewaarde verblijf.
-      openFiche(hash)
-      const oud = leesVerblijf()
-      if (oud) kiesVerblijf(oud, false)
-    } else {
-      // Kom je via het tabblad terug van de planning (of met de terugknop), dan blijft je verblijf staan.
-      // Herladen of de site opnieuw openen: een lege vraag.
-      const oud = leesVerblijf()
-      const nav = (performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined)?.type
-      if (oud && (viaTab || nav === 'back_forward')) kiesVerblijf(oud)
-      else vraag(true)
-    }
-  })
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') sluitFiche() })
-  window.addEventListener('hashchange', () => {
-    const id = decodeURIComponent(location.hash.slice(1))
-    if (id.startsWith('klim:') && id !== staat.open) openKlim(id.slice(5))
-    else if (id && id !== staat.open && staat.stranden.some((s) => s.id === id)) openFiche(id)
-  })
+  const run = new Date(manifest.run)
+  $('bron').textContent = `GFS-run ${fmtDay.format(run)} ${fmtHour.format(run)} · wind 10 m, golven WW3`
+  buildDayTicks()
+  window.addEventListener('resize', buildDayTicks)
+  await setTime(best)
 }
 
+slider.addEventListener('input', () => setTime(Number(slider.value)))
+slider.addEventListener('pointerdown', () => togglePlay(false))
+playBtn.addEventListener('click', () => togglePlay())
+windBtn.addEventListener('click', () => setLayer('wind', !show.wind))
+waveBtn.addEventListener('click', () => setLayer('wave', !show.wave))
+map.on('moveend', updateFine)
 
-export function vliegNaar(lon: number, lat: number, dichtbij = false) {
-  if (dichtbij) kaart.easeTo({ center: [lon, lat], zoom: Math.max(kaart.getZoom(), 13) })
-  else if (kaart.getZoom() < 10) kaart.easeTo({ center: [lon, lat], zoom: 11 })
-}
-
-start()
+// Niet op 'load' wachten: dat komt pas als alle tegels van de basiskaart binnen zijn.
+const addLayer = () => { if (!map.getLayer(layer.id)) map.addLayer(layer, 'namen') }
+if (map.isStyleLoaded()) addLayer()
+else map.once('style.load', addLayer)
+;(window as unknown as { kaart: unknown }).kaart = { map, layer }
+start().catch((e) => {
+  console.error(e)
+  label.textContent = 'Laden mislukt'
+})

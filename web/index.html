@@ -3,51 +3,31 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="robots" content="noindex, nofollow, noarchive" />
-  <meta name="color-scheme" content="light dark" />
-  <title>Surfkaart Portugal</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><path d='M16 2a14 14 0 0 0 0 28z' fill='%2312b5d3'/><path d='M16 2a14 14 0 0 1 0 28z' fill='%233a6fe0'/></svg>" />
-  <script>try { const t = localStorage.getItem('thema'); if (t === 'licht' || t === 'donker') document.documentElement.dataset.theme = t === 'licht' ? 'light' : 'dark' } catch {}</script>
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Wind en golven</title>
+  <link rel="stylesheet" href="./src/style.css" />
 </head>
 <body>
-  <header class="balk">
-    <div class="balk-boven">
-      <h1>Surfkaart <span>Portugal</span></h1>
-      <nav class="tabs"><a href="./" aria-current="page">Kaart</a><a href="planning">Planning</a></nav>
-      <button id="verblijfknop" class="verblijfknop" type="button" title="Waar verblijf je en hoe lang wil je rijden?">Waar verblijf je?</button>
-      <div class="zoek">
-        <input id="zoek" type="search" placeholder="Zoek een strand" autocomplete="off" aria-label="Zoek een strand"
-          role="combobox" aria-expanded="false" aria-controls="zoeklijst" aria-autocomplete="list" />
-        <ul id="zoeklijst" role="listbox" hidden></ul>
-      </div>
-      <button id="thema" class="themaknop" type="button" aria-label="Dag of nacht"></button>
+  <div id="kaart"></div>
+
+  <div class="lagen" role="group" aria-label="Lagen">
+    <button id="knop-wind" class="laag aan" aria-pressed="true"><span class="teken wind"></span>Wind</button>
+    <button id="knop-golven" class="laag aan" aria-pressed="true"><span class="teken golf"></span>Golven</button>
+  </div>
+
+  <div class="tijdlijn">
+    <button id="afspelen" class="afspelen" aria-label="Afspelen">
+      <svg viewBox="0 0 24 24" class="speel"><path d="M8 5v14l11-7z"/></svg>
+      <svg viewBox="0 0 24 24" class="pauze"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>
+    </button>
+    <div class="schuif">
+      <div id="tijd" class="tijd">…</div>
+      <input id="schuif" type="range" min="0" max="0" step="1" value="0" aria-label="Tijdstip" />
+      <div id="dagen" class="dagen"></div>
     </div>
-    <div class="uurrij">
-      <label><span class="sr">Dag</span><select id="datum"></select></label>
-      <input id="uur" type="range" min="0" max="23" step="1" aria-label="Uur" />
-      <output id="uurlabel" for="uur"></output>
-    </div>
-  </header>
-  <main>
-    <div id="kaart" role="application" aria-label="Kaart met stranden"><div id="laagknoppen" class="laagknoppen"></div></div>
-    <ul id="routes" class="routes" hidden aria-label="Routes vanaf je verblijf"></ul>
-    <aside id="fiche" class="fiche" hidden aria-live="polite"></aside>
-  </main>
-  <footer class="bronnen">
-    <details>
-      <summary>Bronnen: Open-Meteo · Copernicus · © OpenStreetMap contributors (ODbL) · Camptocamp.org (CC BY-SA 3.0) · EEA/APA · TICON-4 · IPMA</summary>
-      <a href="https://open-meteo.com/">Weather data by Open-Meteo.com</a> ·
-      Generated using E.U. Copernicus Marine Service Information; DOI 10.48670/moi-00025 ·
-      <a href="https://openfreemap.org/">OpenFreeMap</a> © OpenMapTiles Data from <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> ·
-      Bathing water data: EEA / APA (CC BY 4.0) ·
-      Klimplekken: © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a> (ODbL),
-      <a href="https://www.camptocamp.org">Camptocamp.org</a> (CC BY-SA 3.0) ·
-      Getijconstanten: TICON-4 (DOI 10.17882/109129) ·
-      Routes: OSRM (© OpenStreetMap contributors) · Plaatsen zoeken: Esri ArcGIS World Geocoding, Photon ·
-      Waarschuwingen: <a href="https://www.ipma.pt/">IPMA, Instituto Português do Mar e da Atmosfera</a> ·
-      <a href="rekenen.html">Hoe rekenen we</a>
-    </details>
-  </footer>
-  <script type="module" src="/src/main.ts"></script>
+  </div>
+
+  <div id="bron" class="bron"></div>
+  <script type="module" src="./src/main.ts"></script>
 </body>
 </html>

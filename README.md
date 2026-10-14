@@ -1,38 +1,52 @@
-# Surfkaart Portugal
+# Wind en golven
 
-Webkaart van de stranden van het Portugese vasteland met per uur wind, golven, getij WIND en WAVE, en per sport een cijfer van 1 tot 5 (21 sporten; regels in `pipeline/sport/sporten.yaml`). Het plan staat in [PLAN.md](PLAN.md), de open punten in [OPEN.md](OPEN.md).
+Wereldkaart met geanimeerde wind en golven in de stijl van Windy: geen kleurenlaag, alleen bewegende lijntjes
+over een rustige, donkere basiskaart.
 
-Gratis, niet-commercieel, voor een besloten kring.
+- **Wind** (wit, dun, met uitdovend staartje): windrichting en -snelheid op 10 m. De lijntjes liggen in de
+  windrichting, bewegen mee en zijn sneller en langer waar het harder waait. Overal, over land en zee.
+- **Golven** (lichtblauw, dikker, zonder staart): golfkammen dwars op de looprichting die vooruitschuiven.
+  Langer en feller bij hogere golven, sneller bij langere periode. Alleen op zee (land/zee-masker van het golfmodel).
+- **Bediening**: aparte knoppen voor wind en golven (samen aan mag), en een tijdlijn met afspeelknop door de
+  voorspelling (5 dagen, per 3 uur).
 
-## Stand
+## Data
 
-| Mijlpaal | Stand |
-|---|---|
-| M0 Proeven en sleutels | Klaar; open punten in OPEN.md |
-| M1 Stranden | Klaar: 681 stranden; zie OPEN.md punt 13 tot 16 |
-| M2 Getij | Klaar; norm gehaald op de open kust, niet in mondingen (OPEN.md punt 17) |
-| M3 Voorspelling | Elke 6 uur per strand (tak `data`); Windguru-stand klopt voor 2 van 5 spots (OPEN.md punt 18) |
-| M4 Site | Online via Vercel (tak `site`); keuze van datum, sport en uur |
-| M5 Scores | WIND en WAVE klaar; daarnaast de sportscore per sport (41 testgevallen kloppen, OPEN.md punt 27 tot 29) |
-| M6 Nauwkeurigheid | Golven gemeten: IBI is standaard; wind loopt (OPEN.md punt 25, 26) |
-| M7 IJken | Nog niet begonnen |
+`pipeline/build.py` haalt per tijdstip één wereldwijd raster op uit de nieuwste NOAA GFS-run (AWS Open Data):
+
+| Laag | Model | Velden |
+|---|---|---|
+| Wind | GFS 0,25° | `UGRD`, `VGRD` op 10 m |
+| Golven | GFS-Wave (WaveWatch III) 0,25° | `HTSGW` (significante golfhoogte), `DIRPW` (richting), `PERPW` (periode) |
+
+Per veld wordt alleen het nodige stuk van het GRIB2-bestand gedownload (byte-range via het `.idx`-bestand).
+Per tijdstip schrijft het script:
+
+- een grof wereldraster van 1° (`<uur>/wind.png`, `<uur>/wave.png`, 360 × 181 px, ±100 kB) voor uitgezoomd;
+- fijne tegels van 0,25° (`<uur>/wind/<rij>_<kol>.png`, 45° × 45°), die de browser vanaf zoom 3 alleen voor het
+  zichtbare gebied bijlaadt;
+- `manifest.json` met de run, de tijdstippen en de codering.
+
+Codering in de PNG's (zie de kop van `pipeline/build.py`): wind als u/v in R/G met wortelcompressie (precies bij
+zwakke wind); golven als looprichting in R/G (lengte = periode) en golfhoogte in B, met B = 0 op land.
+
+## Browser
+
+`web/` (Vite + TypeScript + MapLibre GL). De deeltjes staan in `web/src/particles.ts`: een MapLibre custom layer
+die in dezelfde WebGL-context en hetzelfde frame als de kaart tekent, zodat pannen en zoomen niet hapert. De
+deeltjes leven in Web Mercator-coördinaten en bewegen met een vaste schermsnelheid op elk zoomniveau.
+`web/src/field.ts` laadt en bemonstert de rasters (fijne tegel als die er is, anders het grove raster).
 
 ## Lokaal
 
 ```sh
-pip install -e ".[dev]"     # Python 3.11 of hoger
-npm ci                      # Node 20 of hoger
-pytest && npm test
-python -m pipeline.probe.probe   # één echte aanroep per bron
-node pipeline/tides/probe.mjs    # getij via Neaps
+python -m venv .venv && .venv/bin/pip install -r pipeline/requirements.txt
+.venv/bin/python -m pipeline.build --max-hour 24     # schrijft web/public/data
+.venv/bin/pytest -q tests
+cd web && npm ci && npm run dev
 ```
 
-Sleutels: kopieer `.env.example` naar `.env`.
+## Publiceren
 
-## Mappen
-
-- `pipeline/`: ophalen en rekenen (Python), getij (Node).
-- `tests/fixtures/probe/`: opgeslagen antwoorden van de bronnen.
-- `docs/`: veldnamen per bron, architectuurkeuzes.
-- `web/`: de site (vanaf M4).
-- `data/`: gegenereerde bestanden.
+`.github/workflows/kaart.yml` draait elke 6 uur (en met de hand): data ophalen, site bouwen en naar de tak
+`site` zetten, die Vercel publiceert. Basiskaart: © OpenStreetMap-bijdragers, © CARTO.

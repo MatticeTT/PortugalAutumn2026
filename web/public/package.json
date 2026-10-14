@@ -1,5 +1,0 @@
-{
-  "private": true,
-  "description": "Afhankelijkheden van de Vercel-functies in api/ (de site zelf is al gebouwd).",
-  "dependencies": { "@vercel/blob": "1.1.1" }
-}
