@@ -4,8 +4,8 @@
 export interface Manifest {
   run: string
   source: string
-  times: { h: number; time: string }[]
-  coarse: { deg: number; width: number; height: number }
+  ext: string
+  times: { h: number; time: string; coarseDeg: number; fine: boolean }[]
   fine: { deg: number; tileDeg: number; tilePx: number; rows: number; cols: number }
   encoding: { windMax: number; waveHMax: number; wavePeriodMax: number }
 }
@@ -155,24 +155,31 @@ export class FieldSet {
   private tiles: (Grid | 'loading' | 'error' | undefined)[] = []
   private fineOn = false
 
-  constructor(readonly kind: Kind, readonly hour: number, private m: Manifest, private base: string, private onTile: () => void) {}
+  readonly hour: number
+  private hasFine: boolean
+  private coarseDeg: number
+
+  constructor(readonly kind: Kind, t: Manifest['times'][number], private m: Manifest, private base: string, private onTile: () => void) {
+    this.hour = t.h
+    this.hasFine = t.fine
+    this.coarseDeg = t.coarseDeg
+  }
 
   private url(name: string) {
-    return `${this.base}/${String(this.hour).padStart(3, '0')}/${name}.png`
+    return `${this.base}/${String(this.hour).padStart(3, '0')}/${name}.${this.m.ext}`
   }
 
   async loadCoarse(): Promise<this> {
     if (!this.coarse) {
-      const c = this.m.coarse
-      this.coarse = await loadGrid(this.url(this.kind), this.kind, this.m, { lon0: 0, lat0: 90, deg: c.deg, wrap: true })
+      this.coarse = await loadGrid(this.url(this.kind), this.kind, this.m, { lon0: 0, lat0: 90, deg: this.coarseDeg, wrap: true })
     }
     return this
   }
 
   /** Fijne tegels voor het gebied [west, zuid, oost, noord] (lengte mag buiten -180..180 liggen). */
   useFine(on: boolean, west = 0, south = 0, east = 0, north = 0) {
-    this.fineOn = on
-    if (!on) return
+    this.fineOn = on && this.hasFine
+    if (!this.fineOn) return
     const f = this.m.fine
     const r0 = Math.max(0, Math.floor((90 - north) / f.tileDeg)), r1 = Math.min(f.rows - 1, Math.floor((90 - south) / f.tileDeg))
     const c0 = Math.floor(west / f.tileDeg), c1 = Math.floor(east / f.tileDeg)

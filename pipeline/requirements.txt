@@ -3,3 +3,4 @@ eccodeslib==2.49.0.30
 numpy==2.5.4
 pillow==12.3.0
 pytest==9.1.1
+shapely==2.2.0  # alleen voor pipeline/basemap.py

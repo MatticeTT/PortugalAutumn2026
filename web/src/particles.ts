@@ -1,28 +1,43 @@
 // Geanimeerde wind- en golflijntjes als MapLibre custom layer (WebGL).
 //
-// De deeltjes leven in Web Mercator-coördinaten (0..1), zodat ze bij pannen en zoomen met de kaart
-// meeschuiven; de matrix van MapLibre zet ze in hetzelfde frame op het scherm als de basiskaart.
-// Snelheden zijn in schermpixels per seconde, zodat de animatie op elk zoomniveau even vlot oogt.
+// Werkwijze zoals earth.nullschool, Windy en de WebGL-windkaart van Mapbox: elk deeltje tekent per frame
+// alleen het stukje dat het net heeft afgelegd, in een eigen beeldbuffer (textuur). Die buffer wordt elk
+// frame een beetje doorzichtiger. Zo ontstaan vanzelf lange, vloeiende staarten die uitdoven.
+//
+// Bij pannen en zoomen wordt de buffer van het vorige frame verschoven en geschaald naar het nieuwe beeld,
+// zodat de staarten met de kaart meebewegen in plaats van te verdwijnen of uit te smeren.
+//
+// De deeltjes zelf leven in Web Mercator-coördinaten (0..1) en bewegen met een vaste schermsnelheid, zodat
+// de animatie op elk zoomniveau even vlot oogt.
 
 import type { CustomLayerInterface, Map as MlMap } from 'maplibre-gl'
-type mat4 = Parameters<CustomLayerInterface['render']>[1]
 import type { FieldSet, WaveSample, WindSample } from './field'
 
-// Wind
-const WIND_TRAIL = 10 // punten in het staartje (kop meegerekend)
-const WIND_TRAIL_DT = 1 / 16 // seconden tussen twee staartpunten
-const WIND_PX_PER_MS = 5 // schermsnelheid in px/s per m/s wind
-const WIND_WIDTH = 1.1 // css px
-const WIND_DENSITY = 120 // één deeltje per zoveel css px²
-const WIND_MAX = 8000
-// Golven
-const WAVE_PTS = 7 // punten langs een golfkam
-const WAVE_PX_PER_S = 2.4 // schermsnelheid in px/s per seconde golfperiode
-const WAVE_WIDTH = 1.6
-const WAVE_DENSITY = 2000
-const WAVE_MAX = 2600
+type Mat4 = Parameters<CustomLayerInterface['render']>[1]
 
-const VERT = `
+// ---- Instellingen ----
+// Wind: dunne witte lijntjes met lange staart.
+const WIND = {
+  density: 520, // één deeltje per zoveel css px²
+  max: 6000,
+  pxPerMs: 7, // schermsnelheid in px/s per m/s wind
+  width: 1.15, // css px
+  fade: 0.955, // per frame van 1/60 s: hoeveel van de staart blijft staan
+  minLife: 1.6,
+  maxLife: 4.5,
+}
+// Golven: korte, brede kammen dwars op de looprichting; de vervaging maakt er blokjes met een vage achterkant van.
+const WAVE = {
+  density: 380,
+  max: 6000,
+  pxPerS: 1.6, // schermsnelheid in px/s per seconde golfperiode
+  width: 2.4,
+  fade: 0.86,
+  minLife: 2,
+  maxLife: 5,
+}
+
+const SEG_VERT = `
 attribute vec4 a_vert; // x, y (mercator), alfa, zijde (-1..1 dwars op de lijn)
 uniform mat4 u_matrix;
 varying float v_alpha;
@@ -32,16 +47,38 @@ void main() {
   v_side = a_vert.w;
   gl_Position = u_matrix * vec4(a_vert.xy, 0.0, 1.0);
 }`
-
-const FRAG = `
+const SEG_FRAG = `
 precision mediump float;
 uniform vec3 u_color;
 varying float v_alpha;
 varying float v_side;
 void main() {
-  float a = v_alpha * (1.0 - smoothstep(0.35, 1.0, abs(v_side)));
+  float a = v_alpha * (1.0 - smoothstep(0.4, 1.0, abs(v_side)));
   gl_FragColor = vec4(u_color * a, a);
 }`
+const QUAD_VERT = `
+attribute vec2 a_pos;
+void main() { gl_Position = vec4(a_pos, 0.0, 1.0); }`
+// Vorig frame, verschoven naar het huidige beeld en doorzichtiger gemaakt.
+const FADE_FRAG = `
+precision highp float;
+uniform sampler2D u_prev;
+uniform vec2 u_size;
+uniform vec3 u_affine; // vorige pixel = a * huidige pixel + (bx, by)
+uniform float u_fade;
+void main() {
+  vec2 p = gl_FragCoord.xy * u_affine.x + u_affine.yz;
+  vec2 uv = p / u_size;
+  vec4 c = vec4(0.0);
+  if (uv.x >= 0.0 && uv.y >= 0.0 && uv.x <= 1.0 && uv.y <= 1.0) c = texture2D(u_prev, uv);
+  // Afronding naar 8 bit zou zwakke resten laten hangen: daarom een vaste stap eraf.
+  gl_FragColor = max(c * u_fade - vec4(1.5 / 255.0), vec4(0.0));
+}`
+const DRAW_FRAG = `
+precision mediump float;
+uniform sampler2D u_tex;
+uniform vec2 u_size;
+void main() { gl_FragColor = texture2D(u_tex, gl_FragCoord.xy / u_size); }`
 
 const mercX = (lon: number) => (lon + 180) / 360
 const mercY = (lat: number) => {
@@ -51,11 +88,84 @@ const mercY = (lat: number) => {
 const lonOf = (x: number) => x * 360 - 180
 const latOf = (y: number) => (Math.atan(Math.sinh(Math.PI * (1 - 2 * y))) * 180) / Math.PI
 
-interface Batch {
-  buf: WebGLBuffer
-  idx: WebGLBuffer
-  data: Float32Array
-  count: number // aantal indices om te tekenen
+interface View { x0: number; x1: number; y0: number; y1: number; cx: number; cy: number; world: number; area: number }
+
+/** Twee texturen die om beurt vorig en huidig frame zijn. */
+class Trails {
+  tex: WebGLTexture[] = []
+  fbo: WebGLFramebuffer[] = []
+  w = 0
+  h = 0
+  cur = 0
+  empty = true
+
+  constructor(private gl: WebGLRenderingContext) {}
+
+  resize(w: number, h: number) {
+    if (w === this.w && h === this.h) return
+    const gl = this.gl
+    this.dispose()
+    this.w = w
+    this.h = h
+    for (let i = 0; i < 2; i++) {
+      const t = gl.createTexture()!
+      gl.bindTexture(gl.TEXTURE_2D, t)
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, w, h, 0, gl.RGBA, gl.UNSIGNED_BYTE, null)
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
+      const f = gl.createFramebuffer()!
+      gl.bindFramebuffer(gl.FRAMEBUFFER, f)
+      gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, t, 0)
+      gl.clearColor(0, 0, 0, 0)
+      gl.clear(gl.COLOR_BUFFER_BIT)
+      this.tex.push(t)
+      this.fbo.push(f)
+    }
+    this.empty = true
+  }
+
+  clear() {
+    if (this.empty || !this.fbo.length) return
+    const gl = this.gl
+    for (const f of this.fbo) {
+      gl.bindFramebuffer(gl.FRAMEBUFFER, f)
+      gl.clearColor(0, 0, 0, 0)
+      gl.clear(gl.COLOR_BUFFER_BIT)
+    }
+    this.empty = true
+  }
+
+  dispose() {
+    for (const t of this.tex) this.gl.deleteTexture(t)
+    for (const f of this.fbo) this.gl.deleteFramebuffer(f)
+    this.tex = []
+    this.fbo = []
+    this.w = this.h = 0
+  }
+}
+
+function program(gl: WebGLRenderingContext, vs: string, fs: string) {
+  const sh = (type: number, src: string) => {
+    const s = gl.createShader(type)!
+    gl.shaderSource(s, src)
+    gl.compileShader(s)
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s) ?? 'shader')
+    return s
+  }
+  const p = gl.createProgram()!
+  gl.attachShader(p, sh(gl.VERTEX_SHADER, vs))
+  gl.attachShader(p, sh(gl.FRAGMENT_SHADER, fs))
+  gl.linkProgram(p)
+  if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p) ?? 'program')
+  const cache = new Map<string, WebGLUniformLocation>()
+  const u = (n: string) => {
+    let l = cache.get(n)
+    if (!l) cache.set(n, (l = gl.getUniformLocation(p, n)!))
+    return l
+  }
+  return { p, u, attr: (n: string) => gl.getAttribLocation(p, n) }
 }
 
 export class ParticleLayer implements CustomLayerInterface {
@@ -70,106 +180,97 @@ export class ParticleLayer implements CustomLayerInterface {
 
   private map!: MlMap
   private gl!: WebGLRenderingContext
-  private prog!: WebGLProgram
-  private uMatrix!: WebGLUniformLocation
-  private uColor!: WebGLUniformLocation
-  private aVert = 0
-  private windBatch!: Batch
-  private waveBatch!: Batch
+  private seg!: ReturnType<typeof program>
+  private fade!: ReturnType<typeof program>
+  private draw!: ReturnType<typeof program>
+  private quad!: WebGLBuffer
+  private segBuf!: WebGLBuffer
+  private segData = new Float32Array(Math.max(WIND.max, WAVE.max) * 6 * 4)
+  private windTrails!: Trails
+  private waveTrails!: Trails
   private last = 0
-  private lastZoom = -1
-  private view = { x0: 0, x1: 1, y0: 0, y1: 1, world: 512, area: 1 }
+  private dpr = 1
+  private prev: View | null = null
+  private view: View = { x0: 0, x1: 1, y0: 0, y1: 1, cx: 0.5, cy: 0.5, world: 512, area: 1 }
 
-  // Wind: kop + ringbuffer met eerdere posities
-  private wx = new Float64Array(WIND_MAX)
-  private wy = new Float64Array(WIND_MAX)
-  private wHist = new Float64Array(WIND_MAX * (WIND_TRAIL - 1) * 2)
-  private wRing = 0
-  private wTimer = 0
-  private wAge = new Float32Array(WIND_MAX)
-  private wLife = new Float32Array(WIND_MAX)
-  private wSpeed = new Float32Array(WIND_MAX)
+  // Wind
+  private wx = new Float64Array(WIND.max)
+  private wy = new Float64Array(WIND.max)
+  private wpx = new Float64Array(WIND.max) // positie in het vorige frame
+  private wpy = new Float64Array(WIND.max)
+  private wAge = new Float32Array(WIND.max)
+  private wLife = new Float32Array(WIND.max)
+  private wSpeed = new Float32Array(WIND.max)
   private wCount = 0
   // Golven
-  private gx = new Float64Array(WAVE_MAX)
-  private gy = new Float64Array(WAVE_MAX)
-  private gAge = new Float32Array(WAVE_MAX)
-  private gLife = new Float32Array(WAVE_MAX)
+  private gx = new Float64Array(WAVE.max)
+  private gy = new Float64Array(WAVE.max)
+  private gAge = new Float32Array(WAVE.max)
+  private gLife = new Float32Array(WAVE.max)
+  private gEx = new Float32Array(WAVE.max) // looprichting (oost, noord)
+  private gNy = new Float32Array(WAVE.max)
+  private gH = new Float32Array(WAVE.max)
+  private gSea = new Uint8Array(WAVE.max)
   private gCount = 0
 
-  private trailPx = new Float64Array(WIND_TRAIL * 2)
-  private tailFade = Float32Array.from({ length: WIND_TRAIL }, (_, t) => Math.pow(1 - t / (WIND_TRAIL - 1), 1.3))
-  private waveScale = 1 // kammen iets langer bij inzoomen
   private ws: WindSample = { u: 0, v: 0 }
   private gs: WaveSample = { ex: 0, ny: 0, period: 0, height: 0 }
-  private gs2: WaveSample = { ex: 0, ny: 0, period: 0, height: 0 }
 
   onAdd(map: MlMap, gl: WebGLRenderingContext) {
     this.map = map
     this.gl = gl
-    const sh = (type: number, src: string) => {
-      const s = gl.createShader(type)!
-      gl.shaderSource(s, src)
-      gl.compileShader(s)
-      if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s) ?? 'shader')
-      return s
-    }
-    const p = gl.createProgram()!
-    gl.attachShader(p, sh(gl.VERTEX_SHADER, VERT))
-    gl.attachShader(p, sh(gl.FRAGMENT_SHADER, FRAG))
-    gl.linkProgram(p)
-    if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p) ?? 'program')
-    this.prog = p
-    this.uMatrix = gl.getUniformLocation(p, 'u_matrix')!
-    this.uColor = gl.getUniformLocation(p, 'u_color')!
-    this.aVert = gl.getAttribLocation(p, 'a_vert')
-    // 32-bits indices: in WebGL2 standaard, in WebGL1 via de extensie.
-    if (!(typeof WebGL2RenderingContext !== 'undefined' && gl instanceof WebGL2RenderingContext)) gl.getExtension('OES_element_index_uint')
-    this.windBatch = this.makeBatch(WIND_MAX, WIND_TRAIL)
-    this.waveBatch = this.makeBatch(WAVE_MAX, WAVE_PTS)
-  }
-
-  /** Buffers voor strips van `pts` punten (twee hoekpunten per punt), indices liggen vast. */
-  private makeBatch(max: number, pts: number): Batch {
-    const gl = this.gl
-    const idx = new Uint32Array(max * (pts - 1) * 6)
-    let k = 0
-    for (let p = 0; p < max; p++) {
-      const b = p * pts * 2
-      for (let s = 0; s < pts - 1; s++) {
-        const v = b + s * 2
-        idx.set([v, v + 1, v + 2, v + 1, v + 3, v + 2], k)
-        k += 6
-      }
-    }
-    const ib = gl.createBuffer()!
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ib)
-    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, idx, gl.STATIC_DRAW)
-    const data = new Float32Array(max * pts * 2 * 4)
-    const buf = gl.createBuffer()!
-    gl.bindBuffer(gl.ARRAY_BUFFER, buf)
-    gl.bufferData(gl.ARRAY_BUFFER, data.byteLength, gl.DYNAMIC_DRAW)
-    return { buf, idx: ib, data, count: 0 }
+    this.seg = program(gl, SEG_VERT, SEG_FRAG)
+    this.fade = program(gl, QUAD_VERT, FADE_FRAG)
+    this.draw = program(gl, QUAD_VERT, DRAW_FRAG)
+    this.quad = gl.createBuffer()!
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.quad)
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]), gl.STATIC_DRAW)
+    this.segBuf = gl.createBuffer()!
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.segBuf)
+    gl.bufferData(gl.ARRAY_BUFFER, this.segData.byteLength, gl.DYNAMIC_DRAW)
+    this.windTrails = new Trails(gl)
+    this.waveTrails = new Trails(gl)
   }
 
   onRemove() {
     const gl = this.gl
-    for (const b of [this.windBatch, this.waveBatch]) {
-      gl.deleteBuffer(b.buf)
-      gl.deleteBuffer(b.idx)
-    }
-    gl.deleteProgram(this.prog)
+    this.windTrails.dispose()
+    this.waveTrails.dispose()
+    gl.deleteBuffer(this.quad)
+    gl.deleteBuffer(this.segBuf)
+    for (const p of [this.seg, this.fade, this.draw]) gl.deleteProgram(p.p)
   }
 
-  /** Zichtbaar gebied in mercator, met een kleine rand. */
   private updateView() {
     const b = this.map.getBounds()
-    const c = this.map.getCanvas()
-    const w = c.clientWidth, h = c.clientHeight
-    const x0 = mercX(b.getWest()), x1 = mercX(b.getEast())
-    const y0 = mercY(b.getNorth()), y1 = mercY(b.getSouth())
-    const mx = (x1 - x0) * 0.03, my = (y1 - y0) * 0.03
-    this.view = { x0: x0 - mx, x1: x1 + mx, y0: y0 - my, y1: y1 + my, world: 512 * Math.pow(2, this.map.getZoom()), area: w * h }
+    const c = this.map.getCenter()
+    const cv = this.map.getCanvas()
+    this.prev = this.view
+    this.view = {
+      x0: mercX(b.getWest()), x1: mercX(b.getEast()), y0: mercY(b.getNorth()), y1: mercY(b.getSouth()),
+      cx: mercX(c.lng), cy: mercY(c.lat),
+      world: 512 * Math.pow(2, this.map.getZoom()), area: cv.clientWidth * cv.clientHeight,
+    }
+  }
+
+  /** Gebied waarover de deeltjes het laatst gelijkmatig verdeeld zijn. */
+  private dist: View | null = null
+
+  /**
+   * Na uitzoomen of een grote verplaatsing zitten de deeltjes opeengepakt in het oude beeld. Een deel ervan
+   * (evenredig met het nieuwe, lege gebied) springt dan naar een willekeurige plek in het nieuwe beeld.
+   */
+  private redistribute() {
+    const v = this.view, d = this.dist
+    if (!d) { this.dist = v; return }
+    const ix = Math.max(0, Math.min(v.x1, d.x1) - Math.max(v.x0, d.x0))
+    const iy = Math.max(0, Math.min(v.y1, d.y1) - Math.max(v.y0, d.y0))
+    const covered = (ix * iy) / ((v.x1 - v.x0) * (v.y1 - v.y0))
+    if (covered > 0.85) return
+    const p = 1 - covered
+    for (let i = 0; i < this.wCount; i++) if (Math.random() < p) this.spawnWind(i, true)
+    for (let i = 0; i < this.gCount; i++) if (Math.random() < p) this.spawnWave(i, true)
+    this.dist = v
   }
 
   private inView(x: number, y: number) {
@@ -177,49 +278,34 @@ export class ParticleLayer implements CustomLayerInterface {
     return x >= v.x0 && x <= v.x1 && y >= v.y0 && y <= v.y1
   }
 
-  /** Wis alle deeltjes en begin opnieuw (bv. na een nieuw tijdstip niet nodig; wel na een sprong). */
-  reset() {
-    this.wCount = 0
-    this.gCount = 0
+  private rx = 0
+  private ry = 0
+  private randomPos() {
+    const v = this.view
+    this.rx = v.x0 + Math.random() * (v.x1 - v.x0)
+    this.ry = Math.max(0, Math.min(1, v.y0 + Math.random() * (v.y1 - v.y0)))
   }
 
   // ---- Wind ----
 
   private spawnWind(i: number, fresh: boolean) {
-    const v = this.view
-    const x = v.x0 + Math.random() * (v.x1 - v.x0)
-    const y = Math.max(0, Math.min(1, v.y0 + Math.random() * (v.y1 - v.y0)))
-    this.wx[i] = x
-    this.wy[i] = y
-    const n = WIND_TRAIL - 1
-    for (let k = 0; k < n; k++) {
-      this.wHist[(i * n + k) * 2] = x
-      this.wHist[(i * n + k) * 2 + 1] = y
-    }
-    this.wLife[i] = 1 + Math.random() * 2.5
+    this.randomPos()
+    this.wx[i] = this.wpx[i] = this.rx
+    this.wy[i] = this.wpy[i] = this.ry
+    this.wLife[i] = WIND.minLife + Math.random() * (WIND.maxLife - WIND.minLife)
     this.wAge[i] = fresh ? Math.random() * this.wLife[i] : 0
-    this.wSpeed[i] = 0
   }
 
   private stepWind(dt: number) {
     const f = this.wind!
-    const target = Math.min(WIND_MAX, Math.max(500, Math.round(this.view.area / WIND_DENSITY)))
+    const target = Math.min(WIND.max, Math.max(300, Math.round(this.view.area / WIND.density)))
     for (let i = this.wCount; i < target; i++) this.spawnWind(i, true)
     this.wCount = target
-
-    const n = WIND_TRAIL - 1
-    this.wTimer += dt
-    if (this.wTimer >= WIND_TRAIL_DT) {
-      this.wTimer %= WIND_TRAIL_DT
-      this.wRing = (this.wRing + n - 1) % n // nieuwste staartpunt op wRing
-      for (let i = 0; i < this.wCount; i++) {
-        this.wHist[(i * n + this.wRing) * 2] = this.wx[i]
-        this.wHist[(i * n + this.wRing) * 2 + 1] = this.wy[i]
-      }
-    }
-    const k = (WIND_PX_PER_MS * dt) / this.view.world
+    const k = (WIND.pxPerMs * dt) / this.view.world
     const s = this.ws
     for (let i = 0; i < this.wCount; i++) {
+      this.wpx[i] = this.wx[i]
+      this.wpy[i] = this.wy[i]
       this.wAge[i] += dt
       if (this.wAge[i] > this.wLife[i] || !this.inView(this.wx[i], this.wy[i]) || !f.wind(lonOf(this.wx[i]), latOf(this.wy[i]), s)) {
         this.spawnWind(i, false)
@@ -232,172 +318,227 @@ export class ParticleLayer implements CustomLayerInterface {
     }
   }
 
+  /** Per deeltje één kort lijnstuk: van de vorige naar de huidige positie. */
   private buildWind(): number {
-    const d = this.windBatch.data
-    const n = WIND_TRAIL - 1
-    const half = (WIND_WIDTH + 1) / 2 / this.view.world // +1 px voor de zachte rand
-    const px = this.trailPx
-    const tail = this.tailFade
+    const d = this.segData
+    const half = (WIND.width + 1) / 2 / this.view.world // +1 px voor de zachte rand
     let o = 0
+    let n = 0
     for (let i = 0; i < this.wCount; i++) {
-      px[0] = this.wx[i]
-      px[1] = this.wy[i]
-      const hb = i * n * 2
-      for (let t = 0, r = this.wRing; t < n; t++, r = r + 1 === n ? 0 : r + 1) {
-        px[t * 2 + 2] = this.wHist[hb + r * 2]
-        px[t * 2 + 3] = this.wHist[hb + r * 2 + 1]
-      }
+      const ax = this.wpx[i], ay = this.wpy[i], bx = this.wx[i], by = this.wy[i]
+      const dx = bx - ax, dy = by - ay
+      const len2 = dx * dx + dy * dy
+      if (len2 === 0) continue
       const age = this.wAge[i], life = this.wLife[i]
-      const fade = Math.max(0, Math.min(1, age / 0.35, (life - age) / 0.7))
-      const a0 = fade * Math.min(0.9, 0.3 + this.wSpeed[i] / 14)
-      for (let t = 0; t < WIND_TRAIL; t++) {
-        const p = t > 0 ? t - 1 : 0, q = t < WIND_TRAIL - 1 ? t + 1 : t
-        const dx = px[p * 2] - px[q * 2], dy = px[p * 2 + 1] - px[q * 2 + 1]
-        const len2 = dx * dx + dy * dy
-        const f = len2 > 0 ? half / Math.sqrt(len2) : 0
-        const nx = -dy * f, ny = dx * f
-        const a = a0 * tail[t]
-        const x = px[t * 2], y = px[t * 2 + 1]
-        d[o++] = x + nx; d[o++] = y + ny; d[o++] = a; d[o++] = 1
-        d[o++] = x - nx; d[o++] = y - ny; d[o++] = a; d[o++] = -1
-      }
+      const fade = Math.max(0, Math.min(1, age / 0.4, (life - age) / 0.8))
+      // Zwakke wind iets zachter, harde wind helder.
+      const a = fade * Math.min(0.95, 0.35 + this.wSpeed[i] / 12)
+      const f = half / Math.sqrt(len2)
+      o = quad(d, o, ax, ay, bx, by, -dy * f, dx * f, a)
+      n++
     }
-    return this.wCount * (WIND_TRAIL - 1) * 6
+    return n
   }
 
   // ---- Golven ----
 
   private spawnWave(i: number, fresh: boolean) {
-    const v = this.view
     const f = this.wave!
-    let x = 0, y = 0
-    for (let t = 0; t < 6; t++) {
-      x = v.x0 + Math.random() * (v.x1 - v.x0)
-      y = Math.max(0, Math.min(1, v.y0 + Math.random() * (v.y1 - v.y0)))
-      if (f.wave(lonOf(x), latOf(y), this.gs)) break
+    let sea = false
+    for (let t = 0; t < 8 && !sea; t++) {
+      this.randomPos()
+      sea = f.wave(lonOf(this.rx), latOf(this.ry), this.gs)
     }
-    this.gx[i] = x
-    this.gy[i] = y
-    this.gLife[i] = 2.5 + Math.random() * 3
+    this.gx[i] = this.rx
+    this.gy[i] = this.ry
+    this.gSea[i] = 0 // pas tekenen na de eerste stap
+    this.gLife[i] = WAVE.minLife + Math.random() * (WAVE.maxLife - WAVE.minLife)
     this.gAge[i] = fresh ? Math.random() * this.gLife[i] : 0
   }
 
   private stepWaves(dt: number) {
     const f = this.wave!
-    const target = Math.min(WAVE_MAX, Math.max(120, Math.round(this.view.area / WAVE_DENSITY)))
+    const target = Math.min(WAVE.max, Math.max(200, Math.round(this.view.area / WAVE.density)))
     for (let i = this.gCount; i < target; i++) this.spawnWave(i, true)
     this.gCount = target
-    const k = (WAVE_PX_PER_S * dt) / this.view.world
+    const k = (WAVE.pxPerS * dt) / this.view.world
+    const s = this.gs
     for (let i = 0; i < this.gCount; i++) {
       this.gAge[i] += dt
       if (this.gAge[i] > this.gLife[i] || !this.inView(this.gx[i], this.gy[i])) {
         this.spawnWave(i, false)
         continue
       }
-      if (!f.wave(lonOf(this.gx[i]), latOf(this.gy[i]), this.gs)) continue // op land: niet bewegen, niet tekenen
-      const sp = Math.max(this.gs.period, 3) * k
-      this.gx[i] += this.gs.ex * sp
-      this.gy[i] -= this.gs.ny * sp
+      if (!f.wave(lonOf(this.gx[i]), latOf(this.gy[i]), s)) {
+        this.gSea[i] = 0 // op land of buiten het golfmodel: niet tekenen
+        continue
+      }
+      this.gSea[i] = 1
+      this.gEx[i] = s.ex
+      this.gNy[i] = s.ny
+      this.gH[i] = s.height
+      const sp = Math.max(s.period, 3) * k
+      this.gx[i] += s.ex * sp
+      this.gy[i] -= s.ny * sp
     }
   }
 
+  /** Per golf een korte kam dwars op de looprichting, op de huidige positie. */
   private buildWaves(): number {
-    const d = this.waveBatch.data
-    const f = this.wave!
+    const d = this.segData
     const w = this.view.world
-    const half = (WAVE_WIDTH + 1) / 2 / w
+    // Uitgezoomd kleinere kammen, anders overheersen ze de wind.
+    const zs = Math.max(0.55, Math.min(1, (this.map.getZoom() - 0.5) / 3))
+    const half = (WAVE.width * zs + 1) / 2 / w
     let o = 0
-    let drawn = 0
+    let n = 0
     for (let i = 0; i < this.gCount; i++) {
-      const s = this.gs
-      if (!f.wave(lonOf(this.gx[i]), latOf(this.gy[i]), s)) continue
+      if (!this.gSea[i]) continue
       const age = this.gAge[i], life = this.gLife[i]
-      const fade = Math.max(0, Math.min(1, age / 0.8, (life - age) / 1.2))
-      const a0 = fade * Math.min(0.85, 0.3 + s.height / 4)
-      // Looprichting op het scherm (y naar beneden) en de kam er dwars op.
-      const dx = s.ex, dy = -s.ny
-      const qx = -dy, qy = dx
-      const L = (Math.min(20, 6 + 3 * s.height) * this.waveScale) / w // halve kamlengte
-      for (let t = 0; t < WAVE_PTS; t++) {
-        const u = (t / (WAVE_PTS - 1)) * 2 - 1
-        const bow = -0.15 * L * u * u // kam licht gebogen: midden loopt voorop
-        const x = this.gx[i] + qx * u * L + dx * bow
-        const y = this.gy[i] + qy * u * L + dy * bow
-        // Raaklijn van de gebogen kam voor de dikte.
-        let tx = qx - dx * 0.3 * u, ty = qy - dy * 0.3 * u
-        const tl = Math.sqrt(tx * tx + ty * ty)
-        tx /= tl; ty /= tl
-        const onSea = t === (WAVE_PTS - 1) / 2 || f.wave(lonOf(x), latOf(y), this.gs2)
-        const a = onSea ? a0 * Math.sqrt(1 - u * u * 0.85) : 0
-        const nx = -ty * half, ny = tx * half
-        d[o++] = x + nx; d[o++] = y + ny; d[o++] = a; d[o++] = 1
-        d[o++] = x - nx; d[o++] = y - ny; d[o++] = a; d[o++] = -1
-      }
-      drawn++
+      const h = this.gH[i]
+      const fade = Math.max(0, Math.min(1, age / 0.6, (life - age) / 1))
+      // Hogere golven: langere en fellere kammen.
+      const a = fade * Math.min(0.9, 0.3 + h / 4) * (0.6 + 0.4 * zs)
+      const L = (Math.min(6, 2.6 + 0.9 * h) * zs) / w
+      // Looprichting op het scherm (y naar beneden); de kam ligt er dwars op.
+      const dx = this.gEx[i], dy = -this.gNy[i]
+      const qx = -dy * L, qy = dx * L
+      const cx = this.gx[i], cy = this.gy[i]
+      o = quad(d, o, cx - qx, cy - qy, cx + qx, cy + qy, dx * half, dy * half, a)
+      n++
     }
-    return drawn * (WAVE_PTS - 1) * 6
+    return n
   }
 
   // ---- Tekenen ----
 
-  private draw(b: Batch, verts: number, pts: number, count: number, matrix: Float32List, color: [number, number, number]) {
-    if (!count) return
+  private bindQuad(prog: ReturnType<typeof program>) {
     const gl = this.gl
-    gl.bindBuffer(gl.ARRAY_BUFFER, b.buf)
-    gl.bufferSubData(gl.ARRAY_BUFFER, 0, b.data.subarray(0, verts * pts * 2 * 4))
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, b.idx)
-    gl.enableVertexAttribArray(this.aVert)
-    gl.vertexAttribPointer(this.aVert, 4, gl.FLOAT, false, 16, 0)
-    gl.uniformMatrix4fv(this.uMatrix, false, matrix)
-    gl.uniform3fv(this.uColor, color)
-    gl.drawElements(gl.TRIANGLES, count, gl.UNSIGNED_INT, 0)
+    const loc = prog.attr('a_pos')
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.quad)
+    gl.enableVertexAttribArray(loc)
+    gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 8, 0)
+    return loc
   }
 
-  render(gl: WebGLRenderingContext | WebGL2RenderingContext, matrix: mat4) {
+  /** Eén laag: vorig beeld vervagen en verschuiven, dan de nieuwe stukjes erbovenop. */
+  private paint(t: Trails, fadePerFrame: number, segs: number, matrix: Mat4, color: [number, number, number], dt: number) {
+    const gl = this.gl
+    const prev = t.cur, next = 1 - t.cur
+    gl.bindFramebuffer(gl.FRAMEBUFFER, t.fbo[next])
+    gl.viewport(0, 0, t.w, t.h)
+
+    // 1. vorig frame, verschoven naar het nieuwe beeld en doorzichtiger
+    const p = this.prev ?? this.view, v = this.view
+    const W0 = p.world * this.dpr, W1 = v.world * this.dpr
+    const a = W0 / W1
+    const bx = t.w / 2 - (a * t.w) / 2 + (v.cx - p.cx) * W0
+    const by = t.h / 2 - (a * t.h) / 2 - (v.cy - p.cy) * W0
+    gl.disable(gl.BLEND)
+    gl.useProgram(this.fade.p)
+    const loc = this.bindQuad(this.fade)
+    gl.activeTexture(gl.TEXTURE0)
+    gl.bindTexture(gl.TEXTURE_2D, t.tex[prev])
+    gl.uniform1i(this.fade.u('u_prev'), 0)
+    gl.uniform2f(this.fade.u('u_size'), t.w, t.h)
+    gl.uniform3f(this.fade.u('u_affine'), a, bx, by)
+    gl.uniform1f(this.fade.u('u_fade'), Math.pow(fadePerFrame, dt * 60))
+    gl.drawArrays(gl.TRIANGLES, 0, 6)
+    gl.disableVertexAttribArray(loc)
+
+    // 2. nieuwe stukjes
+    if (segs) {
+      gl.enable(gl.BLEND)
+      gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA)
+      gl.useProgram(this.seg.p)
+      const sl = this.seg.attr('a_vert')
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.segBuf)
+      gl.bufferSubData(gl.ARRAY_BUFFER, 0, this.segData.subarray(0, segs * 6 * 4))
+      gl.enableVertexAttribArray(sl)
+      gl.vertexAttribPointer(sl, 4, gl.FLOAT, false, 16, 0)
+      gl.uniformMatrix4fv(this.seg.u('u_matrix'), false, matrix as Float32List)
+      gl.uniform3fv(this.seg.u('u_color'), color)
+      gl.drawArrays(gl.TRIANGLES, 0, segs * 6)
+      gl.disableVertexAttribArray(sl)
+    }
+    t.cur = next
+    t.empty = false
+  }
+
+  prerender(gl: WebGLRenderingContext | WebGL2RenderingContext, matrix: Mat4) {
     const now = performance.now() / 1000
-    const dt = this.last ? Math.min(0.05, now - this.last) : 0
+    const dt = this.last ? Math.min(0.05, now - this.last) : 1 / 60
     this.last = now
     this.updateView()
+    this.dpr = gl.drawingBufferWidth / Math.max(1, this.map.getCanvas().clientWidth)
 
-    // Na zoomen kloppen de oude staartjes niet meer met de schermsnelheid: inkorten.
-    const z = this.map.getZoom()
-    if (Math.abs(z - this.lastZoom) > 1e-3) {
-      const n = WIND_TRAIL - 1
-      for (let i = 0; i < this.wCount; i++)
-        for (let k = 0; k < n; k++) {
-          this.wHist[(i * n + k) * 2] = this.wx[i]
-          this.wHist[(i * n + k) * 2 + 1] = this.wy[i]
-        }
-      this.lastZoom = z
-      this.waveScale = 1 + Math.max(0, Math.min(4, z - 3)) * 0.2
+    // Over de datumgrens springt het middelpunt een hele wereld: dan opnieuw beginnen.
+    if (this.prev && Math.abs(this.view.cx - this.prev.cx) > 0.5) {
+      this.prev = this.view
+      this.windTrails.clear()
+      this.waveTrails.clear()
+      this.wCount = this.gCount = 0
     }
 
-    const wind = this.showWind && this.wind?.coarse
-    const wave = this.showWaves && this.wave?.coarse
-    if (!wind && !wave) return
+    if (this.wave?.coarse || this.wind?.coarse) this.redistribute()
 
-    // MapLibre gebruikt in WebGL2 vertex array objects: die van de kaart niet aanpassen.
-    if ('bindVertexArray' in gl) gl.bindVertexArray(null)
-    gl.useProgram(this.prog)
+    if ('bindVertexArray' in gl) gl.bindVertexArray(null) // de VAO's van MapLibre niet aanpassen
     gl.disable(gl.DEPTH_TEST)
     gl.disable(gl.STENCIL_TEST)
     gl.disable(gl.CULL_FACE)
-    gl.enable(gl.BLEND)
-    gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA)
+    const w = gl.drawingBufferWidth, h = gl.drawingBufferHeight
 
-    if (wave) {
+    if (this.showWaves && this.wave?.coarse) {
+      this.waveTrails.resize(w, h)
       this.stepWaves(dt)
-      const n = this.buildWaves()
-      this.draw(this.waveBatch, n / ((WAVE_PTS - 1) * 6), WAVE_PTS, n, matrix as Float32List, [0.55, 0.86, 1.0])
+      this.paint(this.waveTrails, WAVE.fade, this.buildWaves(), matrix, [0.88, 0.96, 1], dt)
+    } else {
+      this.waveTrails.clear()
+      this.gCount = 0
     }
-    if (wind) {
+    if (this.showWind && this.wind?.coarse) {
+      this.windTrails.resize(w, h)
       this.stepWind(dt)
-      const n = this.buildWind()
-      this.draw(this.windBatch, this.wCount, WIND_TRAIL, n, matrix as Float32List, [1, 1, 1])
+      this.paint(this.windTrails, WIND.fade, this.buildWind(), matrix, [1, 1, 1], dt)
+    } else {
+      this.windTrails.clear()
+      this.wCount = 0
     }
-    gl.disableVertexAttribArray(this.aVert)
-    gl.bindBuffer(gl.ARRAY_BUFFER, null)
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null)
-    this.map.triggerRepaint()
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null)
+    gl.viewport(0, 0, w, h)
   }
+
+  render(gl: WebGLRenderingContext | WebGL2RenderingContext) {
+    const layers = [this.waveTrails, this.windTrails].filter((t) => !t.empty)
+    if (layers.length) {
+      if ('bindVertexArray' in gl) gl.bindVertexArray(null)
+      gl.disable(gl.DEPTH_TEST)
+      gl.disable(gl.STENCIL_TEST)
+      gl.enable(gl.BLEND)
+      gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA)
+      gl.useProgram(this.draw.p)
+      const loc = this.bindQuad(this.draw)
+      gl.activeTexture(gl.TEXTURE0)
+      gl.uniform1i(this.draw.u('u_tex'), 0)
+      gl.uniform2f(this.draw.u('u_size'), gl.drawingBufferWidth, gl.drawingBufferHeight)
+      for (const t of layers) {
+        gl.bindTexture(gl.TEXTURE_2D, t.tex[t.cur])
+        gl.drawArrays(gl.TRIANGLES, 0, 6)
+      }
+      gl.disableVertexAttribArray(loc)
+      gl.bindBuffer(gl.ARRAY_BUFFER, null)
+    }
+    if ((this.showWind && this.wind) || (this.showWaves && this.wave) || layers.length) this.map.triggerRepaint()
+  }
+}
+
+/** Rechthoek van a naar b, halve breedte (nx, ny), als twee driehoeken: x, y, alfa, zijde per hoekpunt. */
+function quad(d: Float32Array, o: number, ax: number, ay: number, bx: number, by: number, nx: number, ny: number, a: number) {
+  d[o++] = ax + nx; d[o++] = ay + ny; d[o++] = a; d[o++] = 1
+  d[o++] = ax - nx; d[o++] = ay - ny; d[o++] = a; d[o++] = -1
+  d[o++] = bx + nx; d[o++] = by + ny; d[o++] = a; d[o++] = 1
+  d[o++] = ax - nx; d[o++] = ay - ny; d[o++] = a; d[o++] = -1
+  d[o++] = bx - nx; d[o++] = by - ny; d[o++] = a; d[o++] = -1
+  d[o++] = bx + nx; d[o++] = by + ny; d[o++] = a; d[o++] = 1
+  return o
 }

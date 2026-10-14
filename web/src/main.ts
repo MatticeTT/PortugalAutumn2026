@@ -1,5 +1,6 @@
 import maplibregl from 'maplibre-gl'
 import { FieldSet, type Kind, type Manifest } from './field'
+import { Labels } from './labels'
 import { ParticleLayer } from './particles'
 
 const DATA = './data'
@@ -13,32 +14,33 @@ const playBtn = $('afspelen')
 const windBtn = $('knop-wind')
 const waveBtn = $('knop-golven')
 
-const carto = (style: string) => ['a', 'b', 'c', 'd'].map((s) => `https://${s}.basemaps.cartocdn.com/${style}/{z}/{x}/{y}@2x.png`)
-
+// Basiskaart uit Natural Earth (publiek domein), zelf gehost: rustig grijs land, donkere zee, kustlijn en grenzen.
 const map = new maplibregl.Map({
   container: 'kaart',
   style: {
     version: 8,
     sources: {
-      basis: { type: 'raster', tiles: carto('dark_nolabels'), tileSize: 256, maxzoom: 18,
-        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> © <a href="https://carto.com/attributions">CARTO</a>' },
-      namen: { type: 'raster', tiles: carto('dark_only_labels'), tileSize: 256, maxzoom: 18 },
+      land: { type: 'geojson', data: './basis/land.geojson', tolerance: 0.3, attribution: 'Kaart: <a href="https://www.naturalearthdata.com">Natural Earth</a>' },
+      meren: { type: 'geojson', data: './basis/meren.geojson', tolerance: 0.3 },
+      grenzen: { type: 'geojson', data: './basis/grenzen.geojson', tolerance: 0.3 },
     },
     layers: [
-      { id: 'achtergrond', type: 'background', paint: { 'background-color': '#0e1013' } },
-      { id: 'basis', type: 'raster', source: 'basis', paint: { 'raster-saturation': -1, 'raster-brightness-max': 0.85 } },
-      { id: 'namen', type: 'raster', source: 'namen', paint: { 'raster-opacity': 0.7 } },
+      { id: 'zee', type: 'background', paint: { 'background-color': '#1b2430' } },
+      { id: 'land', type: 'fill', source: 'land', paint: { 'fill-color': '#3b4048', 'fill-antialias': true } },
+      { id: 'meren', type: 'fill', source: 'meren', paint: { 'fill-color': '#1b2430' } },
+      { id: 'kust', type: 'line', source: 'land', paint: { 'line-color': '#6c7682', 'line-width': ['interpolate', ['linear'], ['zoom'], 1, 0.5, 6, 1.1] } },
+      { id: 'grenzen', type: 'line', source: 'grenzen', paint: { 'line-color': '#5c636d', 'line-width': ['interpolate', ['linear'], ['zoom'], 1, 0.4, 6, 0.9], 'line-dasharray': [3, 2] } },
     ],
   },
-  center: [-12, 41],
-  zoom: 3.6,
+  center: [-10, 44],
+  zoom: 3.8,
   minZoom: 1,
   maxZoom: 10,
   dragRotate: false,
   pitchWithRotate: false,
   touchPitch: false,
   renderWorldCopies: true,
-  attributionControl: { compact: true, customAttribution: 'Wind en golven: NOAA GFS / WaveWatch III' },
+  attributionControl: { compact: true, customAttribution: 'Wind en golven: <a href="https://www.ecmwf.int/en/forecasts/datasets/open-data">ECMWF</a> (CC BY 4.0)' },
 })
 map.touchZoomRotate.disableRotation()
 map.keyboard.disableRotation()
@@ -52,11 +54,11 @@ const show: Record<Kind, boolean> = { wind: true, wave: true }
 // Velden per soort en uur; de laatste paar bewaren zodat terugschuiven direct werkt.
 const cache = new Map<string, FieldSet>()
 function fieldSet(kind: Kind, i: number): FieldSet {
-  const h = manifest.times[i].h
-  const key = `${kind}:${h}`
+  const t = manifest.times[i]
+  const key = `${kind}:${t.h}`
   let fs = cache.get(key)
   if (!fs) {
-    fs = new FieldSet(kind, h, manifest, DATA, () => map.triggerRepaint())
+    fs = new FieldSet(kind, t, manifest, DATA, () => map.triggerRepaint())
     cache.set(key, fs)
     while (cache.size > 24) cache.delete(cache.keys().next().value!)
   } else {
@@ -168,11 +170,13 @@ async function start() {
     if (Math.abs(Date.parse(t.time) - now) < Math.abs(Date.parse(manifest.times[best].time) - now)) best = i
   })
   const run = new Date(manifest.run)
-  $('bron').textContent = `GFS-run ${fmtDay.format(run)} ${fmtHour.format(run)} · wind 10 m, golven WW3`
+  $('bron').textContent = `ECMWF-run ${run.getUTCDate()}/${run.getUTCMonth() + 1} ${String(run.getUTCHours()).padStart(2, '0')} UTC · wind 10 m · golven WAM · ${manifest.times.length} tijdstippen tot ${fmtDay.format(new Date(manifest.times[manifest.times.length - 1].time))}`
   buildDayTicks()
   window.addEventListener('resize', buildDayTicks)
   await setTime(best)
 }
+
+new Labels(map).load('./basis/plaatsen.geojson').catch(() => {})
 
 slider.addEventListener('input', () => setTime(Number(slider.value)))
 slider.addEventListener('pointerdown', () => togglePlay(false))
@@ -182,7 +186,7 @@ waveBtn.addEventListener('click', () => setLayer('wave', !show.wave))
 map.on('moveend', updateFine)
 
 // Niet op 'load' wachten: dat komt pas als alle tegels van de basiskaart binnen zijn.
-const addLayer = () => { if (!map.getLayer(layer.id)) map.addLayer(layer, 'namen') }
+const addLayer = () => { if (!map.getLayer(layer.id)) map.addLayer(layer) }
 if (map.isStyleLoaded()) addLayer()
 else map.once('style.load', addLayer)
 ;(window as unknown as { kaart: unknown }).kaart = { map, layer }

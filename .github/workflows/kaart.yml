@@ -1,28 +1,32 @@
-# Elke 6 uur de nieuwste GFS-run (wind 10 m en golven) omzetten naar PNG's, de site bouwen en
-# naar de tak `site` zetten; Vercel publiceert die tak.
+# Twee keer per dag de nieuwste ECMWF-run (wind 10 m en golven, 15 dagen vooruit) omzetten naar
+# afbeeldingen, de site bouwen en naar de tak `site` zetten; Vercel publiceert die tak.
 name: kaart
 on:
   workflow_dispatch:
   schedule:
-    - cron: "20 5,11,17,23 * * *"   # ongeveer 5 uur na elke modelrun (00, 06, 12, 18 UTC)
+    - cron: "40 8,20 * * *"   # de open data van de runs van 00 en 12 UTC zijn na ongeveer 8 uur compleet
 permissions:
   contents: write
 concurrency: { group: kaart, cancel-in-progress: false }
 jobs:
   kaart:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: { python-version: "3.12", cache: pip, cache-dependency-path: pipeline/requirements.txt }
       - run: pip install -r pipeline/requirements.txt
       - name: Wind en golven ophalen en omzetten
-        run: python -m pipeline.build --out web/public/data --max-hour 120 --step 3
+        run: python -m pipeline.build --out web/public/data
       - uses: actions/setup-node@v4
         with: { node-version: "22", cache: npm, cache-dependency-path: web/package-lock.json }
       - name: Site bouwen
-        run: cd web && npm ci && npm run build
+        run: |
+          cd web && npm ci && npm run build
+          # Vercel (gratis plan) aanvaardt hooguit 100 MB per publicatie.
+          size=$(du -sb dist | cut -f1); echo "dist: $((size / 1000000)) MB"
+          [ "$size" -lt 99000000 ] || { echo "Te groot voor Vercel"; exit 1; }
       - name: Naar de tak site
         run: |
           cd web/dist
