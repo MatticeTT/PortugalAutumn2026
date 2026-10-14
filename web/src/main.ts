@@ -13,6 +13,7 @@ const label = $('tijd')
 const playBtn = $('afspelen')
 const windBtn = $('knop-wind')
 const waveBtn = $('knop-golven')
+const altBtn = $('knop-afwisselen')
 
 // Basiskaart uit Natural Earth (publiek domein), zelf gehost: rustig grijs land, donkere zee, kustlijn en grenzen.
 const map = new maplibregl.Map({
@@ -152,7 +153,16 @@ function setLayer(kind: Kind, on: boolean) {
   if (kind === 'wind') layer.showWind = on
   else layer.showWaves = on
   if (on) setTime(idx)
+  altBtn.hidden = !(show.wind && show.wave)
   map.triggerRepaint()
+}
+
+function setAlternate(on: boolean) {
+  layer.alternate = on
+  layer.restartAlternation()
+  altBtn.classList.toggle('aan', on)
+  altBtn.setAttribute('aria-pressed', String(on))
+  try { localStorage.setItem('afwisselen', on ? '1' : '0') } catch { /* privévenster */ }
 }
 
 async function start() {
@@ -183,6 +193,10 @@ slider.addEventListener('pointerdown', () => togglePlay(false))
 playBtn.addEventListener('click', () => togglePlay())
 windBtn.addEventListener('click', () => setLayer('wind', !show.wind))
 waveBtn.addEventListener('click', () => setLayer('wave', !show.wave))
+altBtn.addEventListener('click', () => setAlternate(!layer.alternate))
+let savedAlt = true
+try { savedAlt = localStorage.getItem('afwisselen') !== '0' } catch { /* privévenster */ }
+setAlternate(savedAlt)
 map.on('moveend', updateFine)
 
 // Niet op 'load' wachten: dat komt pas als alle tegels van de basiskaart binnen zijn.

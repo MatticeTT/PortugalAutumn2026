@@ -78,7 +78,12 @@ const DRAW_FRAG = `
 precision mediump float;
 uniform sampler2D u_tex;
 uniform vec2 u_size;
-void main() { gl_FragColor = texture2D(u_tex, gl_FragCoord.xy / u_size); }`
+uniform float u_opacity;
+void main() { gl_FragColor = texture2D(u_tex, gl_FragCoord.xy / u_size) * u_opacity; }`
+
+// Afwisselen: zoveel seconden per laag, waarvan de laatste ALT_FADE als zachte overgang.
+const ALT_HOLD = 6
+const ALT_FADE = 1.2
 
 const mercX = (lon: number) => (lon + 180) / 360
 const mercY = (lat: number) => {
@@ -177,6 +182,9 @@ export class ParticleLayer implements CustomLayerInterface {
   wave: FieldSet | null = null
   showWind = true
   showWaves = true
+  /** Met beide lagen aan: om beurt wind en golven tonen in plaats van tegelijk. */
+  alternate = false
+  private altStart = performance.now() / 1000
 
   private map!: MlMap
   private gl!: WebGLRenderingContext
@@ -508,6 +516,22 @@ export class ParticleLayer implements CustomLayerInterface {
     gl.viewport(0, 0, w, h)
   }
 
+  /** Afwisselen opnieuw laten beginnen met wind. */
+  restartAlternation() {
+    this.altStart = performance.now() / 1000
+  }
+
+  /** Zichtbaarheid van golven en wind (0..1). Beide lagen blijven doorrekenen, zodat een wissel direct vol oogt. */
+  private opacities(): [number, number] {
+    if (!this.alternate || !this.showWind || !this.showWaves) return [1, 1]
+    const t = (performance.now() / 1000 - this.altStart) % (2 * ALT_HOLD)
+    const ramp = (x: number) => Math.max(0, Math.min(1, x / ALT_FADE))
+    // Eerst wind, dan golven; elke overgang duurt ALT_FADE seconden.
+    const wind = t < ALT_HOLD ? 1 - ramp(t - (ALT_HOLD - ALT_FADE)) : ramp(t - (2 * ALT_HOLD - ALT_FADE))
+    const s = (x: number) => x * x * (3 - 2 * x)
+    return [s(1 - wind), s(wind)]
+  }
+
   render(gl: WebGLRenderingContext | WebGL2RenderingContext) {
     const layers = [this.waveTrails, this.windTrails].filter((t) => !t.empty)
     if (layers.length) {
@@ -521,7 +545,11 @@ export class ParticleLayer implements CustomLayerInterface {
       gl.activeTexture(gl.TEXTURE0)
       gl.uniform1i(this.draw.u('u_tex'), 0)
       gl.uniform2f(this.draw.u('u_size'), gl.drawingBufferWidth, gl.drawingBufferHeight)
+      const [waveOp, windOp] = this.opacities()
       for (const t of layers) {
+        const op = t === this.waveTrails ? waveOp : windOp
+        if (op <= 0) continue
+        gl.uniform1f(this.draw.u('u_opacity'), op)
         gl.bindTexture(gl.TEXTURE_2D, t.tex[t.cur])
         gl.drawArrays(gl.TRIANGLES, 0, 6)
       }
