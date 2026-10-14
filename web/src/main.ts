@@ -200,7 +200,12 @@ setAlternate(savedAlt)
 map.on('moveend', updateFine)
 
 // Niet op 'load' wachten: dat komt pas als alle tegels van de basiskaart binnen zijn.
-const addLayer = () => { if (!map.getLayer(layer.id)) map.addLayer(layer) }
+// Golven onder het land (de kustlijn snijdt ze af), wind bovenop alles.
+const addLayer = () => {
+  if (map.getLayer(layer.id)) return
+  map.addLayer(layer, 'land')
+  map.addLayer(layer.windLayer())
+}
 if (map.isStyleLoaded()) addLayer()
 else map.once('style.load', addLayer)
 ;(window as unknown as { kaart: unknown }).kaart = { map, layer }

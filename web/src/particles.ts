@@ -174,7 +174,7 @@ function program(gl: WebGLRenderingContext, vs: string, fs: string) {
 }
 
 export class ParticleLayer implements CustomLayerInterface {
-  readonly id = 'deeltjes'
+  readonly id = 'golven'
   readonly type = 'custom' as const
   readonly renderingMode = '2d' as const
 
@@ -532,31 +532,45 @@ export class ParticleLayer implements CustomLayerInterface {
     return [s(1 - wind), s(wind)]
   }
 
+  /**
+   * Eén beeldbuffer op de kaart leggen. De golven liggen onder de landlaag: MapLibre tekent land in een eerdere,
+   * ondoorzichtige ronde met dieptebuffer, zodat de diepetest golven op land precies langs de kustlijn wegsnijdt.
+   */
+  drawTrails(gl: WebGLRenderingContext | WebGL2RenderingContext, kind: 'wind' | 'wave') {
+    const t = kind === 'wind' ? this.windTrails : this.waveTrails
+    const op = this.opacities()[kind === 'wind' ? 1 : 0]
+    if (!t || t.empty || op <= 0) return
+    if ('bindVertexArray' in gl) gl.bindVertexArray(null)
+    if (kind === 'wind') gl.disable(gl.DEPTH_TEST) // wind ligt bovenop alles
+    gl.disable(gl.STENCIL_TEST)
+    gl.enable(gl.BLEND)
+    gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA)
+    gl.useProgram(this.draw.p)
+    const loc = this.bindQuad(this.draw)
+    gl.activeTexture(gl.TEXTURE0)
+    gl.uniform1i(this.draw.u('u_tex'), 0)
+    gl.uniform2f(this.draw.u('u_size'), gl.drawingBufferWidth, gl.drawingBufferHeight)
+    gl.uniform1f(this.draw.u('u_opacity'), op)
+    gl.bindTexture(gl.TEXTURE_2D, t.tex[t.cur])
+    gl.drawArrays(gl.TRIANGLES, 0, 6)
+    gl.disableVertexAttribArray(loc)
+    gl.bindBuffer(gl.ARRAY_BUFFER, null)
+  }
+
+  /** Deze laag (onder het land) tekent de golven en houdt de animatie gaande. */
   render(gl: WebGLRenderingContext | WebGL2RenderingContext) {
-    const layers = [this.waveTrails, this.windTrails].filter((t) => !t.empty)
-    if (layers.length) {
-      if ('bindVertexArray' in gl) gl.bindVertexArray(null)
-      gl.disable(gl.DEPTH_TEST)
-      gl.disable(gl.STENCIL_TEST)
-      gl.enable(gl.BLEND)
-      gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA)
-      gl.useProgram(this.draw.p)
-      const loc = this.bindQuad(this.draw)
-      gl.activeTexture(gl.TEXTURE0)
-      gl.uniform1i(this.draw.u('u_tex'), 0)
-      gl.uniform2f(this.draw.u('u_size'), gl.drawingBufferWidth, gl.drawingBufferHeight)
-      const [waveOp, windOp] = this.opacities()
-      for (const t of layers) {
-        const op = t === this.waveTrails ? waveOp : windOp
-        if (op <= 0) continue
-        gl.uniform1f(this.draw.u('u_opacity'), op)
-        gl.bindTexture(gl.TEXTURE_2D, t.tex[t.cur])
-        gl.drawArrays(gl.TRIANGLES, 0, 6)
-      }
-      gl.disableVertexAttribArray(loc)
-      gl.bindBuffer(gl.ARRAY_BUFFER, null)
+    this.drawTrails(gl, 'wave')
+    if ((this.showWind && this.wind) || (this.showWaves && this.wave) || !this.windTrails.empty || !this.waveTrails.empty) this.map.triggerRepaint()
+  }
+
+  /** Aparte laag bovenop de kaart voor de wind, die ook over land loopt. */
+  windLayer(): CustomLayerInterface {
+    return {
+      id: 'wind',
+      type: 'custom',
+      renderingMode: '2d',
+      render: (gl) => this.drawTrails(gl, 'wind'),
     }
-    if ((this.showWind && this.wind) || (this.showWaves && this.wave) || layers.length) this.map.triggerRepaint()
   }
 }
 

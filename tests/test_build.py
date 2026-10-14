@@ -83,3 +83,13 @@ def test_coarse_keeps_mask_and_mean():
     u = np.full((build.NJ, build.NI), 5.0, np.float32)
     w = build.coarse_wind(u, -u, 2)
     assert w.shape == (361, 720, 3) and (w[..., 0] == build.encode_wind(u[:1, :1], u[:1, :1])[0, 0, 0]).all()
+
+
+def test_fill_coast_reaches_inland_a_few_cells():
+    hs = np.full((build.NJ, build.NI), np.nan, np.float32)
+    dirp = np.full_like(hs, np.nan)
+    per = np.full_like(hs, np.nan)
+    hs[:, :100], dirp[:, :100], per[:, :100] = 2.0, 300.0, 11.0  # zee in het westen, land erachter
+    h, d, t = build.fill_coast(hs, dirp, per, cells=3)
+    assert np.isfinite(h[:, 100:103]).all() and np.isnan(h[:, 103:-3]).all()
+    assert np.allclose(h[:, 102], 2.0) and np.allclose(d[:, 102], 300.0, atol=0.01) and np.allclose(t[:, 102], 11.0)

@@ -132,6 +132,41 @@ def decode(msg: bytes) -> np.ndarray:
     return np.roll(grid, -int(round(lon0 * 4)) % NI, axis=1) if lon0 else grid
 
 
+COAST_FILL = 4  # cellen (van 0,25 graad) dat golfwaarden landinwaarts worden doorgetrokken
+
+
+def fill_coast(hs: np.ndarray, dirp: np.ndarray, per: np.ndarray, cells: int = COAST_FILL):
+    """Golfwaarden een paar cellen landinwaarts doortrekken (gemiddelde van de zeeburen).
+
+    Het golfmodel rekent kustcellen vaak als land, waardoor er een strook zonder golven langs de kust blijft.
+    De browser tekent de golven onder de landlaag van de basiskaart, die ze precies op de kustlijn afsnijdt;
+    daarvoor moeten er tot aan die kustlijn waarden zijn. Richting wordt als eenheidsvector gemiddeld.
+    """
+    to = np.radians(dirp)
+    fields = [hs.copy(), np.sin(to), np.cos(to), per.copy()]
+    for _ in range(cells):
+        known = np.isfinite(fields[0])
+        sums = [np.zeros_like(f) for f in fields]
+        count = np.zeros(hs.shape, np.float32)
+        for dj in (-1, 0, 1):
+            for di in (-1, 0, 1):
+                if dj == di == 0:
+                    continue
+                k = np.roll(np.roll(known, dj, axis=0), di, axis=1)
+                if dj == 1:
+                    k[0] = False
+                elif dj == -1:
+                    k[-1] = False
+                count += k
+                for t, f in zip(sums, fields):
+                    t += np.where(k, np.roll(np.roll(np.nan_to_num(f), dj, axis=0), di, axis=1), 0)
+        new = ~known & (count > 0)
+        for t, f in zip(sums, fields):
+            f[new] = t[new] / count[new]
+    h, sx, cy, t = fields
+    return h, np.degrees(np.arctan2(sx, cy)) % 360, t
+
+
 def encode_wind(u: np.ndarray, v: np.ndarray) -> np.ndarray:
     def comp(x):
         s = np.sign(x) * np.sqrt(np.minimum(np.abs(np.nan_to_num(x)), WIND_MAX) / WIND_MAX)
@@ -212,7 +247,7 @@ def process_hour(run: dt.datetime, h: int, out: Path, fine: bool, coarse_deg: fl
     base = out / f"{h:03d}"
     step = int(coarse_deg * 4)
     u, v = (wind[k] for k in WIND_FIELDS)
-    hs, dirp, per = (wave[k] for k in WAVE_FIELDS)
+    hs, dirp, per = fill_coast(*(wave[k] for k in WAVE_FIELDS))
     save_img(coarse_wind(u, v, step), base / f"wind.{EXT}")
     save_img(coarse_wave(hs, dirp, per, step), base / f"wave.{EXT}")
     if fine:
