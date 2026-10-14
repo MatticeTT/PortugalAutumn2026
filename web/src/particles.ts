@@ -18,10 +18,10 @@ type Mat4 = Parameters<CustomLayerInterface['render']>[1]
 // ---- Instellingen ----
 // Wind: dunne witte lijntjes met lange staart.
 const WIND = {
-  density: 520, // één deeltje per zoveel css px²
+  density: 900, // één deeltje per zoveel css px²
   max: 6000,
   pxPerMs: 7, // schermsnelheid in px/s per m/s wind
-  width: 1.15, // css px
+  width: 1.4, // css px
   fade: 0.955, // per frame van 1/60 s: hoeveel van de staart blijft staan
   minLife: 1.6,
   maxLife: 4.5,
@@ -31,8 +31,8 @@ const WAVE = {
   density: 380,
   max: 6000,
   pxPerS: 1.6, // schermsnelheid in px/s per seconde golfperiode
-  width: 2.4,
-  fade: 0.86,
+  width: 2,
+  fade: 0.75,
   minLife: 2,
   maxLife: 5,
 }
@@ -82,8 +82,8 @@ uniform float u_opacity;
 void main() { gl_FragColor = texture2D(u_tex, gl_FragCoord.xy / u_size) * u_opacity; }`
 
 // Afwisselen: zoveel seconden per laag, waarvan de laatste ALT_FADE als zachte overgang.
-const ALT_HOLD = 6
-const ALT_FADE = 1.2
+const ALT_HOLD = 1.2
+const ALT_FADE = 0.35
 
 const mercX = (lon: number) => (lon + 180) / 360
 const mercY = (lat: number) => {
@@ -306,7 +306,7 @@ export class ParticleLayer implements CustomLayerInterface {
 
   private stepWind(dt: number) {
     const f = this.wind!
-    const target = Math.min(WIND.max, Math.max(300, Math.round(this.view.area / WIND.density)))
+    const target = Math.min(WIND.max, Math.max(200, Math.round(this.view.area / WIND.density)))
     for (let i = this.wCount; i < target; i++) this.spawnWind(i, true)
     this.wCount = target
     const k = (WIND.pxPerMs * dt) / this.view.world
