@@ -53,3 +53,13 @@ input[type=range] { width: 100%; margin: 4px 0; accent-color: #fff; touch-action
   .laag { padding: 7px 10px; }
   .bron { display: none; }
 }
+
+.punt .maplibregl-popup-content { background: var(--paneel); color: var(--tekst); border: 1px solid var(--rand);
+  border-radius: 10px; padding: 10px 12px; backdrop-filter: blur(6px); font-size: 13px; }
+.punt .maplibregl-popup-tip { display: none; }
+.punt .maplibregl-popup-close-button { color: var(--zacht); font-size: 18px; padding: 2px 6px; }
+.punt-kop { font-weight: 600; margin-bottom: 2px; }
+.punt-coord, .punt-bron { color: var(--zacht); font-size: 11px; font-variant-numeric: tabular-nums; }
+.punt table { border-collapse: collapse; margin: 6px 0; font-variant-numeric: tabular-nums; }
+.punt th { text-align: left; font-weight: 500; color: var(--zacht); padding: 1px 10px 1px 0; vertical-align: top; }
+.punt td { padding: 1px 0; }

@@ -1,6 +1,7 @@
 import maplibregl from 'maplibre-gl'
 import { FieldSet, type Kind, type Manifest } from './field'
 import { Labels } from './labels'
+import { enablePointInfo } from './punt'
 import { ParticleLayer } from './particles'
 
 const DATA = './data'
@@ -198,6 +199,12 @@ let savedAlt = true
 try { savedAlt = localStorage.getItem('afwisselen') !== '0' } catch { /* privévenster */ }
 setAlternate(savedAlt)
 map.on('moveend', updateFine)
+enablePointInfo(map, {
+  wind: () => fieldSet('wind', idx),
+  wave: () => fieldSet('wave', idx),
+  time: () => manifest.times[idx].time,
+  run: () => manifest.run,
+})
 
 // Niet op 'load' wachten: dat komt pas als alle tegels van de basiskaart binnen zijn.
 // Golven onder het land (de kustlijn snijdt ze af), wind bovenop alles.

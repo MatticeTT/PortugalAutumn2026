@@ -197,6 +197,32 @@ export class FieldSet {
     }
   }
 
+  /**
+   * Het fijnste raster dat er voor dit punt bestaat, zo nodig eerst geladen (voor de waarde op één punt). Fijne
+   * tegels zijn er tot een bepaald uur; daarna is het wereldraster het fijnste.
+   */
+  async exactGrid(lon: number, lat: number): Promise<{ grid: Grid; deg: number }> {
+    await this.loadCoarse()
+    if (this.hasFine) {
+      const f = this.m.fine
+      const l = ((lon % 360) + 360) % 360
+      const c = Math.min(f.cols - 1, Math.floor(l / f.tileDeg))
+      const r = Math.min(f.rows - 1, Math.max(0, Math.floor((90 - lat) / f.tileDeg)))
+      const k = r * f.cols + c
+      let t = this.tiles[k]
+      if (!t || t === 'loading') {
+        try {
+          t = await loadGrid(this.url(`${this.kind}/${r}_${c}`), this.kind, this.m, { lon0: c * f.tileDeg, lat0: 90 - r * f.tileDeg, deg: f.deg, wrap: false })
+          this.tiles[k] = t
+        } catch {
+          t = 'error'
+        }
+      }
+      if (typeof t === 'object') return { grid: t, deg: f.deg }
+    }
+    return { grid: this.coarse!, deg: this.coarseDeg }
+  }
+
   /** Het fijnste raster dat op dit punt beschikbaar is. */
   grid(lon: number, lat: number): Grid | null {
     if (this.fineOn) {
