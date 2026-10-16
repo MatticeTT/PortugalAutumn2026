@@ -3,12 +3,14 @@
 Wereldkaart met geanimeerde wind en golven in de stijl van Windy: geen kleurenlaag, alleen bewegende lijntjes
 over een rustige basiskaart.
 
-- **Wind**: dunne witte lijntjes met een lange, uitdovende staart. Ze liggen in de windrichting, bewegen mee
-  en zijn sneller en langer waar het harder waait. Overal, over land en zee.
-- **Golven**: korte witte kammen dwars op de looprichting die vooruitschuiven en een vage staart achterlaten
-  (de streepjes van Windy). Lengte en helderheid tonen de **golfenergie** (vermogen op diep water,
-  P ≈ 0,49 × Hs² × 0,9 × Tp in kW/m, logaritmisch), de snelheid de periode. Alleen op zee: de kustlijn van de
-  basiskaart snijdt ze af.
+- **Wind**: dunne witte lijntjes met een uitdovende staart, die meebewegen met de wind. Ze bewegen zo snel als de
+  wind; omdat elke staart even lang duurt, is een lijn bij hardere wind langer. Dikte en helderheid liggen vast.
+  Overal, over land en zee.
+- **Golven**: korte witte kammen van vaste grootte, dwars op de looprichting, die vooruitschuiven. Ze bewegen
+  sneller bij een langere periode (zoals echte golven). Hoe **krachtiger** de golf, hoe **witter** de kam; zwakke
+  golven zijn vager. Kracht = golfvermogen op diep water, P ≈ 0,49 × Hs² × 0,9 × piekperiode (kW/m).
+  Alleen op zee: de kustlijn van de basiskaart snijdt ze af.
+- Een gemiddelde wind (7 m/s) en een gemiddelde golf (2 m bij 10 s, ongeveer 18 kW/m) zijn ongeveer even zichtbaar.
 - **Bediening**: aparte knoppen voor wind en golven (samen aan mag) en een tijdlijn met afspeelknop door de
   voorspelling van **15 dagen**.
 

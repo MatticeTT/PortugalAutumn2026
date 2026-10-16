@@ -16,23 +16,33 @@ import type { FieldSet, WaveSample, WindSample } from './field'
 type Mat4 = Parameters<CustomLayerInterface['render']>[1]
 
 // ---- Instellingen ----
+// Afspraken over wat je ziet (voor wind en golven dezelfde regels):
+// - beweging is altijd echte snelheid: wind = windsnelheid, golven = golfsnelheid (volgt de periode);
+// - grootte en dikte liggen vast; een sterkere wind of golf wordt niet groter of dikker;
+// - wind: snellere wind legt in dezelfde staartduur meer afstand af, dus een langere lijn; helderheid vast;
+// - golven: helderheid volgt de golfenergie (krachtiger = witter, zwakker = vager);
+// - een gemiddelde wind (7 m/s) en een gemiddelde golf (2 m bij 10 s, ongeveer 18 kW/m) zijn even zichtbaar.
+
 // Wind: dunne witte lijntjes met lange staart.
 const WIND = {
   density: 900, // één deeltje per zoveel css px²
   max: 6000,
   pxPerMs: 7, // schermsnelheid in px/s per m/s wind
   width: 1.4, // css px
+  alpha: 0.8, // vaste helderheid
   fade: 0.955, // per frame van 1/60 s: hoeveel van de staart blijft staan
   minLife: 1.6,
   maxLife: 4.5,
 }
-// Golven: korte kammen dwars op de looprichting. Lengte en helderheid tonen de golfenergie (kW/m), de snelheid
-// de periode. De vervaging maakt er streepjes met een vage achterkant van.
+// Golven: korte kammen van vaste grootte dwars op de looprichting. De vervaging maakt er streepjes met een vage
+// achterkant van.
 const WAVE = {
-  density: 380,
+  density: 420,
   max: 6000,
-  pxPerS: 1.6, // schermsnelheid in px/s per seconde golfperiode
+  pxPerS: 2.2, // schermsnelheid in px/s per seconde golfperiode (echte golfsnelheid = 1,56 m/s per seconde)
+  halfLength: 4, // css px: halve lengte van een kam
   width: 2,
+  refPower: 0.49 * 2 * 2 * 0.9 * 10, // kW/m van een gemiddelde golf (2 m, 10 s): even zichtbaar als gemiddelde wind
   fade: 0.75,
   minLife: 2,
   maxLife: 5,
@@ -342,7 +352,7 @@ export class ParticleLayer implements CustomLayerInterface {
       const age = this.wAge[i], life = this.wLife[i]
       const fade = Math.max(0, Math.min(1, age / 0.4, (life - age) / 0.8))
       // Zwakke wind iets zachter, harde wind helder.
-      const a = fade * Math.min(0.95, 0.35 + this.wSpeed[i] / 12)
+      const a = fade * WIND.alpha
       const f = half / Math.sqrt(len2)
       o = quad(d, o, ax, ay, bx, by, -dy * f, dx * f, a)
       n++
@@ -407,10 +417,8 @@ export class ParticleLayer implements CustomLayerInterface {
       if (!this.gSea[i]) continue
       const age = this.gAge[i], life = this.gLife[i]
       const fade = Math.max(0, Math.min(1, age / 0.6, (life - age) / 1))
-      // Golfenergie: hoe meer energie, hoe langer en feller de kam (logaritmisch: van 1 tot honderden kW/m).
-      const e = Math.log2(1 + wavePower(this.gH[i], this.gT[i]))
-      const a = fade * Math.min(0.95, 0.25 + 0.09 * e) * (0.6 + 0.4 * zs)
-      const L = (Math.min(9, 2.5 + 0.75 * e) * zs) / w
+      const a = fade * waveBrightness(wavePower(this.gH[i], this.gT[i]))
+      const L = (WAVE.halfLength * zs) / w
       // Looprichting op het scherm (y naar beneden); de kam ligt er dwars op.
       const dx = this.gEx[i], dy = -this.gNy[i]
       const qx = -dy * L, qy = dx * L
@@ -502,7 +510,7 @@ export class ParticleLayer implements CustomLayerInterface {
     if (this.showWaves && this.wave?.coarse) {
       this.waveTrails.resize(w, h)
       this.stepWaves(dt)
-      this.paint(this.waveTrails, WAVE.fade, this.buildWaves(), matrix, [0.88, 0.96, 1], dt)
+      this.paint(this.waveTrails, WAVE.fade, this.buildWaves(), matrix, [1, 1, 1], dt)
     } else {
       this.waveTrails.clear()
       this.gCount = 0
@@ -575,6 +583,19 @@ export class ParticleLayer implements CustomLayerInterface {
       render: (gl) => this.drawTrails(gl, 'wind'),
     }
   }
+}
+
+/**
+ * Helderheid van een golfkam volgens de energie. De energie loopt van ongeveer 1 tot honderden kW/m, dus geleidelijk
+ * (logaritmisch): een gemiddelde golf krijgt dezelfde helderheid als de wind, zwakke golven worden vager maar blijven
+ * zichtbaar, krachtige golven worden helderwit. Bv. 1 kW/m: 0,15; 3,5: 0,34; 18: 0,8; 48: 0,89; 150 en meer: 1.
+ */
+export function waveBrightness(power: number) {
+  const t = Math.log2(1 + power) / Math.log2(1 + WAVE.refPower)
+  if (t <= 1) return Math.max(0.15, WIND.alpha * Math.pow(t, 1.3))
+  // Boven het gemiddelde rustiger oplopen, tot helderwit bij ongeveer 150 kW/m (storm).
+  const top = Math.log2(151) / Math.log2(1 + WAVE.refPower)
+  return Math.min(1, WIND.alpha + (1 - WIND.alpha) * (t - 1) / (top - 1))
 }
 
 /**
