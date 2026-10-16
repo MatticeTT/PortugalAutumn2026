@@ -6,8 +6,9 @@ over een rustige basiskaart.
 - **Wind**: dunne witte lijntjes met een lange, uitdovende staart. Ze liggen in de windrichting, bewegen mee
   en zijn sneller en langer waar het harder waait. Overal, over land en zee.
 - **Golven**: korte witte kammen dwars op de looprichting die vooruitschuiven en een vage staart achterlaten
-  (de blokjes van Windy). Groter en feller bij hogere golven, sneller bij een langere periode. Alleen op zee
-  (land/zee-masker van het golfmodel).
+  (de streepjes van Windy). Lengte en helderheid tonen de **golfenergie** (vermogen op diep water,
+  P ≈ 0,49 × Hs² × 0,9 × Tp in kW/m, logaritmisch), de snelheid de periode. Alleen op zee: de kustlijn van de
+  basiskaart snijdt ze af.
 - **Bediening**: aparte knoppen voor wind en golven (samen aan mag) en een tijdlijn met afspeelknop door de
   voorspelling van **15 dagen**.
 

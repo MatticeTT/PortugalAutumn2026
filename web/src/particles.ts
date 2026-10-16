@@ -26,7 +26,8 @@ const WIND = {
   minLife: 1.6,
   maxLife: 4.5,
 }
-// Golven: korte, brede kammen dwars op de looprichting; de vervaging maakt er blokjes met een vage achterkant van.
+// Golven: korte kammen dwars op de looprichting. Lengte en helderheid tonen de golfenergie (kW/m), de snelheid
+// de periode. De vervaging maakt er streepjes met een vage achterkant van.
 const WAVE = {
   density: 380,
   max: 6000,
@@ -218,6 +219,7 @@ export class ParticleLayer implements CustomLayerInterface {
   private gEx = new Float32Array(WAVE.max) // looprichting (oost, noord)
   private gNy = new Float32Array(WAVE.max)
   private gH = new Float32Array(WAVE.max)
+  private gT = new Float32Array(WAVE.max) // piekperiode (s)
   private gSea = new Uint8Array(WAVE.max)
   private gCount = 0
 
@@ -385,6 +387,7 @@ export class ParticleLayer implements CustomLayerInterface {
       this.gEx[i] = s.ex
       this.gNy[i] = s.ny
       this.gH[i] = s.height
+      this.gT[i] = s.period
       const sp = Math.max(s.period, 3) * k
       this.gx[i] += s.ex * sp
       this.gy[i] -= s.ny * sp
@@ -403,11 +406,11 @@ export class ParticleLayer implements CustomLayerInterface {
     for (let i = 0; i < this.gCount; i++) {
       if (!this.gSea[i]) continue
       const age = this.gAge[i], life = this.gLife[i]
-      const h = this.gH[i]
       const fade = Math.max(0, Math.min(1, age / 0.6, (life - age) / 1))
-      // Hogere golven: langere en fellere kammen.
-      const a = fade * Math.min(0.9, 0.3 + h / 4) * (0.6 + 0.4 * zs)
-      const L = (Math.min(6, 2.6 + 0.9 * h) * zs) / w
+      // Golfenergie: hoe meer energie, hoe langer en feller de kam (logaritmisch: van 1 tot honderden kW/m).
+      const e = Math.log2(1 + wavePower(this.gH[i], this.gT[i]))
+      const a = fade * Math.min(0.95, 0.25 + 0.09 * e) * (0.6 + 0.4 * zs)
+      const L = (Math.min(9, 2.5 + 0.75 * e) * zs) / w
       // Looprichting op het scherm (y naar beneden); de kam ligt er dwars op.
       const dx = this.gEx[i], dy = -this.gNy[i]
       const qx = -dy * L, qy = dx * L
@@ -572,6 +575,14 @@ export class ParticleLayer implements CustomLayerInterface {
       render: (gl) => this.drawTrails(gl, 'wind'),
     }
   }
+}
+
+/**
+ * Golfvermogen op diep water in kW per meter golffront: P = rho g² / (64 pi) * Hs² * Te ≈ 0,49 * Hs² * Te,
+ * met de energieperiode Te ≈ 0,9 * piekperiode. Bv. 1 m en 8 s: 3,5 kW/m; 2 m en 14 s: 25 kW/m; 5 m en 15 s: 165 kW/m.
+ */
+export function wavePower(hs: number, tp: number) {
+  return 0.49 * hs * hs * 0.9 * tp
 }
 
 /** Rechthoek van a naar b, halve breedte (nx, ny), als twee driehoeken: x, y, alfa, zijde per hoekpunt. */
