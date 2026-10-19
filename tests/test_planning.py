@@ -6,7 +6,7 @@ from pipeline.site import planning
 
 
 def test_blokken_per_categorie(tmp_path):
-    t0 = datetime(2026, 10, 10, 0, tzinfo=UTC)
+    t0 = datetime.now(UTC).replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(days=1)
     axis = [(t0 + timedelta(hours=i)).strftime("%Y-%m-%dT%H:%M") for i in range(48)]
     reeks = bytearray([255]) * 48
     for i, v in zip(range(10, 15), [70, 80, 90, 65, 40], strict=True):  # 10-13 UTC: 4 uur 60+
@@ -19,7 +19,7 @@ def test_blokken_per_categorie(tmp_path):
     planning.RIJ.clear()
     planning.RIJ["s1"] = {"min": 15}
     uit = planning.maak(axis, tmp_path, {}, [])
-    dag = next(d for d in uit["dagen"] if d["dag"] == "2026-10-10")
+    dag = next(d for d in uit["dagen"] if d["dag"] == t0.date().isoformat())
     bl = dag["kandidaten"]["golfsurfen_beginner"]
     assert len(bl) == 1 and bl[0]["van"] == "11:00" and bl[0]["tot"] == "15:00"  # Lissabon = UTC+1
     assert bl[0]["score"] == 76.2 and bl[0]["rij"] == 15

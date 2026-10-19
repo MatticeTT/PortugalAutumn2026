@@ -105,6 +105,27 @@ def points_landen():
     return per_beach, wind, wave
 
 
+# Golven aan de kust (inzicht uit de vergelijking met Golfcheck, 19 oktober 2026): DWD EWAM (5 km, Europa) zit
+# veel dichter bij de kust dan GFS-Wave (16 km). Bij Oostende gaf EWAM 0,40-0,46 m (gemeten 0,46 m), GFS-Wave
+# 0,70 m. EWAM geeft ook de piekperiode van de deining; geen tweede deining. GFS-Wave blijft de reserve.
+EWAM_VAK = 0.05
+EWAM_VARS = [*WAVE_VARS, "swell_wave_peak_period", "wind_wave_peak_period"]
+
+
+def points_ewam():
+    """Per strand (Portugal en de andere landen) het EWAM-vak van zijn punt voor de kust (zeevak)."""
+    per_beach, pts = {}, {}
+    for path in [BEACHES, *sorted(LANDEN.glob("*.geojson"))]:
+        if not path.exists():
+            continue
+        for f in json.loads(path.read_text())["features"]:
+            lon, lat = f["properties"]["zeevak"]
+            k = vak(lon, lat, EWAM_VAK)
+            pts.setdefault(k, (round(lon, 4), round(lat, 4)))
+            per_beach.setdefault(f["properties"]["id"], k)
+    return per_beach, pts
+
+
 STROOM_VAK = 0.08   # graden: rastervak van de stroming bij Open-Meteo Marine (SMOC, 1/12 graad)
 # Stroming en watertemperatuur (rekenchat), uit dezelfde aanroep naar Open-Meteo Marine.
 STROOM_VARS = ["ocean_current_velocity", "ocean_current_direction", "sea_surface_temperature"]
@@ -289,6 +310,9 @@ def main(argv: list[str]) -> int:
     sb, sp = points_stroom()
     (OUT / "punten_stroom.json").write_text(json.dumps(sb) + "\n")
     print(f"stroming: {len(sb)} stranden, {len(sp)} vakken", flush=True)
+    eb, ep = points_ewam()
+    (OUT / "punten_ewam.json").write_text(json.dumps(eb) + "\n")
+    print(f"EWAM: {len(eb)} stranden, {len(ep)} vakken", flush=True)
     lb, lw, lg = points_landen()
     if lb:
         (OUT / "punten_landen.json").write_text(json.dumps(lb) + "\n")
@@ -306,6 +330,8 @@ def main(argv: list[str]) -> int:
                                          WIND_VARS, {"wind_speed_unit": "kn"}),
         "golf_gfswave": lambda: golf_met_piek(wave_pts),
         "golf_ibi": lambda: ibi(wave_pts),
+        "golf_ewam": lambda: open_meteo("https://marine-api.open-meteo.com/v1/marine", ep, "dwd_ewam", EWAM_VARS,
+                                        {"cell_selection": "sea"}, pauze=6),
         "klim_weer": klim_weer,
         "stroom": lambda: stroom(sp),
         "klim_weer_landen": klim_weer_landen,

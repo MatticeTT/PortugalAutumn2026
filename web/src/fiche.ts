@@ -362,6 +362,8 @@ function render() {
       <div class="tegel licht"><span class="soort">wind</span>${windGegevens(d, i)}</div></div>` : ''}
     ${opStrand(d, i)}
     ${extras(d, i)}
+    <p class="klein">Golven uit ${d.golfbron?.[i] === 'e' ? 'DWD EWAM (5 km, dicht bij de kust)' : 'GFS-Wave (16 km, verder uit de kust)'}.
+      ${d.stranddata?.length ? `<br>Minder betrouwbaar: kijkrichting of swell-venster van dit strand is niet zeker (${esc(d.stranddata.join('; '))}).` : ''}</p>
     <p class="klein"><a href="rekenen.html">Hoe berekend?</a> · <a href="controle.html#${encodeURIComponent(d.id)}">Stranddata</a>
       · Geen veiligheidsadvies: volg de redders en de vlaggen.</p>`
   bind()

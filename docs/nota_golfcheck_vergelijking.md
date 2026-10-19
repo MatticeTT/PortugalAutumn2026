@@ -65,3 +65,31 @@ de kijkrichting van een baaistrand moet je per spot nakijken.
 2. Kijkrichting en venster per bekende spot met de hand nakijken; de rest tonen met lagere betrouwbaarheid.
 3. Toetsen tegen boeien: Meetnet Vlaamse Banken, Rijkswaterstaat, Puertos del Estado, Instituto Hidrográfico.
 4. Pas dan de plank- of sportscore verfijnen.
+
+## 7. Nieuwe inzichten (19 oktober 2026, rechtstreeks bij Open-Meteo opgevraagd)
+
+- **Getij niet verschoven.** Open-Meteo Marine (SMOC) met `timezone=UTC`: hoogwater Zeebrugge 05:00 en 18:00,
+  laagwater 12:00 UTC. TICON-4 (peilmeterstation): 05:47, 12:14 en 18:23 UTC. Ongeveer een half uur verschil,
+  geen 6 uur. De "6 uur verschoven" in de Golfcheck-prompt is waarschijnlijk een tijdzonefout (Open-Meteo geeft
+  lokale tijd met `timezone=auto`). Vraag altijd UTC op. Het getijverschil klopt ook (2,4 m tegenover 2,3 m).
+- **Stroming in fase met het getij.** Bij Zeebrugge loopt de vloedstroom (naar het oostnoordoosten) het
+  sterkst 1 à 2 uur voor hoogwater, de ebstroom (naar het westzuidwesten) na hoogwater. Dat klopt met de
+  Belgische kust.
+- **EWAM heeft de piekperiode van de deining** (`swell_wave_peak_period`), GFS-Wave niet. Golfmodellen
+  vergelijken met de piekperiode zoals Windguru die toont gaat dus wel, met EWAM.
+- **EWAM heeft geen tweede deining**, alleen deining en windzee. GFS-Wave heeft twee deiningen, maar de labels
+  springen: uren met "windzee" van 9 s en "deining" van 11 s die de volgende uren weer wisselen. Beoordeel op
+  periode, niet op het label.
+- **EWAM tegenover GFS-Wave, 19 oktober.** Oostende 08:00: 0,40 m (EWAM) tegenover 0,70 m (GFS-Wave);
+  gemeten 0,46 m. Ericeira 08:00: 1,82 m bij 10,8 s (EWAM) tegenover 1,44 m bij 9,7 s (GFS-Wave): aan
+  open kusten kan GFS-Wave ook lager uitkomen. Het verschil gaat dus niet altijd dezelfde kant op.
+- **Watertemperatuur** komt mee uit dezelfde Open-Meteo Marine-aanroep (15 °C bij Zeebrugge).
+
+## 8. Wat de Surfkaart daarmee aanpast
+
+1. Golven aan de kust uit DWD EWAM (5 km) waar beschikbaar, met de piekperiode van de deining; GFS-Wave als
+   reserve. Per uur alles uit één bron. De fiche toont welke bron.
+2. Stranden waarvan het startpunt voor de kust op land lag (zoals Praia dos Coxos): het startpunt schuift tot
+   2 km de zee in, en anders wordt de kijkrichting omgekeerd. Werkt pas na een nieuwe bouw van de stranden.
+3. De fiche meldt bij elk strand met een onzekere kijkrichting of een onzeker venster dat het minder
+   betrouwbaar is, met de reden.

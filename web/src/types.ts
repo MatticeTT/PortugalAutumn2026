@@ -93,6 +93,8 @@ export interface Detail {
   neerslag_bron?: boolean
   stroom_bron?: boolean
   onzeker?: string[] // redenen: geen score (rekenchat)
+  golfbron?: string // per uur: e = DWD EWAM (5 km), g = GFS-Wave (16 km)
+  stranddata?: string[] // kijkrichting of venster niet zeker: redenen
 }
 
 export interface Getij {

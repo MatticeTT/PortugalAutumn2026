@@ -401,11 +401,27 @@ def analyse(coast: Coast, districts, item: dict) -> dict:
         facing = 0.0
     if conf < PARAMS["zekerheid_min"]:
         reasons.append(f"kustlijn kronkelt (zekerheid {conf:.2f})")
-    s = PARAMS["startpunt_zee_m"]
-    a = math.radians(facing)
-    origin = Point(p.x + s * math.sin(a), p.y + s * math.cos(a))
-    if coast.land is not None and coast.land.contains(origin):
+    # Startpunt van de stralen: 150 m voor de kust. Ligt dat op land (rots, pier, kleine inham, zoals bij
+    # Praia dos Coxos), dan verder de zee in (tot 2 km), en anders aan de andere kant van de kustlijn: de
+    # kijkrichting was dan omgekeerd. Zonder zeepunt blijft het strand "nakijken".
+    origin, omgekeerd = None, False
+    for richting in (facing, (facing + 180) % 360):
+        a = math.radians(richting)
+        for s in (PARAMS["startpunt_zee_m"], 300, 600, 1000, 2000):
+            pt = Point(p.x + s * math.sin(a), p.y + s * math.cos(a))
+            if coast.land is None or not coast.land.contains(pt):
+                origin = pt
+                break
+        if origin is not None:
+            omgekeerd = richting != facing
+            break
+    if origin is None:
         reasons.append("punt voor de kust ligt op land")
+        a = math.radians(facing)
+        origin = Point(p.x + PARAMS["startpunt_zee_m"] * math.sin(a), p.y + PARAMS["startpunt_zee_m"] * math.cos(a))
+    elif omgekeerd:
+        facing = (facing + 180) % 360
+        reasons.append("kijkrichting omgekeerd: aan die kant lag land")
     step = PARAMS["straal_stap_graden"]
     dist_km = {d: coast.ray_distance(origin, d) / 1000 for d in range(0, 360, step)}
     ahead = min(dist_km[round(facing / step) * step % 360], dist_km[(round(facing / step) * step + step) % 360])

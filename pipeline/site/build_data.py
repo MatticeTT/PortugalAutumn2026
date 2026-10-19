@@ -46,7 +46,7 @@ IPMA_URL = "https://api.ipma.pt/open-data/forecast/warnings/warnings_www.json"
 HOURS = 240
 WIND = "wind_gfs"
 GOLF = "golf_gfswave"
-BRON = "GFS 13 km (wind) en GFS-Wave 16 km (golven), zoals Windguru"
+BRON = "GFS 13 km (wind); golven uit DWD EWAM 5 km, anders GFS-Wave 16 km"
 # Per deining: hoogte, periode, piekperiode (telt als de bron ze geeft), richting.
 DEININGEN = [
     ("swell_wave_height", "swell_wave_period", "swell_wave_peak_period", "swell_wave_direction"),
@@ -150,6 +150,10 @@ def meldingen(paren: list[tuple[float, float]]) -> list[str]:
 # Stroming per vakje van het strand (rekenchat, alle kusten): data/forecast/stroom.json en punten_stroom.json.
 STROOM: dict = {}
 STROOM_PUNTEN: dict = {}
+# Golven aan de kust uit DWD EWAM (5 km) waar dat model een waarde heeft, anders GFS-Wave. Per uur alles uit
+# één bron (hoogte, periode en richting van elke deining samen): data/forecast/golf_ewam.json, punten_ewam.json.
+EWAM: dict = {}
+EWAM_PUNTEN: dict = {}
 # Weerwaarschuwingen van MeteoAlarm (alle landen): data/forecast/meteoalarm.json.
 WAARSCHUWINGEN: list = []
 
@@ -176,6 +180,15 @@ def strand(f: dict, punten: dict, wsrc: dict, gsrc: dict, getij: dict, ext_by: d
     wg = [None if v is None else max(v, w or 0) for v, w in zip(wg_ruw, ws, strict=True)]
     golf = {v: rnd(align(gsrc, pt["golf"], v, axis), 2 if "height" in v else 1 if "period" in v else 0)
             for v in (*TOTAAL, *(x for d in DEININGEN for x in d))}
+    ek = EWAM_PUNTEN.get(pid)
+    golfbron = ["g"] * len(axis)
+    if ek and ek in EWAM:
+        ew = {v: rnd(align(EWAM, ek, v, axis), 2 if "height" in v else 1 if "period" in v else 0) for v in golf}
+        for i in range(len(axis)):
+            if ew["wave_height"][i] is not None:
+                golfbron[i] = "e"
+                for v in golf:
+                    golf[v][i] = ew[v][i]
     piek = any(x is not None for _h, _t, tp, _r in DEININGEN for x in golf[tp])
     c = controle(p["kijkrichting"], p["venster"])
     vensters = [tuple(v) for v in p["venster"]]  # 0 tot 3 vensters; geen venster: factor 0 (rekenchat)
@@ -302,6 +315,9 @@ def strand(f: dict, punten: dict, wsrc: dict, gsrc: dict, getij: dict, ext_by: d
         # invoer voor de score (rekenchat 2.1); de fiche rekent hiermee na, met gewicht en niveau
         **inv, "st": "".join(inv_st), "od": "".join(inv_od), "neerslag_bron": any(x is not None for x in neerslag),
         "stroom_bron": any(x is not None for x in stroom_kn),
+        "golfbron": "".join(golfbron),  # per uur: e = DWD EWAM (5 km), g = GFS-Wave (16 km)
+        # kijkrichting of swell-venster niet zeker (stranddata): de fiche toont het als lagere betrouwbaarheid
+        **({"stranddata": p.get("redenen") or []} if p.get("onzeker") else {}),
         **({"onzeker": onzeker} if onzeker else {}),
     }
     # Model v3 (conclusies, oude levels) toont de site niet meer sinds de score 2.1: niet meer in de fiche.
@@ -392,6 +408,11 @@ def main(fetch_ipma: bool = True):
     punten = load("punten")
     if (DATA / "forecast" / "meteoalarm.json").exists():
         WAARSCHUWINGEN[:] = load("meteoalarm").get("waarschuwingen", [])
+    if (DATA / "forecast" / "golf_ewam.json").exists() and (DATA / "forecast" / "punten_ewam.json").exists():
+        EWAM.update(load("golf_ewam"))
+        EWAM_PUNTEN.update(load("punten_ewam"))
+    else:
+        print("geen EWAM-golfdata: golven alleen uit GFS-Wave")
     if (DATA / "forecast" / "stroom.json").exists() and (DATA / "forecast" / "punten_stroom.json").exists():
         STROOM.update(load("stroom"))
         STROOM_PUNTEN.update(load("punten_stroom"))
