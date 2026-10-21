@@ -1,0 +1,22 @@
+name: spots
+# Stap 1: spotlijst uit OpenStreetMap. Met de hand starten (en eens per maand).
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 3 1 * *"
+jobs:
+  spots:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install -r spots/requirements.txt
+      - name: OSM-kustlijn ophalen
+        run: |
+          curl -sSfL -o /tmp/kust.zip https://osmdata.openstreetmap.de/download/coastlines-split-4326.zip
+          unzip -q /tmp/kust.zip -d /tmp/kust
+      - run: python -m spots.bouw --kustlijn /tmp/kust/coastlines-split-4326/lines.shp
+      - uses: actions/upload-artifact@v4
+        with: { name: spots, path: data/spots }

@@ -1,0 +1,57 @@
+# Regels voor stap 1: spots. Alleen getallen en keuzes, geen code.
+# Elke waarde heeft een 'soort': gemeten, afgeleid, expertkennis, keuze (= keuze van de eigenaar) of onbekend.
+
+bron:
+  spots: {naam: OpenStreetMap, filter: 'sport=surfing', licentie: ODbL 1.0, commercieel: ja}
+  kustlijn: {naam: OpenStreetMap-kustlijn (osmdata.openstreetmap.de, coastlines-split-4326), licentie: ODbL 1.0, commercieel: ja}
+
+positie:
+  max_afstand_kust_m: {waarde: 300, soort: keuze, uitleg: "opdracht: binnen ongeveer 300 m van de kust"}
+  max_grootte_vlak_m: {waarde: 1000, soort: keuze, uitleg: "spot getekend als vlak groter dan dit: middelpunt onzeker"}
+
+# Geen surfspot maar een zaak of school met sport=surfing: niet meenemen (lijst uitgesloten.csv).
+uitsluiten_als_tag:
+  - shop
+  - office
+  - craft
+  - amenity
+  - building
+  - tourism
+  - club
+
+strandrichting:
+  straal_m: {waarde: 500, soort: keuze, uitleg: "kustlijn over 500 m rond het dichtste kustpunt middelen"}
+  min_eenheid: {waarde: 0.7, soort: keuze, uitleg: "0 = kust alle kanten op, 1 = recht. Lager: bocht, kaap of baai -> na te kijken"}
+  andere_kust_marge_m: {waarde: 150, soort: keuze, uitleg: "ligt binnen deze extra afstand een kust die de andere kant op kijkt (landtong, pier, eilandje): kant onzeker"}
+
+swellvenster:
+  vertrek_in_zee_m: {waarde: 50, soort: keuze, uitleg: "stralen vertrekken zoveel meter zeewaarts van het kustpunt"}
+  stap_graden: {waarde: 1, soort: keuze}
+  bereik_km: {waarde: 50, soort: keuze, uitleg: "land verder dan dit telt niet als afscherming"}
+  gat_negeren_graden: {waarde: 5, soort: keuze, uitleg: "kleinere landschaduw (eilandje, rots) negeren: golven buigen errond. Expertregel, nog niet getoetst"}
+  min_breedte_graden: {waarde: 20, soort: keuze, uitleg: "smaller venster -> na te kijken"}
+
+bodem:
+  zoekstraal_m: {waarde: 300, soort: keuze}
+  # OSM-tags op de spot zelf (ingevuld door mappers: telt als expertkennis)
+  tag_naar_bodem:
+    "surfing:break=beach": zand
+    "surfing:break=reef": rif
+    "surfing:break=point": point
+    "surf:break=beach": zand
+    "surf:break=reef": rif
+    "surf:break=point": point
+    "natural=reef": rif
+    "surface=sand": zand
+  # Kaartelementen in de buurt (afgeleid). Strand en rif samen = twijfel.
+  buurt_naar_bodem:
+    "natural=reef": rif
+    "natural=beach": zand
+    "natural=beach&surface=pebblestone": keien
+    "natural=beach&surface=shingle": keien
+    "natural=beach&surface=gravel": keien
+    "natural=beach&surface=rock": rots
+
+helling:
+  # Wereldwijd geen meting. Later per land: COSMO (PT), Litto3D (FR), JARKUS (NL), Afdeling Kust (BE).
+  standaard: {waarde: null, soort: onbekend}
