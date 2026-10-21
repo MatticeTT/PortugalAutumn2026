@@ -1,5 +1,5 @@
 # Regels voor stap 1: spots. Alleen getallen en keuzes, geen code.
-# Elke waarde heeft een 'soort': gemeten, afgeleid, expertkennis, keuze (= keuze van de eigenaar) of onbekend.
+# Elke waarde heeft een 'soort': gemeten, berekend, expert, nog te meten, of keuze (een instelling die de eigenaar kan wijzigen).
 
 bron:
   spots: {naam: OpenStreetMap, filter: 'sport=surfing', licentie: ODbL 1.0, commercieel: ja}
@@ -33,7 +33,7 @@ swellvenster:
 
 bodem:
   zoekstraal_m: {waarde: 300, soort: keuze}
-  # OSM-tags op de spot zelf (ingevuld door mappers: telt als expertkennis)
+  # OSM-tags op de spot zelf (ingevuld door mappers: telt als expert)
   tag_naar_bodem:
     "surfing:break=beach": zand
     "surfing:break=reef": rif
@@ -43,7 +43,7 @@ bodem:
     "surf:break=point": point
     "natural=reef": rif
     "surface=sand": zand
-  # Kaartelementen in de buurt (afgeleid). Strand en rif samen = twijfel.
+  # Kaartelementen in de buurt (berekend). Strand en rif samen = twijfel.
   buurt_naar_bodem:
     "natural=reef": rif
     "natural=beach": zand
@@ -54,4 +54,4 @@ bodem:
 
 helling:
   # Wereldwijd geen meting. Later per land: COSMO (PT), Litto3D (FR), JARKUS (NL), Afdeling Kust (BE).
-  standaard: {waarde: null, soort: onbekend}
+  standaard: {waarde: null, soort: nog te meten}

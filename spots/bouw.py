@@ -68,7 +68,7 @@ def bodem(el, lon, lat, buurt, r) -> tuple[str | None, str, str, str | None]:
     tags = el.get("tags", {})
     b = kies(tags, r["bodem"]["tag_naar_bodem"])
     if b:
-        return b, "expertkennis", "OSM-tag op de spot", None
+        return b, "expert", "OSM-tag op de spot", None
     straal = r["bodem"]["zoekstraal_m"]["waarde"]
     proj = pyproj.Transformer.from_crs(
         "EPSG:4326", f"+proj=aeqd +lat_0={lat} +lon_0={lon} +datum=WGS84 +units=m", always_xy=True)
@@ -82,10 +82,10 @@ def bodem(el, lon, lat, buurt, r) -> tuple[str | None, str, str, str | None]:
     soorten = sorted({s for s, _ in gevonden})
     if len(soorten) == 1:
         refs = ", ".join(sorted(ref for _, ref in gevonden))
-        return soorten[0], "afgeleid", f"OSM binnen {straal} m: {refs}", None
+        return soorten[0], "berekend", f"OSM binnen {straal} m: {refs}", None
     if len(soorten) > 1:
-        return None, "onbekend", "", f"bodem: binnen {straal} m liggen {' en '.join(soorten)}"
-    return None, "onbekend", "", None
+        return None, "nog te meten", "", f"bodem: binnen {straal} m liggen {' en '.join(soorten)}"
+    return None, "nog te meten", "", None
 
 
 def buurt_index(elementen):
@@ -172,12 +172,12 @@ def main(argv=None):
             "rekenpunt_lat": round(res.rekenpunt_lonlat[1], 6) if res.rekenpunt_lonlat else None,
             "bodem": b, "helling": None,
             "bronnen": {
-                "positie": {"bron": f"OSM {id_}", "soort": "expertkennis"},
-                "strandrichting": {"bron": "OSM-kustlijn", "soort": "afgeleid" if res.strandrichting is not None else "onbekend"},
+                "positie": {"bron": f"OSM {id_}", "soort": "expert"},
+                "strandrichting": {"bron": "OSM-kustlijn", "soort": "berekend" if res.strandrichting is not None else "nog te meten"},
                 "swellvenster": {"bron": f"OSM-kustlijn, stralen tot {r['swellvenster']['bereik_km']['waarde']} km",
-                                 "soort": "afgeleid" if res.venster_van is not None else "onbekend"},
+                                 "soort": "berekend" if res.venster_van is not None else "nog te meten"},
                 "bodem": {"bron": b_bron, "soort": b_soort},
-                "helling": {"bron": "", "soort": "onbekend"},
+                "helling": {"bron": "", "soort": "nog te meten"},
             },
         })
 

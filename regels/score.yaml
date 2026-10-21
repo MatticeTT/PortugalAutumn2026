@@ -1,0 +1,43 @@
+# Score per plank per uur. Keuzes van de eigenaar, 21/10/2026. Label in de app: "voorlopig".
+label: voorlopig
+
+schaal: {1: niets, 2: iets, 3: bruikbaar, 4: goed, 5: ideaal}
+
+# Begrippen die de regels gebruiken
+begrippen:
+  wind_stoort_niet: {regel: "r >= 0", uitleg: "geen onshore; r = wind loodrecht op de kust (naar zee positief) / golfsnelheid"}
+  golftype_goed: {uitleg: "golftype van dat uur staat bij de plank als 'goed'. Onbekend of geen bron telt als niet goed"}
+
+# Van boven naar onder: de eerste regel die past, geeft de score.
+regels:
+  - {score: 1, als: stap1_nee}                       # donker, onweer, ... (zie stap1)
+  - {score: 1, als: hoogte_buiten}                   # golf buiten het bruikbare bereik van de plank
+  - {score: 5, als: [hoogte_ideaal, golftype_goed, wind_stoort_niet]}
+  - {score: 4, als: [hoogte_ideaal], hoogstens_een_niet: [golftype_goed, wind_stoort_niet]}
+  - {score: 3, als: [hoogte_bruikbaar]}              # ideaal valt binnen bruikbaar
+# Score 2 (iets) heeft nog geen regel: nog te beslissen.
+
+onzeker:
+  aftrek: 1
+  toon_reden: true
+  # Wanneer is een voorspelling onzeker? Nog te meten (kans uit de ECMWF-reeks, trefzekerheid per spot).
+  # Tot dan staat hier niets en trekt de app niets af.
+  wanneer: []
+
+stap1:
+  daglicht: {zon_min_graden: -6, uitleg: "burgerlijke schemering, per plaats en dag berekend", soort: keuze}
+  # Getoond, maar telt niet mee tot de grens gemeten is (gebruik: nee)
+  windstoten: {grens: null, gebruik: nee, soort: nog te meten}
+  offshore_te_hard: {grens: null, gebruik: nee, soort: nog te meten}
+  mist: {grens: null, gebruik: nee, soort: nog te meten}
+  onweer: {grens: null, gebruik: nee, soort: nog te meten, nota: "geen gratis wereldwijde bron gevonden"}
+
+kaart:
+  min_uren_aaneen: 3
+  min_score: 4
+  start_elke_minuten: 15
+  tussen_modeluren: lineair   # in de app vermelden
+  meerdere_planken: hoogste
+
+horizon:
+  max_dagen: 10   # golven van Copernicus lopen 10 dagen

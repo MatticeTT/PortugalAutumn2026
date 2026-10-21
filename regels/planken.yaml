@@ -1,0 +1,65 @@
+# Planken. Een nieuwe plank = één blok onder 'planken', geen nieuwe code.
+# Ingevuld met de tabel uit het document "Surfkaart: hoe de app de drie vragen beantwoordt" (21/10/2026).
+# Beheer: de onderzoekschat. Status per waarde: gemeten, berekend, expert, nog te meten.
+#
+# Vorm van één blok:
+#   <sleutel>:
+#     naam: tekst in de app
+#     gebruik: ja | nee            # nee = tonen maar niet scoren
+#     hoogte_m:                    # Hb aan het strand, golfwand van dal tot top
+#       ideaal:    {van: getal|null, tot: getal|null}   # null = geen grens bekend
+#       bruikbaar: {van: getal|null, tot: getal|null}
+#       status: ...
+#       bronnen: [ ... ]
+#     golftype:                    # per type: goed | slecht | geen_bron
+#       zacht: ...                 # Iribarren ξb < 0,4
+#       hol: ...                   # 0,4 tot 2
+#       shorebreak: ...            # boven 2
+#       vanaf_hb: {hol: 1.5}       # optioneel: oordeel geldt pas vanaf deze Hb (m)
+#       status: ...
+#       bronnen: [ ... ]
+#
+# Een ontbrekende ondergrens bij 'bruikbaar' (van: null) betekent: niet gekend, dus 'te klein' kan
+# voor die plank nog niet beslist worden. Dat is zo voor longboard en mini-mal.
+
+planken:
+  longboard:
+    naam: Longboard
+    gebruik: ja
+    hoogte_m: {ideaal: {van: 0.6, tot: 0.9}, bruikbaar: {van: null, tot: 1.8}, status: expert, bronnen: []}
+    golftype: {zacht: goed, hol: slecht, shorebreak: geen_bron, status: expert, bronnen: []}
+  mini_mal:
+    naam: Mini-mal
+    gebruik: ja
+    hoogte_m: {ideaal: {van: null, tot: 1.5}, bruikbaar: {van: null, tot: 1.8}, status: expert, bronnen: []}
+    golftype: {zacht: goed, hol: slecht, shorebreak: geen_bron, vanaf_hb: {hol: 1.5}, status: expert, bronnen: []}
+  midlength:
+    naam: Midlength
+    gebruik: ja
+    hoogte_m: {ideaal: {van: 0.9, tot: 1.8}, bruikbaar: {van: 0.6, tot: 3.4}, status: expert, bronnen: []}
+    golftype: {zacht: goed, hol: geen_bron, shorebreak: geen_bron, status: expert, bronnen: []}
+  groveler:
+    naam: Groveler
+    gebruik: ja
+    hoogte_m: {ideaal: {van: 0.6, tot: 1.2}, bruikbaar: {van: 0.6, tot: 1.8}, status: expert, bronnen: []}
+    golftype: {zacht: goed, hol: geen_bron, shorebreak: geen_bron, status: expert, bronnen: []}
+  fish:
+    naam: Fish
+    gebruik: ja
+    hoogte_m: {ideaal: {van: 0.9, tot: 1.5}, bruikbaar: {van: 0.6, tot: 1.8}, status: expert, bronnen: []}
+    golftype: {zacht: goed, hol: slecht, shorebreak: geen_bron, status: expert, bronnen: []}
+  shortboard:
+    naam: Shortboard
+    gebruik: ja
+    hoogte_m: {ideaal: {van: 1.2, tot: 1.8}, bruikbaar: {van: 0.9, tot: 3.4}, status: expert, bronnen: []}
+    golftype: {zacht: slecht, hol: goed, shorebreak: geen_bron, status: expert, bronnen: []}
+  step_up:
+    naam: Step-up
+    gebruik: ja
+    hoogte_m: {ideaal: {van: 1.8, tot: 3.7}, bruikbaar: {van: 1.5, tot: 3.7}, status: expert, bronnen: []}
+    golftype: {zacht: geen_bron, hol: goed, shorebreak: geen_bron, status: expert, bronnen: []}
+  gun:
+    naam: Gun
+    gebruik: ja
+    hoogte_m: {ideaal: {van: 3.7, tot: null}, bruikbaar: {van: 3.0, tot: 18}, status: expert, bronnen: []}
+    golftype: {zacht: geen_bron, hol: goed, shorebreak: geen_bron, status: expert, bronnen: []}

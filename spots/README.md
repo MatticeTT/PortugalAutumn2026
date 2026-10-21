@@ -24,6 +24,6 @@ Alle drempels staan in `regels/spots.yaml`.
   dan is die richting dicht. Het venster is de aaneengesloten open boog rond de strandrichting.
   Schaduw smaller dan 5 graden (eilandje, rots) telt niet. Land verder dan 50 km telt niet.
 - **Rekenpunt**: het vertrekpunt 50 m in zee; stap 2 zoekt van daaruit het eerste modelpunt op zee.
-- **Bodem**: tag op de spot (expertkennis), anders strand of rif in OSM binnen 300 m (afgeleid).
+- **Bodem**: tag op de spot (expert), anders strand of rif in OSM binnen 300 m (berekend).
   Strand en rif samen: na te kijken. Point: alleen via tag.
-- **Helling**: wereldwijd onbekend. Later per land (COSMO, Litto3D, JARKUS, Afdeling Kust).
+- **Helling**: wereldwijd nog te meten. Later per land (COSMO, Litto3D, JARKUS, Afdeling Kust).
