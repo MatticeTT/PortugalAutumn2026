@@ -93,3 +93,12 @@ def test_bodemtags():
     assert kies({"natural": "beach"}, t) == "zand"
     assert kies({"natural": "beach", "surface": "pebblestone"}, t) == "keien"
     assert kies({"natural": "reef"}, t) == "rif"
+
+
+def test_landvlak_zoals_gshhg():
+    # vierkant eiland als vlak (met de klok mee getekend); spot 200 m ten westen
+    lat = 40.0
+    eiland = shapely.Polygon([(-9.0, 39.5), (-9.0, 40.5), (-8.0, 40.5), (-8.0, 39.5)])
+    k = K.Kustlijn(K.naar_kustlijnen([eiland]))
+    res = K.bereken(k, -9.0 - 0.2 * km(lat), lat, R)
+    assert res.twijfel == [] and abs(res.strandrichting - 270) < 0.5 and res.spot_kant == "zee"

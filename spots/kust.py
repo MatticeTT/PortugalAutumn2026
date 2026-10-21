@@ -38,7 +38,7 @@ class Kustlijn:
         import pyogrio
 
         df = pyogrio.read_dataframe(pad, bbox=bbox, columns=[]) if bbox else pyogrio.read_dataframe(pad, columns=[])
-        return cls(df.geometry.values)
+        return cls(naar_kustlijnen(df.geometry.values))
 
     def in_doos(self, lon0, lat0, straal_m):
         """Kuststukken binnen een doos rond (lon0, lat0); werkt ook over de datumgrens."""
@@ -56,6 +56,33 @@ class Kustlijn:
             dozen.append((w, s, e, n))
         idx = np.unique(np.concatenate([self.boom.query(shapely.box(*d)) for d in dozen]))
         return self.lijnen[idx]
+
+
+def naar_kustlijnen(geoms, stuk=500):
+    """Lijnen met het land links. Landvlakken (bv. GSHHG) worden kustlijnen in die richting.
+
+    Lange lijnen worden in stukken van hoogstens 'stuk' punten geknipt, zodat de index snel blijft.
+    """
+    uit = []
+    for g in geoms:
+        if g is None or g.is_empty:
+            continue
+        if g.geom_type in ("Polygon", "MultiPolygon"):
+            ringen = []
+            for p in getattr(g, "geoms", [g]):
+                p = shapely.orient_polygons(p) if hasattr(shapely, "orient_polygons") else shapely.geometry.polygon.orient(p, 1.0)
+                # buitenrand tegen de klok in: land links. Gaten (meren) zijn geen zeekust.
+                ringen.append(p.exterior)
+            lijnen = ringen
+        else:
+            lijnen = list(getattr(g, "geoms", [g]))
+        for l in lijnen:
+            c = shapely.get_coordinates(l)
+            for i in range(0, max(len(c) - 1, 1), stuk):
+                deel = c[i:i + stuk + 1]
+                if len(deel) >= 2:
+                    uit.append(shapely.LineString(deel))
+    return uit
 
 
 @dataclass

@@ -104,6 +104,7 @@ def main(argv=None):
     ap.add_argument("--kustlijn", required=True, help="OSM coastlines-split-4326 lines.shp (of ander lijnbestand)")
     ap.add_argument("--osm", help="opgeslagen Overpass-antwoord met de spots")
     ap.add_argument("--buurt", help="opgeslagen Overpass-antwoord met stranden en riffen")
+    ap.add_argument("--kustbron", default="OSM-kustlijn", help="naam van de kustlijnbron, voor de bronvermelding")
     ap.add_argument("--uit", default=str(UIT))
     a = ap.parse_args(argv)
     r = regels()
@@ -173,20 +174,21 @@ def main(argv=None):
             "bodem": b, "helling": None,
             "bronnen": {
                 "positie": {"bron": f"OSM {id_}", "soort": "expert"},
-                "strandrichting": {"bron": "OSM-kustlijn", "soort": "berekend" if res.strandrichting is not None else "nog te meten"},
-                "swellvenster": {"bron": f"OSM-kustlijn, stralen tot {r['swellvenster']['bereik_km']['waarde']} km",
+                "strandrichting": {"bron": a.kustbron, "soort": "berekend" if res.strandrichting is not None else "nog te meten"},
+                "swellvenster": {"bron": f"{a.kustbron}, stralen tot {r['swellvenster']['bereik_km']['waarde']} km",
                                  "soort": "berekend" if res.venster_van is not None else "nog te meten"},
                 "bodem": {"bron": b_bron, "soort": b_soort},
                 "helling": {"bron": "", "soort": "nog te meten"},
             },
         })
 
-    schrijf(uit, rijen, twijfel, uitgesloten, stand_osm)
+    schrijf(uit, rijen, twijfel, uitgesloten, stand_osm, a.kustbron)
     print(f"{len(rijen)} spots, {len(twijfel)} punten na te kijken, {len(uitgesloten)} uitgesloten")
 
 
-def schrijf(uit: Path, rijen, twijfel, uitgesloten, stand_osm):
+def schrijf(uit: Path, rijen, twijfel, uitgesloten, stand_osm, kustbron):
     meta = {"gemaakt": datetime.now(timezone.utc).isoformat(timespec="seconds"), "stand_osm": stand_osm,
+            "kustlijn": kustbron,
             "licentie": "ODbL 1.0, © OpenStreetMap-bijdragers"}
     fc = {"type": "FeatureCollection", "meta": meta, "features": [
         {"type": "Feature", "geometry": {"type": "Point", "coordinates": [s["lon"], s["lat"]]},
