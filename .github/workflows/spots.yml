@@ -18,26 +18,14 @@ jobs:
       - uses: actions/setup-python@v5
         with: { python-version: "3.12" }
       - run: pip install -r spots/requirements.txt
-      - name: Kustlijn ophalen (OSM, anders GSHHG volle resolutie)
-        run: |
-          for i in 1 2 3; do
-            if curl -sSfL --connect-timeout 60 -m 1800 -o /tmp/kust.zip https://osmdata.openstreetmap.de/download/coastlines-split-4326.zip; then
-              unzip -q /tmp/kust.zip -d /tmp/kust
-              echo "KUST=/tmp/kust/coastlines-split-4326/lines.shp" >> $GITHUB_ENV
-              echo "KUSTBRON=OSM-kustlijn (osmdata.openstreetmap.de, ODbL)" >> $GITHUB_ENV
-              exit 0
-            fi
-            sleep 60
-          done
-          echo "OSM-kustlijn niet bereikbaar, GSHHG gebruikt"
-          curl -sSfL --retry 3 -o /tmp/gshhg.zip https://www.ngdc.noaa.gov/mgg/shorelines/data/gshhg/latest/gshhg-shp-2.3.7.zip
-          unzip -q /tmp/gshhg.zip -d /tmp/gshhg
-          echo "KUST=/tmp/gshhg/GSHHS_shp/f/GSHHS_f_L1.shp" >> $GITHUB_ENV
-          echo "KUSTBRON=GSHHG 2.3.7 volle resolutie, niveau 1 (NOAA, LGPL)" >> $GITHUB_ENV
-      - name: Spots ophalen en doorrekenen
-        run: python -m spots.bouw --kustlijn "$KUST" --kustbron "$KUSTBRON"
+      - name: Spots en kustlijn ophalen (Overpass) en doorrekenen
+        run: python -m spots.bouw
       - uses: actions/upload-artifact@v4
-        with: { name: spots, path: data/spots }
+        with:
+          name: spots
+          path: |
+            data/spots
+            !data/spots/ruw/kust
       - name: Resultaat terugzetten in de repo
         run: |
           git config user.name "github-actions"

@@ -50,6 +50,48 @@ def haal_buurt(spots: list[dict], straal_m: int, uit: Path, blok: int = 150) -> 
     return lijst
 
 
+def haal_kust(punten: list[tuple[float, float]], bereik_km: float, map_: Path) -> list:
+    """OSM-kustlijn (natural=coastline) rond de spots, per vak van 1 graad, met marge 'bereik_km'.
+
+    Elk vak wordt bewaard in map_, zodat een herstart niet alles opnieuw vraagt.
+    Geeft de lijnen terug (lon/lat), in de OSM-richting: land links.
+    """
+    import math
+    import shapely
+
+    map_.mkdir(parents=True, exist_ok=True)
+    vakken = sorted({(math.floor(lat), math.floor(lon)) for lon, lat in punten})
+    lijnen, gezien = [], set()
+    for n, (la, lo) in enumerate(vakken, 1):
+        bestand = map_ / f"kust_{la}_{lo}.json"
+        if bestand.exists():
+            data = json.loads(bestand.read_text())
+        else:
+            mlat = bereik_km / 111.0 + 0.05
+            mlon = bereik_km / (111.0 * max(math.cos(math.radians(la + 0.5)), 0.05)) + 0.05
+            s, w = max(la - mlat, -90), lo - mlon
+            n_, e = min(la + 1 + mlat, 90), lo + 1 + mlon
+            dozen = []
+            if w < -180:
+                dozen += [(s, w + 360, n_, 180), (s, -180, n_, e)]
+            elif e > 180:
+                dozen += [(s, w, n_, 180), (s, -180, n_, e - 360)]
+            else:
+                dozen.append((s, w, n_, e))
+            delen = "".join(f'way["natural"="coastline"]({a:.4f},{b:.4f},{c:.4f},{d:.4f});' for a, b, c, d in dozen)
+            data = overpass(f"[out:json][timeout:600];({delen});out geom;")
+            bestand.write_text(json.dumps(data))
+            print(f"kust {n}/{len(vakken)}: vak {la},{lo}: {len(data['elements'])} lijnen", flush=True)
+        for el in data["elements"]:
+            if el["id"] in gezien or "geometry" not in el:
+                continue
+            gezien.add(el["id"])
+            c = [(p["lon"], p["lat"]) for p in el["geometry"]]
+            if len(c) >= 2:
+                lijnen.append(shapely.LineString(c))
+    return lijnen
+
+
 def vorm(el: dict):
     """Shapely-vorm (lon/lat) van een Overpass-element met 'out geom'."""
     import shapely

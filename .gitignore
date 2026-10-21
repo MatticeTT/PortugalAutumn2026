@@ -5,3 +5,4 @@ __pycache__/
 .pytest_cache/
 web/dist/
 web/public/data/
+data/spots/ruw/kust/

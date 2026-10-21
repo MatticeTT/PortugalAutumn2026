@@ -101,7 +101,7 @@ def buurt_index(elementen):
 
 def main(argv=None):
     ap = argparse.ArgumentParser()
-    ap.add_argument("--kustlijn", required=True, help="OSM coastlines-split-4326 lines.shp (of ander lijnbestand)")
+    ap.add_argument("--kustlijn", help="kustlijnbestand (lines.shp of landvlakken); zonder: OSM-kustlijn via Overpass")
     ap.add_argument("--osm", help="opgeslagen Overpass-antwoord met de spots")
     ap.add_argument("--buurt", help="opgeslagen Overpass-antwoord met stranden en riffen")
     ap.add_argument("--kustbron", default="OSM-kustlijn", help="naam van de kustlijnbron, voor de bronvermelding")
@@ -137,7 +137,13 @@ def main(argv=None):
                                   r["bodem"]["zoekstraal_m"]["waarde"], uit / "ruw" / "osm_buurt.json")
     items, boom = buurt_index(buurt_el)
 
-    kustlijn = K.Kustlijn.uit_bestand(a.kustlijn)
+    if a.kustlijn:
+        kustlijn = K.Kustlijn.uit_bestand(a.kustlijn)
+    else:
+        a.kustbron = "OSM-kustlijn (natural=coastline via Overpass, ODbL)"
+        lijnen = osm.haal_kust([(lo, la) for _, lo, la, _ in spots], r["swellvenster"]["bereik_km"]["waarde"] * 1.1,
+                               uit / "ruw" / "kust")
+        kustlijn = K.Kustlijn(K.naar_kustlijnen(lijnen))
     max_vlak = r["positie"]["max_grootte_vlak_m"]["waarde"]
     rijen = []
     for el, lon, lat, naam in spots:
