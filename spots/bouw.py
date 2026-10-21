@@ -12,6 +12,7 @@ import argparse
 import csv
 import json
 import math
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -106,6 +107,7 @@ def main(argv=None):
     ap.add_argument("--buurt", help="opgeslagen Overpass-antwoord met stranden en riffen")
     ap.add_argument("--kustbron", default="OSM-kustlijn", help="naam van de kustlijnbron, voor de bronvermelding")
     ap.add_argument("--uit", default=str(UIT))
+    ap.add_argument("--max-minuten", type=float, help="stop met kust ophalen na zoveel minuten (exitcode 3)")
     a = ap.parse_args(argv)
     r = regels()
     uit = Path(a.uit)
@@ -141,8 +143,13 @@ def main(argv=None):
         kustlijn = K.Kustlijn.uit_bestand(a.kustlijn)
     else:
         a.kustbron = "OSM-kustlijn (natural=coastline via Overpass, ODbL)"
-        lijnen = osm.haal_kust([(lo, la) for _, lo, la, _ in spots], r["swellvenster"]["bereik_km"]["waarde"] * 1.1,
-                               uit / "ruw" / "kust")
+        tot = time.time() + a.max_minuten * 60 if a.max_minuten else None
+        try:
+            lijnen = osm.haal_kust([(lo, la) for _, lo, la, _ in spots], r["swellvenster"]["bereik_km"]["waarde"] * 1.1,
+                                   uit / "ruw" / "kust", tot)
+        except osm.NietKlaar as e:
+            print(f"Nog niet klaar: {e}")
+            raise SystemExit(3)
         kustlijn = K.Kustlijn(K.naar_kustlijnen(lijnen))
     max_vlak = r["positie"]["max_grootte_vlak_m"]["waarde"]
     rijen = []

@@ -2,13 +2,17 @@ name: spots
 # Stap 1: spotlijst uit OpenStreetMap. Met de hand starten (en eens per maand).
 on:
   workflow_dispatch:
+    inputs:
+      ronde: {description: "herstartnummer", default: "1"}
   push:
     branches: [ccr-70a0a2b6-vbws01]
     paths: ["spots/**", "regels/spots.yaml", ".github/workflows/spots.yml"]
   schedule:
     - cron: "17 3 1 * *"
+concurrency: {group: spots, cancel-in-progress: false}
 permissions:
   contents: write
+  actions: write
 jobs:
   spots:
     runs-on: ubuntu-latest
@@ -24,19 +28,36 @@ jobs:
           key: kust-${{ github.run_id }}
           restore-keys: kust-
       - name: Spots en kustlijn ophalen (Overpass) en doorrekenen
-        run: python -m spots.bouw
+        id: bouw
+        run: |
+          set +e
+          python -m spots.bouw --max-minuten 200
+          code=$?
+          if [ $code = 3 ]; then echo "niet_klaar=1" >> $GITHUB_OUTPUT; exit 0; fi
+          exit $code
       - uses: actions/cache/save@v4
         if: always()
         with:
           path: data/spots/ruw/kust
           key: kust-${{ github.run_id }}-${{ github.run_attempt }}
+      - name: Nog niet klaar, opnieuw starten (hoogstens 6 rondes)
+        if: steps.bouw.outputs.niet_klaar == '1'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RONDE: ${{ inputs.ronde || '1' }}
+        run: |
+          if [ "$RONDE" -ge 6 ]; then echo "Gestopt na 6 rondes"; exit 1; fi
+          gh workflow run spots.yml --ref "$GITHUB_REF_NAME" -f ronde=$((RONDE + 1))
+          echo "Ronde $((RONDE + 1)) gestart"
       - uses: actions/upload-artifact@v4
+        if: steps.bouw.outputs.niet_klaar != '1'
         with:
           name: spots
           path: |
             data/spots
             !data/spots/ruw/kust
       - name: Resultaat terugzetten in de repo
+        if: steps.bouw.outputs.niet_klaar != '1'
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@users.noreply.github.com"

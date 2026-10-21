@@ -60,7 +60,11 @@ def haal_buurt(spots: list[dict], straal_m: int, uit: Path, blok: int = 150) -> 
     return lijst
 
 
-def haal_kust(punten: list[tuple[float, float]], bereik_km: float, map_: Path) -> list:
+class NietKlaar(Exception):
+    """De tijd is op; de opgehaalde vakken staan bewaard, een volgende run doet verder."""
+
+
+def haal_kust(punten: list[tuple[float, float]], bereik_km: float, map_: Path, tot: float | None = None) -> list:
     """OSM-kustlijn (natural=coastline) rond de spots, per vak van 1 graad, met marge 'bereik_km'.
 
     Elk vak wordt bewaard in map_, zodat een herstart niet alles opnieuw vraagt.
@@ -77,6 +81,9 @@ def haal_kust(punten: list[tuple[float, float]], bereik_km: float, map_: Path) -
         if bestand.exists():
             data = json.loads(bestand.read_text())
         else:
+            if tot is not None and time.time() > tot:
+                klaar = sum(1 for v in vakken if (map_ / f"kust_{v[0]}_{v[1]}.json").exists())
+                raise NietKlaar(f"{klaar} van {len(vakken)} kustvakken opgehaald")
             mlat = bereik_km / 111.0 + 0.05
             mlon = bereik_km / (111.0 * max(math.cos(math.radians(la + 0.5)), 0.05)) + 0.05
             s, w = max(la - mlat, -90), lo - mlon
