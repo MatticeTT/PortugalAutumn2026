@@ -1,5 +1,5 @@
 name: bereik
-# Test welke bronnen bereikbaar zijn vanaf GitHub. Alleen statuscodes, niets downloaden.
+# Test welke bronnen bereikbaar zijn vanaf GitHub.
 on:
   workflow_dispatch:
   push:
@@ -10,21 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          for u in \
-            https://osmdata.openstreetmap.de/download/coastlines-split-4326.zip \
-            https://osmdata.openstreetmap.de/ \
-            https://overpass-api.de/api/status \
-            https://overpass.kumi.systems/api/status \
-            https://maps.mail.ru/osm/tools/overpass/api/status \
-            https://www.soest.hawaii.edu/pwessel/gshhg/gshhg-shp-2.3.7.zip \
-            https://www.ngdc.noaa.gov/mgg/shorelines/data/gshhg/latest/ \
-            https://www.ngdc.noaa.gov/mgg/shorelines/ \
-            https://planet.openstreetmap.org/ \
-            https://download.geofabrik.de/ \
-            https://data.marine.copernicus.eu/ \
-            https://s3.waw3-1.cloudferro.com/ \
-            https://www.seanoe.org/ \
-            https://www.gebco.net/ \
-            https://data.ecmwf.int/forecasts/ ; do
-            echo "$(curl -s -o /dev/null -I -L --connect-timeout 20 -m 40 -w '%{http_code}' "$u") $u"
-          done
+          echo "== NOAA-pagina, links met gshhg"
+          curl -sL -m 60 https://www.ngdc.noaa.gov/mgg/shorelines/ | grep -oiE 'href="[^"]*gshh[^"]*"' | sort -u | head -30
+          echo "== osmdata via http"
+          curl -s -o /dev/null -I --connect-timeout 20 -w '%{http_code}\n' http://osmdata.openstreetmap.de/ || true
+          echo "== Overpass kleine vraag"
+          curl -s -m 120 https://overpass-api.de/api/interpreter --data-urlencode 'data=[out:json];nwr["sport"="surfing"];out count;' | head -c 600; echo
