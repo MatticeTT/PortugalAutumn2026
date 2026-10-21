@@ -144,4 +144,8 @@ def punt(el: dict) -> tuple[float, float] | None:
         return el["lon"], el["lat"]
     if "center" in el:
         return el["center"]["lon"], el["center"]["lat"]
+    if "bounds" in el:  # vlak of lijn: midden van de omhullende doos (de 300 m-controle vangt slechte middens op)
+        b = el["bounds"]
+        lon = (b["minlon"] + b["maxlon"]) / 2 if b["maxlon"] >= b["minlon"] else ((b["minlon"] + b["maxlon"] + 360) / 2 + 180) % 360 - 180
+        return lon, (b["minlat"] + b["maxlat"]) / 2
     return None

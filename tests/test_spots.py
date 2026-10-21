@@ -102,3 +102,8 @@ def test_landvlak_zoals_gshhg():
     k = K.Kustlijn(K.naar_kustlijnen([eiland]))
     res = K.bereken(k, -9.0 - 0.2 * km(lat), lat, R)
     assert res.twijfel == [] and abs(res.strandrichting - 270) < 0.5 and res.spot_kant == "zee"
+
+
+def test_punt_van_vlak():
+    from spots.osm import punt
+    assert punt({"type": "way", "bounds": {"minlat": 1, "maxlat": 3, "minlon": 10, "maxlon": 12}}) == (11, 2)

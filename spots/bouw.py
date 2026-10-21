@@ -122,6 +122,7 @@ def main(argv=None):
         p = osm.punt(el)
         naam = tags.get("name", "")
         if p is None:
+            uitgesloten.append({"osm": osm_link(el), "naam": naam, "lat": "", "lon": "", "reden": "geen positie in het antwoord"})
             continue
         lon, lat = p
         weg = [t for t in r["uitsluiten_als_tag"] if t in tags]
