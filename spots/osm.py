@@ -29,7 +29,14 @@ def overpass(vraag: str, pogingen: int = 8) -> dict:
         try:
             r = requests.post(url, data={"data": vraag}, timeout=1000, headers=UA)
             if r.status_code == 200:
-                return r.json()
+                data = r.json()
+                opm = data.get("remark", "")
+                if "error" not in opm.lower():
+                    return data
+                fout = f"{url}: {opm[:120]}"  # time-out of geheugen: onvolledig antwoord
+                print(f"Overpass-poging {p + 1} onvolledig ({fout})", flush=True)
+                time.sleep(min(30 * (p + 1), 180))
+                continue
             fout = f"{url}: {r.status_code}"
         except (requests.RequestException, ValueError) as e:
             fout = f"{url}: {e}"
@@ -78,9 +85,10 @@ def haal_kust(punten: list[tuple[float, float]], bereik_km: float, map_: Path, t
     lijnen, gezien = [], set()
     for n, (la, lo) in enumerate(vakken, 1):
         bestand = map_ / f"kust_{la}_{lo}.json"
-        if bestand.exists():
-            data = json.loads(bestand.read_text())
-        else:
+        data = json.loads(bestand.read_text()) if bestand.exists() else None
+        if data is not None and "error" in data.get("remark", "").lower():
+            data = None  # onvolledig bewaard: opnieuw vragen
+        if data is None:
             if tot is not None and time.time() > tot:
                 klaar = sum(1 for v in vakken if (map_ / f"kust_{v[0]}_{v[1]}.json").exists())
                 raise NietKlaar(f"{klaar} van {len(vakken)} kustvakken opgehaald")
