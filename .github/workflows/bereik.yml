@@ -10,9 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          echo "== NOAA-pagina, links met gshhg"
-          curl -sL -m 60 https://www.ngdc.noaa.gov/mgg/shorelines/ | grep -oiE 'href="[^"]*gshh[^"]*"' | sort -u | head -30
-          echo "== osmdata via http"
-          curl -s -o /dev/null -I --connect-timeout 20 -w '%{http_code}\n' http://osmdata.openstreetmap.de/ || true
-          echo "== Overpass kleine vraag"
-          curl -s -m 120 https://overpass-api.de/api/interpreter --data-urlencode 'data=[out:json];nwr["sport"="surfing"];out count;' | head -c 600; echo
+          UA="surfkaart (github.com/MatticeTT/PortugalAutumn2026)"
+          for u in https://www.ngdc.noaa.gov/mgg/shorelines/data/gshhs/latest/gshhg-shp-2.3.7.zip \
+                   https://www.ngdc.noaa.gov/mgg/shorelines/data/gshhs/latest/ ; do
+            echo "$(curl -s -o /dev/null -I -L -m 60 -w '%{http_code} %{size_download} %header{content-length}' "$u") $u"
+          done
+          echo "== Overpass met naam"
+          curl -s -m 300 -A "$UA" https://overpass-api.de/api/interpreter --data-urlencode 'data=[out:json][timeout:250];nwr["sport"="surfing"];out count;' | head -c 800; echo
