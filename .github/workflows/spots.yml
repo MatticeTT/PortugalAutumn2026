@@ -2,8 +2,13 @@ name: spots
 # Stap 1: spotlijst uit OpenStreetMap. Met de hand starten (en eens per maand).
 on:
   workflow_dispatch:
+  push:
+    branches: [ccr-70a0a2b6-vbws01]
+    paths: ["spots/**", "regels/spots.yaml", ".github/workflows/spots.yml"]
   schedule:
     - cron: "17 3 1 * *"
+permissions:
+  contents: write
 jobs:
   spots:
     runs-on: ubuntu-latest
@@ -20,3 +25,11 @@ jobs:
       - run: python -m spots.bouw --kustlijn /tmp/kust/coastlines-split-4326/lines.shp
       - uses: actions/upload-artifact@v4
         with: { name: spots, path: data/spots }
+      - name: Resultaat terugzetten in de repo
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add data/spots
+          git commit -m "Spots uit OpenStreetMap $(date -u +%F)" || exit 0
+          git pull --rebase origin "$GITHUB_REF_NAME"
+          git push origin HEAD:"$GITHUB_REF_NAME"
