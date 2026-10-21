@@ -18,8 +18,18 @@ jobs:
       - uses: actions/setup-python@v5
         with: { python-version: "3.12" }
       - run: pip install -r spots/requirements.txt
+      - uses: actions/cache/restore@v4
+        with:
+          path: data/spots/ruw/kust
+          key: kust-${{ github.run_id }}
+          restore-keys: kust-
       - name: Spots en kustlijn ophalen (Overpass) en doorrekenen
         run: python -m spots.bouw
+      - uses: actions/cache/save@v4
+        if: always()
+        with:
+          path: data/spots/ruw/kust
+          key: kust-${{ github.run_id }}-${{ github.run_attempt }}
       - uses: actions/upload-artifact@v4
         with:
           name: spots

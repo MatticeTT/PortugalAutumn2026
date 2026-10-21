@@ -8,7 +8,11 @@ from pathlib import Path
 
 import requests
 
-OVERPASS = "https://overpass-api.de/api/interpreter"
+SERVERS = [
+    "https://overpass-api.de/api/interpreter",
+    "https://maps.mail.ru/osm/tools/overpass/api/interpreter",
+]
+UA = {"User-Agent": "surfkaart (github.com/MatticeTT/PortugalAutumn2026)"}
 
 VRAAG_SPOTS = """
 [out:json][timeout:900];
@@ -17,15 +21,21 @@ out tags center bb;
 """
 
 
-def overpass(vraag: str, pogingen: int = 4) -> dict:
+def overpass(vraag: str, pogingen: int = 8) -> dict:
+    """Vraag aan Overpass; bij storing wachten en de volgende server proberen."""
+    fout = None
     for p in range(pogingen):
-        r = requests.post(OVERPASS, data={"data": vraag}, timeout=1000,
-                          headers={"User-Agent": "surfkaart (github.com/MatticeTT/PortugalAutumn2026)"})
-        if r.status_code == 200:
-            return r.json()
-        time.sleep(2 ** (p + 1) * 5)
-    r.raise_for_status()
-    raise RuntimeError("Overpass gaf geen antwoord")
+        url = SERVERS[p % len(SERVERS)]
+        try:
+            r = requests.post(url, data={"data": vraag}, timeout=1000, headers=UA)
+            if r.status_code == 200:
+                return r.json()
+            fout = f"{url}: {r.status_code}"
+        except (requests.RequestException, ValueError) as e:
+            fout = f"{url}: {e}"
+        print(f"Overpass-poging {p + 1} mislukt ({fout})", flush=True)
+        time.sleep(min(30 * (p + 1), 180))
+    raise RuntimeError(f"Overpass gaf geen antwoord na {pogingen} pogingen: {fout}")
 
 
 def haal_spots(uit: Path) -> dict:
