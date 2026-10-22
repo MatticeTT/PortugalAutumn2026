@@ -1,9 +1,10 @@
 """Controle na elke kaartrun: tonen de beelden dezelfde golven als Copernicus zelf?
 
-Leest op vaste punten op open zee de ruwe waarde van Copernicus (dichtstbijzijnde cel van 1/12 graad) en de
-waarde die de browser uit de fijne kaarttegel terugleest (zelfde decodering als web/src/field.ts). Verschillen
-komen van het 3 x 3-gemiddelde naar 0,25 graad en van de codering in 8 bit. Schrijft controle_golven.json naast
-de kaartdata en stopt met een fout als een verschil boven de grens ligt.
+Leest op vaste punten op open zee de ruwe waarden van Copernicus (de 3 x 3 cellen van 1/12 graad die samen één
+kaartcel van 0,25 graad vormen) en de waarde die de browser uit de fijne kaarttegel terugleest (zelfde
+decodering als web/src/field.ts). De kaartwaarde moet binnen het bereik van die 3 x 3 cellen liggen, met een
+marge voor de codering in 8 bit. Het verschil met de dichtstbijzijnde cel staat ter info in het verslag.
+Schrijft controle_golven.json naast de kaartdata en stopt met een fout als een waarde buiten het bereik valt.
 
 Gebruik: python -m pipeline.controle_golven --data web/public/data
 """
@@ -29,7 +30,8 @@ PUNTEN = {
     "Grote Oceaan zuid": (-40.0, -120.0), "Tasmanzee": (-38.0, 160.0),
 }
 UREN = (0, 24, 96)
-GRENS = {"hoogte_m": lambda ref: 0.15 + 0.05 * ref, "periode_s": lambda ref: 0.6, "richting_graden": lambda ref: 10.0}
+# Marge bovenop het bereik van de 3 x 3 cellen: afronding van de codering in 8 bit.
+MARGE = {"hoogte_m": lambda ref: 0.05 + 0.03 * ref, "periode_s": lambda ref: 0.3, "richting_graden": lambda ref: 3.0}
 
 
 def lees_tegel(data: Path, uur: int, systeem: str, lat: float, lon: float):
@@ -52,10 +54,31 @@ def lees_tegel(data: Path, uur: int, systeem: str, lat: float, lon: float):
 
 
 def ruw(bron: golven.Bron, t: dt.datetime, systeem: str, lat: float, lon: float) -> dict:
+    """Dichtstbijzijnde cel en het bereik (min, max) over de 3 x 3 cellen eromheen."""
     tt = np.datetime64(t.replace(tzinfo=None), "ns")
-    h, d, tm = (float(bron.ds[v].sel(time=tt, latitude=lat, longitude=((lon + 180) % 360) - 180, method="nearest"))
-                for v in golven.SYSTEMEN[systeem])
-    return {"hoogte_m": h, "periode_s": tm / golven.TM01_GEDEELD_DOOR_TP, "richting_graden": d}
+    lo = ((lon + 180) % 360) - 180
+    uit = {}
+    for naam, v in zip(("hoogte_m", "richting_graden", "periode_s"), golven.SYSTEMEN[systeem]):
+        da = bron.ds[v].sel(time=tt)
+        j = int(np.abs(da["latitude"].values - lat).argmin())
+        i = int(np.abs(da["longitude"].values - lo).argmin())
+        blok = np.asarray(da.isel(latitude=slice(j - 1, j + 2), longitude=slice(i - 1, i + 2)).values, dtype=float)
+        if naam == "periode_s":
+            blok = blok / golven.TM01_GEDEELD_DOOR_TP
+        uit[naam] = float(blok[1, 1])
+        uit[naam + "_bereik"] = blok.ravel().tolist()
+    return uit
+
+
+def binnen_bereik(waarde: float, cellen: list[float], naam: str, marge: float) -> bool:
+    c = np.array([x for x in cellen if np.isfinite(x)])
+    if not len(c):
+        return False
+    if naam == "richting_graden":
+        # Afwijking van de waarde tegenover elke cel; binnen bereik als ze tussen de uiterste afwijkingen ligt.
+        d = (c - waarde + 180) % 360 - 180
+        return d.min() - marge <= 0 <= d.max() + marge
+    return c.min() - marge <= waarde <= c.max() + marge
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -74,17 +97,15 @@ def main(argv: list[str] | None = None) -> int:
             if k is None or k.get("land") or not np.isfinite(r["hoogte_m"]):
                 rij["status"] = "niet vergeleken"
             else:
-                for v, grens in GRENS.items():
-                    d = k[v] - r[v]
-                    if v == "richting_graden":
-                        d = (d + 180) % 360 - 180
+                for v, marge in MARGE.items():
                     if r["hoogte_m"] < 0.2 and v != "hoogte_m":
                         continue  # nauwelijks deining: richting en periode zeggen weinig
-                    if abs(d) > grens(r[v]):
-                        fouten.append(f"{naam} +{uur} u {v}: kaart {k[v]:.2f}, Copernicus {r[v]:.2f}")
+                    if not binnen_bereik(k[v], r[v + "_bereik"], v, marge(r[v])):
+                        fouten.append(f"{naam} +{uur} u {v}: kaart {k[v]:.2f}, Copernicus {r[v]:.2f}, "
+                                      f"3 x 3 cellen {[round(x, 2) for x in r[v + '_bereik']]}")
                 rij["status"] = "ok"
             rijen.append(rij)
-    uit = {"run": m["run"], "systeem": "deining", "grenzen": "hoogte 0,15 m + 5 %, periode 0,6 s, richting 10 graden",
+    uit = {"run": m["run"], "systeem": "deining", "regel": "kaartwaarde binnen het bereik van de 3 x 3 Copernicus-cellen, marge 0,05 m + 3 %, 0,3 s, 3 graden",
            "fouten": fouten, "punten": rijen}
     (a.data / "controle_golven.json").write_text(json.dumps(uit, indent=1, ensure_ascii=False))
     vergeleken = sum(r["status"] == "ok" for r in rijen)
