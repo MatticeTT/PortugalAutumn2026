@@ -1,0 +1,909 @@
+{
+"_leesmij": "Spotkennis Portugal (vasteland), verzameld door AI uit online gidsen (zie bronnen per spot). Velden: zoek = naam voor de positie in OpenStreetMap (Nominatim); soort = strand | zandbank | rif | point | riviermonding | pier; richting_golf = links | rechts | beide; werkt_bij_tij = deel van [laag, half, hoog] waarbij de spot werkt (null = onbekend); deining_beste = [van, tot] kompasgraden waar de deining het best vandaan komt (null = onbekend); wind_aflandig = [van, tot] kompasgraden; vlaggen = ondiep (gevaarlijk ondiep bij laagwater), strekdam, pier, stroming, closeout; vorm = woorden voor de regels (hol, ondiep, zacht, wall, zwaar). Wat de bronnen niet zeggen blijft leeg: niet gokken. Bronnen spreken elkaar soms tegen; dan staat het in 'twijfel'.",
+"regio": "Portugal",
+"spots": [
+{
+"naam": "Moledo",
+"zoek": "Praia de Moledo, Caminha",
+"soort": "riviermonding",
+"richting_golf": "beide",
+"bodem": "zand",
+"werkt_bij_tij": null,
+"deining_beste": null,
+"wind_aflandig": null,
+"vlaggen": [],
+"vorm": null,
+"bronnen": [
+"https://www.surfnerd.com/surf-reports/portugal/viana-do-castelo"
+]
+},
+{
+"naam": "Afife",
+"zoek": "Praia de Afife, Viana do Castelo",
+"soort": "strand",
+"richting_golf": "beide",
+"bodem": "zand",
+"werkt_bij_tij": [
+"laag",
+"half"
+],
+"deining_beste": [
+202,
+247
+],
+"wind_aflandig": [
+45,
+135
+],
+"vlaggen": [
+"stroming"
+],
+"vorm": "hol",
+"bronnen": [
+"https://www.surfnerd.com/surf-forecast/afife"
+]
+},
+{
+"naam": "Cabedelo (Viana do Castelo)",
+"zoek": "Praia do Cabedelo, Viana do Castelo",
+"soort": "strand",
+"richting_golf": "beide",
+"bodem": "zand",
+"werkt_bij_tij": [
+"laag",
+"half"
+],
+"deining_beste": [
+180,
+315
+],
+"wind_aflandig": [
+45,
+135
+],
+"vlaggen": [
+"strekdam"
+],
+"vorm": null,
+"bronnen": [
+"https://www.surfertoday.com/surfing/14443-the-best-surf-spots-in-portugal"
+]
+},
+{
+"naam": "Aguçadoura",
+"zoek": "Praia de Aguçadoura, Póvoa de Varzim",
+"soort": "strand",
+"richting_golf": "beide",
+"bodem": "zand",
+"werkt_bij_tij": [
+"laag",
+"half",
+"hoog"
+],
+"deining_beste": [
+225,
+360
+],
+"wind_aflandig": [
+90,
+180
+],
+"vlaggen": [],
+"vorm": null,
+"bronnen": [
+"https://www.surfertoday.com/surfing/14443-the-best-surf-spots-in-portugal"
+]
+},
+{
+"naam": "Leça da Palmeira",
+"zoek": "Praia de Leça da Palmeira, Matosinhos",
+"soort": "strand",
+"richting_golf": "beide",
+"bodem": "zand",
+"werkt_bij_tij": null,
+"deining_beste": null,
+"wind_aflandig": null,
+"vlaggen": [],
+"vorm": "zwaar",
+"bronnen": [
+"https://www.surfertoday.com/surfing/14443-the-best-surf-spots-in-portugal"
+]
+},
+{
+"naam": "Matosinhos",
+"zoek": "Praia de Matosinhos",
+"soort": "strand",
+"richting_golf": "beide",
+"bodem": "zand",
+"werkt_bij_tij": null,
+"deining_beste": null,
+"wind_aflandig": null,
+"vlaggen": [
+"strekdam"
+],
+"vorm": "zacht",
+"bronnen": [
+"https://www.surfertoday.com/surfing/14443-the-best-surf-spots-in-portugal"
+]
+},
+{
+"naam": "Espinho (Direita do Casino)",
+"zoek": "Praia da Baía, Espinho",
+"soort": "strand",
+"richting_golf": "rechts",
+"bodem": "zand",
+"werkt_bij_tij": null,
+"deining_beste": null,
+"wind_aflandig": null,
+"vlaggen": [
+"strekdam"
+],
+"vorm": null,
+"bronnen": [
+"https://www.visitportugal.com/en/content/going-to-the-beach-in-porto-and-north"
+]
+},
+{
+"naam": "Praia da Barra",
+"zoek": "Praia da Barra, Ílhavo",
+"soort": "strand",
+"richting_golf": "beide",
+"bodem": "zand",
+"werkt_bij_tij": null,
+"deining_beste": null,
+"wind_aflandig": null,
+"vlaggen": [
+"strekdam"
+],
+"vorm": null,
+"bronnen": [
+"https://www.surfertoday.com/surfing/14443-the-best-surf-spots-in-portugal"
+]
+},
+{
+"naam": "Buarcos",
+"zoek": "Praia de Buarcos, Figueira da Foz",
+"soort": "point",
+"richting_golf": "rechts",
+"bodem": "rots",
+"werkt_bij_tij": null,
+"deining_beste": null,
+"wind_aflandig": null,
+"vlaggen": [],
+"vorm": "point",
+"bronnen": [
+"https://surfingfigueira.com/en/blog/693/surf-spots-in-figueira-da-foz-discover-the-main-ones"
+]
+},
+{
+"naam": "Cabedelo (Figueira da Foz)",
+"zoek": "Praia do Cabedelo, Figueira da Foz",
+"soort": "point",
+"richting_golf": "rechts",
+"bodem": "zand",
+"werkt_bij_tij": [
+"half",
+"hoog"
+],
+"deining_beste": [
+247,
+292
+],
+"wind_aflandig": [
+45,
+135
+],
+"vlaggen": [
+"strekdam",
+"stroming"
+],
+"vorm": "point hol",
+"bronnen": [
+"https://surfingfigueira.com/en/blog/693/surf-spots-in-figueira-da-foz-discover-the-main-ones",
+"https://www.surf-forecast.com/breaks/Cabedelo"
+]
+},
+{
+"naam": "Cova Gala",
+"zoek": "Praia da Cova Gala, Figueira da Foz",
+"soort": "strand",
+"richting_golf": "beide",
+"bodem": "zand",
+"werkt_bij_tij": null,
+"deining_beste": null,
+"wind_aflandig": null,
+"vlaggen": [
+"stroming"
+],
+"vorm": null,
+"bronnen": [
+"https://surfingfigueira.com/en/blog/693/surf-spots-in-figueira-da-foz-discover-the-main-ones"
+]
+},
+{
+"naam": "Nazaré Praia do Norte",
+"zoek": "Praia do Norte, Nazaré",
+"soort": "strand",
+"richting_golf": "beide",
+"bodem": "zand",
+"werkt_bij_tij": [
+"laag",
+"half"
+],
+"deining_beste": [
+225,
+315
+],
+"wind_aflandig": [
+45,
+135
+],
+"vlaggen": [
+"stroming"
+],
+"vorm": "zwaar hol",
+"twijfel": "tij: een bron zegt laag tot half, een andere elk tij; deining: een bron zegt zuidwest tot noordwest, een andere zuidwest tot noord",
+"bronnen": [
+"https://www.mondo.surf/surf-spot/praia-do-norte/guide/1191",
+"https://www.surfnerd.com/surf-forecast/nazare"
+]
+},
+{
+"naam": "Supertubos",
+"zoek": "Praia do Medão, Peniche",
+"soort": "strand",
+"richting_golf": "beide",
+"bodem": "zand",
+"werkt_bij_tij": null,
+"deining_beste": [
+180,
+270
+],
+"wind_aflandig": [
+22,
+112
+],
+"vlaggen": [],
+"vorm": "hol zwaar",
+"bronnen": [
+"https://www.surfertoday.com/surfing/supertubos-the-greatest-barreling-wave-of-the-old-continent",
+"https://www.mondo.surf/surf-spot/supertubos/guide/1218"
+]
+},
+{
+"naam": "Molhe Leste",
+"zoek": "Molhe Leste, Peniche",
+"soort": "strand",
+"richting_golf": "rechts",
+"bodem": "zand",
+"werkt_bij_tij": [
+"half"
+],
+"deining_beste": null,
+"wind_aflandig": null,
+"vlaggen": [
+"strekdam",
+"closeout"
+],
+"vorm": null,
+"twijfel": "een bron noemt het een point die grote deining nodig heeft, een andere een strand dat snel dichtklapt",
+"bronnen": [
+"https://thesurfatlas.com/surfing-portugal/peniche-surf/",
+"https://www.campervanlife.com/travel-guide/europe/portugal/surfing-peniche/"
+]
+},
+{
+"naam": "Consolação",
+"zoek": "Praia da Consolação, Peniche",
+"soort": "point",
+"richting_golf": "rechts",
+"bodem": "rif",
+"werkt_bij_tij": [
+"hoog"
+],
+"deining_beste": null,
+"wind_aflandig": null,
+"vlaggen": [
+"ondiep"
+],
+"vorm": "point",
+"bronnen": [
+"https://www.campervanlife.com/travel-guide/europe/portugal/surfing-peniche/"
+]
+},
+{
+"naam": "Baleal",
+"zoek": "Praia do Baleal, Peniche",
+"soort": "strand",
+"richting_golf": "beide",
+"bodem": "zand",
+"werkt_bij_tij": null,
+"deining_beste": null,
+"wind_aflandig": null,
+"vlaggen": [],
+"vorm": "zacht",
+"opmerking": "baai in een halve maan: een deel ligt aflandig bij wind van west tot oost",
+"bronnen": [
+"https://www.campervanlife.com/travel-guide/europe/portugal/surfing-peniche/"
+]
+},
+{
+"naam": "Lagide",
+"zoek": "Praia do Lagido, Peniche",
+"soort": "rif",
+"richting_golf": "links",
+"bodem": "rif",
+"werkt_bij_tij": [
+"half"
+],
+"deining_beste": [
+315,
+360
+],
+"wind_aflandig": null,
+"vlaggen": [
+"ondiep"
+],
+"vorm": null,
+"bronnen": [
+"https://thesurfatlas.com/surfing-portugal/peniche-surf/"
+]
+},
+{
+"naam": "Belgas",
+"zoek": "Praia das Belgas, Peniche",
+"soort": "strand",
+"richting_golf": "beide",
+"bodem": "zand",
+"werkt_bij_tij": [
+"laag",
+"half",
+"hoog"
+],
+"deining_beste": [
+337,
+22
+],
+"wind_aflandig": [
+90,
+180
+],
+"vlaggen": [],
+"vorm": null,
+"bronnen": [
+"https://www.campervanlife.com/travel-guide/europe/portugal/surfing-peniche/"
+]
+},
+{
+"naam": "Almagreira",
+"zoek": "Praia da Almagreira, Peniche",
+"soort": "strand",
+"richting_golf": "beide",
+"bodem": "zand",
+"werkt_bij_tij": [
+"laag",
+"half",
+"hoog"
+],
+"deining_beste": [
+270,
+360
+],
+"wind_aflandig": [
+90,
+180
+],
+"vlaggen": [],
+"vorm": null,
+"twijfel": "opmaak van de bron is onduidelijk (mogelijk verwisseld met Supertubos)",
+"bronnen": [
+"https://www.campervanlife.com/travel-guide/europe/portugal/surfing-peniche/"
+]
+},
+{
+"naam": "São Lourenço",
+"zoek": "Praia de São Lourenço, Mafra",
+"soort": "rif",
+"richting_golf": "rechts",
+"bodem": "rots",
+"werkt_bij_tij": [
+"half"
+],
+"deining_beste": null,
+"wind_aflandig": null,
+"vlaggen": [
+"ondiep"
+],
+"vorm": "zwaar hol",
+"bronnen": [
+"https://thesurfatlas.com/surfing-portugal/ericeira-surf/"
+]
+},
+{
+"naam": "Coxos",
+"zoek": "Praia dos Coxos, Mafra",
+"soort": "point",
+"richting_golf": "rechts",
+"bodem": "rif",
+"werkt_bij_tij": [
+"laag"
+],
+"deining_beste": [
+270,
+315
+],
+"wind_aflandig": null,
+"vlaggen": [
+"ondiep"
+],
+"vorm": "point hol zwaar",
+"bronnen": [
+"https://www.mondo.surf/surf-spot/coxos/guide/1163",
+"https://thesurfatlas.com/surfing-portugal/ericeira-surf/"
+]
+},
+{
+"naam": "Ribeira d'Ilhas",
+"zoek": "Praia da Ribeira d'Ilhas, Mafra",
+"soort": "point",
+"richting_golf": "rechts",
+"bodem": "rif",
+"werkt_bij_tij": [
+"half"
+],
+"deining_beste": null,
+"wind_aflandig": null,
+"vlaggen": [],
+"vorm": "point",
+"bronnen": [
+"https://www.surfertoday.com/surfing/ribeira-dilhas-ericeira-the-ultimate-european-point-break"
+]
+},
+{
+"naam": "Pedra Branca",
+"zoek": "Pedra Branca, Ericeira",
+"soort": "rif",
+"richting_golf": "links",
+"bodem": "rif",
+"werkt_bij_tij": [
+"half"
+],
+"deining_beste": null,
+"wind_aflandig": null,
+"vlaggen": [
+"ondiep"
+],
+"vorm": "hol ondiep",
+"bronnen": [
+"https://thesurfatlas.com/surfing-portugal/ericeira-surf/"
+]
+},
+{
+"naam": "Foz do Lizandro",
+"zoek": "Praia da Foz do Lizandro, Mafra",
+"soort": "strand",
+"richting_golf": "beide",
+"bodem": "zand",
+"werkt_bij_tij": null,
+"deining_beste": null,
+"wind_aflandig": null,
+"vlaggen": [],
+"vorm": null,
+"bronnen": [
+"https://thesurfatlas.com/surfing-portugal/ericeira-surf/"
+]
+},
+{
+"naam": "São Julião",
+"zoek": "Praia de São Julião, Sintra",
+"soort": "strand",
+"richting_golf": "beide",
+"bodem": "zand",
+"werkt_bij_tij": [
+"laag",
+"half",
+"hoog"
+],
+"deining_beste": null,
+"wind_aflandig": null,
+"vlaggen": [],
+"vorm": null,
+"bronnen": [
+"https://thesurfatlas.com/surfing-portugal/ericeira-surf/"
+]
+},
+{
+"naam": "Praia Grande (Sintra)",
+"zoek": "Praia Grande, Colares, Sintra",
+"soort": "strand",
+"richting_golf": "beide",
+"bodem": "zand",
+"werkt_bij_tij": null,
+"deining_beste": null,
+"wind_aflandig": null,
+"vlaggen": [],
+"vorm": "zwaar",
+"bronnen": [
+"https://lisboasecreta.co/en/surf-spots-guide-lisbon-surroundings/"
+]
+},
+{
+"naam": "Praia das Maçãs",
+"zoek": "Praia das Maçãs, Sintra",
+"soort": "strand",
+"richting_golf": "beide",
+"bodem": "zand",
+"werkt_bij_tij": null,
+"deining_beste": null,
+"wind_aflandig": null,
+"vlaggen": [],
+"vorm": null,
+"bronnen": [
+"https://lisboasecreta.co/en/surf-spots-guide-lisbon-surroundings/"
+]
+},
+{
+"naam": "Guincho",
+"zoek": "Praia do Guincho, Cascais",
+"soort": "strand",
+"richting_golf": "beide",
+"bodem": "zand",
+"werkt_bij_tij": [
+"laag",
+"half",
+"hoog"
+],
+"deining_beste": null,
+"wind_aflandig": null,
+"vlaggen": [
+"stroming"
+],
+"vorm": "hol",
+"opmerking": "veel wind; werkt zelden bij westenwind",
+"bronnen": [
+"https://lisboasecreta.co/en/surf-spots-guide-lisbon-surroundings/"
+]
+},
+{
+"naam": "Carcavelos",
+"zoek": "Praia de Carcavelos, Cascais",
+"soort": "strand",
+"richting_golf": "beide",
+"bodem": "zand",
+"werkt_bij_tij": null,
+"deining_beste": [
+202,
+247
+],
+"wind_aflandig": [
+315,
+45
+],
+"vlaggen": [],
+"vorm": null,
+"bronnen": [
+"https://lisboasecreta.co/en/surf-spots-guide-lisbon-surroundings/",
+"https://siestacampers.com/blog/surfing-lisbon-7-best-surf-spots-close-to-town"
+]
+},
+{
+"naam": "Costa da Caparica São João",
+"zoek": "Praia de São João da Caparica, Almada",
+"soort": "strand",
+"richting_golf": "beide",
+"bodem": "zand",
+"werkt_bij_tij": null,
+"deining_beste": [
+225,
+270
+],
+"wind_aflandig": null,
+"vlaggen": [
+"strekdam"
+],
+"vorm": null,
+"bronnen": [
+"https://lisboasecreta.co/en/surf-spots-guide-lisbon-surroundings/"
+]
+},
+{
+"naam": "Fonte da Telha",
+"zoek": "Praia da Fonte da Telha, Almada",
+"soort": "strand",
+"richting_golf": "beide",
+"bodem": "zand",
+"werkt_bij_tij": null,
+"deining_beste": null,
+"wind_aflandig": null,
+"vlaggen": [],
+"vorm": "zacht",
+"bronnen": [
+"https://lisboasecreta.co/en/surf-spots-guide-lisbon-surroundings/"
+]
+},
+{
+"naam": "São Torpes",
+"zoek": "Praia de São Torpes, Sines",
+"soort": "strand",
+"richting_golf": "rechts",
+"bodem": "zand",
+"werkt_bij_tij": null,
+"deining_beste": [
+292,
+337
+],
+"wind_aflandig": null,
+"vlaggen": [
+"strekdam"
+],
+"vorm": null,
+"opmerking": "achter een pier, beschut tegen noordenwind",
+"bronnen": [
+"https://thesurfatlas.com/surfing-portugal/sines-surf/"
+]
+},
+{
+"naam": "Vieirinha",
+"zoek": "Praia da Vieirinha, Sines",
+"soort": "strand",
+"richting_golf": "beide",
+"bodem": "zand",
+"werkt_bij_tij": [
+"half",
+"hoog"
+],
+"deining_beste": [
+270,
+337
+],
+"wind_aflandig": null,
+"vlaggen": [],
+"vorm": null,
+"bronnen": [
+"https://thesurfatlas.com/surfing-portugal/sines-surf/"
+]
+},
+{
+"naam": "Aivados",
+"zoek": "Praia dos Aivados, Odemira",
+"soort": "strand",
+"richting_golf": "beide",
+"bodem": "gemengd",
+"werkt_bij_tij": null,
+"deining_beste": [
+292,
+337
+],
+"wind_aflandig": [
+135,
+225
+],
+"vlaggen": [],
+"vorm": null,
+"bronnen": [
+"https://www.blog.herdadedamatinha.com/b/en/?p=1046"
+]
+},
+{
+"naam": "Malhão",
+"zoek": "Praia do Malhão, Odemira",
+"soort": "strand",
+"richting_golf": "beide",
+"bodem": "zand",
+"werkt_bij_tij": [
+"laag",
+"half",
+"hoog"
+],
+"deining_beste": null,
+"wind_aflandig": null,
+"vlaggen": [],
+"vorm": null,
+"bronnen": [
+"https://www.mondo.surf/surf-spot/malhao/guide/177",
+"https://www.rapturecamps.com/surfcamp/portugal/alentejo-milfontes/surf"
+]
+},
+{
+"naam": "Praia do Farol (Milfontes)",
+"zoek": "Praia do Farol, Vila Nova de Milfontes",
+"soort": "strand",
+"richting_golf": "beide",
+"bodem": "zand",
+"werkt_bij_tij": [
+"laag",
+"half",
+"hoog"
+],
+"deining_beste": null,
+"wind_aflandig": null,
+"vlaggen": [],
+"vorm": null,
+"bronnen": [
+"https://www.mondo.surf/surf-spot/vila-nova-de-milfontes/guide/5057"
+]
+},
+{
+"naam": "Almograve",
+"zoek": "Praia de Almograve, Odemira",
+"soort": "strand",
+"richting_golf": "beide",
+"bodem": "zand",
+"werkt_bij_tij": null,
+"deining_beste": null,
+"wind_aflandig": null,
+"vlaggen": [],
+"vorm": null,
+"bronnen": [
+"https://www.blog.herdadedamatinha.com/b/en/?p=1046"
+]
+},
+{
+"naam": "Arrifana",
+"zoek": "Praia da Arrifana, Aljezur",
+"soort": "strand",
+"richting_golf": "beide",
+"bodem": "zand",
+"werkt_bij_tij": null,
+"deining_beste": null,
+"wind_aflandig": null,
+"vlaggen": [],
+"vorm": "zacht",
+"bronnen": [
+"https://breathingtravel.com/surfing-in-the-algarve/"
+]
+},
+{
+"naam": "Amoreira",
+"zoek": "Praia da Amoreira, Aljezur",
+"soort": "riviermonding",
+"richting_golf": "beide",
+"bodem": "gemengd",
+"werkt_bij_tij": null,
+"deining_beste": null,
+"wind_aflandig": null,
+"vlaggen": [],
+"vorm": null,
+"bronnen": [
+"https://breathingtravel.com/surfing-in-the-algarve/"
+]
+},
+{
+"naam": "Bordeira",
+"zoek": "Praia da Bordeira, Aljezur",
+"soort": "strand",
+"richting_golf": "beide",
+"bodem": "zand",
+"werkt_bij_tij": null,
+"deining_beste": null,
+"wind_aflandig": null,
+"vlaggen": [],
+"vorm": null,
+"bronnen": [
+"https://breathingtravel.com/surfing-in-the-algarve/"
+]
+},
+{
+"naam": "Amado",
+"zoek": "Praia do Amado, Aljezur",
+"soort": "strand",
+"richting_golf": "beide",
+"bodem": "zand",
+"werkt_bij_tij": null,
+"deining_beste": null,
+"wind_aflandig": null,
+"vlaggen": [],
+"vorm": null,
+"bronnen": [
+"https://breathingtravel.com/surfing-in-the-algarve/"
+]
+},
+{
+"naam": "Cordoama",
+"zoek": "Praia da Cordoama, Vila do Bispo",
+"soort": "strand",
+"richting_golf": "beide",
+"bodem": "zand",
+"werkt_bij_tij": null,
+"deining_beste": null,
+"wind_aflandig": null,
+"vlaggen": [],
+"vorm": null,
+"bronnen": [
+"https://breathingtravel.com/surfing-in-the-algarve/"
+]
+},
+{
+"naam": "Tonel",
+"zoek": "Praia do Tonel, Sagres",
+"soort": "strand",
+"richting_golf": "beide",
+"bodem": "zand",
+"werkt_bij_tij": null,
+"deining_beste": null,
+"wind_aflandig": null,
+"vlaggen": [],
+"vorm": null,
+"bronnen": [
+"https://breathingtravel.com/surfing-in-the-algarve/"
+]
+},
+{
+"naam": "Beliche",
+"zoek": "Praia do Beliche, Sagres",
+"soort": "strand",
+"richting_golf": "beide",
+"bodem": "zand",
+"werkt_bij_tij": null,
+"deining_beste": null,
+"wind_aflandig": null,
+"vlaggen": [],
+"vorm": null,
+"opmerking": "beschut en glad bij harde noordenwind",
+"bronnen": [
+"https://breathingtravel.com/surfing-in-the-algarve/"
+]
+},
+{
+"naam": "Zavial",
+"zoek": "Praia do Zavial, Vila do Bispo",
+"soort": "point",
+"richting_golf": "rechts",
+"bodem": "gemengd",
+"werkt_bij_tij": null,
+"deining_beste": null,
+"wind_aflandig": [
+315,
+45
+],
+"vlaggen": [],
+"vorm": "point",
+"opmerking": "zuidkust: werkt bij grote deining",
+"bronnen": [
+"https://breathingtravel.com/surfing-in-the-algarve/",
+"https://thesurfatlas.com/surfing-portugal/algarve-surf/"
+]
+},
+{
+"naam": "Alvor",
+"zoek": "Praia de Alvor, Portimão",
+"soort": "strand",
+"richting_golf": "beide",
+"bodem": "zand",
+"werkt_bij_tij": [
+"hoog"
+],
+"deining_beste": [
+202,
+247
+],
+"wind_aflandig": [
+315,
+45
+],
+"vlaggen": [],
+"vorm": null,
+"bronnen": [
+"https://www.mondo.surf/surf-spot/alvor/guide/4990",
+"https://pt.surf-forecast.com/breaks/Alvor"
+]
+},
+{
+"naam": "Praia da Rocha",
+"zoek": "Praia da Rocha, Portimão",
+"soort": "strand",
+"richting_golf": "beide",
+"bodem": "zand",
+"werkt_bij_tij": null,
+"deining_beste": null,
+"wind_aflandig": null,
+"vlaggen": [
+"strekdam"
+],
+"vorm": "zacht",
+"bronnen": [
+"https://breathingtravel.com/surfing-in-the-algarve/"
+]
+}
+]
+}

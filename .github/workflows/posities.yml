@@ -1,0 +1,32 @@
+# Posities van de spots uit de spotkennis opzoeken in OpenStreetMap (spots/posities.py) en committen.
+name: posities
+on:
+  workflow_dispatch:
+  push:
+    branches: [ccr-1fe05339-6haah2]
+    paths:
+      - "spots/kennis/*.json"
+      - "!spots/kennis/*_posities.json"
+      - "spots/posities.py"
+      - ".github/workflows/posities.yml"
+permissions:
+  contents: write
+jobs:
+  posities:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: python -m spots.posities
+      - name: Resultaat committen
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add spots/kennis/*_posities.json || exit 0
+          git diff --cached --quiet && exit 0
+          git commit -m "Posities van de spots uit OpenStreetMap (Nominatim)"
+          for i in 1 2 3; do git pull --rebase origin "$GITHUB_REF_NAME" && git push origin "HEAD:$GITHUB_REF_NAME" && exit 0; sleep 5; done
+          exit 1
