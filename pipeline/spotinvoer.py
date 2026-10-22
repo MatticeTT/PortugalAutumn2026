@@ -277,4 +277,11 @@ def main(argv: list[str] | None = None) -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    import os
+    import sys
+
+    code = main()
+    sys.stdout.flush()
+    # Direct stoppen: het opruimen van de GRIB- en netCDF-bibliotheken bij het afsluiten crasht soms
+    # ("double free"), nadat alles al geschreven is.
+    os._exit(code)
