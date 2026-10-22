@@ -21,6 +21,7 @@ export interface SpotIndex {
   run: string
   drempel: number
   min_uren: number
+  bundel: number // details staan per bundel: d<floor(id / bundel)>.json
   spots: SpotKort[]
 }
 
@@ -46,7 +47,7 @@ export interface SpotDetail {
 
 export class SpotData {
   index: SpotIndex | null = null
-  private details = new Map<number, Promise<SpotDetail>>()
+  private bundels = new Map<number, Promise<Record<string, SpotDetail>>>()
 
   constructor(private base: string) {}
 
@@ -56,13 +57,14 @@ export class SpotData {
     return this.index
   }
 
-  detail(id: number): Promise<SpotDetail> {
-    let p = this.details.get(id)
+  async detail(id: number): Promise<SpotDetail> {
+    const b = Math.floor(id / (this.index?.bundel ?? 20))
+    let p = this.bundels.get(b)
     if (!p) {
-      p = fetch(`${this.base}/${id}.json`).then((r) => r.json())
-      this.details.set(id, p)
+      p = fetch(`${this.base}/d${b}.json`).then((r) => r.json())
+      this.bundels.set(b, p)
     }
-    return p
+    return (await p)[String(id)]
   }
 
   spot(id: number) {

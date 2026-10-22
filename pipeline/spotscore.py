@@ -40,6 +40,7 @@ from pathlib import Path
 from score import referentie as R
 
 KWARTIER = dt.timedelta(minutes=15)
+BUNDEL = 20
 EXPERT_CODE = {"grote golven": "g", "holle golf over rif of rotsen": "h", "zware shorebreak": "s",
                "ondiep rif of rotsen": "o", "sterke stroming": "t"}
 MS_NAAR_KN = 1.943844
@@ -358,7 +359,9 @@ def main(argv: list[str] | None = None) -> int:
     van = tijd(inv["run"])
     tot = van + dt.timedelta(days=10)
     a.uit.mkdir(parents=True, exist_ok=True)
-    lijst, overgeslagen = [], []
+    lijst, overgeslagen, bundels = [], [], {}
+    for oud in a.uit.glob("*.json"):
+        oud.unlink()
     for n, i in enumerate(inv["spots"]):
         s = spots.get((i["naam"], i["lat"], i["lon"]))
         if s is None:
@@ -369,11 +372,14 @@ def main(argv: list[str] | None = None) -> int:
                      else "geen golf- of winddata")
             overgeslagen.append({"naam": s["naam"], "lat": s["lat"], "lon": s["lon"], "reden": reden})
             continue
-        (a.uit / f"{n}.json").write_text(json.dumps(r, ensure_ascii=False, separators=(",", ":")))
+        bundels.setdefault(n // BUNDEL, {})[str(n)] = r
         lijst.append({"id": n, "naam": r["naam"], "lat": r["lat"], "lon": r["lon"], "richting": r["richting"],
                       "soort": r["soort"], "tijdvakken": {p: v for p, v in r["tijdvakken"].items() if v}})
     groepen(lijst)
-    (a.uit / "index.json").write_text(json.dumps({"run": inv["run"], "drempel": DREMPEL, "min_uren": MIN_UREN,
+    # Details per bundel van BUNDEL spots (d<n>.json): minder bestanden, één download voor buren.
+    for b, inhoud in bundels.items():
+        (a.uit / f"d{b}.json").write_text(json.dumps(inhoud, ensure_ascii=False, separators=(",", ":")))
+    (a.uit / "index.json").write_text(json.dumps({"run": inv["run"], "drempel": DREMPEL, "min_uren": MIN_UREN, "bundel": BUNDEL,
                                                   "spots": lijst, "niet_gescoord": overgeslagen},
                                                  ensure_ascii=False, separators=(",", ":")))
     print(f"{len(lijst)} spots gescoord, {len(overgeslagen)} niet", flush=True)
