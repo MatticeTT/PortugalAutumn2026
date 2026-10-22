@@ -282,7 +282,8 @@ def main(argv: list[str] | None = None) -> int:
     # Vercel (gratis plan) aanvaardt hooguit 100 MB per publicatie: de verre toekomst grover.
     p.add_argument("--fine-hours", type=int, default=120, help="fijne tegels (0,25 graad) tot dit uur")
     p.add_argument("--mid-hours", type=int, default=240, help="daarna wereldraster van 0,5 graad tot dit uur, dan 1")
-    p.add_argument("--windsea-fine-hours", type=int, default=48, help="fijne tegels voor de windzee tot dit uur")
+    p.add_argument("--windsea-fine-hours", type=int, default=0,
+                   help="fijne tegels voor de windzee tot dit uur (0: geen; Vercel aanvaardt hooguit 100 MB)")
     p.add_argument("--ecmwf-golven", action="store_true", help="golven van ECMWF WAM in plaats van Copernicus")
     p.add_argument("--workers", type=int, default=4)
     a = p.parse_args(argv)
