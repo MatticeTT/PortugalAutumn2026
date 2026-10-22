@@ -1,0 +1,5471 @@
+{
+"_leesmij": "Alle stranden van Portugal uit de eerste versie van de app (data/beaches/stranden.geojson op de tak claude/lucid-ritchie-5h6mac): OpenStreetMap natural=beach met naam (© OpenStreetMap-bijdragers, ODbL 1.0) en de officiële zwemwateren van EEA/APA (CC BY 4.0). Punt op het strand.",
+"stranden": [
+{
+"id": "eea/PTCW9H",
+"naam": "PEDRAS RUIVAS",
+"lon": -8.874633,
+"lat": 41.899074,
+"eea": [
+"PTCW9H"
+]
+},
+{
+"id": "way/1474542132",
+"naam": "Praia de Caminha",
+"lon": -8.870191,
+"lat": 41.862413,
+"eea": [
+"PTCT3X"
+]
+},
+{
+"id": "way/1474542134",
+"naam": "Praia de Moledo",
+"lon": -8.866863,
+"lat": 41.851014,
+"eea": [
+"PTCF2N"
+]
+},
+{
+"id": "relation/4830178",
+"naam": "Praia de Vila Praia de Âncora",
+"lon": -8.865457,
+"lat": 41.81309,
+"eea": []
+},
+{
+"id": "relation/14410603",
+"naam": "Praia da Duna do Caldeirão",
+"lon": -8.866457,
+"lat": 41.806951,
+"eea": [
+"PTCQ8J"
+]
+},
+{
+"id": "relation/4830175",
+"naam": "Praia do Forte do Cão",
+"lon": -8.870781,
+"lat": 41.800686,
+"eea": [
+"PTCX7T"
+]
+},
+{
+"id": "node/3859586890",
+"naam": "Praia de Afife",
+"lon": -8.871846,
+"lat": 41.785282,
+"eea": [
+"PTCK3J"
+]
+},
+{
+"id": "relation/4830174",
+"naam": "Praia da Arda",
+"lon": -8.873222,
+"lat": 41.773139,
+"eea": [
+"PTCN2U",
+"PTCU7E"
+]
+},
+{
+"id": "relation/4830177",
+"naam": "Praia de Paçô",
+"lon": -8.877881,
+"lat": 41.758861,
+"eea": [
+"PTCD3V"
+]
+},
+{
+"id": "way/1384298905",
+"naam": "Praia de Carreço",
+"lon": -8.874714,
+"lat": 41.736732,
+"eea": [
+"PTCD8U"
+]
+},
+{
+"id": "eea/PTCJ9U",
+"naam": "NORTE",
+"lon": -8.850576,
+"lat": 41.696047,
+"eea": [
+"PTCJ9U"
+]
+},
+{
+"id": "way/209096478",
+"naam": "Praia do Coral",
+"lon": -8.845256,
+"lat": 41.682741,
+"eea": []
+},
+{
+"id": "way/1474807121",
+"naam": "Praia do Aquário",
+"lon": -8.836794,
+"lat": 41.681088,
+"eea": [
+"PTCD7W"
+]
+},
+{
+"id": "way/1384166636",
+"naam": "Praia do Cabedelo",
+"lon": -8.824714,
+"lat": 41.661808,
+"eea": [
+"PTCQ7C",
+"PTCX7D"
+]
+},
+{
+"id": "way/1474143708",
+"naam": "Praia Rodanho - zona de Naturista tolerado",
+"lon": -8.824727,
+"lat": 41.661652,
+"eea": []
+},
+{
+"id": "way/1474192103",
+"naam": "Praia de Amorosa",
+"lon": -8.825075,
+"lat": 41.645742,
+"eea": [
+"PTCV9M"
+]
+},
+{
+"id": "way/1378407964",
+"naam": "Praia de Lordelo",
+"lon": -8.820972,
+"lat": 41.637004,
+"eea": []
+},
+{
+"id": "way/1473435565",
+"naam": "Praia de Castelo do Neiva",
+"lon": -8.821768,
+"lat": 41.630001,
+"eea": [
+"PTCF9P"
+]
+},
+{
+"id": "way/1378184514",
+"naam": "Praia de S.Bartolomeu",
+"lon": -8.798487,
+"lat": 41.573265,
+"eea": []
+},
+{
+"id": "way/1378297580",
+"naam": "Praia de Rio de Moinhos",
+"lon": -8.796893,
+"lat": 41.565782,
+"eea": [
+"PTCF3L"
+]
+},
+{
+"id": "way/1378297582",
+"naam": "Praia de Cepães",
+"lon": -8.793431,
+"lat": 41.553932,
+"eea": [
+"PTCX7E"
+]
+},
+{
+"id": "way/1378184517",
+"naam": "Praia Suave Mar (Norte)",
+"lon": -8.792335,
+"lat": 41.54827,
+"eea": []
+},
+{
+"id": "way/1378184518",
+"naam": "Praia Suave Mar (Centro)",
+"lon": -8.79257,
+"lat": 41.546625,
+"eea": []
+},
+{
+"id": "way/1378184520",
+"naam": "Praia Suave Mar (Sul)",
+"lon": -8.792831,
+"lat": 41.545007,
+"eea": [
+"PTCX7J"
+]
+},
+{
+"id": "way/340980132",
+"naam": "Praia de Ofir",
+"lon": -8.788072,
+"lat": 41.518408,
+"eea": [
+"PTCL2X"
+]
+},
+{
+"id": "way/1383850246",
+"naam": "Praia das Pedrinhas",
+"lon": -8.787901,
+"lat": 41.500752,
+"eea": []
+},
+{
+"id": "way/1383850245",
+"naam": "Praia das Pedrinhas",
+"lon": -8.785608,
+"lat": 41.495816,
+"eea": []
+},
+{
+"id": "way/1289718115",
+"naam": "Praia da Apúlia",
+"lon": -8.778354,
+"lat": 41.482738,
+"eea": [
+"PTCN8H"
+]
+},
+{
+"id": "way/1383808559",
+"naam": "Praia da Ramalha",
+"lon": -8.775874,
+"lat": 41.475213,
+"eea": [
+"PTCD9K"
+]
+},
+{
+"id": "way/1548650458",
+"naam": "ESTELA-BARRANHA",
+"lon": -8.777717,
+"lat": 41.458691,
+"eea": [
+"PTCL7P"
+]
+},
+{
+"id": "node/11066687473",
+"naam": "Praia da Estela",
+"lon": -8.778086,
+"lat": 41.454,
+"eea": []
+},
+{
+"id": "node/11105958933",
+"naam": "Praia da Barranha",
+"lon": -8.781107,
+"lat": 41.438952,
+"eea": [
+"PTCD9T"
+]
+},
+{
+"id": "node/3859586886",
+"naam": "Praia Rio Alto Naturista",
+"lon": -8.784311,
+"lat": 41.433334,
+"eea": [
+"PTCD8J"
+]
+},
+{
+"id": "eea/PTCD7L",
+"naam": "QUIÃO",
+"lon": -8.787914,
+"lat": 41.416448,
+"eea": [
+"PTCD7L"
+]
+},
+{
+"id": "way/953332443",
+"naam": "Praia de Fragosa",
+"lon": -8.779362,
+"lat": 41.397688,
+"eea": [
+"PTCT9M"
+]
+},
+{
+"id": "way/489338569",
+"naam": "Praia de Fragosinho",
+"lon": -8.778137,
+"lat": 41.39469,
+"eea": []
+},
+{
+"id": "way/953326136",
+"naam": "Praia de Pontes",
+"lon": -8.777011,
+"lat": 41.393458,
+"eea": []
+},
+{
+"id": "way/953326137",
+"naam": "Praia de Lagoa I",
+"lon": -8.775983,
+"lat": 41.392588,
+"eea": []
+},
+{
+"id": "way/953322271",
+"naam": "Praia de Hotel",
+"lon": -8.775084,
+"lat": 41.391572,
+"eea": []
+},
+{
+"id": "way/953322272",
+"naam": "Praia de Lagoa II",
+"lon": -8.774747,
+"lat": 41.390857,
+"eea": []
+},
+{
+"id": "way/953322273",
+"naam": "Praia de Lada I",
+"lon": -8.774722,
+"lat": 41.389766,
+"eea": [
+"PTCW3Q"
+]
+},
+{
+"id": "way/953322274",
+"naam": "Praia de Lada II",
+"lon": -8.77503,
+"lat": 41.388701,
+"eea": []
+},
+{
+"id": "way/953322275",
+"naam": "Praia de Beijinhos",
+"lon": -8.775281,
+"lat": 41.387664,
+"eea": [
+"PTCF2W"
+]
+},
+{
+"id": "way/953322276",
+"naam": "Praia Verde",
+"lon": -8.774897,
+"lat": 41.386437,
+"eea": []
+},
+{
+"id": "way/953322277",
+"naam": "Praia Azul",
+"lon": -8.772813,
+"lat": 41.384969,
+"eea": [
+"PTCF3X"
+]
+},
+{
+"id": "way/953322278",
+"naam": "Praia de Salgueira",
+"lon": -8.771677,
+"lat": 41.38343,
+"eea": []
+},
+{
+"id": "way/489338568",
+"naam": "Praia de Carvalhido",
+"lon": -8.771104,
+"lat": 41.381572,
+"eea": []
+},
+{
+"id": "way/953312029",
+"naam": "Praia de Redonda",
+"lon": -8.769862,
+"lat": 41.380315,
+"eea": []
+},
+{
+"id": "way/953312030",
+"naam": "Praia de Loulé",
+"lon": -8.769237,
+"lat": 41.379085,
+"eea": [
+"PTCW9M"
+]
+},
+{
+"id": "way/1162845381",
+"naam": "Praia de Redonda / Leixão",
+"lon": -8.768884,
+"lat": 41.377302,
+"eea": []
+},
+{
+"id": "way/963401098",
+"naam": "Praia do Peixe",
+"lon": -8.762639,
+"lat": 41.37471,
+"eea": []
+},
+{
+"id": "node/11264704376",
+"naam": "Praia das Caxinas",
+"lon": -8.75564,
+"lat": 41.356438,
+"eea": [
+"PTCF8V"
+]
+},
+{
+"id": "way/226326122",
+"naam": "FRENTE URBANA SUL",
+"lon": -8.754732,
+"lat": 41.353929,
+"eea": [
+"PTCU2X"
+]
+},
+{
+"id": "node/7439877903",
+"naam": "Praia de Árvore",
+"lon": -8.739457,
+"lat": 41.330047,
+"eea": [
+"PTCW8X"
+]
+},
+{
+"id": "way/129447271",
+"naam": "MINDELO",
+"lon": -8.739197,
+"lat": 41.325144,
+"eea": [
+"PTCV2N"
+]
+},
+{
+"id": "node/12634507701",
+"naam": "Praia de Vila Chã - Vila do Conde",
+"lon": -8.733131,
+"lat": 41.290055,
+"eea": [
+"PTCU9V"
+]
+},
+{
+"id": "node/9933712709",
+"naam": "Praia do Puço",
+"lon": -8.732692,
+"lat": 41.288991,
+"eea": []
+},
+{
+"id": "way/619230833",
+"naam": "Praia dos Castros",
+"lon": -8.730561,
+"lat": 41.280933,
+"eea": []
+},
+{
+"id": "way/344746898",
+"naam": "Praia de Labruge",
+"lon": -8.728692,
+"lat": 41.27251,
+"eea": [
+"PTCF2P",
+"PTCU9H"
+]
+},
+{
+"id": "node/12634507702",
+"naam": "Praia de Angeiras Norte",
+"lon": -8.727362,
+"lat": 41.26771,
+"eea": [
+"PTCL3H"
+]
+},
+{
+"id": "way/74013787",
+"naam": "Praia de Angeiras Sul",
+"lon": -8.725832,
+"lat": 41.261572,
+"eea": [
+"PTCT9F"
+]
+},
+{
+"id": "way/62330071",
+"naam": "Praia do Funtão",
+"lon": -8.724145,
+"lat": 41.255985,
+"eea": [
+"PTCW2N"
+]
+},
+{
+"id": "way/1014611907",
+"naam": "PEDRAS DO CORGO",
+"lon": -8.725337,
+"lat": 41.250276,
+"eea": [
+"PTCW2Q"
+]
+},
+{
+"id": "way/339784144",
+"naam": "Praia de Pedras da Agudela",
+"lon": -8.727447,
+"lat": 41.241237,
+"eea": [
+"PTCH2U",
+"PTCE8P"
+]
+},
+{
+"id": "way/62330064",
+"naam": "Praia da Quebrada",
+"lon": -8.724314,
+"lat": 41.237457,
+"eea": []
+},
+{
+"id": "way/62405380",
+"naam": "Praia do Marreco",
+"lon": -8.723733,
+"lat": 41.234777,
+"eea": [
+"PTCF2X"
+]
+},
+{
+"id": "way/62405374",
+"naam": "Praia da Memória",
+"lon": -8.722006,
+"lat": 41.230757,
+"eea": [
+"PTCN2X"
+]
+},
+{
+"id": "way/447086660",
+"naam": "Praia do Facho",
+"lon": -8.720498,
+"lat": 41.227095,
+"eea": []
+},
+{
+"id": "way/446749249",
+"naam": "Praia do Paraíso",
+"lon": -8.716496,
+"lat": 41.222835,
+"eea": [
+"PTCD8P"
+]
+},
+{
+"id": "way/130533264",
+"naam": "Praia do Cabo do Mundo",
+"lon": -8.715683,
+"lat": 41.219016,
+"eea": []
+},
+{
+"id": "way/360633595",
+"naam": "Praia do Aterro",
+"lon": -8.715547,
+"lat": 41.210799,
+"eea": [
+"PTCF9N",
+"PTCV7F"
+]
+},
+{
+"id": "way/56304677",
+"naam": "Praia Azul",
+"lon": -8.715093,
+"lat": 41.204151,
+"eea": []
+},
+{
+"id": "way/56304676",
+"naam": "Praia da Boa Nova",
+"lon": -8.714094,
+"lat": 41.202036,
+"eea": [
+"PTCF7M"
+]
+},
+{
+"id": "way/360889454",
+"naam": "Praia de Fuzelhas",
+"lon": -8.711242,
+"lat": 41.196827,
+"eea": [
+"PTCH7Q"
+]
+},
+{
+"id": "way/360889455",
+"naam": "Praia dos Beijinhos",
+"lon": -8.709207,
+"lat": 41.194918,
+"eea": []
+},
+{
+"id": "way/446746773",
+"naam": "Praia de Leça",
+"lon": -8.706801,
+"lat": 41.189686,
+"eea": [
+"PTCK3P"
+]
+},
+{
+"id": "way/338635402",
+"naam": "Praia de Matosinhos",
+"lon": -8.693714,
+"lat": 41.175949,
+"eea": [
+"PTCU2C"
+]
+},
+{
+"id": "way/338635406",
+"naam": "Praia Internacional",
+"lon": -8.689222,
+"lat": 41.171366,
+"eea": []
+},
+{
+"id": "way/370626244",
+"naam": "Praia do Castelo do Queijo",
+"lon": -8.690314,
+"lat": 41.16752,
+"eea": [
+"PTCD2N"
+]
+},
+{
+"id": "way/1341971839",
+"naam": "Praia do Aquário",
+"lon": -8.686229,
+"lat": 41.162505,
+"eea": []
+},
+{
+"id": "relation/7057980",
+"naam": "Praia do Homem do Leme",
+"lon": -8.686321,
+"lat": 41.159848,
+"eea": [
+"PTCQ8H"
+]
+},
+{
+"id": "way/444788848",
+"naam": "Praia do Molhe",
+"lon": -8.683786,
+"lat": 41.157732,
+"eea": []
+},
+{
+"id": "way/444799972",
+"naam": "Praia de Gondarém",
+"lon": -8.681806,
+"lat": 41.156113,
+"eea": [
+"PTCQ9P"
+]
+},
+{
+"id": "way/444785502",
+"naam": "Praia da Luz",
+"lon": -8.680316,
+"lat": 41.153527,
+"eea": []
+},
+{
+"id": "way/71293460",
+"naam": "Praia dos Ingleses",
+"lon": -8.678471,
+"lat": 41.151738,
+"eea": []
+},
+{
+"id": "way/71293456",
+"naam": "Praia do Ourigo",
+"lon": -8.677053,
+"lat": 41.150006,
+"eea": [
+"PTCV3J"
+]
+},
+{
+"id": "way/71293450",
+"naam": "Praia do Carneiro",
+"lon": -8.676112,
+"lat": 41.1484,
+"eea": []
+},
+{
+"id": "relation/7765480",
+"naam": "Praia das Pastoras",
+"lon": -8.67512,
+"lat": 41.147432,
+"eea": []
+},
+{
+"id": "way/1224542321",
+"naam": "Praia do Cabedelo",
+"lon": -8.668047,
+"lat": 41.139905,
+"eea": []
+},
+{
+"id": "way/691995502",
+"naam": "Praia de Lavadores",
+"lon": -8.668245,
+"lat": 41.128261,
+"eea": [
+"PTCQ9M"
+]
+},
+{
+"id": "way/691995523",
+"naam": "Praia de Salgueiros",
+"lon": -8.665945,
+"lat": 41.121096,
+"eea": [
+"PTCN9X"
+]
+},
+{
+"id": "way/374585863",
+"naam": "Praia Canidelo Norte",
+"lon": -8.664418,
+"lat": 41.119059,
+"eea": []
+},
+{
+"id": "way/691995530",
+"naam": "Praia Sereia da Costa Verde",
+"lon": -8.664211,
+"lat": 41.116916,
+"eea": [
+"PTCE8K"
+]
+},
+{
+"id": "way/691995531",
+"naam": "Praia Canide Sul",
+"lon": -8.664749,
+"lat": 41.11437,
+"eea": [
+"PTCX9P"
+]
+},
+{
+"id": "way/293994750",
+"naam": "Praia de Marbelo",
+"lon": -8.663966,
+"lat": 41.10751,
+"eea": []
+},
+{
+"id": "way/293993530",
+"naam": "Praia de Madalena Norte",
+"lon": -8.662028,
+"lat": 41.10372,
+"eea": [
+"PTCX7F"
+]
+},
+{
+"id": "way/293991327",
+"naam": "Praia de Madalena Sul",
+"lon": -8.660644,
+"lat": 41.099769,
+"eea": [
+"PTCN2T"
+]
+},
+{
+"id": "way/293151480",
+"naam": "Praia dos Tesos",
+"lon": -8.65943,
+"lat": 41.095844,
+"eea": []
+},
+{
+"id": "way/544252785",
+"naam": "Praia Valadares Norte",
+"lon": -8.658122,
+"lat": 41.092449,
+"eea": [
+"PTCT3P"
+]
+},
+{
+"id": "way/544252784",
+"naam": "Praia Valadares Sul",
+"lon": -8.657022,
+"lat": 41.088011,
+"eea": [
+"PTCH8U"
+]
+},
+{
+"id": "way/544252783",
+"naam": "Praia do Atlântico",
+"lon": -8.657053,
+"lat": 41.085036,
+"eea": []
+},
+{
+"id": "way/544252782",
+"naam": "Praia Dunas Mar",
+"lon": -8.656937,
+"lat": 41.083279,
+"eea": [
+"PTCL7M"
+]
+},
+{
+"id": "way/544252781",
+"naam": "Praia Francelos",
+"lon": -8.657389,
+"lat": 41.079904,
+"eea": [
+"PTCU8L"
+]
+},
+{
+"id": "way/544252780",
+"naam": "Praia Francemar",
+"lon": -8.657597,
+"lat": 41.076614,
+"eea": [
+"PTCE3D"
+]
+},
+{
+"id": "way/294005286",
+"naam": "Praia Sãozinha",
+"lon": -8.658276,
+"lat": 41.072619,
+"eea": [
+"PTCW8P"
+]
+},
+{
+"id": "way/294005292",
+"naam": "Praia do Senhor da Pedra",
+"lon": -8.658305,
+"lat": 41.068535,
+"eea": [
+"PTCJ9F"
+]
+},
+{
+"id": "way/691735987",
+"naam": "Praia de Miramar",
+"lon": -8.657024,
+"lat": 41.065832,
+"eea": [
+"PTCD9V"
+]
+},
+{
+"id": "way/293996058",
+"naam": "Praia da Areia Branca",
+"lon": -8.656178,
+"lat": 41.052701,
+"eea": [
+"PTCF2D",
+"PTCF7D"
+]
+},
+{
+"id": "way/349169235",
+"naam": "Praia da Aguda",
+"lon": -8.653027,
+"lat": 41.046604,
+"eea": []
+},
+{
+"id": "way/691310725",
+"naam": "Praia da Granja",
+"lon": -8.649863,
+"lat": 41.038716,
+"eea": [
+"PTCV3D"
+]
+},
+{
+"id": "way/691310727",
+"naam": "Praia de Bocamar",
+"lon": -8.646237,
+"lat": 41.032716,
+"eea": []
+},
+{
+"id": "way/691310726",
+"naam": "Praia de São Félix da Marinha",
+"lon": -8.646302,
+"lat": 41.02909,
+"eea": [
+"PTCW7D"
+]
+},
+{
+"id": "way/691310750",
+"naam": "Praia de Brito",
+"lon": -8.645263,
+"lat": 41.024521,
+"eea": [
+"PTCQ3U"
+]
+},
+{
+"id": "way/289203149",
+"naam": "Praia de Espinho",
+"lon": -8.645918,
+"lat": 41.015893,
+"eea": [
+"PTCJ9N",
+"PTCQ2N"
+]
+},
+{
+"id": "way/62075883",
+"naam": "Praia da Baía",
+"lon": -8.64617,
+"lat": 41.007028,
+"eea": [
+"PTCL9W"
+]
+},
+{
+"id": "node/4297922107",
+"naam": "Praia 37",
+"lon": -8.646919,
+"lat": 41.003097,
+"eea": []
+},
+{
+"id": "way/62075882",
+"naam": "Praia das Sereias",
+"lon": -8.647413,
+"lat": 41.001597,
+"eea": [
+"PTCN3K"
+]
+},
+{
+"id": "way/62075884",
+"naam": "Praia dos Pescadores",
+"lon": -8.647003,
+"lat": 40.997587,
+"eea": []
+},
+{
+"id": "way/62075885",
+"naam": "Praia de Silvalde",
+"lon": -8.646981,
+"lat": 40.987461,
+"eea": [
+"PTCF9C"
+]
+},
+{
+"id": "way/289202436",
+"naam": "Praia de Paramos",
+"lon": -8.650447,
+"lat": 40.973459,
+"eea": [
+"PTCP9C"
+]
+},
+{
+"id": "way/353632228",
+"naam": "Praia da Barrinha",
+"lon": -8.653285,
+"lat": 40.963969,
+"eea": []
+},
+{
+"id": "way/690775744",
+"naam": "Praia do Cantinho",
+"lon": -8.655629,
+"lat": 40.956934,
+"eea": []
+},
+{
+"id": "way/377934250",
+"naam": "Praia Velha",
+"lon": -8.656017,
+"lat": 40.955219,
+"eea": []
+},
+{
+"id": "way/289202909",
+"naam": "Praia dos Pescadores",
+"lon": -8.657128,
+"lat": 40.951818,
+"eea": [
+"PTCP2F",
+"PTCU8M"
+]
+},
+{
+"id": "way/377934351",
+"naam": "Praia de Cortegaça",
+"lon": -8.657733,
+"lat": 40.945231,
+"eea": []
+},
+{
+"id": "way/377934350",
+"naam": "Praia de Cortegaça",
+"lon": -8.659242,
+"lat": 40.940774,
+"eea": [
+"PTCP8L",
+"PTCW9T"
+]
+},
+{
+"id": "way/440122680",
+"naam": "Praia de São Pedro de Maceda",
+"lon": -8.662334,
+"lat": 40.920735,
+"eea": [
+"PTCP8J"
+]
+},
+{
+"id": "relation/18078943",
+"naam": "Praia do Furadouro - Norte",
+"lon": -8.672425,
+"lat": 40.885332,
+"eea": []
+},
+{
+"id": "way/130095659",
+"naam": "Furadouro",
+"lon": -8.677055,
+"lat": 40.875238,
+"eea": [
+"PTCU9X"
+]
+},
+{
+"id": "relation/18078987",
+"naam": "Praia do Furadouro - Sul",
+"lon": -8.679764,
+"lat": 40.861328,
+"eea": [
+"PTCW9U"
+]
+},
+{
+"id": "eea/PTCT2C",
+"naam": "AREINHO",
+"lon": -8.684095,
+"lat": 40.848845,
+"eea": [
+"PTCT2C"
+]
+},
+{
+"id": "node/3783830126",
+"naam": "Praia Torrão do Lameiro",
+"lon": -8.690823,
+"lat": 40.82885,
+"eea": [
+"PTCJ8K"
+]
+},
+{
+"id": "eea/PTCE9N",
+"naam": "MONTE BRANCO",
+"lon": -8.716148,
+"lat": 40.75573,
+"eea": [
+"PTCE9N"
+]
+},
+{
+"id": "eea/PTCN9P",
+"naam": "BICO",
+"lon": -8.719114,
+"lat": 40.747257,
+"eea": [
+"PTCN9P"
+]
+},
+{
+"id": "way/232655636",
+"naam": "Praia da Torreira",
+"lon": -8.72322,
+"lat": 40.737284,
+"eea": [
+"PTCV2K"
+]
+},
+{
+"id": "way/221058079",
+"naam": "Praia de São Jacinto",
+"lon": -8.745675,
+"lat": 40.67634,
+"eea": [
+"PTCX2L"
+]
+},
+{
+"id": "way/168740954",
+"naam": "Praia da Barra",
+"lon": -8.749616,
+"lat": 40.640387,
+"eea": [
+"PTCJ3H",
+"PTCV8J"
+]
+},
+{
+"id": "way/503865032",
+"naam": "JARDIM DE OUDINOT",
+"lon": -8.749541,
+"lat": 40.639892,
+"eea": [
+"PTCP9J"
+]
+},
+{
+"id": "way/301852964",
+"naam": "Praia da Costa Nova",
+"lon": -8.753511,
+"lat": 40.620317,
+"eea": [
+"PTCT8F"
+]
+},
+{
+"id": "node/3859586884",
+"naam": "Praia Naturistas da Costa Nova em Aveiro",
+"lon": -8.758429,
+"lat": 40.593289,
+"eea": []
+},
+{
+"id": "way/301851493",
+"naam": "VAGUEIRA",
+"lon": -8.768731,
+"lat": 40.565452,
+"eea": [
+"PTCU8T"
+]
+},
+{
+"id": "way/195400775",
+"naam": "Praia do Areão",
+"lon": -8.777134,
+"lat": 40.533798,
+"eea": [
+"PTCT8U",
+"PTCK7E"
+]
+},
+{
+"id": "node/3859586882",
+"naam": "Praia Duna Alta Naturista",
+"lon": -8.782617,
+"lat": 40.517315,
+"eea": []
+},
+{
+"id": "way/294434428",
+"naam": "Praia Poço da Cruz",
+"lon": -8.792613,
+"lat": 40.492166,
+"eea": [
+"PTCV3T"
+]
+},
+{
+"id": "way/253988846",
+"naam": "Praia de Mira",
+"lon": -8.806699,
+"lat": 40.451117,
+"eea": [
+"PTCX7H"
+]
+},
+{
+"id": "way/168456392",
+"naam": "Praia do Palheirão",
+"lon": -8.822488,
+"lat": 40.395894,
+"eea": [
+"PTCD7M"
+]
+},
+{
+"id": "way/227956348",
+"naam": "Praia da Tocha",
+"lon": -8.843387,
+"lat": 40.335462,
+"eea": [
+"PTCK8T"
+]
+},
+{
+"id": "way/227957602",
+"naam": "Praia de Quiaios",
+"lon": -8.892249,
+"lat": 40.220503,
+"eea": [
+"PTCF2L"
+]
+},
+{
+"id": "way/298821364",
+"naam": "Praia da Murtinheira",
+"lon": -8.899781,
+"lat": 40.205555,
+"eea": [
+"PTCW8K"
+]
+},
+{
+"id": "eea/PTCH2D",
+"naam": "CABO MONDEGO",
+"lon": -8.896369,
+"lat": 40.175398,
+"eea": [
+"PTCH2D"
+]
+},
+{
+"id": "relation/12697042",
+"naam": "Praia da Figueira da Foz",
+"lon": -8.874397,
+"lat": 40.156045,
+"eea": [
+"PTCW7J",
+"PTCW8C",
+"PTCT8N",
+"PTCE3Q"
+]
+},
+{
+"id": "way/212896663",
+"naam": "Praia do Cabedelinho",
+"lon": -8.867049,
+"lat": 40.141145,
+"eea": [
+"PTCH2T"
+]
+},
+{
+"id": "way/212896665",
+"naam": "Praia do Cabedelo",
+"lon": -8.863064,
+"lat": 40.135958,
+"eea": [
+"PTCN7L"
+]
+},
+{
+"id": "way/212896666",
+"naam": "Praia do Hospital",
+"lon": -8.863307,
+"lat": 40.129726,
+"eea": [
+"PTCJ7T"
+]
+},
+{
+"id": "way/212896662",
+"naam": "Praia da Cova-Gala",
+"lon": -8.863703,
+"lat": 40.123392,
+"eea": []
+},
+{
+"id": "way/227955256",
+"naam": "Praia da Costa de Lavos",
+"lon": -8.87637,
+"lat": 40.092473,
+"eea": [
+"PTCL3J"
+]
+},
+{
+"id": "way/227954880",
+"naam": "Praia da Leirosa",
+"lon": -8.890444,
+"lat": 40.059157,
+"eea": [
+"PTCQ9U"
+]
+},
+{
+"id": "way/330946764",
+"naam": "Praia do Osso da Baleia",
+"lon": -8.91426,
+"lat": 40.003225,
+"eea": [
+"PTCT8J"
+]
+},
+{
+"id": "way/203470883",
+"naam": "Praia de Pedrogão",
+"lon": -8.952144,
+"lat": 39.923045,
+"eea": [
+"PTCF7U",
+"PTCH3P"
+]
+},
+{
+"id": "way/346376428",
+"naam": "Praia de Pedrogão - Sul",
+"lon": -8.955081,
+"lat": 39.913883,
+"eea": []
+},
+{
+"id": "way/424816086",
+"naam": "Praia do Vigão",
+"lon": -8.961713,
+"lat": 39.899454,
+"eea": []
+},
+{
+"id": "way/1009348452",
+"naam": "Praia da Vieira (Norte)",
+"lon": -8.9694,
+"lat": 39.883704,
+"eea": []
+},
+{
+"id": "relation/6196011",
+"naam": "Praia da Vieira",
+"lon": -8.973066,
+"lat": 39.874541,
+"eea": [
+"PTCW7N"
+]
+},
+{
+"id": "relation/6196034",
+"naam": "Praia Velha",
+"lon": -9.026313,
+"lat": 39.774105,
+"eea": [
+"PTCH2J",
+"PTCF8H"
+]
+},
+{
+"id": "way/208735252",
+"naam": "Praia São Pedro de Moel",
+"lon": -9.03387,
+"lat": 39.753968,
+"eea": [
+"PTCQ9K"
+]
+},
+{
+"id": "way/511356030",
+"naam": "Praia das Valeiras",
+"lon": -9.038503,
+"lat": 39.744714,
+"eea": []
+},
+{
+"id": "relation/6196397",
+"naam": "Praia de Água de Madeiros",
+"lon": -9.041703,
+"lat": 39.737715,
+"eea": [
+"PTCV9J"
+]
+},
+{
+"id": "relation/6196380",
+"naam": "Praia da Pedra do Ouro",
+"lon": -9.045683,
+"lat": 39.729471,
+"eea": [
+"PTCE3U"
+]
+},
+{
+"id": "relation/13131528",
+"naam": "Praia da Polvoeira",
+"lon": -9.049416,
+"lat": 39.71572,
+"eea": [
+"PTCP8Q"
+]
+},
+{
+"id": "way/203028083",
+"naam": "Praia de Paredes de Vitória",
+"lon": -9.050905,
+"lat": 39.701798,
+"eea": [
+"PTCK9N"
+]
+},
+{
+"id": "way/203028079",
+"naam": "Praia da Mina",
+"lon": -9.054574,
+"lat": 39.693911,
+"eea": []
+},
+{
+"id": "way/203028095",
+"naam": "Praia de Vale Furado",
+"lon": -9.059046,
+"lat": 39.685815,
+"eea": []
+},
+{
+"id": "relation/6150305",
+"naam": "LÉGUA",
+"lon": -9.065762,
+"lat": 39.663969,
+"eea": [
+"PTCF2U"
+]
+},
+{
+"id": "relation/6150301",
+"naam": "Praia da Falca",
+"lon": -9.074156,
+"lat": 39.645008,
+"eea": []
+},
+{
+"id": "relation/6150268",
+"naam": "Praia do Norte",
+"lon": -9.083887,
+"lat": 39.622896,
+"eea": [
+"PTCV2L"
+]
+},
+{
+"id": "relation/6143763",
+"naam": "Praia da Nazaré",
+"lon": -9.07413,
+"lat": 39.597253,
+"eea": [
+"PTCX9F"
+]
+},
+{
+"id": "relation/6171559",
+"naam": "Praia do Salgado",
+"lon": -9.101471,
+"lat": 39.560004,
+"eea": [
+"PTCP7Q"
+]
+},
+{
+"id": "way/485148205",
+"naam": "Prainha do Salgado",
+"lon": -9.121976,
+"lat": 39.539177,
+"eea": []
+},
+{
+"id": "way/230848166",
+"naam": "Praia da Gralha",
+"lon": -9.131246,
+"lat": 39.526205,
+"eea": []
+},
+{
+"id": "relation/6171322",
+"naam": "Praia de São Martinho do Porto",
+"lon": -9.135716,
+"lat": 39.507415,
+"eea": [
+"PTCT7M"
+]
+},
+{
+"id": "relation/6171323",
+"naam": "Duna de Salir do Porto",
+"lon": -9.148849,
+"lat": 39.50455,
+"eea": []
+},
+{
+"id": "relation/6172498",
+"naam": "Prainha",
+"lon": -9.223595,
+"lat": 39.440554,
+"eea": []
+},
+{
+"id": "way/531929108",
+"naam": "Praia da Foz do Arelho-Mar",
+"lon": -9.231258,
+"lat": 39.432724,
+"eea": [
+"PTCE7K",
+"PTCH3J"
+]
+},
+{
+"id": "way/1136476451",
+"naam": "Praia do Bom Sucesso",
+"lon": -9.236873,
+"lat": 39.428414,
+"eea": [
+"PTCJ2C"
+]
+},
+{
+"id": "way/429682729",
+"naam": "Praia da Tramagueira",
+"lon": -9.243866,
+"lat": 39.423336,
+"eea": []
+},
+{
+"id": "way/429684204",
+"naam": "Praia do Rei Cortiço",
+"lon": -9.246308,
+"lat": 39.421323,
+"eea": []
+},
+{
+"id": "way/429684208",
+"naam": "Praia Olho de Água",
+"lon": -9.24768,
+"lat": 39.420368,
+"eea": [
+"PTCV8M"
+]
+},
+{
+"id": "node/4288439887",
+"naam": "Praia Frincha Grande",
+"lon": -9.252595,
+"lat": 39.416876,
+"eea": []
+},
+{
+"id": "way/410266749",
+"naam": "Praia do Carreiro do Mosteiro",
+"lon": -9.507179,
+"lat": 39.415002,
+"eea": []
+},
+{
+"id": "node/4288440712",
+"naam": "Barroca da Adela",
+"lon": -9.258865,
+"lat": 39.412338,
+"eea": []
+},
+{
+"id": "node/4288440726",
+"naam": "Cova do Covão",
+"lon": -9.262127,
+"lat": 39.409866,
+"eea": []
+},
+{
+"id": "node/7279327415",
+"naam": "Praia da Estrela",
+"lon": -9.267324,
+"lat": 39.406493,
+"eea": []
+},
+{
+"id": "relation/6172656",
+"naam": "VALE DE JANELAS",
+"lon": -9.278132,
+"lat": 39.399515,
+"eea": [
+"PTCX9Q"
+]
+},
+{
+"id": "node/4938682559",
+"naam": "Praia do Pico da Mota",
+"lon": -9.297354,
+"lat": 39.387952,
+"eea": []
+},
+{
+"id": "way/475469132",
+"naam": "Praia dos barcos",
+"lon": -9.340332,
+"lat": 39.376788,
+"eea": []
+},
+{
+"id": "way/503525679",
+"naam": "Praia das Pedras Muitas",
+"lon": -9.321409,
+"lat": 39.376003,
+"eea": []
+},
+{
+"id": "way/475503977",
+"naam": "Praínha",
+"lon": -9.338942,
+"lat": 39.374066,
+"eea": [
+"PTCW2T"
+]
+},
+{
+"id": "way/138709035",
+"naam": "Praia do Lagido",
+"lon": -9.328491,
+"lat": 39.373953,
+"eea": []
+},
+{
+"id": "way/475503978",
+"naam": "Cantinho da Baía",
+"lon": -9.339035,
+"lat": 39.37202,
+"eea": [
+"PTCF8L"
+]
+},
+{
+"id": "way/561491220",
+"naam": "Prainha do Abalo",
+"lon": -9.385589,
+"lat": 39.370362,
+"eea": []
+},
+{
+"id": "way/551944738",
+"naam": "Praia do Portinho da Areia Norte",
+"lon": -9.378205,
+"lat": 39.369098,
+"eea": []
+},
+{
+"id": "way/138709494",
+"naam": "Praia do Baleal",
+"lon": -9.342183,
+"lat": 39.365801,
+"eea": [
+"PTCD7K",
+"PTCE2C",
+"PTCN3U",
+"PTCV7M"
+]
+},
+{
+"id": "way/138744651",
+"naam": "Praia do Porto de Areia Sul",
+"lon": -9.388905,
+"lat": 39.353658,
+"eea": [
+"PTCD3U"
+]
+},
+{
+"id": "eigen/supertubos-medao",
+"naam": "Supertubos (Praia do Medão)",
+"lon": -9.363531,
+"lat": 39.343982,
+"eea": []
+},
+{
+"id": "way/530345667",
+"naam": "Praia da Consolação",
+"lon": -9.360567,
+"lat": 39.337722,
+"eea": [
+"PTCX8H",
+"PTCF2K",
+"PTCP2J",
+"PTCW2D"
+]
+},
+{
+"id": "way/1562562084",
+"naam": "Praia das Rochas",
+"lon": -9.36132,
+"lat": 39.323952,
+"eea": []
+},
+{
+"id": "relation/1480049",
+"naam": "S. BERNARDINO",
+"lon": -9.346724,
+"lat": 39.311096,
+"eea": [
+"PTCF8D"
+]
+},
+{
+"id": "relation/1446586",
+"naam": "Praia de Paimongo",
+"lon": -9.337588,
+"lat": 39.285145,
+"eea": []
+},
+{
+"id": "way/765360643",
+"naam": "Praia do Caniçal",
+"lon": -9.336522,
+"lat": 39.280787,
+"eea": []
+},
+{
+"id": "way/531006488",
+"naam": "Praia Vale de Frades",
+"lon": -9.335779,
+"lat": 39.274625,
+"eea": []
+},
+{
+"id": "relation/1446589",
+"naam": "Praia da Areia Branca",
+"lon": -9.336243,
+"lat": 39.26645,
+"eea": [
+"PTCQ3V",
+"PTCU3T"
+]
+},
+{
+"id": "relation/1676133",
+"naam": "Praia do Areal Sul",
+"lon": -9.338462,
+"lat": 39.256621,
+"eea": [
+"PTCK7H"
+]
+},
+{
+"id": "relation/1676134",
+"naam": "Praia da Peralta",
+"lon": -9.340783,
+"lat": 39.246972,
+"eea": [
+"PTCH9X"
+]
+},
+{
+"id": "way/1361005622",
+"naam": "Porto de Barcas",
+"lon": -9.340481,
+"lat": 39.225359,
+"eea": []
+},
+{
+"id": "node/9007934430",
+"naam": "Praia de Porto Dinheiro",
+"lon": -9.343675,
+"lat": 39.216968,
+"eea": [
+"PTCX2Q"
+]
+},
+{
+"id": "way/602675579",
+"naam": "Praia de Valmitão",
+"lon": -9.350593,
+"lat": 39.194332,
+"eea": [
+"PTCK9L"
+]
+},
+{
+"id": "way/130301682",
+"naam": "Praia de Porto Novo",
+"lon": -9.356456,
+"lat": 39.178199,
+"eea": [
+"PTCT8Q"
+]
+},
+{
+"id": "way/1362706696",
+"naam": "Praia de Santa Rita Norte",
+"lon": -9.358643,
+"lat": 39.172317,
+"eea": [
+"PTCW2K",
+"PTCP2E"
+]
+},
+{
+"id": "way/1390562189",
+"naam": "Praia de Santa Rita Sul",
+"lon": -9.361812,
+"lat": 39.167624,
+"eea": []
+},
+{
+"id": "way/26193757",
+"naam": "Praia da Mexilhoeira",
+"lon": -9.368212,
+"lat": 39.156465,
+"eea": []
+},
+{
+"id": "way/25695675",
+"naam": "Praia da Vigia",
+"lon": -9.373324,
+"lat": 39.148291,
+"eea": [
+"PTCH3C"
+]
+},
+{
+"id": "way/25695673",
+"naam": "Praia do Navio",
+"lon": -9.375022,
+"lat": 39.145751,
+"eea": [
+"PTCT8K"
+]
+},
+{
+"id": "way/25695668",
+"naam": "Praia do Mirante",
+"lon": -9.377294,
+"lat": 39.142582,
+"eea": [
+"PTCL8P"
+]
+},
+{
+"id": "way/25695665",
+"naam": "Praia do Pisão",
+"lon": -9.379158,
+"lat": 39.140095,
+"eea": [
+"PTCW9X"
+]
+},
+{
+"id": "way/25695662",
+"naam": "Praia da Física",
+"lon": -9.380681,
+"lat": 39.138489,
+"eea": [
+"PTCQ3K"
+]
+},
+{
+"id": "way/25656137",
+"naam": "Praia do Centro",
+"lon": -9.381325,
+"lat": 39.137621,
+"eea": []
+},
+{
+"id": "way/25695661",
+"naam": "Praia de Santa Helena",
+"lon": -9.382904,
+"lat": 39.13604,
+"eea": [
+"PTCK9V",
+"PTCJ2E"
+]
+},
+{
+"id": "way/26198186",
+"naam": "Praia do Guincho",
+"lon": -9.384578,
+"lat": 39.133683,
+"eea": []
+},
+{
+"id": "way/1390033042",
+"naam": "Praia Formosa",
+"lon": -9.385426,
+"lat": 39.131543,
+"eea": [
+"PTCX7W"
+]
+},
+{
+"id": "way/1390033044",
+"naam": "Praia das Amoeiras",
+"lon": -9.388496,
+"lat": 39.127535,
+"eea": []
+},
+{
+"id": "way/25695681",
+"naam": "Praia da Foz do Sizandro",
+"lon": -9.396397,
+"lat": 39.109665,
+"eea": [
+"PTCD2P",
+"PTCH9C"
+]
+},
+{
+"id": "way/29715368",
+"naam": "Praia da Calada",
+"lon": -9.418668,
+"lat": 39.032845,
+"eea": [
+"PTCJ2H"
+]
+},
+{
+"id": "way/27264077",
+"naam": "Praia de São Lourenço",
+"lon": -9.421924,
+"lat": 39.011959,
+"eea": [
+"PTCP7C"
+]
+},
+{
+"id": "way/27264941",
+"naam": "Praia dos Coxos",
+"lon": -9.42551,
+"lat": 39.00435,
+"eea": [
+"PTCL8W"
+]
+},
+{
+"id": "way/1388108871",
+"naam": "Praia do Cavalinho",
+"lon": -9.423882,
+"lat": 38.992868,
+"eea": []
+},
+{
+"id": "way/27265003",
+"naam": "Praia Ribeira d' Ilhas",
+"lon": -9.419589,
+"lat": 38.987547,
+"eea": [
+"PTCT3D"
+]
+},
+{
+"id": "way/738191432",
+"naam": "Praia de Alibabá",
+"lon": -9.419433,
+"lat": 38.984458,
+"eea": []
+},
+{
+"id": "way/877270233",
+"naam": "Praia da Orelheira",
+"lon": -9.421811,
+"lat": 38.980805,
+"eea": []
+},
+{
+"id": "way/1342511925",
+"naam": "Praia da Empa",
+"lon": -9.422405,
+"lat": 38.979671,
+"eea": []
+},
+{
+"id": "relation/21291542",
+"naam": "Praia dos Tombadoiros",
+"lon": -9.422206,
+"lat": 38.979051,
+"eea": []
+},
+{
+"id": "way/876569604",
+"naam": "Pedra Branca",
+"lon": -9.421846,
+"lat": 38.978629,
+"eea": []
+},
+{
+"id": "node/8162985905",
+"naam": "Praia do Matadouro",
+"lon": -9.420354,
+"lat": 38.975551,
+"eea": []
+},
+{
+"id": "way/1342511933",
+"naam": "Praia de São Sebastião",
+"lon": -9.420428,
+"lat": 38.972676,
+"eea": []
+},
+{
+"id": "way/1342511934",
+"naam": "Praia do Norte",
+"lon": -9.420344,
+"lat": 38.967141,
+"eea": [
+"PTCW8F"
+]
+},
+{
+"id": "way/1342511938",
+"naam": "Praia dos Pescadores",
+"lon": -9.419013,
+"lat": 38.964209,
+"eea": [
+"PTCH8X"
+]
+},
+{
+"id": "way/880590090",
+"naam": "Praia do Sul",
+"lon": -9.416567,
+"lat": 38.954918,
+"eea": [
+"PTCX3T"
+]
+},
+{
+"id": "way/1341368308",
+"naam": "Praia da Foz do Lizandro",
+"lon": -9.416154,
+"lat": 38.942052,
+"eea": [
+"PTCF7H"
+]
+},
+{
+"id": "way/1342250797",
+"naam": "Praia de São Julião",
+"lon": -9.421364,
+"lat": 38.929481,
+"eea": [
+"PTCE9W"
+]
+},
+{
+"id": "way/1341961667",
+"naam": "Praia da Vigia",
+"lon": -9.425816,
+"lat": 38.919241,
+"eea": []
+},
+{
+"id": "way/1341888086",
+"naam": "Praia da Samarra",
+"lon": -9.434963,
+"lat": 38.896914,
+"eea": []
+},
+{
+"id": "way/391387989",
+"naam": "Praia do Giribeto",
+"lon": -9.444438,
+"lat": 38.874572,
+"eea": []
+},
+{
+"id": "way/1341639347",
+"naam": "Praia do Magoito",
+"lon": -9.450576,
+"lat": 38.860457,
+"eea": [
+"PTCW3L"
+]
+},
+{
+"id": "way/1341639355",
+"naam": "Praia da Aguda",
+"lon": -9.455484,
+"lat": 38.852029,
+"eea": []
+},
+{
+"id": "eea/PTCQ2C",
+"naam": "AZENHAS DO MAR",
+"lon": -9.462573,
+"lat": 38.840483,
+"eea": [
+"PTCQ2C"
+]
+},
+{
+"id": "way/1023897546",
+"naam": "Praia das Maçãs",
+"lon": -9.470902,
+"lat": 38.825447,
+"eea": [
+"PTCT2J"
+]
+},
+{
+"id": "way/1341617128",
+"naam": "Praia Pequena do Rodízio",
+"lon": -9.474306,
+"lat": 38.819706,
+"eea": []
+},
+{
+"id": "way/1341611681",
+"naam": "Praia Grande do Rodízio",
+"lon": -9.478665,
+"lat": 38.812907,
+"eea": [
+"PTCX2W"
+]
+},
+{
+"id": "way/134996016",
+"naam": "Praia da Adraga",
+"lon": -9.485126,
+"lat": 38.803785,
+"eea": [
+"PTCT9U"
+]
+},
+{
+"id": "way/555028996",
+"naam": "Praia do Cavalo",
+"lon": -9.486822,
+"lat": 38.801843,
+"eea": []
+},
+{
+"id": "way/691832647",
+"naam": "Praia do Caneiro",
+"lon": -9.489885,
+"lat": 38.795426,
+"eea": []
+},
+{
+"id": "way/150770670",
+"naam": "Praia da Ursa",
+"lon": -9.492488,
+"lat": 38.790577,
+"eea": []
+},
+{
+"id": "way/691832469",
+"naam": "Praia da Aroeira",
+"lon": -9.495712,
+"lat": 38.786203,
+"eea": []
+},
+{
+"id": "way/733096735",
+"naam": "Praia do Louriçal",
+"lon": -9.496925,
+"lat": 38.776609,
+"eea": []
+},
+{
+"id": "way/691832470",
+"naam": "Praia da Assentiz",
+"lon": -9.493336,
+"lat": 38.775499,
+"eea": []
+},
+{
+"id": "way/906948213",
+"naam": "Praia do Porto do Touro",
+"lon": -9.482232,
+"lat": 38.757821,
+"eea": []
+},
+{
+"id": "way/1279041961",
+"naam": "Praia da Grota",
+"lon": -9.471905,
+"lat": 38.749906,
+"eea": []
+},
+{
+"id": "way/255048764",
+"naam": "Praia dos Moinhos",
+"lon": -8.971638,
+"lat": 38.748984,
+"eea": []
+},
+{
+"id": "way/228584847",
+"naam": "Praia do Abano",
+"lon": -9.472261,
+"lat": 38.741501,
+"eea": []
+},
+{
+"id": "way/147727446",
+"naam": "Praia do Guincho",
+"lon": -9.473646,
+"lat": 38.733394,
+"eea": [
+"PTCV7Q"
+]
+},
+{
+"id": "way/245225169",
+"naam": "Praia do Samouco",
+"lon": -9.011851,
+"lat": 38.728573,
+"eea": []
+},
+{
+"id": "way/23848001",
+"naam": "Praia da Cresmina",
+"lon": -9.477003,
+"lat": 38.725256,
+"eea": [
+"PTCL8D"
+]
+},
+{
+"id": "way/1190126574",
+"naam": "Praia da Arriba",
+"lon": -9.479091,
+"lat": 38.720221,
+"eea": []
+},
+{
+"id": "way/23847961",
+"naam": "Praia do Tamariz",
+"lon": -9.399341,
+"lat": 38.702507,
+"eea": [
+"PTCT9J"
+]
+},
+{
+"id": "way/1452670716",
+"naam": "Praia das Moitas",
+"lon": -9.409184,
+"lat": 38.701827,
+"eea": [
+"PTCE9F"
+]
+},
+{
+"id": "way/1454401457",
+"naam": "Praia da Poça",
+"lon": -9.39147,
+"lat": 38.701659,
+"eea": [
+"PTCQ8D"
+]
+},
+{
+"id": "way/1454424731",
+"naam": "Praia da Azarujinha",
+"lon": -9.389274,
+"lat": 38.70056,
+"eea": [
+"PTCJ9K"
+]
+},
+{
+"id": "way/544205152",
+"naam": "Praia da Duquesa",
+"lon": -9.414869,
+"lat": 38.700556,
+"eea": [
+"PTCU7D"
+]
+},
+{
+"id": "way/544205149",
+"naam": "Praia da Conceição",
+"lon": -9.416346,
+"lat": 38.699876,
+"eea": [
+"PTCP7K"
+]
+},
+{
+"id": "way/98737833",
+"naam": "Praia da Cruz Quebrada",
+"lon": -9.251494,
+"lat": 38.699289,
+"eea": []
+},
+{
+"id": "relation/19868610",
+"naam": "Praia da Rainha",
+"lon": -9.41805,
+"lat": 38.698873,
+"eea": [
+"PTCF2Q"
+]
+},
+{
+"id": "way/98742809",
+"naam": "Praia do Dafundo",
+"lon": -9.240624,
+"lat": 38.698428,
+"eea": []
+},
+{
+"id": "way/23847872",
+"naam": "Praia do Lagoal",
+"lon": -9.277226,
+"lat": 38.698033,
+"eea": []
+},
+{
+"id": "relation/19231764",
+"naam": "Praia de Caxias",
+"lon": -9.277226,
+"lat": 38.698033,
+"eea": [
+"PTCQ9L"
+]
+},
+{
+"id": "way/98742846",
+"naam": "Praia do Forte",
+"lon": -9.2755,
+"lat": 38.697705,
+"eea": []
+},
+{
+"id": "way/98821025",
+"naam": "Giribita",
+"lon": -9.284534,
+"lat": 38.696953,
+"eea": []
+},
+{
+"id": "way/152354051",
+"naam": "Praia da Ribeira",
+"lon": -9.419544,
+"lat": 38.696564,
+"eea": []
+},
+{
+"id": "way/971986160",
+"naam": "Praia de Algés",
+"lon": -9.230738,
+"lat": 38.695573,
+"eea": []
+},
+{
+"id": "way/98821153",
+"naam": "Praia Velha",
+"lon": -9.291263,
+"lat": 38.693302,
+"eea": []
+},
+{
+"id": "way/103471037",
+"naam": "Praia de São Pedro do Estoril",
+"lon": -9.369056,
+"lat": 38.693142,
+"eea": [
+"PTCH2W"
+]
+},
+{
+"id": "way/221553167",
+"naam": "Praia da Baforeira",
+"lon": -9.36611,
+"lat": 38.692019,
+"eea": [
+"PTCT7C"
+]
+},
+{
+"id": "way/101090519",
+"naam": "Praia de Santa Marta",
+"lon": -9.4216,
+"lat": 38.691822,
+"eea": []
+},
+{
+"id": "way/98821052",
+"naam": "Praia de Paço de Arcos",
+"lon": -9.296725,
+"lat": 38.690147,
+"eea": [
+"PTCE8W"
+]
+},
+{
+"id": "way/221553181",
+"naam": "Praia das Avencas",
+"lon": -9.362401,
+"lat": 38.689097,
+"eea": [
+"PTCV9K"
+]
+},
+{
+"id": "way/479745970",
+"naam": "Praia das Fontaínhas",
+"lon": -9.301702,
+"lat": 38.686991,
+"eea": []
+},
+{
+"id": "way/27872386",
+"naam": "Praia da Parede",
+"lon": -9.353835,
+"lat": 38.68545,
+"eea": [
+"PTCP2T"
+]
+},
+{
+"id": "way/180126358",
+"naam": "Praia de Santo Amaro",
+"lon": -9.312076,
+"lat": 38.684132,
+"eea": [
+"PTCQ8P"
+]
+},
+{
+"id": "way/98821039",
+"naam": "Praia da Laje",
+"lon": -9.313898,
+"lat": 38.683453,
+"eea": []
+},
+{
+"id": "way/157464438",
+"naam": "Praia de Carcavelos",
+"lon": -9.335971,
+"lat": 38.678618,
+"eea": [
+"PTCQ8X"
+]
+},
+{
+"id": "way/23848379",
+"naam": "Prainha do Porto Brandão",
+"lon": -9.207141,
+"lat": 38.677347,
+"eea": []
+},
+{
+"id": "way/167142539",
+"naam": "Praia do Moinho",
+"lon": -9.327486,
+"lat": 38.676085,
+"eea": []
+},
+{
+"id": "way/223687800",
+"naam": "Praia do Portinho da Costa",
+"lon": -9.219754,
+"lat": 38.675219,
+"eea": []
+},
+{
+"id": "way/531918708",
+"naam": "Praia da Torre",
+"lon": -9.323136,
+"lat": 38.674984,
+"eea": [
+"PTCE9T"
+]
+},
+{
+"id": "relation/11250837",
+"naam": "Praia da Trafaria",
+"lon": -9.23286,
+"lat": 38.673926,
+"eea": []
+},
+{
+"id": "way/625761327",
+"naam": "Praia da Mutela",
+"lon": -9.149738,
+"lat": 38.673064,
+"eea": []
+},
+{
+"id": "way/522084749",
+"naam": "Praia do Segundo Torrão",
+"lon": -9.243719,
+"lat": 38.67153,
+"eea": []
+},
+{
+"id": "way/1092167631",
+"naam": "Praia da Gorda",
+"lon": -9.028149,
+"lat": 38.667337,
+"eea": []
+},
+{
+"id": "way/222123239",
+"naam": "Praia do Bico da Calha",
+"lon": -9.249522,
+"lat": 38.666184,
+"eea": []
+},
+{
+"id": "way/222122953",
+"naam": "Praia do Albatroz",
+"lon": -9.258047,
+"lat": 38.663968,
+"eea": []
+},
+{
+"id": "way/222122955",
+"naam": "Praia da Cova do Vapor",
+"lon": -9.259197,
+"lat": 38.661525,
+"eea": [
+"PTCJ2F"
+]
+},
+{
+"id": "way/527467735",
+"naam": "Praia do Clube Naval",
+"lon": -9.092923,
+"lat": 38.658937,
+"eea": []
+},
+{
+"id": "way/222122956",
+"naam": "Praia de São João",
+"lon": -9.251283,
+"lat": 38.656336,
+"eea": [
+"PTCJ2Q"
+]
+},
+{
+"id": "way/162984753",
+"naam": "Praia do Mexilhoeiro",
+"lon": -9.089513,
+"lat": 38.656132,
+"eea": []
+},
+{
+"id": "way/222122957",
+"naam": "Praia do Norte",
+"lon": -9.245542,
+"lat": 38.649986,
+"eea": []
+},
+{
+"id": "way/440351543",
+"naam": "Praia dos Barcos",
+"lon": -9.096944,
+"lat": 38.647503,
+"eea": []
+},
+{
+"id": "way/222122959",
+"naam": "Praia de Santo António da Caparica",
+"lon": -9.243707,
+"lat": 38.647287,
+"eea": []
+},
+{
+"id": "relation/10303937",
+"naam": "Praia da Velha",
+"lon": -9.089644,
+"lat": 38.645045,
+"eea": []
+},
+{
+"id": "way/221881653",
+"naam": "Praia do CDS",
+"lon": -9.242052,
+"lat": 38.644829,
+"eea": [
+"PTCK2H"
+]
+},
+{
+"id": "way/132041853",
+"naam": "Praia do Seixal",
+"lon": -9.10569,
+"lat": 38.644229,
+"eea": []
+},
+{
+"id": "way/222123841",
+"naam": "Praia do Tarquínio",
+"lon": -9.240654,
+"lat": 38.643265,
+"eea": []
+},
+{
+"id": "way/527768043",
+"naam": "Praia de Copacabana",
+"lon": -9.064803,
+"lat": 38.641642,
+"eea": []
+},
+{
+"id": "way/23848066",
+"naam": "Praia do Paraíso",
+"lon": -9.238999,
+"lat": 38.641566,
+"eea": [
+"PTCJ8N"
+]
+},
+{
+"id": "way/23848062",
+"naam": "Praia do Dragão Vermelho",
+"lon": -9.237472,
+"lat": 38.639993,
+"eea": []
+},
+{
+"id": "way/23848073",
+"naam": "Praia Nova",
+"lon": -9.232004,
+"lat": 38.633857,
+"eea": [
+"PTCX3N"
+]
+},
+{
+"id": "way/222678474",
+"naam": "Praia da Saúde",
+"lon": -9.228974,
+"lat": 38.630082,
+"eea": [
+"PTCF7X"
+]
+},
+{
+"id": "way/222678471",
+"naam": "Praia da Cornélia",
+"lon": -9.227124,
+"lat": 38.627431,
+"eea": []
+},
+{
+"id": "way/222122951",
+"naam": "Praia da Mata",
+"lon": -9.225336,
+"lat": 38.625299,
+"eea": []
+},
+{
+"id": "way/222122958",
+"naam": "Praia do Forte",
+"lon": -9.223016,
+"lat": 38.622672,
+"eea": [
+"PTCN9J"
+]
+},
+{
+"id": "way/222678476",
+"naam": "Praia da Riviera",
+"lon": -9.221142,
+"lat": 38.619919,
+"eea": [
+"PTCH3V"
+]
+},
+{
+"id": "way/222678475",
+"naam": "Praia da Rainha",
+"lon": -9.21862,
+"lat": 38.616205,
+"eea": [
+"PTCX3J"
+]
+},
+{
+"id": "way/222678477",
+"naam": "Praia do Castelo",
+"lon": -9.216443,
+"lat": 38.613022,
+"eea": [
+"PTCV2T"
+]
+},
+{
+"id": "way/222678467",
+"naam": "Praia Cabana do Pescador",
+"lon": -9.214753,
+"lat": 38.610106,
+"eea": [
+"PTCF3U"
+]
+},
+{
+"id": "way/222678473",
+"naam": "Praia do Rei",
+"lon": -9.212793,
+"lat": 38.606191,
+"eea": [
+"PTCH8T"
+]
+},
+{
+"id": "way/186334925",
+"naam": "Praia da Morena",
+"lon": -9.211107,
+"lat": 38.603026,
+"eea": [
+"PTCT9D"
+]
+},
+{
+"id": "way/222678472",
+"naam": "Praia da Sereia",
+"lon": -9.210486,
+"lat": 38.601478,
+"eea": [
+"PTCT3K"
+]
+},
+{
+"id": "way/222678480",
+"naam": "Praia do Infante",
+"lon": -9.209936,
+"lat": 38.600034,
+"eea": [
+"PTCV7J"
+]
+},
+{
+"id": "way/222678470",
+"naam": "Praia Nova Vaga",
+"lon": -9.20926,
+"lat": 38.598361,
+"eea": []
+},
+{
+"id": "way/222678468",
+"naam": "Praia da Bela Vista",
+"lon": -9.208179,
+"lat": 38.595536,
+"eea": [
+"PTCN2K"
+]
+},
+{
+"id": "way/237132370",
+"naam": "Praia da Bela Vista (parte naturista)",
+"lon": -9.206203,
+"lat": 38.590152,
+"eea": []
+},
+{
+"id": "way/722779621",
+"naam": "Praia 19",
+"lon": -9.204724,
+"lat": 38.586676,
+"eea": []
+},
+{
+"id": "way/222678469",
+"naam": "Praia Azul",
+"lon": -9.202045,
+"lat": 38.581301,
+"eea": []
+},
+{
+"id": "way/222678478",
+"naam": "Fonte da Telha",
+"lon": -9.196603,
+"lat": 38.571745,
+"eea": [
+"PTCX7L"
+]
+},
+{
+"id": "way/222679381",
+"naam": "Praia da Adiça (naturista)",
+"lon": -9.19042,
+"lat": 38.558251,
+"eea": []
+},
+{
+"id": "way/405133500",
+"naam": "Praia da Saúde",
+"lon": -8.906016,
+"lat": 38.51665,
+"eea": []
+},
+{
+"id": "way/208217155",
+"naam": "Praia de Albarquel",
+"lon": -8.915798,
+"lat": 38.510714,
+"eea": [
+"PTCH2C"
+]
+},
+{
+"id": "way/764143772",
+"naam": "Praia da Maria Esguelha",
+"lon": -8.918622,
+"lat": 38.510712,
+"eea": []
+},
+{
+"id": "way/764145147",
+"naam": "Praia da Rainha",
+"lon": -8.922996,
+"lat": 38.508533,
+"eea": []
+},
+{
+"id": "way/764145146",
+"naam": "Praia da Comenda",
+"lon": -8.926169,
+"lat": 38.507106,
+"eea": []
+},
+{
+"id": "way/8136034",
+"naam": "Lagoa de Albufeira",
+"lon": -9.183071,
+"lat": 38.504659,
+"eea": [
+"PTCF8Q",
+"PTCD9J"
+]
+},
+{
+"id": "way/708920403",
+"naam": "Praia da Rasca",
+"lon": -8.927187,
+"lat": 38.503618,
+"eea": []
+},
+{
+"id": "way/1413489002",
+"naam": "Praia da Graça",
+"lon": -8.843846,
+"lat": 38.503352,
+"eea": []
+},
+{
+"id": "way/1311845772",
+"naam": "Praia de Alfarim",
+"lon": -9.183814,
+"lat": 38.495,
+"eea": []
+},
+{
+"id": "relation/9714139",
+"naam": "Praia de Tróia",
+"lon": -8.907007,
+"lat": 38.492348,
+"eea": [
+"PTCU9C"
+]
+},
+{
+"id": "relation/2953471",
+"naam": "Praia do Meco",
+"lon": -9.184567,
+"lat": 38.48854,
+"eea": [
+"PTCN7E"
+]
+},
+{
+"id": "way/1451042123",
+"naam": "Praia do Outão",
+"lon": -8.934852,
+"lat": 38.488111,
+"eea": []
+},
+{
+"id": "relation/9713905",
+"naam": "Praia Tróia-Bico das Lulas",
+"lon": -8.908586,
+"lat": 38.485088,
+"eea": [
+"PTCP3E"
+]
+},
+{
+"id": "way/208966174",
+"naam": "Praia de Galápos",
+"lon": -8.96419,
+"lat": 38.484249,
+"eea": [
+"PTCT8X"
+]
+},
+{
+"id": "way/228371554",
+"naam": "Praia da Figueirinha",
+"lon": -8.945098,
+"lat": 38.48365,
+"eea": [
+"PTCJ7C"
+]
+},
+{
+"id": "way/208966021",
+"naam": "Praia de Galapinhos",
+"lon": -8.968948,
+"lat": 38.483306,
+"eea": []
+},
+{
+"id": "way/208965731",
+"naam": "Praia dos Coelhos",
+"lon": -8.969432,
+"lat": 38.48165,
+"eea": [
+"PTCW7E"
+]
+},
+{
+"id": "way/1532666209",
+"naam": "Praia da Anicha",
+"lon": -8.970844,
+"lat": 38.480337,
+"eea": []
+},
+{
+"id": "way/1532666208",
+"naam": "Praia do Monte Branco",
+"lon": -8.972401,
+"lat": 38.48011,
+"eea": []
+},
+{
+"id": "way/154411022",
+"naam": "Praia do Creiro",
+"lon": -8.980965,
+"lat": 38.479128,
+"eea": [
+"PTCW2P"
+]
+},
+{
+"id": "way/194378528",
+"naam": "Praia do Meco (Tramagueira)",
+"lon": -9.187185,
+"lat": 38.478009,
+"eea": []
+},
+{
+"id": "way/935106661",
+"naam": "Praia do Portinho da Arrábida",
+"lon": -8.983592,
+"lat": 38.476979,
+"eea": []
+},
+{
+"id": "relation/9713906",
+"naam": "Praia Tróia-Galé",
+"lon": -8.897421,
+"lat": 38.474796,
+"eea": [
+"PTCN9M"
+]
+},
+{
+"id": "way/809967692",
+"naam": "Praia dos Pilotos",
+"lon": -8.984473,
+"lat": 38.472757,
+"eea": []
+},
+{
+"id": "relation/21384630",
+"naam": "Praia da Duna Cinzenta",
+"lon": -8.886201,
+"lat": 38.468793,
+"eea": []
+},
+{
+"id": "way/1403199941",
+"naam": "Praia do Penedo",
+"lon": -9.19127,
+"lat": 38.468339,
+"eea": []
+},
+{
+"id": "way/1158399770",
+"naam": "Praia de Alpertuche",
+"lon": -8.990191,
+"lat": 38.467257,
+"eea": []
+},
+{
+"id": "way/186703545",
+"naam": "Praia das Bicas",
+"lon": -9.192846,
+"lat": 38.4649,
+"eea": [
+"PTCH8C"
+]
+},
+{
+"id": "way/1198524448",
+"naam": "Praia das Camarinhas",
+"lon": -8.879295,
+"lat": 38.462735,
+"eea": []
+},
+{
+"id": "way/208975476",
+"naam": "Praia da Pipa",
+"lon": -9.195143,
+"lat": 38.460226,
+"eea": []
+},
+{
+"id": "relation/9713907",
+"naam": "Praia Atlântica",
+"lon": -8.873296,
+"lat": 38.459016,
+"eea": [
+"PTCH9J",
+"PTCP3X"
+]
+},
+{
+"id": "way/186702860",
+"naam": "Praia da Foz",
+"lon": -9.198715,
+"lat": 38.454243,
+"eea": []
+},
+{
+"id": "way/186703222",
+"naam": "Praia do Rebenta Bois",
+"lon": -9.201441,
+"lat": 38.451179,
+"eea": []
+},
+{
+"id": "relation/6229189",
+"naam": "Praia dos Penedos",
+"lon": -9.032602,
+"lat": 38.447759,
+"eea": []
+},
+{
+"id": "way/450408045",
+"naam": "Praia do Ouro",
+"lon": -9.108887,
+"lat": 38.441868,
+"eea": [
+"PTCT2H"
+]
+},
+{
+"id": "way/19641431",
+"naam": "Praia da Califórnia",
+"lon": -9.094431,
+"lat": 38.441059,
+"eea": [
+"PTCQ7V"
+]
+},
+{
+"id": "way/208967985",
+"naam": "Praia da Cova",
+"lon": -9.060023,
+"lat": 38.440787,
+"eea": []
+},
+{
+"id": "relation/9617520",
+"naam": "Praia",
+"lon": -9.125845,
+"lat": 38.432784,
+"eea": []
+},
+{
+"id": "relation/9617519",
+"naam": "Praia do Ribeiro do Cavalo",
+"lon": -9.130297,
+"lat": 38.432664,
+"eea": []
+},
+{
+"id": "relation/9611670",
+"naam": "Praia da Cova da Mijona",
+"lon": -9.145193,
+"lat": 38.430523,
+"eea": []
+},
+{
+"id": "relation/9611673",
+"naam": "Praia do Inferno",
+"lon": -9.15334,
+"lat": 38.430331,
+"eea": []
+},
+{
+"id": "relation/9731220",
+"naam": "Praia de Vale Côvo",
+"lon": -9.166464,
+"lat": 38.430066,
+"eea": []
+},
+{
+"id": "relation/9610968",
+"naam": "Praia de Cramesines",
+"lon": -9.173491,
+"lat": 38.427086,
+"eea": []
+},
+{
+"id": "way/208974060",
+"naam": "Praia dos Lagosteiros",
+"lon": -9.214756,
+"lat": 38.423603,
+"eea": []
+},
+{
+"id": "way/694044249",
+"naam": "Praia da Tranca",
+"lon": -9.18721,
+"lat": 38.418617,
+"eea": []
+},
+{
+"id": "relation/9606510",
+"naam": "Praia da Baleeira",
+"lon": -9.189458,
+"lat": 38.416069,
+"eea": []
+},
+{
+"id": "relation/9713908",
+"naam": "Malha da Costa",
+"lon": -8.823186,
+"lat": 38.415694,
+"eea": []
+},
+{
+"id": "way/208100412",
+"naam": "Praia da Comporta",
+"lon": -8.803986,
+"lat": 38.380998,
+"eea": [
+"PTCV7K"
+]
+},
+{
+"id": "way/1005292172",
+"naam": "Praia da Gasolineira",
+"lon": -8.796042,
+"lat": 38.361958,
+"eea": []
+},
+{
+"id": "way/209414667",
+"naam": "Praia da Torre",
+"lon": -8.790051,
+"lat": 38.345206,
+"eea": []
+},
+{
+"id": "way/209414322",
+"naam": "Praia dos Brejos",
+"lon": -8.783182,
+"lat": 38.318317,
+"eea": []
+},
+{
+"id": "way/208100114",
+"naam": "Praia do Carvalhal",
+"lon": -8.781435,
+"lat": 38.305722,
+"eea": [
+"PTCN8T"
+]
+},
+{
+"id": "way/197531412",
+"naam": "Praia do Pêgo",
+"lon": -8.779555,
+"lat": 38.292171,
+"eea": [
+"PTCD8F"
+]
+},
+{
+"id": "way/208101238",
+"naam": "Praia da Raposa",
+"lon": -8.7764,
+"lat": 38.258452,
+"eea": []
+},
+{
+"id": "way/208101712",
+"naam": "Praia do Pinheirinho",
+"lon": -8.77581,
+"lat": 38.22203,
+"eea": []
+},
+{
+"id": "way/208102819",
+"naam": "Praia da Galé-Fontainhas",
+"lon": -8.777589,
+"lat": 38.205056,
+"eea": [
+"PTCH3F"
+]
+},
+{
+"id": "way/208104800",
+"naam": "Praia da Aberta Nova",
+"lon": -8.781602,
+"lat": 38.177468,
+"eea": [
+"PTCK8F"
+]
+},
+{
+"id": "way/1005327955",
+"naam": "Praia da Vigia",
+"lon": -8.792703,
+"lat": 38.134062,
+"eea": []
+},
+{
+"id": "way/1005327953",
+"naam": "Praia de Melides",
+"lon": -8.794038,
+"lat": 38.129652,
+"eea": [
+"PTCU7H"
+]
+},
+{
+"id": "node/8556848838",
+"naam": "Praia da Sesmaria",
+"lon": -8.795712,
+"lat": 38.12429,
+"eea": []
+},
+{
+"id": "way/208108301",
+"naam": "Praia da Costa de Santo André",
+"lon": -8.798777,
+"lat": 38.115228,
+"eea": [
+"PTCU7M"
+]
+},
+{
+"id": "way/208110575",
+"naam": "Praia do Monte Velho",
+"lon": -8.811595,
+"lat": 38.08128,
+"eea": [
+"PTCP3W"
+]
+},
+{
+"id": "way/208111115",
+"naam": "Praia das Areias Brancas",
+"lon": -8.816807,
+"lat": 38.068112,
+"eea": []
+},
+{
+"id": "way/208111279",
+"naam": "Praia da Fonte do Cortiço",
+"lon": -8.82246,
+"lat": 38.055148,
+"eea": [
+"PTCL3D"
+]
+},
+{
+"id": "way/208112006",
+"naam": "Praia da Costa do Norte",
+"lon": -8.864774,
+"lat": 37.978944,
+"eea": []
+},
+{
+"id": "way/209246032",
+"naam": "Praia do Canto Mosqueiro",
+"lon": -8.869675,
+"lat": 37.972503,
+"eea": []
+},
+{
+"id": "relation/10633726",
+"naam": "Praia Vasco da Gama",
+"lon": -8.865002,
+"lat": 37.952738,
+"eea": [
+"PTCU2V"
+]
+},
+{
+"id": "way/208112443",
+"naam": "Praia de São Torpes",
+"lon": -8.805401,
+"lat": 37.919744,
+"eea": [
+"PTCX3M"
+]
+},
+{
+"id": "way/209245151",
+"naam": "Praia da Pelengana",
+"lon": -8.800284,
+"lat": 37.909513,
+"eea": []
+},
+{
+"id": "way/208889174",
+"naam": "Praia de Morgavel",
+"lon": -8.800137,
+"lat": 37.907046,
+"eea": [
+"PTCP2C"
+]
+},
+{
+"id": "way/232239487",
+"naam": "Praia da Vieirinha - Vale de Figueiros",
+"lon": -8.797995,
+"lat": 37.895927,
+"eea": [
+"PTCH7F"
+]
+},
+{
+"id": "way/208888872",
+"naam": "Praia da Oliveirinha",
+"lon": -8.797284,
+"lat": 37.892641,
+"eea": []
+},
+{
+"id": "way/437514296",
+"naam": "Praia da Foz",
+"lon": -8.795779,
+"lat": 37.885164,
+"eea": []
+},
+{
+"id": "way/208684987",
+"naam": "Praia dos Canudos",
+"lon": -8.79613,
+"lat": 37.882146,
+"eea": []
+},
+{
+"id": "way/208886396",
+"naam": "Praia da Samoqueira",
+"lon": -8.793396,
+"lat": 37.867414,
+"eea": []
+},
+{
+"id": "way/208885923",
+"naam": "Praia de Porto Covinho",
+"lon": -8.793749,
+"lat": 37.863617,
+"eea": []
+},
+{
+"id": "way/208885387",
+"naam": "Praia do Cerro da Águia",
+"lon": -8.794194,
+"lat": 37.862642,
+"eea": []
+},
+{
+"id": "way/208884486",
+"naam": "Praia naturista do Salto",
+"lon": -8.794568,
+"lat": 37.860292,
+"eea": []
+},
+{
+"id": "way/208884386",
+"naam": "Praia da Cerca Nova",
+"lon": -8.794376,
+"lat": 37.859095,
+"eea": []
+},
+{
+"id": "way/957455879",
+"naam": "Praia Grande de Porto Côvo",
+"lon": -8.79415,
+"lat": 37.857219,
+"eea": []
+},
+{
+"id": "way/1086548804",
+"naam": "Praia do Espingardeiro",
+"lon": -8.794008,
+"lat": 37.855062,
+"eea": []
+},
+{
+"id": "way/208884107",
+"naam": "Praia do Banho",
+"lon": -8.795735,
+"lat": 37.852894,
+"eea": []
+},
+{
+"id": "way/1078658547",
+"naam": "Praia da Gaivota",
+"lon": -8.79623,
+"lat": 37.852362,
+"eea": []
+},
+{
+"id": "way/437288345",
+"naam": "Praia Pequena",
+"lon": -8.795659,
+"lat": 37.851753,
+"eea": []
+},
+{
+"id": "way/504533757",
+"naam": "Praia da Baía de Porto Covo",
+"lon": -8.791786,
+"lat": 37.849648,
+"eea": []
+},
+{
+"id": "way/307076572",
+"naam": "Praia dos Buizinhos",
+"lon": -8.795593,
+"lat": 37.849573,
+"eea": []
+},
+{
+"id": "way/437947207",
+"naam": "Praia da Engardaceira",
+"lon": -8.79289,
+"lat": 37.846213,
+"eea": []
+},
+{
+"id": "way/400786561",
+"naam": "Praia Selvagem",
+"lon": -8.791452,
+"lat": 37.840183,
+"eea": []
+},
+{
+"id": "way/311839275",
+"naam": "Praia do Sissal",
+"lon": -8.790502,
+"lat": 37.838384,
+"eea": []
+},
+{
+"id": "way/1060552289",
+"naam": "Praia da Ilha do Pessegueiro",
+"lon": -8.793069,
+"lat": 37.832271,
+"eea": [
+"PTCD9C",
+"PTCF7C"
+]
+},
+{
+"id": "way/222568860",
+"naam": "Praia do Queimado",
+"lon": -8.793277,
+"lat": 37.818618,
+"eea": []
+},
+{
+"id": "way/208883907",
+"naam": "Praia dos Aivados",
+"lon": -8.795853,
+"lat": 37.810037,
+"eea": []
+},
+{
+"id": "way/393008144",
+"naam": "Praia do Saltinho",
+"lon": -8.80193,
+"lat": 37.794365,
+"eea": []
+},
+{
+"id": "way/393008143",
+"naam": "Praia dos Nascedios",
+"lon": -8.802235,
+"lat": 37.791475,
+"eea": []
+},
+{
+"id": "way/393008274",
+"naam": "Praia do Malhão Norte",
+"lon": -8.801751,
+"lat": 37.786688,
+"eea": [
+"PTCE7Q"
+]
+},
+{
+"id": "way/208200024",
+"naam": "Praia do Malhão Sul",
+"lon": -8.802454,
+"lat": 37.780196,
+"eea": []
+},
+{
+"id": "way/1072598755",
+"naam": "Praia da Angra da Barreta",
+"lon": -8.802811,
+"lat": 37.777899,
+"eea": []
+},
+{
+"id": "way/393006207",
+"naam": "Praia da Angra da Barrela",
+"lon": -8.804728,
+"lat": 37.770212,
+"eea": []
+},
+{
+"id": "way/393006496",
+"naam": "Praia da Angra da Vaca",
+"lon": -8.806786,
+"lat": 37.764971,
+"eea": []
+},
+{
+"id": "way/393004460",
+"naam": "Praia do Burdo",
+"lon": -8.806344,
+"lat": 37.759735,
+"eea": []
+},
+{
+"id": "way/504524306",
+"naam": "Praia da Angra da Cerva",
+"lon": -8.807774,
+"lat": 37.752656,
+"eea": []
+},
+{
+"id": "way/208684188",
+"naam": "Praia da Bica da Areia",
+"lon": -8.793121,
+"lat": 37.725859,
+"eea": []
+},
+{
+"id": "way/208113553",
+"naam": "Praia Carreiro da Fazenda",
+"lon": -8.792148,
+"lat": 37.72345,
+"eea": []
+},
+{
+"id": "way/185659906",
+"naam": "Praia da Franquia",
+"lon": -8.787757,
+"lat": 37.721645,
+"eea": []
+},
+{
+"id": "way/208113986",
+"naam": "Praia do Farol",
+"lon": -8.791136,
+"lat": 37.719329,
+"eea": []
+},
+{
+"id": "way/208114752",
+"naam": "Praia das Furnas",
+"lon": -8.7873,
+"lat": 37.716628,
+"eea": [
+"PTCU7J",
+"PTCP3F",
+"PTCQ7K",
+"PTCW9Q"
+]
+},
+{
+"id": "way/208879519",
+"naam": "Praia do Cavalo",
+"lon": -8.795238,
+"lat": 37.681606,
+"eea": []
+},
+{
+"id": "way/208115764",
+"naam": "Praia do Brejo Largo",
+"lon": -8.795867,
+"lat": 37.675181,
+"eea": []
+},
+{
+"id": "way/393000163",
+"naam": "Praia dos Picos",
+"lon": -8.800528,
+"lat": 37.665079,
+"eea": []
+},
+{
+"id": "way/392999990",
+"naam": "Praia da Angra do Travesso",
+"lon": -8.801687,
+"lat": 37.661756,
+"eea": []
+},
+{
+"id": "way/392999903",
+"naam": "Praia da Angra das Melancias",
+"lon": -8.802355,
+"lat": 37.660037,
+"eea": []
+},
+{
+"id": "relation/14211194",
+"naam": "Praia da Foz dos Ouriços",
+"lon": -8.800649,
+"lat": 37.657532,
+"eea": []
+},
+{
+"id": "way/130578307",
+"naam": "Praia de Nossa Senhora",
+"lon": -8.801591,
+"lat": 37.654082,
+"eea": []
+},
+{
+"id": "way/504562243",
+"naam": "Praia Grande de Almograve",
+"lon": -8.80247,
+"lat": 37.652112,
+"eea": [
+"PTCE8D"
+]
+},
+{
+"id": "way/208879166",
+"naam": "Praia do Almograve Sul",
+"lon": -8.803663,
+"lat": 37.649897,
+"eea": []
+},
+{
+"id": "way/208878328",
+"naam": "Praia do Cão",
+"lon": -8.811957,
+"lat": 37.610567,
+"eea": []
+},
+{
+"id": "way/208877269",
+"naam": "Praia da Laginha",
+"lon": -8.813873,
+"lat": 37.60783,
+"eea": []
+},
+{
+"id": "way/208877220",
+"naam": "Praia da Carraca",
+"lon": -8.816167,
+"lat": 37.605909,
+"eea": []
+},
+{
+"id": "way/208877185",
+"naam": "Praia do Cavaleiro",
+"lon": -8.817041,
+"lat": 37.601514,
+"eea": []
+},
+{
+"id": "way/206524770",
+"naam": "Praia do Tonel",
+"lon": -8.791878,
+"lat": 37.559103,
+"eea": []
+},
+{
+"id": "way/1070775092",
+"naam": "Praia da Entrada da Barca",
+"lon": -8.791904,
+"lat": 37.550943,
+"eea": []
+},
+{
+"id": "way/208875567",
+"naam": "Praia da Baía da Arquinha",
+"lon": -8.786157,
+"lat": 37.535702,
+"eea": []
+},
+{
+"id": "way/208685139",
+"naam": "Praia da Pedra da Bica",
+"lon": -8.78617,
+"lat": 37.532353,
+"eea": []
+},
+{
+"id": "way/208875686",
+"naam": "Praia de Nossa Senhora",
+"lon": -8.786934,
+"lat": 37.530131,
+"eea": []
+},
+{
+"id": "way/696854735",
+"naam": "Praia da Zambujeira do Mar",
+"lon": -8.788493,
+"lat": 37.523259,
+"eea": [
+"PTCK7T"
+]
+},
+{
+"id": "way/157818271",
+"naam": "Praia dos Alteirinhos",
+"lon": -8.788905,
+"lat": 37.518562,
+"eea": [
+"PTCU7Q"
+]
+},
+{
+"id": "way/843815183",
+"naam": "Praia dos Alteirinhos (naturista)",
+"lon": -8.789756,
+"lat": 37.517508,
+"eea": []
+},
+{
+"id": "way/208874877",
+"naam": "Praia da Meia Laranja",
+"lon": -8.790502,
+"lat": 37.516576,
+"eea": []
+},
+{
+"id": "way/208874909",
+"naam": "Praia das Bernosas",
+"lon": -8.790721,
+"lat": 37.514923,
+"eea": []
+},
+{
+"id": "way/208874601",
+"naam": "Praia do Alvorião",
+"lon": -8.791541,
+"lat": 37.504091,
+"eea": []
+},
+{
+"id": "eea/PTCF8X",
+"naam": "CARVALHAL (ODEMIRA)",
+"lon": -8.795952,
+"lat": 37.501002,
+"eea": [
+"PTCF8X"
+]
+},
+{
+"id": "way/157818268",
+"naam": "Praia do Carvalhal",
+"lon": -8.79248,
+"lat": 37.500565,
+"eea": []
+},
+{
+"id": "way/208117757",
+"naam": "Praia dos Machados",
+"lon": -8.793798,
+"lat": 37.492494,
+"eea": []
+},
+{
+"id": "way/922225754",
+"naam": "Praia da Amália",
+"lon": -8.794538,
+"lat": 37.482487,
+"eea": []
+},
+{
+"id": "way/1242990216",
+"naam": "Praia de Odeceixe-Mar",
+"lon": -8.798798,
+"lat": 37.442398,
+"eea": [
+"PTCU9K"
+]
+},
+{
+"id": "way/1242990213",
+"naam": "Praia das Adegas",
+"lon": -8.800573,
+"lat": 37.439329,
+"eea": []
+},
+{
+"id": "way/957426818",
+"naam": "Praia da Esteveira",
+"lon": -8.811738,
+"lat": 37.40805,
+"eea": []
+},
+{
+"id": "way/1256654176",
+"naam": "Praia da Samouqueira",
+"lon": -8.81639,
+"lat": 37.398318,
+"eea": []
+},
+{
+"id": "way/964252291",
+"naam": "Praia da Barradinha",
+"lon": -8.818802,
+"lat": 37.39462,
+"eea": []
+},
+{
+"id": "way/1242844058",
+"naam": "Praia de Vale dos Homens",
+"lon": -8.823649,
+"lat": 37.385338,
+"eea": [
+"PTCD2J"
+]
+},
+{
+"id": "way/1242776850",
+"naam": "Praia da Carreagem",
+"lon": -8.839503,
+"lat": 37.362254,
+"eea": []
+},
+{
+"id": "way/1242019126",
+"naam": "Praia da Amoreira",
+"lon": -8.845006,
+"lat": 37.350694,
+"eea": [
+"PTCT9P"
+]
+},
+{
+"id": "eea/PTCD3F",
+"naam": "AMOREIRA-RIO",
+"lon": -8.845742,
+"lat": 37.347891,
+"eea": [
+"PTCD3F"
+]
+},
+{
+"id": "way/55705498",
+"naam": "Praia de Monte Clérigo",
+"lon": -8.852981,
+"lat": 37.342692,
+"eea": [
+"PTCV9H"
+]
+},
+{
+"id": "way/38502852",
+"naam": "Praia de Coelha",
+"lon": -8.860195,
+"lat": 37.334708,
+"eea": []
+},
+{
+"id": "way/1242614517",
+"naam": "Praia do Medo da Fonte Santa",
+"lon": -8.869142,
+"lat": 37.324544,
+"eea": []
+},
+{
+"id": "way/1241777732",
+"naam": "Praia da Arrifana",
+"lon": -8.864999,
+"lat": 37.292326,
+"eea": [
+"PTCX3C"
+]
+},
+{
+"id": "way/1491203599",
+"naam": "Praia da Pedra da Agulha",
+"lon": -8.862117,
+"lat": 37.274751,
+"eea": []
+},
+{
+"id": "way/208839203",
+"naam": "Praia do Canal",
+"lon": -8.860384,
+"lat": 37.270514,
+"eea": []
+},
+{
+"id": "way/1255794144",
+"naam": "Praia do Penedo",
+"lon": -8.866449,
+"lat": 37.252518,
+"eea": []
+},
+{
+"id": "way/1241777810",
+"naam": "Praia de Vale Figueira",
+"lon": -8.86929,
+"lat": 37.247523,
+"eea": [
+"PTCN8U"
+]
+},
+{
+"id": "way/828824087",
+"naam": "Praia de Vale Figueira",
+"lon": -8.875145,
+"lat": 37.237536,
+"eea": []
+},
+{
+"id": "way/1241619236",
+"naam": "Praia da Bordeira",
+"lon": -8.902055,
+"lat": 37.200257,
+"eea": [
+"PTCL2H"
+]
+},
+{
+"id": "way/1328233392",
+"naam": "Praia da Zimbreirinha",
+"lon": -8.913935,
+"lat": 37.192924,
+"eea": []
+},
+{
+"id": "way/228518871",
+"naam": "Playa de San Bruno",
+"lon": -7.394759,
+"lat": 37.176624,
+"eea": []
+},
+{
+"id": "way/587923984",
+"naam": "Praia de Monte Gordo",
+"lon": -7.443828,
+"lat": 37.176533,
+"eea": [
+"PTCF3H"
+]
+},
+{
+"id": "node/8211403118",
+"naam": "Praia Adão e Eva",
+"lon": -7.465994,
+"lat": 37.175855,
+"eea": []
+},
+{
+"id": "way/79503102",
+"naam": "Praia do Cabeço",
+"lon": -7.471451,
+"lat": 37.175055,
+"eea": [
+"PTCJ3N"
+]
+},
+{
+"id": "way/487969876",
+"naam": "Praia do Portinho do Forno",
+"lon": -8.907923,
+"lat": 37.174394,
+"eea": []
+},
+{
+"id": "way/79503288",
+"naam": "Praia Verde",
+"lon": -7.479143,
+"lat": 37.17354,
+"eea": [
+"PTCU8X"
+]
+},
+{
+"id": "way/588367516",
+"naam": "Praia Verdelago",
+"lon": -7.486231,
+"lat": 37.172084,
+"eea": []
+},
+{
+"id": "relation/5448095",
+"naam": "Praia de Santo António",
+"lon": -7.414604,
+"lat": 37.171803,
+"eea": [
+"PTCU8C"
+]
+},
+{
+"id": "way/79503985",
+"naam": "Praia da Alagoa",
+"lon": -7.497398,
+"lat": 37.169422,
+"eea": [
+"PTCF9W"
+]
+},
+{
+"id": "node/12070720137",
+"naam": "Praia das Primas",
+"lon": -7.503319,
+"lat": 37.167901,
+"eea": []
+},
+{
+"id": "way/1239998556",
+"naam": "Praia do Amado",
+"lon": -8.903302,
+"lat": 37.165909,
+"eea": [
+"PTCL3P"
+]
+},
+{
+"id": "way/79504039",
+"naam": "Praia da Lota",
+"lon": -7.511446,
+"lat": 37.165419,
+"eea": [
+"PTCU9Q"
+]
+},
+{
+"id": "way/79504187",
+"naam": "Praia da Manta Rota",
+"lon": -7.521881,
+"lat": 37.161589,
+"eea": [
+"PTCL8F"
+]
+},
+{
+"id": "way/1240127219",
+"naam": "Praia da Muração",
+"lon": -8.909165,
+"lat": 37.154833,
+"eea": []
+},
+{
+"id": "relation/7212953",
+"naam": "Praia de Cacela Velha",
+"lon": -7.553762,
+"lat": 37.150824,
+"eea": [
+"PTCD2W"
+]
+},
+{
+"id": "way/1240127231",
+"naam": "Praia do Mirouço",
+"lon": -8.915602,
+"lat": 37.146949,
+"eea": []
+},
+{
+"id": "way/490879098",
+"naam": "Praia do Lacém",
+"lon": -7.571236,
+"lat": 37.142021,
+"eea": []
+},
+{
+"id": "way/208834927",
+"naam": "Praia do Mirouço",
+"lon": -8.919933,
+"lat": 37.137014,
+"eea": []
+},
+{
+"id": "way/79509901",
+"naam": "Praia de Cabanas",
+"lon": -7.592581,
+"lat": 37.132362,
+"eea": [
+"PTCL9H"
+]
+},
+{
+"id": "way/1239998563",
+"naam": "Praia Cordama Naturista",
+"lon": -8.925087,
+"lat": 37.126718,
+"eea": []
+},
+{
+"id": "way/606996960",
+"naam": "Praia do Alvor Poente",
+"lon": -8.59756,
+"lat": 37.122296,
+"eea": [
+"PTCF7T"
+]
+},
+{
+"id": "way/606996959",
+"naam": "Praia do Alvor Nascente",
+"lon": -8.58882,
+"lat": 37.121342,
+"eea": []
+},
+{
+"id": "way/79511624",
+"naam": "Praia do Forte da Barra",
+"lon": -7.613571,
+"lat": 37.119727,
+"eea": []
+},
+{
+"id": "way/607027170",
+"naam": "Praia do Vau",
+"lon": -8.559338,
+"lat": 37.119693,
+"eea": [
+"PTCF9H"
+]
+},
+{
+"id": "way/607027167",
+"naam": "Praia do Alemão",
+"lon": -8.562296,
+"lat": 37.119676,
+"eea": []
+},
+{
+"id": "way/1245711193",
+"naam": "Praia dos Três Irmãos",
+"lon": -8.581403,
+"lat": 37.1194,
+"eea": [
+"PTCW7C"
+]
+},
+{
+"id": "way/1239998570",
+"naam": "Praia da Barriga",
+"lon": -8.930743,
+"lat": 37.119251,
+"eea": []
+},
+{
+"id": "way/218009625",
+"naam": "Praia do Barranco das Canas",
+"lon": -8.56486,
+"lat": 37.119024,
+"eea": [
+"PTCX2T"
+]
+},
+{
+"id": "way/607027161",
+"naam": "Praia dos Careanos",
+"lon": -8.5549,
+"lat": 37.118924,
+"eea": [
+"PTCV8D"
+]
+},
+{
+"id": "way/517429596",
+"naam": "Praia do Rato",
+"lon": -7.623326,
+"lat": 37.118582,
+"eea": []
+},
+{
+"id": "way/1326145039",
+"naam": "Praia da Prainha",
+"lon": -8.578549,
+"lat": 37.118246,
+"eea": []
+},
+{
+"id": "way/1246032617",
+"naam": "Praia do Boião",
+"lon": -8.566108,
+"lat": 37.118236,
+"eea": []
+},
+{
+"id": "way/1246173354",
+"naam": "Praia dos Três Castelos",
+"lon": -8.54691,
+"lat": 37.117459,
+"eea": [
+"PTCX8E"
+]
+},
+{
+"id": "way/1245711159",
+"naam": "Praia do Submarino",
+"lon": -8.570429,
+"lat": 37.116433,
+"eea": []
+},
+{
+"id": "way/1245711162",
+"naam": "Praia RF",
+"lon": -8.574317,
+"lat": 37.116153,
+"eea": []
+},
+{
+"id": "way/1245934887",
+"naam": "Praia João de Arens",
+"lon": -8.567916,
+"lat": 37.116063,
+"eea": []
+},
+{
+"id": "way/79087228",
+"naam": "Praia Tavira-Ria",
+"lon": -7.622159,
+"lat": 37.115117,
+"eea": []
+},
+{
+"id": "way/98687797",
+"naam": "Praia da Rocha",
+"lon": -8.532643,
+"lat": 37.114809,
+"eea": [
+"PTCU2K",
+"PTCH9Q"
+]
+},
+{
+"id": "eea/PTCK9X",
+"naam": "FERRAGUDO",
+"lon": -8.529546,
+"lat": 37.11316,
+"eea": [
+"PTCK9X"
+]
+},
+{
+"id": "way/432987903",
+"naam": "Meia Praia",
+"lon": -8.65826,
+"lat": 37.110377,
+"eea": [
+"PTCN9H"
+]
+},
+{
+"id": "relation/7093714",
+"naam": "Praia do Molhe",
+"lon": -8.519812,
+"lat": 37.109675,
+"eea": []
+},
+{
+"id": "way/78432559",
+"naam": "Praia da Ilha de Tavira",
+"lon": -7.62085,
+"lat": 37.109575,
+"eea": [
+"PTCF3M"
+]
+},
+{
+"id": "way/1327926836",
+"naam": "Praia da Cordoama",
+"lon": -8.937713,
+"lat": 37.109488,
+"eea": [
+"PTCF3P"
+]
+},
+{
+"id": "way/117570615",
+"naam": "Praia do Pintadinho",
+"lon": -8.519023,
+"lat": 37.107994,
+"eea": [
+"PTCJ8X"
+]
+},
+{
+"id": "way/204181234",
+"naam": "Praia do Torrado",
+"lon": -8.515697,
+"lat": 37.10577,
+"eea": []
+},
+{
+"id": "way/1246703830",
+"naam": "Praia dos Caneiros",
+"lon": -8.51378,
+"lat": 37.104845,
+"eea": [
+"PTCL7Q"
+]
+},
+{
+"id": "way/1252978464",
+"naam": "Praia da Afurada",
+"lon": -8.509025,
+"lat": 37.103306,
+"eea": []
+},
+{
+"id": "way/1252978463",
+"naam": "Praia Afurada Naturista",
+"lon": -8.507741,
+"lat": 37.102755,
+"eea": []
+},
+{
+"id": "way/1246703809",
+"naam": "Praia do Mato",
+"lon": -8.506135,
+"lat": 37.102124,
+"eea": []
+},
+{
+"id": "way/1497785950",
+"naam": "Praia Vale do Olival",
+"lon": -8.370247,
+"lat": 37.101602,
+"eea": [
+"PTCJ8F"
+]
+},
+{
+"id": "way/108165451",
+"naam": "Praia dos Beijinhos",
+"lon": -8.373862,
+"lat": 37.100624,
+"eea": []
+},
+{
+"id": "way/1244531551",
+"naam": "Praia do Castelejo",
+"lon": -8.945883,
+"lat": 37.100263,
+"eea": [
+"PTCJ2K"
+]
+},
+{
+"id": "way/259211193",
+"naam": "Praia de Armação de Pêra",
+"lon": -8.357389,
+"lat": 37.100047,
+"eea": [
+"PTCW7K",
+"PTCN7V"
+]
+},
+{
+"id": "way/119246525",
+"naam": "Praia dos Tremoços",
+"lon": -8.377422,
+"lat": 37.099687,
+"eea": []
+},
+{
+"id": "way/621125242",
+"naam": "Praia dos Castelos",
+"lon": -8.48168,
+"lat": 37.098675,
+"eea": []
+},
+{
+"id": "way/78432429",
+"naam": "Praia da Terra Estreita na Ilha de Tavira",
+"lon": -7.639695,
+"lat": 37.098446,
+"eea": [
+"PTCQ9T"
+]
+},
+{
+"id": "way/107913221",
+"naam": "Praia da Cova Redonda",
+"lon": -8.380461,
+"lat": 37.098437,
+"eea": [
+"PTCE7M"
+]
+},
+{
+"id": "relation/6802536",
+"naam": "Praia do Forte da Bandeira",
+"lon": -8.667393,
+"lat": 37.098407,
+"eea": []
+},
+{
+"id": "way/24461578",
+"naam": "Praia da Batata",
+"lon": -8.667702,
+"lat": 37.097711,
+"eea": [
+"PTCK8X"
+]
+},
+{
+"id": "way/1250076184",
+"naam": "Praia das Escaleiras",
+"lon": -8.383517,
+"lat": 37.097424,
+"eea": []
+},
+{
+"id": "way/470523247",
+"naam": "Praia da Ponta da Adega",
+"lon": -8.384046,
+"lat": 37.097098,
+"eea": []
+},
+{
+"id": "way/1249999772",
+"naam": "Praia da Senhora da Rocha",
+"lon": -8.385453,
+"lat": 37.097001,
+"eea": [
+"PTCE2H"
+]
+},
+{
+"id": "way/303665313",
+"naam": "Praia do Paraíso",
+"lon": -8.475643,
+"lat": 37.09692,
+"eea": []
+},
+{
+"id": "way/93278502",
+"naam": "Praia dos Estudantes",
+"lon": -8.667427,
+"lat": 37.096552,
+"eea": []
+},
+{
+"id": "way/1253692196",
+"naam": "Praia da Caldeira",
+"lon": -8.667077,
+"lat": 37.096143,
+"eea": []
+},
+{
+"id": "way/129212171",
+"naam": "Praia do Carvoeiro",
+"lon": -8.472026,
+"lat": 37.09597,
+"eea": [
+"PTCF9K"
+]
+},
+{
+"id": "way/119246518",
+"naam": "Praia Nova",
+"lon": -8.388935,
+"lat": 37.095712,
+"eea": []
+},
+{
+"id": "way/1249999787",
+"naam": "Praia do Barranco",
+"lon": -8.391042,
+"lat": 37.094839,
+"eea": []
+},
+{
+"id": "way/93278485",
+"naam": "Praia do Pinhão",
+"lon": -8.668045,
+"lat": 37.094305,
+"eea": []
+},
+{
+"id": "way/252621789",
+"naam": "Praia Grande de Pêra",
+"lon": -8.340262,
+"lat": 37.093752,
+"eea": [
+"PTCH8J",
+"PTCQ2D"
+]
+},
+{
+"id": "way/1249669592",
+"naam": "Praia do Pontal",
+"lon": -8.392471,
+"lat": 37.093318,
+"eea": []
+},
+{
+"id": "way/481006224",
+"naam": "Praia do Vale Covo",
+"lon": -8.460105,
+"lat": 37.093287,
+"eea": []
+},
+{
+"id": "way/1249669595",
+"naam": "Praia da Morena",
+"lon": -8.39415,
+"lat": 37.092993,
+"eea": []
+},
+{
+"id": "way/29437665",
+"naam": "Praia de Dona Ana",
+"lon": -8.66871,
+"lat": 37.092001,
+"eea": [
+"PTCK2D"
+]
+},
+{
+"id": "way/160455815",
+"naam": "Praia das Fontaínhas",
+"lon": -8.395542,
+"lat": 37.091859,
+"eea": []
+},
+{
+"id": "way/1247020899",
+"naam": "Praia de Vale Centianes",
+"lon": -8.455711,
+"lat": 37.091322,
+"eea": [
+"PTCT8D"
+]
+},
+{
+"id": "way/1249710119",
+"naam": "Praia da Albandeira",
+"lon": -8.399826,
+"lat": 37.090998,
+"eea": []
+},
+{
+"id": "way/1249669603",
+"naam": "Praia da Estaquinha",
+"lon": -8.401226,
+"lat": 37.090838,
+"eea": []
+},
+{
+"id": "way/160455813",
+"naam": "Praia da Malhada do Baraço",
+"lon": -8.407442,
+"lat": 37.089902,
+"eea": []
+},
+{
+"id": "way/1249300471",
+"naam": "Praia do Barranquinho",
+"lon": -8.405607,
+"lat": 37.089796,
+"eea": []
+},
+{
+"id": "way/129584051",
+"naam": "Praia do Barranco das Belharucas",
+"lon": -8.178846,
+"lat": 37.089792,
+"eea": [
+"PTCD9U"
+]
+},
+{
+"id": "way/120164558",
+"naam": "Praia da Marinha",
+"lon": -8.412698,
+"lat": 37.089693,
+"eea": [
+"PTCV2P"
+]
+},
+{
+"id": "way/1254991134",
+"naam": "Praia dos Olhos de Água",
+"lon": -8.190456,
+"lat": 37.089639,
+"eea": [
+"PTCV9U"
+]
+},
+{
+"id": "way/160455814",
+"naam": "Praia do Pau",
+"lon": -8.410523,
+"lat": 37.089564,
+"eea": []
+},
+{
+"id": "way/232240426",
+"naam": "Praia do Buraco",
+"lon": -8.411193,
+"lat": 37.089442,
+"eea": []
+},
+{
+"id": "way/160455810",
+"naam": "Praia da Mesquita",
+"lon": -8.415168,
+"lat": 37.089191,
+"eea": []
+},
+{
+"id": "way/93278498",
+"naam": "Pinheiro Beach",
+"lon": -8.668445,
+"lat": 37.088851,
+"eea": []
+},
+{
+"id": "way/129581900",
+"naam": "Praia Maria Luísa",
+"lon": -8.199198,
+"lat": 37.088681,
+"eea": [
+"PTCX7V"
+]
+},
+{
+"id": "way/470544217",
+"naam": "Praia do Vale Espinhaço",
+"lon": -8.440757,
+"lat": 37.087737,
+"eea": []
+},
+{
+"id": "way/62955217",
+"naam": "Praia de Santa Eulália",
+"lon": -8.215073,
+"lat": 37.08758,
+"eea": [
+"PTCT8C"
+]
+},
+{
+"id": "way/71500098",
+"naam": "Praia do Camilo",
+"lon": -8.668337,
+"lat": 37.087472,
+"eea": [
+"PTCN3V"
+]
+},
+{
+"id": "way/1247825356",
+"naam": "Praia da Corredoura",
+"lon": -8.421719,
+"lat": 37.087467,
+"eea": []
+},
+{
+"id": "way/1248930430",
+"naam": "Praia do Cão Raivoso",
+"lon": -8.418142,
+"lat": 37.087387,
+"eea": []
+},
+{
+"id": "way/465776072",
+"naam": "Praia de Benagil",
+"lon": -8.425694,
+"lat": 37.087218,
+"eea": [
+"PTCW3J"
+]
+},
+{
+"id": "way/156815842",
+"naam": "Praia da Luz",
+"lon": -8.725552,
+"lat": 37.086559,
+"eea": [
+"PTCE3N"
+]
+},
+{
+"id": "way/110468045",
+"naam": "Praia do Carvalho",
+"lon": -8.431661,
+"lat": 37.086526,
+"eea": []
+},
+{
+"id": "way/677024792",
+"naam": "Praia da Falésia Açoteias",
+"lon": -8.169965,
+"lat": 37.086524,
+"eea": [
+"PTCP8W"
+]
+},
+{
+"id": "way/129575835",
+"naam": "Praia dos Pescadores",
+"lon": -8.250122,
+"lat": 37.086149,
+"eea": [
+"PTCV7X"
+]
+},
+{
+"id": "way/51986551",
+"naam": "Praia dos Salgados",
+"lon": -8.325211,
+"lat": 37.08612,
+"eea": [
+"PTCE9X",
+"PTCF2J"
+]
+},
+{
+"id": "way/129575837",
+"naam": "Praia do Peneco",
+"lon": -8.253723,
+"lat": 37.08597,
+"eea": [
+"PTCL2Q"
+]
+},
+{
+"id": "way/1357090689",
+"naam": "Praia do Inatel",
+"lon": -8.245002,
+"lat": 37.085602,
+"eea": [
+"PTCV7T"
+]
+},
+{
+"id": "way/1329493935",
+"naam": "Praia da Oura",
+"lon": -8.222673,
+"lat": 37.085128,
+"eea": [
+"PTCH9F",
+"PTCE8U"
+]
+},
+{
+"id": "way/155804981",
+"naam": "Praia da Pedra dos Bicos",
+"lon": -8.218442,
+"lat": 37.084995,
+"eea": []
+},
+{
+"id": "way/549029920",
+"naam": "Prainha",
+"lon": -8.730818,
+"lat": 37.084846,
+"eea": []
+},
+{
+"id": "way/886719362",
+"naam": "Praia de Porto de Mós",
+"lon": -8.684609,
+"lat": 37.084653,
+"eea": [
+"PTCP2X"
+]
+},
+{
+"id": "way/1245077034",
+"naam": "Praia dos Pinheiros",
+"lon": -8.667246,
+"lat": 37.084305,
+"eea": []
+},
+{
+"id": "way/288904496",
+"naam": "Praia do Canavial",
+"lon": -8.67882,
+"lat": 37.0837,
+"eea": []
+},
+{
+"id": "way/129577161",
+"naam": "Praia dos Alemães",
+"lon": -8.237523,
+"lat": 37.083656,
+"eea": [
+"PTCU2T"
+]
+},
+{
+"id": "way/129581901",
+"naam": "Praia dos Aveiros",
+"lon": -8.231395,
+"lat": 37.083382,
+"eea": [
+"PTCP7M"
+]
+},
+{
+"id": "way/129584057",
+"naam": "Praia da Falésia Alfamar",
+"lon": -8.157885,
+"lat": 37.08292,
+"eea": [
+"PTCQ3N"
+]
+},
+{
+"id": "way/129580025",
+"naam": "Praia da Baleeira",
+"lon": -8.262277,
+"lat": 37.081752,
+"eea": []
+},
+{
+"id": "way/1250910960",
+"naam": "Praia da Galé",
+"lon": -8.318096,
+"lat": 37.081655,
+"eea": []
+},
+{
+"id": "way/675161585",
+"naam": "Praia da Falésia",
+"lon": -8.149546,
+"lat": 37.080291,
+"eea": []
+},
+{
+"id": "way/1250910959",
+"naam": "Praia da Galé (leste)",
+"lon": -8.31564,
+"lat": 37.079979,
+"eea": [
+"PTCP8F"
+]
+},
+{
+"id": "way/1252443721",
+"naam": "Praia do Risco",
+"lon": -8.264316,
+"lat": 37.079639,
+"eea": []
+},
+{
+"id": "way/78432336",
+"naam": "Praia do Barril",
+"lon": -7.67503,
+"lat": 37.079344,
+"eea": [
+"PTCN3D"
+]
+},
+{
+"id": "way/1250594381",
+"naam": "Praia do Chiringuito",
+"lon": -8.313457,
+"lat": 37.078878,
+"eea": []
+},
+{
+"id": "way/1250910956",
+"naam": "Praia dos Bés",
+"lon": -8.312517,
+"lat": 37.078191,
+"eea": []
+},
+{
+"id": "way/1324074429",
+"naam": "Praia dos Tomates",
+"lon": -8.142092,
+"lat": 37.078085,
+"eea": [
+"PTCE7V"
+]
+},
+{
+"id": "way/1250910953",
+"naam": "Praia do Sao Lourenco",
+"lon": -8.311687,
+"lat": 37.077819,
+"eea": []
+},
+{
+"id": "way/93448953",
+"naam": "Praia Tomás Franco",
+"lon": -8.310619,
+"lat": 37.077095,
+"eea": []
+},
+{
+"id": "way/1250926293",
+"naam": "Praia Manuel Lourenço",
+"lon": -8.309222,
+"lat": 37.076342,
+"eea": [
+"PTCX2F"
+]
+},
+{
+"id": "way/1252144318",
+"naam": "Praia dos Arrifes",
+"lon": -8.277467,
+"lat": 37.075903,
+"eea": [
+"PTCT2P"
+]
+},
+{
+"id": "way/1236137162",
+"naam": "Praia da Balbina",
+"lon": -8.305621,
+"lat": 37.075416,
+"eea": []
+},
+{
+"id": "way/1252144328",
+"naam": "Praia da Viga",
+"lon": -8.278325,
+"lat": 37.075081,
+"eea": []
+},
+{
+"id": "way/129581895",
+"naam": "Praia da Falésia",
+"lon": -8.131692,
+"lat": 37.074815,
+"eea": [
+"PTCP8X",
+"PTCK3F"
+]
+},
+{
+"id": "way/1252085905",
+"naam": "Praia de São Rafael",
+"lon": -8.280682,
+"lat": 37.074625,
+"eea": [
+"PTCU7F"
+]
+},
+{
+"id": "way/1252085894",
+"naam": "Praia dos Paradinha",
+"lon": -8.281963,
+"lat": 37.074414,
+"eea": []
+},
+{
+"id": "way/51789928",
+"naam": "Praia do Evaristo",
+"lon": -8.302937,
+"lat": 37.074046,
+"eea": [
+"PTCK8J"
+]
+},
+{
+"id": "way/1252085915",
+"naam": "Praia dos Piratas",
+"lon": -8.283768,
+"lat": 37.073832,
+"eea": []
+},
+{
+"id": "way/1251789728",
+"naam": "Praia da Coelha",
+"lon": -8.29365,
+"lat": 37.073626,
+"eea": [
+"PTCQ8L"
+]
+},
+{
+"id": "way/1251789729",
+"naam": "Praia da Maré das Porcas",
+"lon": -8.295781,
+"lat": 37.073599,
+"eea": []
+},
+{
+"id": "way/1106872193",
+"naam": "Praia da Ponta Pequena",
+"lon": -8.285583,
+"lat": 37.073551,
+"eea": []
+},
+{
+"id": "way/309582065",
+"naam": "Praia da Fraternidade",
+"lon": -8.296782,
+"lat": 37.073473,
+"eea": []
+},
+{
+"id": "way/1251789696",
+"naam": "Praia da Ponta Grande",
+"lon": -8.287371,
+"lat": 37.073262,
+"eea": []
+},
+{
+"id": "way/1251789705",
+"naam": "Praia das Salamitras",
+"lon": -8.28977,
+"lat": 37.073158,
+"eea": []
+},
+{
+"id": "way/1251789697",
+"naam": "Praia do Ninho de Andorinha",
+"lon": -8.287069,
+"lat": 37.073067,
+"eea": []
+},
+{
+"id": "way/48433466",
+"naam": "Praia do Castelo",
+"lon": -8.298821,
+"lat": 37.073065,
+"eea": [
+"PTCL2F"
+]
+},
+{
+"id": "way/38502661",
+"naam": "Praia do Burgau",
+"lon": -8.776228,
+"lat": 37.071101,
+"eea": [
+"PTCV3K"
+]
+},
+{
+"id": "way/85956082",
+"naam": "Praia de Vilamoura",
+"lon": -8.115916,
+"lat": 37.070762,
+"eea": [
+"PTCE3P"
+]
+},
+{
+"id": "way/1243482695",
+"naam": "Praia da Ponta Ruiva",
+"lon": -8.963495,
+"lat": 37.068965,
+"eea": []
+},
+{
+"id": "way/453722169",
+"naam": "Praia dos Rebolos",
+"lon": -8.782935,
+"lat": 37.068644,
+"eea": []
+},
+{
+"id": "way/1244670407",
+"naam": "Praia da Boca do Rio",
+"lon": -8.808571,
+"lat": 37.066186,
+"eea": [
+"PTCK7Q"
+]
+},
+{
+"id": "way/1244670399",
+"naam": "Praia de Almádena",
+"lon": -8.794593,
+"lat": 37.065496,
+"eea": []
+},
+{
+"id": "way/142594780",
+"naam": "Praia de Quarteira",
+"lon": -8.09879,
+"lat": 37.065119,
+"eea": [
+"PTCF7K"
+]
+},
+{
+"id": "way/1244670402",
+"naam": "Praia da Salema",
+"lon": -8.824485,
+"lat": 37.064812,
+"eea": [
+"PTCQ3J"
+]
+},
+{
+"id": "way/1056515224",
+"naam": "Praia de Cabanas Velhas (Naturista)",
+"lon": -8.792777,
+"lat": 37.064695,
+"eea": [
+"PTCQ2E"
+]
+},
+{
+"id": "way/1328895446",
+"naam": "Praia Grodo Mexilhão",
+"lon": -8.834276,
+"lat": 37.061729,
+"eea": []
+},
+{
+"id": "relation/7523213",
+"naam": "Praia do Homem Nú",
+"lon": -7.70977,
+"lat": 37.061479,
+"eea": []
+},
+{
+"id": "way/393042815",
+"naam": "Praia Santa",
+"lon": -8.836737,
+"lat": 37.061373,
+"eea": []
+},
+{
+"id": "way/655494861",
+"naam": "Praia do Forte Novo",
+"lon": -8.088341,
+"lat": 37.061158,
+"eea": [
+"PTCD7N"
+]
+},
+{
+"id": "way/156815841",
+"naam": "Praia da Figueira",
+"lon": -8.839942,
+"lat": 37.060634,
+"eea": []
+},
+{
+"id": "way/655688259",
+"naam": "Praia do Almargem",
+"lon": -8.0841,
+"lat": 37.05889,
+"eea": [
+"PTCQ2V"
+]
+},
+{
+"id": "way/1244215657",
+"naam": "Praia da Foia do Carro",
+"lon": -8.84598,
+"lat": 37.058316,
+"eea": []
+},
+{
+"id": "way/655688261",
+"naam": "Praia da Lagoa",
+"lon": -8.081516,
+"lat": 37.057542,
+"eea": []
+},
+{
+"id": "way/1244215650",
+"naam": "Praia Andorinha",
+"lon": -8.850668,
+"lat": 37.056325,
+"eea": []
+},
+{
+"id": "way/156814659",
+"naam": "Praia das Furnas",
+"lon": -8.854242,
+"lat": 37.05486,
+"eea": [
+"PTCN7X"
+]
+},
+{
+"id": "way/261606273",
+"naam": "Praia de Loulé Velho",
+"lon": -8.0756,
+"lat": 37.054287,
+"eea": [
+"PTCQ8W"
+]
+},
+{
+"id": "way/78427662",
+"naam": "Praia da Fuseta-Ria",
+"lon": -7.744734,
+"lat": 37.04979,
+"eea": [
+"PTCQ3X"
+]
+},
+{
+"id": "way/655688263",
+"naam": "Praia de Vale do Lobo",
+"lon": -8.066049,
+"lat": 37.048649,
+"eea": [
+"PTCT7J"
+]
+},
+{
+"id": "way/156814646",
+"naam": "Praia da Ingrina",
+"lon": -8.878987,
+"lat": 37.046281,
+"eea": [
+"PTCK8L"
+]
+},
+{
+"id": "way/156814657",
+"naam": "Praia do Zavial",
+"lon": -8.871561,
+"lat": 37.046196,
+"eea": [
+"PTCN2M"
+]
+},
+{
+"id": "way/79522255",
+"naam": "Praia da Fuseta-Mar",
+"lon": -7.738433,
+"lat": 37.046194,
+"eea": [
+"PTCD3W"
+]
+},
+{
+"id": "way/1243320967",
+"naam": "Praia do Telheiro",
+"lon": -8.979201,
+"lat": 37.045553,
+"eea": []
+},
+{
+"id": "way/810715094",
+"naam": "Praia João Vaz",
+"lon": -8.885043,
+"lat": 37.043891,
+"eea": []
+},
+{
+"id": "way/1243839258",
+"naam": "Praia do Zavial Naturista",
+"lon": -8.866591,
+"lat": 37.043865,
+"eea": []
+},
+{
+"id": "way/156814654",
+"naam": "Praia do Barranco",
+"lon": -8.895034,
+"lat": 37.0418,
+"eea": [
+"PTCJ9T"
+]
+},
+{
+"id": "way/655688264",
+"naam": "Praia do Garrão",
+"lon": -8.053476,
+"lat": 37.041333,
+"eea": [
+"PTCH7U",
+"PTCP3H"
+]
+},
+{
+"id": "way/508415850",
+"naam": "Praia dos Cavacos",
+"lon": -7.795543,
+"lat": 37.036086,
+"eea": [
+"PTCV3P"
+]
+},
+{
+"id": "way/655688262",
+"naam": "Praia do Ancão",
+"lon": -8.038428,
+"lat": 37.03236,
+"eea": [
+"PTCW2C"
+]
+},
+{
+"id": "way/94838670",
+"naam": "Praia do Beliche",
+"lon": -8.964164,
+"lat": 37.0256,
+"eea": [
+"PTCT2X"
+]
+},
+{
+"id": "way/84374228",
+"naam": "Praia da Quinta do Lago",
+"lon": -8.025356,
+"lat": 37.024924,
+"eea": [
+"PTCV9L"
+]
+},
+{
+"id": "way/222576671",
+"naam": "Praia da Armona-Ria",
+"lon": -7.80438,
+"lat": 37.023537,
+"eea": [
+"PTCW3N"
+]
+},
+{
+"id": "way/1254208004",
+"naam": "Praia dos Rebolinhos",
+"lon": -8.920236,
+"lat": 37.022109,
+"eea": []
+},
+{
+"id": "way/1254208003",
+"naam": "Praia do Martinhal",
+"lon": -8.926623,
+"lat": 37.018292,
+"eea": [
+"PTCN8E"
+]
+},
+{
+"id": "way/79531240",
+"naam": "Praia da Armona-Mar",
+"lon": -7.787778,
+"lat": 37.017955,
+"eea": [
+"PTCT3J"
+]
+},
+{
+"id": "way/176818984",
+"naam": "Praia da Baleeira",
+"lon": -8.93035,
+"lat": 37.011362,
+"eea": []
+},
+{
+"id": "way/11384145",
+"naam": "Praia dos Tesos",
+"lon": -7.941636,
+"lat": 37.006799,
+"eea": []
+},
+{
+"id": "way/1255056880",
+"naam": "Praia do Tonel",
+"lon": -8.947924,
+"lat": 37.00576,
+"eea": [
+"PTCH8M"
+]
+},
+{
+"id": "way/71340752",
+"naam": "Praia da Mareta",
+"lon": -8.940958,
+"lat": 37.005006,
+"eea": [
+"PTCX2C"
+]
+},
+{
+"id": "relation/12567393",
+"naam": "Praia da Ilha de Faro",
+"lon": -7.989667,
+"lat": 37.003914,
+"eea": [
+"PTCP9U"
+]
+},
+{
+"id": "node/6757020738",
+"naam": "Praia da Culatra",
+"lon": -7.817752,
+"lat": 36.994944,
+"eea": [
+"PTCD2V"
+]
+},
+{
+"id": "way/1421663412",
+"naam": "Praia do Farol (ria)",
+"lon": -7.86073,
+"lat": 36.981184,
+"eea": []
+},
+{
+"id": "relation/19450196",
+"naam": "Praia do Farol",
+"lon": -7.856365,
+"lat": 36.978152,
+"eea": [
+"PTCV8W"
+]
+},
+{
+"id": "way/471184443",
+"naam": "Praia da Ilha da Barreta",
+"lon": -7.933571,
+"lat": 36.971704,
+"eea": []
+},
+{
+"id": "way/82505950",
+"naam": "Praia da Ilha Deserta",
+"lon": -7.879575,
+"lat": 36.9629,
+"eea": [
+"PTCK9T"
+]
+}
+]
+}

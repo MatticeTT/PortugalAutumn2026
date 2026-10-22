@@ -154,6 +154,16 @@ def kennis_kandidaten() -> list[dict]:
     return uit
 
 
+def strand_kandidaten() -> list[dict]:
+    """Alle stranden van Portugal uit de eerste versie van de app (spots/bronnen/stranden_pt.json). Of er golven zijn
+    om te surfen beslist de score, niet de lijst."""
+    pad = MAP / "bronnen" / "stranden_pt.json"
+    if not pad.exists():
+        return []
+    return [{"naam": s["naam"], "naam_en": None, "lat": s["lat"], "lon": s["lon"], "bronnen": ["strandentabel:" + s["id"]],
+             "rang": 2, "labels": {"natural": "beach"}} for s in json.loads(pad.read_text())["stranden"] if s.get("naam")]
+
+
 def samenvoegen(kand: list[dict]) -> list[dict]:
     """Zelfde of overlappende naam binnen SAMEN_KM wordt één spot; de beste bron geeft de positie."""
     kand = sorted(kand, key=lambda k: k["rang"])
@@ -242,8 +252,9 @@ def main(argv: list[str] | None = None) -> int:
     k1, w1 = osm_kandidaten(osm["objecten"])
     k2, w2 = wd_kandidaten(wd["items"])
     k0 = kennis_kandidaten()
-    spots = samenvoegen(k0 + k1 + k2)
-    print(f"OSM {len(osm['objecten'])} -> {len(k1)} (weg: {w1}); Wikidata {len(wd['items'])} -> {len(k2)} (weg: {w2}); spotkennis {len(k0)}; "
+    k3 = strand_kandidaten()
+    spots = samenvoegen(k0 + k1 + k2 + k3)
+    print(f"OSM {len(osm['objecten'])} -> {len(k1)} (weg: {w1}); Wikidata {len(wd['items'])} -> {len(k2)} (weg: {w2}); spotkennis {len(k0)}; stranden Portugal {len(k3)}; "
           f"na samenvoegen {len(spots)}", flush=True)
     if a.max:
         spots = spots[:a.max]
