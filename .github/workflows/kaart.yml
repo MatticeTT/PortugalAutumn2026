@@ -1,6 +1,6 @@
 # Twee keer per dag de nieuwste ECMWF-run (wind 10 m, 15 dagen vooruit) en Copernicus-golven (deining en
-# windzee, 10 dagen vooruit) omzetten naar
-# afbeeldingen, de site bouwen en naar de tak `site` zetten; Vercel publiceert die tak.
+# windzee, 10 dagen vooruit) omzetten naar afbeeldingen, de plankscore per spot rekenen, de site bouwen en naar
+# de tak `site` zetten; Vercel publiceert die tak.
 name: kaart
 on:
   workflow_dispatch:
@@ -12,7 +12,7 @@ concurrency: { group: kaart, cancel-in-progress: false }
 jobs:
   kaart:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 75
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -25,6 +25,22 @@ jobs:
         run: |
           python -m pipeline.build --out web/public/data
           python -m pipeline.controle_golven --data web/public/data
+      - name: EOT20 uit de cache
+        id: eot20
+        uses: actions/cache@v4
+        with:
+          path: getij/EOT20/ocean_tides
+          key: eot20-ocean-v1
+      - name: EOT20 downloaden (SEANOE, CC BY 4.0)
+        if: steps.eot20.outputs.cache-hit != 'true'
+        run: python -m pipeline.eot20 getij
+      - name: Score per spot (golven, wind, getij per spot; plankscore per kwartier)
+        env:
+          COPERNICUSMARINE_SERVICE_USERNAME: ${{ secrets.COPERNICUSMARINE_SERVICE_USERNAME }}
+          COPERNICUSMARINE_SERVICE_PASSWORD: ${{ secrets.COPERNICUSMARINE_SERVICE_PASSWORD }}
+        run: |
+          python -m pipeline.spotinvoer --spots spots/spots.json --getij getij --uit spotinvoer.json.gz
+          python -m pipeline.spotscore --invoer spotinvoer.json.gz --uit web/public/data/spots
       - uses: actions/setup-node@v4
         with: { node-version: "22", cache: npm, cache-dependency-path: web/package-lock.json }
       - name: Site bouwen
