@@ -1,0 +1,29 @@
+# Surfspots uit OpenStreetMap ophalen (spots/ophalen.py) en het resultaat committen.
+name: spots
+on:
+  workflow_dispatch:
+  push:
+    branches: [ccr-1fe05339-6haah2]
+    paths:
+      - "spots/ophalen.py"
+      - ".github/workflows/spots.yml"
+permissions:
+  contents: write
+jobs:
+  spots:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: python -m spots.ophalen
+      - name: Resultaat committen
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add spots/osm_surfing.json
+          git diff --cached --quiet && exit 0
+          git commit -m "Surfspots uit OpenStreetMap"
+          for i in 1 2 3; do git pull --rebase origin "$GITHUB_REF_NAME" && git push origin "HEAD:$GITHUB_REF_NAME" && exit 0; sleep 5; done
+          exit 1
