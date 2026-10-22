@@ -197,40 +197,43 @@ def wind_per_spot(spots: list[dict], max_uur: int) -> tuple[dt.datetime, list[di
     return run, res
 
 
+def uitersten(h: np.ndarray) -> list[tuple[int, str, float]]:
+    """Hoog- en laagwater: lokale uitersten, afwisselend hoog en laag."""
+    ext: list[tuple[int, str, float]] = []
+    for k in range(1, len(h) - 1):
+        if (h[k] >= h[k - 1] and h[k] > h[k + 1]) or (h[k] <= h[k - 1] and h[k] < h[k + 1]):
+            soort = "hoog" if h[k] > h[k - 1] else "laag"
+            if ext and ext[-1][1] == soort:
+                if (soort == "hoog") == (h[k] > ext[-1][2]):
+                    ext[-1] = (k, soort, float(h[k]))
+                continue
+            ext.append((k, soort, float(h[k])))
+    return ext
+
+
 def getij_per_spot(spots: list[dict], map_: Path, van: dt.datetime, tot: dt.datetime) -> list[dict | None]:
-    """Getij om de 10 minuten (m, t.o.v. gemiddeld zeeniveau) en de hoog- en laagwaters erin."""
+    """Getij om de 10 minuten (m, t.o.v. gemiddeld zeeniveau) en de hoog- en laagwaters erin, alle spots in één keer
+    (pyTMD 'time series': elke spot is een station)."""
     import pyTMD.compute
 
     stap = dt.timedelta(minutes=10)
     n_t = int((tot - van) / stap) + 1
     tijden = np.array([np.datetime64((van + k * stap).replace(tzinfo=None), "ns") for k in range(n_t)])
+    lon = np.array([s["kustpunt"][0] for s in spots], dtype=float)
+    lat = np.array([s["kustpunt"][1] for s in spots], dtype=float)
+    tp = pyTMD.compute.tide_elevations(lon, lat, tijden, directory=map_, model="EOT20", type="time series",
+                                       standard="datetime", extrapolate=True, cutoff=25.0)
+    if "station" in tp.dims:
+        tp = tp.transpose("station", ...)
+    h_alle = np.asarray(tp.values, dtype=float).reshape(len(spots), -1)
     res: list[dict | None] = []
-    for s in spots:
-        lon, lat = s["kustpunt"]
-        try:
-            h = pyTMD.compute.tide_elevations(np.array([lon]), np.array([lat]), tijden, directory=map_, model="EOT20",
-                                              type="time series", standard="datetime", extrapolate=True, cutoff=25.0,
-                                              crop=True, bounds=[lon - 1, lon + 1, lat - 1, lat + 1])
-            h = np.asarray(h, dtype=float).ravel()
-        except Exception as e:  # noqa: BLE001
-            print(f"getij {s['naam']}: {e}", flush=True)
+    for s, h in zip(spots, h_alle):
+        if not np.isfinite(h).all():
+            print(f"getij {s['naam']}: geen waarde (te ver van het getijmodel)", flush=True)
             res.append(None)
             continue
-        if not np.isfinite(h).any():
-            res.append(None)
-            continue
-        # Hoog- en laagwater: lokale uitersten (minstens 3 uur uit elkaar).
-        ext = []
-        for k in range(1, len(h) - 1):
-            if (h[k] >= h[k - 1] and h[k] > h[k + 1]) or (h[k] <= h[k - 1] and h[k] < h[k + 1]):
-                soort = "hoog" if h[k] > h[k - 1] else "laag"
-                if ext and ext[-1][1] == soort:
-                    if (soort == "hoog") == (h[k] > ext[-1][2]):
-                        ext[-1] = (k, soort, h[k])
-                    continue
-                ext.append((k, soort, h[k]))
         res.append({"start": iso(van), "stap_min": 10, "h": [round(float(x), 3) for x in h],
-                    "uitersten": [[iso(van + k * stap), soort, round(float(v), 3)] for k, soort, v in ext]})
+                    "uitersten": [[iso(van + k * stap), soort, round(v, 3)] for k, soort, v in uitersten(h)]})
     return res
 
 
@@ -243,17 +246,23 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--max", type=int, default=0, help="alleen de eerste n spots (om te testen)")
     a = p.parse_args(argv)
 
-    spots = json.loads(a.spots.read_text())["spots"]
+    from pipeline import spotscore
+
+    alle = json.loads(a.spots.read_text())["spots"]
+    stranden = spotscore.bodem_index()
+    # Alleen spots die een score kunnen krijgen (zandstrand zonder gekende helling wordt niet gescoord).
+    spots = [s for s in alle if spotscore.spotvelden(s, stranden)["herkomst"].get("tanb") != "onbekend"]
+    print(f"{len(spots)} van {len(alle)} spots", flush=True)
     if a.max:
         spots = spots[:a.max]
     t0 = time.time()
     run, wind = wind_per_spot(spots, a.uren)
     van, tot = run, run + dt.timedelta(hours=a.uren)
     print(f"wind klaar na {time.time() - t0:.0f} s", flush=True)
-    golf, bronnen = golven_per_spot(spots, van, tot)
-    print(f"golven klaar na {time.time() - t0:.0f} s: {bronnen}", flush=True)
     getij = getij_per_spot(spots, a.getij, van - dt.timedelta(hours=12), tot + dt.timedelta(hours=12))
     print(f"getij klaar na {time.time() - t0:.0f} s: {sum(g is not None for g in getij)}/{len(spots)}", flush=True)
+    golf, bronnen = golven_per_spot(spots, van, tot)
+    print(f"golven klaar na {time.time() - t0:.0f} s: {bronnen}", flush=True)
 
     uit = {"run": iso(run), "gemaakt": iso(dt.datetime.now(dt.UTC)),
            "bronnen": {"golven": "Generated using E.U. Copernicus Marine Service Information (IBI, MFWAM)",
