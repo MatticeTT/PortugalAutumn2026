@@ -22,7 +22,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add spots/osm_surfing.json
+          git add spots/osm_surfing.json spots/wikidata_surfing.json
           git diff --cached --quiet && exit 0
           git commit -m "Surfspots uit OpenStreetMap"
           for i in 1 2 3; do git pull --rebase origin "$GITHUB_REF_NAME" && git push origin "HEAD:$GITHUB_REF_NAME" && exit 0; sleep 5; done
