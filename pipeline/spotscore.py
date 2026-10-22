@@ -9,8 +9,9 @@ Per kwartier:
           volgende uiterste; getijverschil van die cyclus
   donker  zon dieper dan 6 graden onder de horizon: veiligheid, score 1
 Spotvelden (regels.json > vlaggen_uit_spotkennis):
-  tanb             strandhelling: uit het diepteprofiel van EMODnet (Portugal) als dat binnen 1,5 km ligt, anders
-                   leeg; leeg op een rif of point (dan telt de vorm uit de spotkennis)
+  tanb             strandhelling: uit het diepteprofiel van EMODnet (Portugal) als dat binnen 1,5 km ligt. Een
+                   zandstrand zonder gekende helling wordt niet gescoord (keuze eigenaar: liever geen spot dan een
+                   gok). Leeg op een rif of point (dan telt de vorm uit de spotkennis)
   vorm             tekst uit de spotkennis, met 'point' erbij voor een point
   werkt_bij_tij    uit de spotkennis
   deining_venster  uit de spotkennis (beste deining) als die er is, anders de richtingen met open zee rond de
@@ -252,6 +253,8 @@ def reken_spot(spot: dict, invoer: dict, stranden: list[dict], van: dt.datetime,
     if not invoer.get("golven") or not invoer.get("wind"):
         return None
     v = spotvelden(spot, stranden)
+    if v["herkomst"].get("tanb") == "onbekend":
+        return None  # zandstrand zonder gekende helling: niet scoren (keuze eigenaar: liever geen spot dan een gok)
     gw = invoer["golven"]
     sysr = {k: Reeks(gw["tijden"], gw[k]) for k in ("deining1", "deining2", "windzee")}
     wi = invoer["wind"]
@@ -306,21 +309,25 @@ def main(argv: list[str] | None = None) -> int:
     van = tijd(inv["run"])
     tot = van + dt.timedelta(days=10)
     a.uit.mkdir(parents=True, exist_ok=True)
-    lijst = []
+    lijst, overgeslagen = [], []
     for n, i in enumerate(inv["spots"]):
         s = spots.get((i["naam"], i["lat"], i["lon"]))
         if s is None:
             continue
         r = reken_spot(s, i, stranden, van, tot)
         if r is None:
+            reden = ("strandhelling onbekend" if spotvelden(s, stranden)["herkomst"].get("tanb") == "onbekend"
+                     else "geen golf- of winddata")
+            overgeslagen.append({"naam": s["naam"], "lat": s["lat"], "lon": s["lon"], "reden": reden})
             continue
         (a.uit / f"{n}.json").write_text(json.dumps(r, ensure_ascii=False, separators=(",", ":")))
         best = {pl: max(r["scores"][pl]) for pl in R.PL}
         lijst.append({"id": n, "naam": r["naam"], "lat": r["lat"], "lon": r["lon"], "tijdvakken": r["tijdvakken"],
                       "max": best})
     (a.uit / "index.json").write_text(json.dumps({"run": inv["run"], "drempel": DREMPEL, "min_uren": MIN_UREN,
-                                                  "spots": lijst}, ensure_ascii=False, separators=(",", ":")))
-    print(f"{len(lijst)} spots gescoord", flush=True)
+                                                  "spots": lijst, "niet_gescoord": overgeslagen},
+                                                 ensure_ascii=False, separators=(",", ":")))
+    print(f"{len(lijst)} spots gescoord, {len(overgeslagen)} niet", flush=True)
     return 0
 
 
