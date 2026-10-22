@@ -15,8 +15,9 @@ Spotvelden (regels.json > vlaggen_uit_spotkennis):
                    gok). Leeg op een rif of point (dan telt de vorm uit de spotkennis)
   vorm             tekst uit de spotkennis, met 'point' erbij voor een point
   werkt_bij_tij    uit de spotkennis
-  deining_venster  uit de spotkennis (beste deining) als die er is, anders de richtingen met open zee rond de
-                   strandrichting (spots/kust.py)
+  deining_venster  op een point: uit de spotkennis (beste deining), zoals de regels vragen. Elders de richtingen
+                   met open zee rond de strandrichting (spots/kust.py): daarbuiten houdt een kaap of eiland de deining
+                   tegen. De 'beste deining' uit surfgidsen is geen schaduwgrens (een strand werkt vaak ook daarbuiten).
   vlaggen          ondiep (spotkennis 'ondiep' en laag tij), terugslag (strekdam en hoog tij), pier
 Hoek: richting waar de deining vandaan komt min de strandrichting, met de klok mee positief. Op een point telt de kant
 van de punt als positief: voor een rechtse golf (vanaf het strand gezien begint hij rechts) blijft het teken, voor een
@@ -195,7 +196,7 @@ def spotvelden(spot: dict, stranden: list[dict]) -> dict:
     if point and "point" not in vorm:
         vorm = (vorm + " point").strip()
     venster = None
-    if k.get("deining_beste"):
+    if point and k.get("deining_beste"):
         van, tot = k["deining_beste"]
         a, b = teken * hoekverschil(van, f), teken * hoekverschil(tot, f)
         venster = [min(a, b), max(a, b)]

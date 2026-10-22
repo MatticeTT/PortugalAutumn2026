@@ -7,7 +7,8 @@ de begin- en eindbyte. Zie pipeline/README of spots/README voor het ophalen.
 Per spot:
   kustpunt      het dichtste punt op de kustlijn
   richting      richting waarin het strand naar zee kijkt (graden, 270 = west): loodrecht op de kustlijn binnen
-                500 m en binnen 2 km van het kustpunt (hoofdas van de kustpunten), aan de kant waar water is
+                500 m, 1 km en 2 km van het kustpunt (hoofdas van de kustpunten), aan de kant waar water is. De
+                regels (overdracht plankscore) meten de kustlijn over ongeveer 1 km: dat is de strandrichting.
   open_km       per 5 graden: afstand tot het eerste land vanaf een punt net voor de kust, tot 300 km
 """
 
@@ -41,6 +42,7 @@ class Resultaat:
     kust_km: float
     kustpunt: tuple[float, float]
     richting_500m: float | None
+    richting_1km: float | None
     richting_2km: float | None
     startpunt: tuple[float, float] | None
     open_km: list[float] | None
@@ -144,8 +146,8 @@ class Kust:
         q, d = self.dichtste_kustpunt(lon, lat)
         if q is None:
             return None
-        r500, r2k = self.richting(q, 0.5), self.richting(q, 2.0)
-        f = r2k if r2k is not None else r500
+        r500, r1k, r2k = self.richting(q, 0.5), self.richting(q, 1.0), self.richting(q, 2.0)
+        f = r1k if r1k is not None else (r2k if r2k is not None else r500)
         start = None
         if f is not None:
             for afst in (0.15, 0.3, 0.5, 0.8, 1.2, 2.0, 3.0):
@@ -156,5 +158,5 @@ class Kust:
         open_km = None
         if start is not None:
             open_km = [self.straal(start[0], start[1], b) for b in range(0, 360, STAP_GRADEN)]
-        return Resultaat(round(d, 3), (round(q[0], 5), round(q[1], 5)), r500, r2k,
+        return Resultaat(round(d, 3), (round(q[0], 5), round(q[1], 5)), r500, r1k, r2k,
                          None if start is None else (round(start[0], 5), round(start[1], 5)), open_km)
