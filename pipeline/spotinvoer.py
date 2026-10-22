@@ -135,12 +135,33 @@ def bilineair(veld: np.ndarray, lat: float, lon: float) -> float:
     return float((1 - fy) * ((1 - fx) * veld[j, i] + fx * veld[j, i1]) + fy * ((1 - fx) * veld[j1, i] + fx * veld[j1, i1]))
 
 
+def stoot_veld(run: dt.datetime, h: int) -> np.ndarray | None:
+    """Windstoot 10fg: soms staan er twee in de index (max over de laatste 3 en over de laatste 6 uur); de kortste
+    periode is het dichtst bij het uur zelf."""
+    regels = [json.loads(x) for x in build.http_get(build.path(run, "oper", h, "index")).decode().splitlines() if x]
+    e = [x for x in regels if x["param"] == "10fg" and x.get("levtype") == "sfc"]
+    if not e:
+        return None
+
+    def duur(x):
+        st = str(x.get("step", ""))
+        a, _, b = st.partition("-")
+        return (int(b) - int(a)) if b else 0
+
+    x = min(e, key=duur)
+    off, n = x["_offset"], x["_length"]
+    return build.decode(build.http_get(build.path(run, "oper", h, "grib2"), (off, off + n - 1)))
+
+
 def wind_per_spot(spots: list[dict], max_uur: int) -> tuple[dt.datetime, list[dict]]:
     run = build.latest_run(max_uur)
     uren = build.hours(max_uur)
     res = [{"tijden": [], "u": [], "v": [], "stoot": []} for _ in spots]
     for h in uren:
-        f = build.fetch_fields(run, "oper", h, ("10u", "10v") + (("10fg",) if h > 0 else ()))
+        f = build.fetch_fields(run, "oper", h, ("10u", "10v"))
+        g = stoot_veld(run, h) if h > 0 else None
+        if g is not None:
+            f["10fg"] = g
         t = iso(run + dt.timedelta(hours=h))
         for n, s in enumerate(spots):
             lon, lat = s["kustpunt"]
