@@ -1,8 +1,4 @@
-// Surfspots op de kaart: per gekozen dag de spots waar minstens één gekozen plank minstens 3 uur na elkaar goed is
-// (score >= kaartdrempel). Het cijfer is de hoogste gemiddelde score van die tijdvakken over de gekozen planken.
-// Tik op een spot: per plank van wanneer tot wanneer, en de omstandigheden op het gekozen tijdstip.
-
-import maplibregl from 'maplibre-gl'
+// Surfspots: gegevens (scores per spot) en alles wat ze in gewone woorden zegt.
 
 export const PLANKEN: Record<string, string> = {
   LB: 'Longboard', MM: 'Minimal', MID: 'Midlength', GR: 'Groveler', FI: 'Fish', SB: 'Shortboard', SU: 'Step-up', GUN: 'Gun',
@@ -10,160 +6,151 @@ export const PLANKEN: Record<string, string> = {
 
 export type Vak = [string, string, number] // van, tot (ISO, UTC), gemiddelde score
 
+export interface SpotKort {
+  id: number
+  naam: string
+  lat: number
+  lon: number
+  richting: number
+  soort: string | null
+  groep: number
+  tijdvakken: Record<string, Vak[]>
+}
+
 export interface SpotIndex {
   run: string
   drempel: number
   min_uren: number
-  spots: { id: number; naam: string; lat: number; lon: number; tijdvakken: Record<string, Vak[]>; max: Record<string, number> }[]
+  spots: SpotKort[]
 }
 
-interface UurRij {
-  t: string
-  wind_kn: number
-  wind_rel: number
-  stoot_kn: number
-  golven: Record<string, [number, number, number] | null>
-  Hb: number
-  vlaggen?: string[]
-  getij: { h: number; stand: number; bakje: string } | null
-  expert: string[]
-}
-
-interface SpotDetail {
+export interface SpotDetail {
   naam: string
   richting: number
   soort: string | null
+  werkt_bij_tij: string[] | null
+  gevaren: string[]
+  bodem: string | null
   herkomst: Record<string, string>
-  golfbron: string
-  uur: UurRij[]
+  start: string
+  uren: number
+  score: Record<string, number[]> // x 10, per uur vanaf start
+  deining: ([number, number, number] | null)[] // hoogte m, richting vandaan, periode s
+  windzee: (number | null)[]
+  breker: (number | null)[]
+  wind: ([number, number, number] | null)[] // kn, rel (0 aflandig, 180 aanlandig), stoten kn
+  vlaggen: Record<string, string[]>
+  expert: string[]
+  getij: [string, 'hoog' | 'laag', number][]
 }
 
-const KOMPAS = ['N', 'NNO', 'NO', 'ONO', 'O', 'OZO', 'ZO', 'ZZO', 'Z', 'ZZW', 'ZW', 'WZW', 'W', 'WNW', 'NW', 'NNW']
-const kompas = (deg: number) => KOMPAS[Math.round(deg / 22.5) % 16]
-const fmt = (x: number, d = 1) => x.toLocaleString('nl-NL', { minimumFractionDigits: d, maximumFractionDigits: d })
-const uurFmt = new Intl.DateTimeFormat('nl-NL', { hour: '2-digit', minute: '2-digit' })
-const dagFmt = new Intl.DateTimeFormat('nl-NL', { weekday: 'long', day: 'numeric', month: 'long' })
-const dagSleutel = (d: Date) => `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`
-const rond = (x: number) => Math.floor(x + 0.5) // ,5 naar boven (regels)
-const relWoord = (rel: number) => (rel <= 45 ? 'aflandig' : rel < 135 ? 'zijwind' : 'aanlandig')
+export class SpotData {
+  index: SpotIndex | null = null
+  private details = new Map<number, Promise<SpotDetail>>()
 
-export class Spots {
-  private index: SpotIndex | null = null
-  get data(): SpotIndex | null {
-    return this.index
-  }
-  private detail = new Map<number, Promise<SpotDetail>>()
-  private dag = new Date()
-  private tijd = new Date()
-  planken = new Set(Object.keys(PLANKEN))
-  private popup = new maplibregl.Popup({ className: 'punt spot-pop', maxWidth: '300px', closeOnClick: true })
-
-  constructor(private map: maplibregl.Map, private base: string) {}
-
-  private markers = new Map<number, maplibregl.Marker>()
+  constructor(private base: string) {}
 
   async load() {
     const r = await fetch(`${this.base}/index.json`, { cache: 'no-cache' })
-    if (!r.ok) return
-    this.index = await r.json()
-    this.update()
+    if (r.ok) this.index = await r.json()
+    return this.index
   }
 
-  /** Gekozen tijdstip (van de tijdlijn): de dag bepaalt welke spots er staan. */
-  setTime(iso: string) {
-    this.tijd = new Date(iso)
-    const nieuweDag = dagSleutel(this.tijd) !== dagSleutel(this.dag)
-    this.dag = this.tijd
-    if (nieuweDag) this.update()
-  }
-
-  setPlanken(p: Set<string>) {
-    this.planken = p
-    this.update()
-  }
-
-  /** Markers bijwerken: een rondje met het cijfer per spot die op de gekozen dag goed is. */
-  private update() {
-    const zichtbaar = new Set<number>()
-    for (const s of this.index?.spots ?? []) {
-      const v = this.vakkenOpDag(s.tijdvakken)
-      const best = Math.max(0, ...Object.values(v).flat().map((x) => x[2]))
-      if (!best) continue
-      zichtbaar.add(s.id)
-      let m = this.markers.get(s.id)
-      if (!m) {
-        const el = document.createElement('button')
-        el.className = 'spot'
-        el.setAttribute('aria-label', s.naam)
-        el.title = s.naam
-        el.addEventListener('click', (e) => {
-          e.stopPropagation()
-          this.toon(s.id, [s.lon, s.lat])
-        })
-        m = new maplibregl.Marker({ element: el }).setLngLat([s.lon, s.lat]).addTo(this.map)
-        this.markers.set(s.id, m)
-      }
-      m.getElement().textContent = String(rond(best))
-    }
-    for (const [id, m] of this.markers) {
-      if (!zichtbaar.has(id)) {
-        m.remove()
-        this.markers.delete(id)
-      }
-    }
-  }
-
-  /** Goede tijdvakken van een spot op de gekozen dag, per gekozen plank (op lokale tijd). */
-  private vakkenOpDag(tv: Record<string, Vak[]>): Record<string, Vak[]> {
-    const uit: Record<string, Vak[]> = {}
-    const d = dagSleutel(this.dag)
-    for (const p of this.planken) {
-      const v = (tv[p] ?? []).filter(([van, tot]) => dagSleutel(new Date(van)) === d || dagSleutel(new Date(tot)) === d)
-      if (v.length) uit[p] = v
-    }
-    return uit
-  }
-
-  private haal(id: number): Promise<SpotDetail> {
-    let p = this.detail.get(id)
+  detail(id: number): Promise<SpotDetail> {
+    let p = this.details.get(id)
     if (!p) {
       p = fetch(`${this.base}/${id}.json`).then((r) => r.json())
-      this.detail.set(id, p)
+      this.details.set(id, p)
     }
     return p
   }
 
-  /** Popup van een spot openen (bv. vanuit de planning). */
-  open(id: number) {
-    const s = this.index?.spots.find((x) => x.id === id)
-    if (s) this.toon(id, [s.lon, s.lat])
-  }
-
-  private async toon(id: number, xy: [number, number]) {
-    const s = this.index!.spots.find((x) => x.id === id)!
-    const v = this.vakkenOpDag(s.tijdvakken)
-    const rijen = Object.entries(v)
-      .sort((a, b) => Math.max(...b[1].map((x) => x[2])) - Math.max(...a[1].map((x) => x[2])))
-      .map(([p, vs]) => `<tr><th>${PLANKEN[p]}</th><td>${vs.map(([van, tot, g]) =>
-        `${uurFmt.format(new Date(van))}–${uurFmt.format(new Date(tot))} <b>${rond(g)}</b>`).join('<br>')}</td></tr>`)
-    this.popup.setLngLat(xy).setHTML(`<div class="punt-kop">${s.naam}</div>
-      <div class="punt-coord">${dagFmt.format(this.dag)} · goed (4 of 5) per plank</div>
-      <table>${rijen.join('')}</table><div class="spot-nu">…</div>`).addTo(this.map)
-    const d = await this.haal(id)
-    // Omstandigheden op het gekozen tijdstip (dichtstbijzijnde uur).
-    const t = this.tijd.getTime()
-    const r = d.uur.reduce((a, b) => (Math.abs(Date.parse(b.t) - t) < Math.abs(Date.parse(a.t) - t) ? b : a), d.uur[0])
-    const el = this.popup.getElement()?.querySelector('.spot-nu')
-    if (!el || !r) return
-    const golf = (naam: string, g: [number, number, number] | null) =>
-      g && g[0] >= 0.1 ? `<tr><th>${naam}</th><td>${fmt(g[0])} m · ${fmt(g[2], 0)} s · uit ${kompas(g[1])}</td></tr>` : ''
-    el.innerHTML = `<div class="punt-coord">om ${uurFmt.format(new Date(r.t))} · strand kijkt naar ${kompas(d.richting)}</div><table>
-      ${golf('Deining', r.golven.deining1)}${golf('Deining 2', r.golven.deining2)}${golf('Windzee', r.golven.windzee)}
-      <tr><th>Breker</th><td>${fmt(r.Hb)} m</td></tr>
-      <tr><th>Wind</th><td>${fmt(r.wind_kn, 0)} kn (stoten ${fmt(r.stoot_kn, 0)}) · ${relWoord(r.wind_rel)}</td></tr>
-      ${r.getij ? `<tr><th>Getij</th><td>${r.getij.bakje} (${fmt(r.getij.stand * 100, 0)}%)</td></tr>` : ''}
-      ${r.vlaggen?.length ? `<tr><th>Let op</th><td>${r.vlaggen.join(', ')}</td></tr>` : ''}
-      ${r.expert.length ? `<tr><th>Ervaren</th><td>${r.expert.join(', ')}</td></tr>` : ''}
-      </table><div class="punt-bron">golven: ${d.golfbron.includes('ibi') ? 'Copernicus IBI (per uur)' : 'Copernicus MFWAM'} · wind: ECMWF · getij: EOT20 · strandhelling: ${d.herkomst.tanb ?? '—'}</div>`
+  spot(id: number) {
+    return this.index?.spots.find((s) => s.id === id)
   }
 }
+
+// ---- Dagen en tijden (lokale tijd van het toestel) ----
+
+export const dagSleutel = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+export const uur = (iso: string | Date) => {
+  const d = new Date(iso)
+  return `${d.getHours()}u${d.getMinutes() ? String(d.getMinutes()).padStart(2, '0') : ''}`
+}
+const dagKort = new Intl.DateTimeFormat('nl-NL', { weekday: 'short', day: 'numeric' })
+const dagLang = new Intl.DateTimeFormat('nl-NL', { weekday: 'long', day: 'numeric', month: 'long' })
+export function dagNaam(d: Date, lang = false) {
+  const vandaag = new Date()
+  const morgen = new Date(vandaag.getTime() + 864e5)
+  const s = (lang ? dagLang : dagKort).format(d)
+  const naam = s.charAt(0).toUpperCase() + s.slice(1)
+  if (dagSleutel(d) === dagSleutel(vandaag)) return lang ? `Vandaag, ${s}` : 'Vandaag'
+  if (dagSleutel(d) === dagSleutel(morgen)) return lang ? `Morgen, ${s}` : 'Morgen'
+  return naam
+}
+
+export const rond = (x: number) => Math.floor(x + 0.5) // ,5 naar boven (regels)
+export const woordScore = (s: number) => (rond(s) >= 5 ? 'TOP' : rond(s) >= 4 ? 'GOED' : '')
+
+/** Goede tijdvakken op een dag voor de gekozen planken: [plank, vak][], beste eerst. */
+export function vakkenOpDag(s: SpotKort, dag: string, planken: string[]): [string, Vak][] {
+  const uit: [string, Vak][] = []
+  for (const p of planken) {
+    for (const v of s.tijdvakken[p] ?? []) {
+      if (dagSleutel(new Date(v[0])) === dag) uit.push([p, v])
+    }
+  }
+  return uit.sort((a, b) => b[1][2] - a[1][2] || Date.parse(a[1][0]) - Date.parse(b[1][0]))
+}
+
+/** Beste score van een spot op een dag (0 als nergens goed). */
+export const besteOpDag = (s: SpotKort, dag: string, planken: string[]) =>
+  Math.max(0, ...vakkenOpDag(s, dag, planken).map(([, v]) => v[2]))
+
+// ---- Gewone woorden ----
+
+const KOMPAS = ['noorden', 'noordnoordoosten', 'noordoosten', 'oostnoordoosten', 'oosten', 'oostzuidoosten', 'zuidoosten',
+  'zuidzuidoosten', 'zuiden', 'zuidzuidwesten', 'zuidwesten', 'westzuidwesten', 'westen', 'westnoordwesten', 'noordwesten', 'noordnoordwesten']
+export const kompas = (deg: number) => KOMPAS[Math.round(deg / 22.5) % 16]
+
+export function golfWoord(hb: number) {
+  if (hb < 0.3) return 'vlak'
+  if (hb < 0.6) return 'kniehoog'
+  if (hb < 0.9) return 'heuphoog'
+  if (hb < 1.2) return 'borsthoog'
+  if (hb < 1.6) return 'schouder- tot hoofdhoog'
+  if (hb < 2.2) return 'overhead'
+  if (hb < 3) return 'anderhalve keer overhead'
+  return 'dubbel overhead of meer'
+}
+
+export const krachtWoord = (tp: number) => (tp >= 12 ? 'krachtig' : tp >= 9 ? 'met goede kracht' : 'zwak en kort')
+
+export function windWoord(kn: number, rel: number) {
+  const sterkte = kn < 5 ? 'Windstil' : kn < 11 ? 'Zwak' : kn < 17 ? 'Matig' : kn < 22 ? 'Stevig' : 'Hard'
+  if (kn < 5) return `${sterkte} (${kn} kn): glad water`
+  if (rel <= 45) return `${sterkte} aflandig (${kn} kn): ${kn > 20 ? 'golven netjes, maar moeilijk inpeddelen' : 'golven netjes en glad'}`
+  if (rel < 135) return `${sterkte}, van opzij (${kn} kn): ${kn < 11 ? 'bijna glad' : 'wat rommelig'}`
+  return `${sterkte} aanlandig (${kn} kn): ${kn < 8 ? 'licht rommelig' : 'rommelig en brokkelig'}`
+}
+
+export const EXPERT: Record<string, string> = {
+  g: 'grote golven', h: 'holle golf over rif of rotsen', s: 'zware shorebreak', o: 'ondiep rif of rotsen', t: 'sterke stroming',
+}
+
+export const SOORT: Record<string, string> = {
+  strand: 'Strand', zandbank: 'Zandbank', rif: 'Rif', point: 'Point break', riviermonding: 'Riviermonding', pier: 'Pier',
+}
+
+/** Afstand in km in rechte lijn. */
+export function hemelsbreed(a: { lat: number; lon: number }, b: { lat: number; lon: number }) {
+  const r = Math.PI / 180
+  const x = Math.sin(((b.lat - a.lat) * r) / 2) ** 2 + Math.cos(a.lat * r) * Math.cos(b.lat * r) * Math.sin(((b.lon - a.lon) * r) / 2) ** 2
+  return 2 * 6371 * Math.asin(Math.sqrt(x))
+}
+
+/** Route in Google Maps (opent de app op de telefoon als die er is). */
+export const routeLink = (s: { lat: number; lon: number }) =>
+  `https://www.google.com/maps/dir/?api=1&destination=${s.lat.toFixed(5)},${s.lon.toFixed(5)}&travelmode=driving`
+
+export const esc = (t: string) => t.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!)

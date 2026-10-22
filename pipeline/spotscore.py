@@ -40,6 +40,8 @@ from pathlib import Path
 from score import referentie as R
 
 KWARTIER = dt.timedelta(minutes=15)
+EXPERT_CODE = {"grote golven": "g", "holle golf over rif of rotsen": "h", "zware shorebreak": "s",
+               "ondiep rif of rotsen": "o", "sterke stroming": "t"}
 MS_NAAR_KN = 1.943844
 BODEM = Path(__file__).resolve().parent.parent / "spots" / "bodem" / "emodnet_pt.json"
 HELLING_DIEPTE_M = 2.0  # helling van de waterlijn tot deze diepte (ongeveer waar golven van 1,5 m breken)
@@ -296,18 +298,51 @@ def reken_spot(spot: dict, invoer: dict, stranden: list[dict], van: dt.datetime,
         for p in R.PL:
             per_plank[p].append(uit[p][0])
             grenzen[p].append(uit[p][2])
-        rijen.append({"t": iso(t), "wind_kn": round(kn, 1), "wind_rel": round(rel), "stoot_kn": round(stoot, 1),
-                      "golven": {k: (None if x is None else [round(x[0], 2), round(x[1]), round(x[2], 1)]) for k, x in systemen.items()},
-                      "Hb": round(fk["Hb"], 2), "vlaggen": s["flags"], "getij": None if g is None else {"h": round(g[0], 2), "stand": round(g[1], 2), "bakje": g[3]},
-                      "expert": R.expert_label(fk)})
+        rijen.append((t, kn, rel, stoot, systemen.get("deining1"), systemen.get("windzee"), fk["Hb"], s["flags"],
+                      R.expert_label(fk)))
         t += KWARTIER
     if not tijden:
         return None
     vakken = {p: tijdvakken(tijden, per_plank[p]) for p in R.PL}
+    # Compact per heel uur voor de app (de kaartjes en balken); de tijdvakken komen uit de kwartieren.
+    uren = [k for k, t in enumerate(tijden) if t.minute == 0]
+    nacht = {i for i in uren if "donker" in rijen[i][7]}  # 's nachts geen omstandigheden bewaren (score is dan 1)
+    kennis = spot.get("kennis", {})
+    getij = []
+    if gt:
+        for x, soort, h in gt.ext:
+            if tijden[0].timestamp() - 3600 <= x <= tijden[-1].timestamp() + 3600:
+                getij.append([iso(dt.datetime.fromtimestamp(x, dt.UTC)), soort, round(h, 2)])
+    r = lambda x, n=1: None if x is None else round(x, n)
     return {"naam": spot["naam"], "lat": spot["lat"], "lon": spot["lon"], "richting": v["f"], "soort": v["soort"],
-            "velden": {**v["spot"], "open": v["open"]}, "herkomst": v["herkomst"],
-            "golfbron": invoer["golven"]["bron"], "golfcel": invoer["golven"]["cel"],
-            "start": iso(tijden[0]), "scores": per_plank, "grenzen": grenzen, "tijdvakken": vakken, "uur": rijen[::4]}
+            "werkt_bij_tij": kennis.get("werkt_bij_tij"), "gevaren": kennis.get("vlaggen") or [],
+            "bodem": kennis.get("bodem"), "herkomst": v["herkomst"], "golfbron": invoer["golven"]["bron"],
+            "start": iso(tijden[uren[0]]), "uren": len(uren),
+            "score": {p: [round(per_plank[p][i] * 10) for i in uren] for p in R.PL},
+            "deining": [None if rijen[i][4] is None or i in nacht else [r(rijen[i][4][0]), round(rijen[i][4][1]), r(rijen[i][4][2], 0)]
+                        for i in uren],
+            "windzee": [None if rijen[i][5] is None or i in nacht else r(rijen[i][5][0]) for i in uren],
+            "breker": [None if i in nacht else r(rijen[i][6]) for i in uren],
+            "wind": [None if i in nacht else [round(rijen[i][1]), round(rijen[i][2]), round(rijen[i][3])] for i in uren],
+            "vlaggen": {str(n): rijen[i][7] for n, i in enumerate(uren) if rijen[i][7] and rijen[i][7] != ["donker"]},
+            # Label "alleen voor ervaren surfers" per uur als letters (zie EXPERT_CODE), "" = geen label.
+            "expert": ["" if i in nacht else "".join(EXPERT_CODE.get(x, "?") for x in rijen[i][8]) for i in uren],
+            "getij": getij, "tijdvakken": vakken}
+
+
+def groepen(lijst: list[dict], km: float = 2.5) -> None:
+    """Stranden vlak naast elkaar met ongeveer dezelfde richting vormen één groep (veld 'groep' = id van de eerste)."""
+    for s in lijst:
+        s["groep"] = s["id"]
+    for i, a in enumerate(lijst):
+        for b in lijst[:i]:
+            if afstand(a, b) <= km and abs(hoekverschil(a["richting"], b["richting"])) <= 40:
+                a["groep"] = b["groep"]
+                break
+
+
+def afstand(a: dict, b: dict) -> float:
+    return math.hypot((a["lon"] - b["lon"]) * 111.32 * math.cos(math.radians(a["lat"])), (a["lat"] - b["lat"]) * 110.57)
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -335,9 +370,9 @@ def main(argv: list[str] | None = None) -> int:
             overgeslagen.append({"naam": s["naam"], "lat": s["lat"], "lon": s["lon"], "reden": reden})
             continue
         (a.uit / f"{n}.json").write_text(json.dumps(r, ensure_ascii=False, separators=(",", ":")))
-        best = {pl: max(r["scores"][pl]) for pl in R.PL}
-        lijst.append({"id": n, "naam": r["naam"], "lat": r["lat"], "lon": r["lon"], "tijdvakken": r["tijdvakken"],
-                      "max": best})
+        lijst.append({"id": n, "naam": r["naam"], "lat": r["lat"], "lon": r["lon"], "richting": r["richting"],
+                      "soort": r["soort"], "tijdvakken": {p: v for p, v in r["tijdvakken"].items() if v}})
+    groepen(lijst)
     (a.uit / "index.json").write_text(json.dumps({"run": inv["run"], "drempel": DREMPEL, "min_uren": MIN_UREN,
                                                   "spots": lijst, "niet_gescoord": overgeslagen},
                                                  ensure_ascii=False, separators=(",", ":")))

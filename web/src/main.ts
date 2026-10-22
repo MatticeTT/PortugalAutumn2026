@@ -3,9 +3,11 @@ import { FieldSet, heeft, type Kind, type Manifest } from './field'
 import { Labels } from './labels'
 import { enablePointInfo } from './punt'
 import { ParticleLayer } from './particles'
-import { PLANKEN, Spots } from './spots'
-import { toonPlanning } from './planning'
+import { Blad } from './blad'
+import { KaartSpots } from './kaartspots'
 import { laadProfiel, toonProfiel } from './profiel'
+import { dagSleutel, PLANKEN, SpotData, type SpotKort } from './spots'
+import { toonVandaag } from './vandaag'
 
 const DATA = './data'
 const FINE_ZOOM = 3 // vanaf dit zoomniveau het fijne raster (0,25 graad) voor het zichtbare gebied
@@ -51,36 +53,14 @@ map.touchZoomRotate.disableRotation()
 map.keyboard.disableRotation()
 
 const layer = new ParticleLayer()
-const spots = new Spots(map, `${DATA}/spots`)
-
-// Plankfilter: welke planken meetellen voor de spots op de kaart (onthouden in deze browser).
-function bouwPlankfilter() {
-  const box = $('planken')
-  box.textContent = ''
-  // Standaard: de planken uit het profiel, anders alle; een eigen keuze op de kaart gaat voor.
-  const eigen = laadProfiel().planken
-  let gekozen = new Set(eigen.length ? eigen : Object.keys(PLANKEN))
-  try {
-    const s = JSON.parse(localStorage.getItem('planken') ?? 'null')
-    if (Array.isArray(s) && s.length) gekozen = new Set(s.filter((x: string) => x in PLANKEN))
-  } catch { /* privévenster */ }
-  for (const [k, naam] of Object.entries(PLANKEN)) {
-    const b = document.createElement('button')
-    b.className = 'laag' + (gekozen.has(k) ? ' aan' : '')
-    b.textContent = naam
-    b.setAttribute('aria-pressed', String(gekozen.has(k)))
-    b.addEventListener('click', () => {
-      if (gekozen.has(k)) gekozen.delete(k)
-      else gekozen.add(k)
-      b.classList.toggle('aan', gekozen.has(k))
-      b.setAttribute('aria-pressed', String(gekozen.has(k)))
-      try { localStorage.setItem('planken', JSON.stringify([...gekozen])) } catch { /* privévenster */ }
-      spots.setPlanken(new Set(gekozen))
-    })
-    box.append(b)
-  }
-  spots.setPlanken(new Set(gekozen))
+const spots = new SpotData(`${DATA}/spots`)
+/** Planken die meetellen: die uit het profiel, anders alle. */
+const planken = () => {
+  const p = laadProfiel().planken
+  return p.length ? p : Object.keys(PLANKEN)
 }
+const kaartSpots = new KaartSpots(map, () => spots.index, (s) => blad.open(s.id, dagSleutel(new Date(manifest.times[idx].time))))
+let blad: Blad
 let manifest: Manifest
 let idx = 0
 let playing: number | null = null
@@ -115,7 +95,7 @@ function updateFine() {
 /** Tijdstip kiezen: het oude veld blijft zichtbaar tot het nieuwe binnen is. */
 async function setTime(i: number) {
   idx = i
-  spots.setTime(manifest.times[i].time)
+  kaartSpots.zet(dagSleutel(new Date(manifest.times[i].time)), planken())
   slider.value = String(i)
   label.textContent = fmtTime(manifest.times[i].time)
   const t = manifest.times[i]
@@ -226,42 +206,65 @@ async function start() {
   $('bron').textContent = `Wind: ECMWF-run ${run.getUTCDate()}/${run.getUTCMonth() + 1} ${String(run.getUTCHours()).padStart(2, '0')} UTC, tot ${fmtDay.format(new Date(manifest.times[manifest.times.length - 1].time))} · golven: Copernicus${golfTot ? `, tot ${fmtDay.format(new Date(golfTot.time))}` : ''}`
   buildDayTicks()
   window.addEventListener('resize', buildDayTicks)
-  bouwPlankfilter()
-  spots.load().catch(() => {})
   bouwTabs()
   await setTime(best)
+  await spots.load().catch(() => null)
+  blad = new Blad({ data: spots, planken: planken(), profiel: laadProfiel(), dagen: dagenMetVoorspelling(), opKaart: toonOpKaart })
+  kaartSpots.zet(dagSleutel(new Date(manifest.times[idx].time)), planken())
+  kies('vandaag')
 }
 
-// Tabbladen: Kaart, Planning, Profiel. Planning en profiel liggen als paneel over de kaart.
-function bouwTabs() {
-  const paneel = $('paneel')
-  const tabs = document.querySelectorAll<HTMLButtonElement>('#tabs button')
-  const kies = (naam: string) => {
-    tabs.forEach((t) => t.classList.toggle('aan', t.dataset.tab === naam))
-    paneel.hidden = naam === 'kaart'
-    if (naam === 'planning') {
-      toonPlanning(paneel, spots.data, spots.planken, laadProfiel(), ({ id, van }) => {
-        kies('kaart')
-        const s = spots.data!.spots.find((x) => x.id === id)!
-        // Het tijdstip van de kaart dat het dichtst bij het begin van de sessie ligt (+1 uur).
-        const doel = Date.parse(van) + 3600e3
-        let best = 0
-        manifest.times.forEach((t, i) => {
-          if (Math.abs(Date.parse(t.time) - doel) < Math.abs(Date.parse(manifest.times[best].time) - doel)) best = i
-        })
-        setTime(best).then(() => spots.open(id))
-        map.flyTo({ center: [s.lon, s.lat], zoom: Math.max(map.getZoom(), 8) })
-      })
-    } else if (naam === 'profiel') {
-      toonProfiel(paneel, (p) => {
-        if (p.planken.length) {
-          try { localStorage.removeItem('planken') } catch { /* privévenster */ }
-        }
-        bouwPlankfilter()
-      })
-    }
+// Tabbladen: Vandaag (startscherm), Kaart, Profiel. Vandaag en Profiel liggen als paneel over de kaart.
+let gekozenDag = dagSleutel(new Date())
+function dagenMetVoorspelling() {
+  const laatste = Date.parse(manifest.times[manifest.times.length - 1].time)
+  const uit: string[] = []
+  const nu = new Date()
+  for (let i = 0; i < 16; i++) {
+    const d = new Date(nu.getFullYear(), nu.getMonth(), nu.getDate() + i, 12)
+    if (d.getTime() - 12 * 3600e3 > laatste) break
+    // Alleen dagen waarvoor er scores zijn (golfmodel tot ongeveer 10 dagen).
+    const metScore = spots.index?.spots.some((s) => Object.values(s.tijdvakken).flat().some((v) => Date.parse(v[1]) >= d.getTime() - 12 * 3600e3))
+    if (spots.index && !metScore) break
+    uit.push(dagSleutel(d))
   }
-  tabs.forEach((t) => t.addEventListener('click', () => kies(t.dataset.tab!)))
+  return uit
+}
+
+function toonOpKaart(s: SpotKort, tijd: number) {
+  kies('kaart')
+  let best = 0
+  manifest.times.forEach((t, i) => {
+    if (Math.abs(Date.parse(t.time) - tijd) < Math.abs(Date.parse(manifest.times[best].time) - tijd)) best = i
+  })
+  setTime(best)
+  map.flyTo({ center: [s.lon, s.lat], zoom: Math.max(map.getZoom(), 9) })
+}
+
+function kies(naam: string) {
+  const paneel = $('paneel')
+  document.querySelectorAll<HTMLButtonElement>('#tabs button').forEach((t) => {
+    t.classList.toggle('aan', t.dataset.tab === naam)
+    t.setAttribute('aria-current', String(t.dataset.tab === naam))
+  })
+  paneel.hidden = naam === 'kaart'
+  blad?.sluit()
+  if (naam === 'vandaag') {
+    toonVandaag(paneel, {
+      data: spots.index, planken: planken(), profiel: laadProfiel(), dag: gekozenDag,
+      kiesDag: (d) => { gekozenDag = d; kies('vandaag') },
+      open: (id, d) => blad?.open(id, d),
+    })
+  } else if (naam === 'profiel') {
+    toonProfiel(paneel, () => {
+      blad = new Blad({ data: spots, planken: planken(), profiel: laadProfiel(), dagen: dagenMetVoorspelling(), opKaart: toonOpKaart })
+      kaartSpots.zet(dagSleutel(new Date(manifest.times[idx].time)), planken())
+    })
+  }
+}
+
+function bouwTabs() {
+  document.querySelectorAll<HTMLButtonElement>('#tabs button').forEach((t) => t.addEventListener('click', () => kies(t.dataset.tab!)))
 }
 
 new Labels(map).load('./basis/plaatsen.geojson').catch(() => {})

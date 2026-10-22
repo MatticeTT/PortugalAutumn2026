@@ -40,9 +40,8 @@ def test_reken_spot_supertubos_kunstmatig():
     getij = {"start": _iso(t0), "stap_min": 10, "h": h, "uitersten": ext}
     r = S.reken_spot(spot, {"golven": golven, "wind": wind, "getij": getij}, S.bodem_index(), t0, t0 + dt.timedelta(hours=23))
     assert r is not None
-    assert len(r["scores"]["SB"]) == 93
-    # 's nachts donker: score 1
-    assert r["scores"]["SB"][0] == 1.0
+    assert len(r["score"]["SB"]) == 24
+    # 's nachts donker: score 1 (bewaard x 10)
+    assert r["score"]["SB"][0] == 10 and r["wind"][0] is None
     # overdag met deze golf een duidelijke score voor de shortboard
-    middag = r["scores"]["SB"][4 * 13]
-    assert middag > 2.0, r["uur"][13]
+    assert r["score"]["SB"][13] > 20, r["deining"][13]

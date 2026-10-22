@@ -10,7 +10,7 @@ Per veld wordt alleen het nodige stuk van het GRIB2-bestand opgehaald (byte-rang
 Uitvoer (map --out, standaard web/public/data), lossless WebP:
   manifest.json                     run, tijdstippen, rasters en codering
   <uur>/wind.webp                   wereldraster van 1 graad, of 0,5 graad na --fine-hours tot --mid-hours
-  <uur>/swell.webp, windsea.webp    deining en windzee, zelfde rasters, zolang het golfmodel loopt
+  <uur>/swell.webp                  deining, zolang het golfmodel loopt (de windzee staat niet op de kaart)
   <uur>/wind/<rij>_<kol>.webp enz.  fijn raster (0,25 graad) in tegels van 45 x 45 graden, tot --fine-hours
                                     (windzee tot --windsea-fine-hours)
 
@@ -266,8 +266,9 @@ def process_hour(run: dt.datetime, h: int, out: Path, fine: bool, coarse_deg: fl
     if bron is not None:
         if not bron.heeft(t):
             return h, False
-        for name in golven.SYSTEMEN:
-            write_waves(base, name, *bron.velden(t, name), step, fine and (name == "swell" or windsea_fine))
+        # Alleen de deining staat op de kaart; de windzee telt mee in de score per spot (pipeline/spotscore.py).
+        # Zo blijft de site onder de 100 MB van Vercel.
+        write_waves(base, "swell", *bron.velden(t, "swell"), step, fine)
         return h, True
     # Reserve zonder Copernicus: ECMWF WAM, één laag (totale zee) als deining getoond.
     wave = fetch_fields(run, "wave", h, WAVE_FIELDS)
@@ -317,8 +318,7 @@ def main(argv: list[str] | None = None) -> int:
         "times": [{"h": h, "time": (run + dt.timedelta(hours=h)).strftime("%Y-%m-%dT%H:%MZ"),
                    "coarseDeg": coarse_deg(h), "fine": h <= a.fine_hours,
                    "waves": met_golven[h], "wavesFine": met_golven[h] and h <= a.fine_hours,
-                   "windsea": met_golven[h] and bron is not None,
-                   "windseaFine": met_golven[h] and bron is not None and h <= min(a.fine_hours, a.windsea_fine_hours)}
+                   "windsea": False, "windseaFine": False}
                   for h in hs],
         "fine": {"deg": 0.25, "tileDeg": TILE_DEG, "tilePx": TILE_PX + 1,
                  "rows": 180 // TILE_DEG, "cols": 360 // TILE_DEG},
