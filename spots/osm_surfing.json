@@ -1,8 +1,8 @@
 {
 "bron": "OpenStreetMap, sport=surfing, via https://overpass-api.de/api/interpreter",
 "licentie": "© OpenStreetMap-bijdragers, ODbL 1.0",
-"opgehaald": "2026-10-22T15:49Z",
-"osm_basis": "2026-10-22T15:47:21Z",
+"opgehaald": "2026-10-22T15:59Z",
+"osm_basis": "2026-10-22T15:57:21Z",
 "objecten": [
 {
 "osm": "node/10049795127",
@@ -1499,6 +1499,20 @@
 "name": "Lineup Test Center",
 "shop": "rental",
 "sport": "surfing"
+}
+},
+{
+"osm": "node/12399667377",
+"lat": 23.3699688,
+"lon": -110.2037152,
+"tags": {
+"description": "🌊 Un Paraíso para el Descanso y la Aventura!\n🌴Descubre un destino idílico ubicado en las impresionantes y semi vírgenes playas de San Pedrito Ejido el Pescadero, Baja California Sur, México. \n\nhttps://tierrasantapark-5bs2adh.gamma.site",
+"lifeguard": "yes",
+"name": "San Pedrito Ejido el Pescadero, B.C.S. Mx.",
+"natural": "beach",
+"supervised": "yes",
+"surface": "clay",
+"surfing": "Pro"
 }
 },
 {
@@ -6599,6 +6613,27 @@
 "lon": -60.8986706,
 "tags": {
 "sport": "surfing"
+}
+},
+{
+"osm": "node/5642011533",
+"lat": 40.220563,
+"lon": 44.4943886,
+"tags": {
+"addr:city": "Երևան",
+"addr:country": "AM",
+"addr:housenumber": "5",
+"addr:postcode": "0054",
+"addr:street": "Փիրումյանների փողոց",
+"contact:facebook": "https://www.facebook.com/reeboksportsclub/",
+"email": "info@reeboksportsclub.com",
+"leisure": "fitness_centre",
+"name": "Reebok Sports Club Armenia",
+"opening_hours": "Mo-Su 06:00-00:00",
+"phone": "+374 10 36 36 36",
+"surfing": "yes",
+"swimming_pool": "yes",
+"website": "https://www.reeboksportsclub.com/"
 }
 },
 {
@@ -15061,6 +15096,26 @@
 }
 },
 {
+"osm": "way/56848971",
+"lat": 50.8183519,
+"lon": 2.8439623,
+"tags": {
+"boat": "no",
+"canoe": "no",
+"motorboat": "no",
+"name": "Dikkebusvijver",
+"name:nl": "Dikkebusvijver",
+"name:vls": "Dikkebusvyver",
+"natural": "water",
+"ship": "no",
+"surfing": "no",
+"swimming": "no",
+"water": "lake",
+"wikidata": "Q1867247",
+"wikipedia": "nl:Dikkebusvijver"
+}
+},
+{
 "osm": "way/57082612",
 "lat": 48.1948276,
 "lon": 11.6758431,
@@ -15561,6 +15616,34 @@
 "start_date": "2019-07-15",
 "wikidata": "Q26863798",
 "wikipedia": "es:Centro de Alto Rendimiento de Surf"
+}
+},
+{
+"osm": "way/833168605",
+"lat": 51.8231811,
+"lon": 3.871773,
+"tags": {
+"canoe": "yes",
+"kite_surfing": "no",
+"maxspeed": "13",
+"motorboat": "yes",
+"sailing": "no",
+"surfing": "no",
+"waterway": "fairway"
+}
+},
+{
+"osm": "way/833168606",
+"lat": 51.7770504,
+"lon": 3.7745333,
+"tags": {
+"canoe": "yes",
+"kite_surfing": "no",
+"maxspeed": "13",
+"motorboat": "yes",
+"sailing": "no",
+"surfing": "no",
+"waterway": "fairway"
 }
 },
 {

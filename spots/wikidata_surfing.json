@@ -1,0 +1,536 @@
+{
+"bron": "Wikidata, sport (P641) = surfen (Q159992)",
+"licentie": "CC0",
+"opgehaald": "2026-10-22T15:50Z",
+"items": [
+{
+"wikidata": "Q10352393",
+"naam": "Praia Brava (Cabo Frio)",
+"soorten": [
+"beach"
+],
+"lat": -22.8842244,
+"lon": -41.9977994
+},
+{
+"wikidata": "Q10352442",
+"naam": "Grande Beach (Ubatuba)",
+"soorten": [
+"geographic location",
+"beach"
+],
+"lat": -23.4723,
+"lon": -45.06565
+},
+{
+"wikidata": "Q10352800",
+"naam": "Praia de Itaguaré",
+"soorten": [
+"beach"
+],
+"lat": -23.788267,
+"lon": -45.983616
+},
+{
+"wikidata": "Q1154707",
+"naam": "Palabuhanratu",
+"soorten": [
+"kecamatan",
+"capital of regency"
+],
+"lat": -6.983333333,
+"lon": 106.55
+},
+{
+"wikidata": "Q124394402",
+"naam": "Itamambuca Beach",
+"soorten": [
+"beach"
+],
+"lat": -23.4011,
+"lon": -45.0014
+},
+{
+"wikidata": "Q127881429",
+"naam": "Teahupo'o",
+"soorten": [
+"surf spot"
+],
+"lat": -17.8615,
+"lon": -149.257444
+},
+{
+"wikidata": "Q129254905",
+"naam": "RiF010",
+"soorten": [
+"wave pool"
+],
+"lat": 51.92019,
+"lon": 4.48446
+},
+{
+"wikidata": "Q131454129",
+"naam": "Jochen Schweizer Arena",
+"soorten": [
+"vertical wind tunnel",
+"artificial wave",
+"indoor sports facility",
+"sports venue",
+"arena",
+"amusement park",
+"standing wave"
+],
+"lat": 48.04266,
+"lon": 11.65322
+},
+{
+"wikidata": "Q140042751",
+"naam": null,
+"soorten": [
+"seaside resort",
+"hamlet"
+],
+"lat": -21.372677,
+"lon": 55.588227
+},
+{
+"wikidata": "Q1426729",
+"naam": "Teahupo'o",
+"soorten": [
+"associated commune",
+"commune of France"
+],
+"lat": -17.847222222,
+"lon": -149.267222222
+},
+{
+"wikidata": "Q1627108",
+"naam": "Mavericks",
+"soorten": [
+"surf spot"
+],
+"lat": 37.485211,
+"lon": -122.469922
+},
+{
+"wikidata": "Q1684289",
+"naam": "Jaws",
+"soorten": [
+"surf spot"
+],
+"lat": 20.938611111,
+"lon": -156.260833333
+},
+{
+"wikidata": "Q18214636",
+"naam": null,
+"soorten": [
+"surf spot"
+],
+"lat": 21.6409943,
+"lon": -158.0659676
+},
+{
+"wikidata": "Q1945126",
+"naam": null,
+"soorten": [
+"beach"
+],
+"lat": -27.6814,
+"lon": -48.47889
+},
+{
+"wikidata": "Q2091560",
+"naam": "Mozambique Beach",
+"soorten": [
+"beach"
+],
+"lat": -27.501192,
+"lon": -48.4019
+},
+{
+"wikidata": "Q2184059",
+"naam": "Praia dos Ingleses",
+"soorten": [
+"beach"
+],
+"lat": -27.43516,
+"lon": -48.39126
+},
+{
+"wikidata": "Q21961453",
+"naam": "Bells Beach",
+"soorten": [
+"beach"
+],
+"lat": -38.36958,
+"lon": 144.28264
+},
+{
+"wikidata": "Q2330759",
+"naam": "World Surfing Championship",
+"soorten": [
+"recurring sporting event",
+"sports competition"
+],
+"lat": 51.44555556,
+"lon": 3.68388889
+},
+{
+"wikidata": "Q2416446",
+"naam": "Praia da Armação",
+"soorten": [
+"beach"
+],
+"lat": -27.74264,
+"lon": -48.5076
+},
+{
+"wikidata": "Q2457088",
+"naam": "Joaquina",
+"soorten": [
+"beach"
+],
+"lat": -27.6405,
+"lon": -48.45881
+},
+{
+"wikidata": "Q26863798",
+"naam": null,
+"soorten": [
+"sports venue"
+],
+"lat": -12.351864,
+"lon": -76.8156
+},
+{
+"wikidata": "Q2735557",
+"naam": "Banzai Pipeline",
+"soorten": [
+"surf spot"
+],
+"lat": 21.664,
+"lon": -158.054
+},
+{
+"wikidata": "Q2735557",
+"naam": "Banzai Pipeline",
+"soorten": [
+"surf spot"
+],
+"lat": 21.66402,
+"lon": -158.05385
+},
+{
+"wikidata": "Q2749208",
+"naam": "Trestles",
+"soorten": [
+"surf spot",
+"coast"
+],
+"lat": 33.385,
+"lon": -117.595
+},
+{
+"wikidata": "Q2749208",
+"naam": "Trestles",
+"soorten": [
+"surf spot",
+"coast"
+],
+"lat": 33.38531,
+"lon": -117.59394
+},
+{
+"wikidata": "Q2767159",
+"naam": "Noosa Heads",
+"soorten": [
+"suburb"
+],
+"lat": -26.398,
+"lon": 153.093
+},
+{
+"wikidata": "Q2879702",
+"naam": null,
+"soorten": [
+"surf spot",
+"bay"
+],
+"lat": -21.171446,
+"lon": 55.276337
+},
+{
+"wikidata": "Q2894399",
+"naam": "Belharra",
+"soorten": [
+"surf spot"
+],
+"lat": 43.40361111,
+"lon": -1.71777778
+},
+{
+"wikidata": "Q3050481",
+"naam": "Elbow Ledge",
+"soorten": [
+"surf spot"
+],
+"lat": 41.463888888,
+"lon": -71.259166666
+},
+{
+"wikidata": "Q30930353",
+"naam": "Vermelha do Norte Beach",
+"soorten": [
+"beach"
+],
+"lat": -23.41716,
+"lon": -45.03538
+},
+{
+"wikidata": "Q3140164",
+"naam": "Honolua",
+"soorten": [
+"ahupuaʻa"
+],
+"lat": 20.9967,
+"lon": -156.653
+},
+{
+"wikidata": "Q3140164",
+"naam": "Honolua",
+"soorten": [
+"ahupuaʻa"
+],
+"lat": 21.01449,
+"lon": -156.63955
+},
+{
+"wikidata": "Q3149573",
+"naam": "Imsouane",
+"soorten": [
+"rural commune of Morocco",
+"commune of Morocco"
+],
+"lat": 30.843374,
+"lon": -9.818566
+},
+{
+"wikidata": "Q3178225",
+"naam": "Pipa Beach",
+"soorten": [
+"human settlement",
+"beach"
+],
+"lat": -6.22758,
+"lon": -35.0476
+},
+{
+"wikidata": "Q3390839",
+"naam": "Boucan Canot Beach",
+"soorten": [
+"sand beach"
+],
+"lat": -21.0281,
+"lon": 55.2258
+},
+{
+"wikidata": "Q3390848",
+"naam": "Plage de l'Étang-Salé",
+"soorten": [
+"black sand beach"
+],
+"lat": -21.2633,
+"lon": 55.3321
+},
+{
+"wikidata": "Q3390873",
+"naam": "Plage des Brisants",
+"soorten": [
+"beach"
+],
+"lat": -21.0583,
+"lon": 55.2219
+},
+{
+"wikidata": "Q3390874",
+"naam": "Plage des Roches Noires",
+"soorten": [
+"white sand beach"
+],
+"lat": -21.054377,
+"lon": 55.224011
+},
+{
+"wikidata": "Q3393714",
+"naam": "Pointe du Diable",
+"soorten": [
+"surf spot",
+"cape"
+],
+"lat": -21.3311,
+"lon": 55.4508
+},
+{
+"wikidata": "Q3411804",
+"naam": "Blambangan Peninsula",
+"soorten": [
+"peninsula"
+],
+"lat": -8.7,
+"lon": 114.5
+},
+{
+"wikidata": "Q3437513",
+"naam": null,
+"soorten": [
+"neighborhood"
+],
+"lat": -21.613,
+"lon": 165.466
+},
+{
+"wikidata": "Q3485139",
+"naam": null,
+"soorten": [],
+"lat": 49.5662,
+"lon": -1.84828
+},
+{
+"wikidata": "Q3593368",
+"naam": "Deli Island",
+"soorten": [
+"island"
+],
+"lat": -7.006378,
+"lon": 105.545161
+},
+{
+"wikidata": "Q4522",
+"naam": "Ujung Kulon National Park",
+"soorten": [
+"national park of Indonesia"
+],
+"lat": -6.75,
+"lon": 105.333333333
+},
+{
+"wikidata": "Q49568265",
+"naam": "Swamis Seaside Park",
+"soorten": [
+"surf break",
+"park"
+],
+"lat": 33.035,
+"lon": -117.291666666
+},
+{
+"wikidata": "Q51882867",
+"naam": "Enseada Beach",
+"soorten": [
+"beach"
+],
+"lat": -23.8391242,
+"lon": -46.1314761
+},
+{
+"wikidata": "Q545149",
+"naam": "Vieux-Boucau-les-Bains",
+"soorten": [
+"commune of France"
+],
+"lat": 43.786111111,
+"lon": -1.404444444
+},
+{
+"wikidata": "Q546832",
+"naam": "Soorts-Hossegor",
+"soorten": [
+"commune of France"
+],
+"lat": 43.658333333,
+"lon": -1.427222222
+},
+{
+"wikidata": "Q55524061",
+"naam": "Tsurigasaki Beach",
+"soorten": [
+"coast"
+],
+"lat": 35.33588889,
+"lon": 140.39463889
+},
+{
+"wikidata": "Q588991",
+"naam": "Praia do Matadeiro",
+"soorten": [
+"beach"
+],
+"lat": -27.75009,
+"lon": -48.49983
+},
+{
+"wikidata": "Q5945173",
+"naam": "Waimea Bay",
+"soorten": [
+"bay"
+],
+"lat": 21.640296,
+"lon": -158.063779
+},
+{
+"wikidata": "Q720267",
+"naam": "Mole Beach",
+"soorten": [
+"beach"
+],
+"lat": -27.60251,
+"lon": -48.4328
+},
+{
+"wikidata": "Q7641228",
+"naam": "Sunset Beach",
+"soorten": [
+"beach"
+],
+"lat": 21.6644,
+"lon": -158.052
+},
+{
+"wikidata": "Q770646",
+"naam": "Batu Islands",
+"soorten": [
+"archipelago"
+],
+"lat": -0.23487,
+"lon": 98.36794
+},
+{
+"wikidata": "Q7774093",
+"naam": "The Wedge",
+"soorten": [
+"surf spot"
+],
+"lat": 33.5925,
+"lon": -117.882
+},
+{
+"wikidata": "Q942545",
+"naam": "Haleiwa",
+"soorten": [
+"census-designated place in the United States"
+],
+"lat": 21.59,
+"lon": -158.113888888
+},
+{
+"wikidata": "Q985513",
+"naam": "Itacaré",
+"soorten": [
+"municipality of Brazil"
+],
+"lat": -14.277777777,
+"lon": -38.996944444
+}
+]
+}
