@@ -38,17 +38,25 @@ jobs:
               doel.mkdir(exist_ok=True)
               with urllib.request.urlopen(url, timeout=1800) as r, open(pad, "wb") as f:
                   shutil.copyfileobj(r, f)
-              z = zipfile.ZipFile(pad)
-              namen = [n for n in z.namelist() if "ocean_tides" in n and n.endswith(".nc")]
-              print(url, len(z.namelist()), "bestanden,", len(namen), "ocean_tides")
-              if namen:
+              def zoek(z, diepte=0):
+                  """Alle ocean_tides-bestanden, ook in zips in de zip."""
+                  print("  " * diepte, z.namelist()[:20])
+                  uit = {}
+                  for n in z.namelist():
+                      if ("ocean_tides" in n or "_ocean_eot20" in n) and n.endswith(".nc"):
+                          uit[pathlib.Path(n).name] = z.read(n)
+                      elif n.endswith(".zip") and "load" not in n.lower():
+                          uit.update(zoek(zipfile.ZipFile(io.BytesIO(z.read(n))), diepte + 1))
+                  return uit
+              gevonden = zoek(zipfile.ZipFile(pad))
+              print(url, len(gevonden), "ocean_tides")
+              pad.unlink()
+              if gevonden:
                   uit = doel / "EOT20" / "ocean_tides"
                   uit.mkdir(parents=True, exist_ok=True)
-                  for n in namen:
-                      (uit / pathlib.Path(n).name).write_bytes(z.read(n))
-                  pad.unlink()
+                  for n, b in gevonden.items():
+                      (uit / n).write_bytes(b)
                   break
-              pad.unlink()
           else:
               raise SystemExit("Geen EOT20 ocean_tides gevonden")
           PY
