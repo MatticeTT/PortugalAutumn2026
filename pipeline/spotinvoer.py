@@ -6,6 +6,7 @@ Bronnen
           startpunt voor de kust (spots/kust.py). Per systeem (deining 1, deining 2, windzee): hoogte, richting
           (vandaan) en piekperiode Tp = Tm01 / 0,835.
   wind    ECMWF IFS open data 0,25 graad: 10u, 10v (wind op 10 m) en 10fg (windstoot), bilineair op het kustpunt.
+  onweer  ECMWF mucape en cp: zie ONWEER_CAPE en ONWEER_CP_MM.
   getij   EOT20 (DGFI-TUM, CC BY 4.0) met pyTMD, om de 10 minuten op het kustpunt; met hoog- en laagwater van elke
           cyclus.
 
@@ -153,12 +154,29 @@ def stoot_veld(run: dt.datetime, h: int) -> np.ndarray | None:
     return build.decode(build.http_get(build.path(run, "oper", h, "grib2"), (off, off + n - 1)))
 
 
+# Onweer: geen bliksemveld in de open data. Voorzichtige aanwijzing (liever een vals alarm dan onweer missen):
+# buiachtige neerslag (cp) in de stap ervoor EN onstabiele lucht (mucape) ergens in de 3 x 3 cellen rond de spot
+# (ongeveer 25 km; de regel zegt bliksem binnen 16 km).
+ONWEER_CAPE = 100.0  # J/kg; ECMWF maskeert de vertrekhoogte van MUCAPE onder 100 J/kg (geen diepe convectie)
+ONWEER_CP_MM = 0.1  # mm buiachtige neerslag in de stap
+
+
+def buurmax(veld: np.ndarray, lat: float, lon: float) -> float:
+    j, i = int(round((90 - lat) * 4)), int(round((lon % 360) * 4)) % veld.shape[1]
+    js = slice(max(j - 1, 0), min(j + 2, veld.shape[0]))
+    blok = veld[js][:, [(i - 1) % veld.shape[1], i, (i + 1) % veld.shape[1]]]
+    return float(np.nanmax(blok)) if np.isfinite(blok).any() else float("nan")
+
+
 def wind_per_spot(spots: list[dict], max_uur: int) -> tuple[dt.datetime, list[dict]]:
     run = build.latest_run(max_uur)
     uren = build.hours(max_uur)
-    res = [{"tijden": [], "u": [], "v": [], "stoot": []} for _ in spots]
+    res = [{"tijden": [], "u": [], "v": [], "stoot": [], "onweer": []} for _ in spots]
+    cp_vorig = None
     for h in uren:
-        f = build.fetch_fields(run, "oper", h, ("10u", "10v"))
+        f = build.fetch_fields(run, "oper", h, ("10u", "10v", "mucape", "cp"))
+        cp_stap = None if cp_vorig is None else (f["cp"] - cp_vorig) * 1000  # m -> mm in deze stap
+        cp_vorig = f["cp"]
         g = stoot_veld(run, h) if h > 0 else None
         if g is not None:
             f["10fg"] = g
@@ -170,6 +188,11 @@ def wind_per_spot(spots: list[dict], max_uur: int) -> tuple[dt.datetime, list[di
             r["u"].append(round(bilineair(f["10u"], lat, lon), 2))
             r["v"].append(round(bilineair(f["10v"], lat, lon), 2))
             r["stoot"].append(round(bilineair(f["10fg"], lat, lon), 2) if "10fg" in f else None)
+            if cp_stap is None:
+                r["onweer"].append(None)
+            else:
+                r["onweer"].append(bool(buurmax(f["mucape"], lat, lon) >= ONWEER_CAPE
+                                        and buurmax(cp_stap, lat, lon) >= ONWEER_CP_MM))
     print(f"wind: ECMWF-run {iso(run)}, {len(uren)} stappen", flush=True)
     return run, res
 

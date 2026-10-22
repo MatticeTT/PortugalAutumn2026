@@ -8,6 +8,7 @@ Per kwartier:
   getij   waterstand om de 10 minuten; stand = (water - laagwater) / (hoogwater - laagwater) tussen het vorige en het
           volgende uiterste; getijverschil van die cyclus
   donker  zon dieper dan 6 graden onder de horizon: veiligheid, score 1
+  onweer  aanwijzing uit ECMWF (pipeline/spotinvoer.py): vlag 'bliksem', veiligheid, score 1
 Spotvelden (regels.json > vlaggen_uit_spotkennis):
   tanb             strandhelling: uit het diepteprofiel van EMODnet (Portugal) als dat binnen 1,5 km ligt. Een
                    zandstrand zonder gekende helling wordt niet gescoord (keuze eigenaar: liever geen spot dan een
@@ -259,6 +260,13 @@ def reken_spot(spot: dict, invoer: dict, stranden: list[dict], van: dt.datetime,
     sysr = {k: Reeks(gw["tijden"], gw[k]) for k in ("deining1", "deining2", "windzee")}
     wi = invoer["wind"]
     u, w_, st = Reeks(wi["tijden"], wi["u"]), Reeks(wi["tijden"], wi["v"]), Reeks(wi["tijden"], wi["stoot"])
+    ow_t = [tijd(x).timestamp() for x in wi["tijden"]]
+    ow = wi.get("onweer") or [None] * len(ow_t)
+
+    def onweer(t: dt.datetime) -> bool:
+        """Aanwijzing geldt voor de stap die eindigt op het volgende tijdstip (neerslag van die stap)."""
+        k = bisect.bisect_left(ow_t, t.timestamp())
+        return k < len(ow) and bool(ow[k])
     gt = Getij(invoer["getij"]) if invoer.get("getij") else None
     tijden, per_plank, grenzen, rijen = [], {p: [] for p in R.PL}, {p: [] for p in R.PL}, []
     t = van
@@ -276,6 +284,8 @@ def reken_spot(spot: dict, invoer: dict, stranden: list[dict], van: dt.datetime,
         g = gt.op(t) if gt else None
         donker = zonhoogte(t, spot["lat"], spot["lon"]) < -6
         s = situatie(v, systemen, (kn, rel, stoot), g, donker)
+        if onweer(t):
+            s["flags"].append("bliksem")
         fk = R.kenmerken(s, R.bereken(s))
         uit = R.score(fk, P, ALFA)
         tijden.append(t)
@@ -284,7 +294,7 @@ def reken_spot(spot: dict, invoer: dict, stranden: list[dict], van: dt.datetime,
             grenzen[p].append(uit[p][2])
         rijen.append({"t": iso(t), "wind_kn": round(kn, 1), "wind_rel": round(rel), "stoot_kn": round(stoot, 1),
                       "golven": {k: (None if x is None else [round(x[0], 2), round(x[1]), round(x[2], 1)]) for k, x in systemen.items()},
-                      "Hb": round(fk["Hb"], 2), "getij": None if g is None else {"h": round(g[0], 2), "stand": round(g[1], 2), "bakje": g[3]},
+                      "Hb": round(fk["Hb"], 2), "vlaggen": s["flags"], "getij": None if g is None else {"h": round(g[0], 2), "stand": round(g[1], 2), "bakje": g[3]},
                       "expert": R.expert_label(fk)})
         t += KWARTIER
     if not tijden:
