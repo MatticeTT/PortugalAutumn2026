@@ -1,0 +1,69 @@
+# Invoer voor de plankscore per spot (golven, wind, getij) ophalen en committen, om de score te bouwen en te toetsen.
+name: spotinvoer
+on:
+  workflow_dispatch:
+  push:
+    branches: [ccr-1fe05339-6haah2]
+    paths:
+      - "pipeline/spotinvoer.py"
+      - ".github/workflows/spotinvoer.yml"
+permissions:
+  contents: write
+jobs:
+  invoer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12", cache: pip, cache-dependency-path: "**/requirements.txt" }
+      - run: pip install -r pipeline/requirements.txt
+      - name: EOT20 uit de cache
+        id: eot20
+        uses: actions/cache@v4
+        with:
+          path: getij/EOT20/ocean_tides
+          key: eot20-ocean-v1
+      - name: EOT20 downloaden (SEANOE, CC BY 4.0)
+        if: steps.eot20.outputs.cache-hit != 'true'
+        run: |
+          python - <<'PY'
+          import re, urllib.request, zipfile, io, pathlib, shutil
+          pagina = urllib.request.urlopen("https://www.seanoe.org/data/00683/79489/", timeout=120).read().decode("utf-8", "ignore")
+          links = sorted(set(re.findall(r"https://www\.seanoe\.org/data/00683/79489/data/\d+\.zip", pagina)))
+          print("zips:", links)
+          doel = pathlib.Path("getij")
+          for url in links:
+              pad = doel / "eot20.zip"
+              doel.mkdir(exist_ok=True)
+              with urllib.request.urlopen(url, timeout=1800) as r, open(pad, "wb") as f:
+                  shutil.copyfileobj(r, f)
+              z = zipfile.ZipFile(pad)
+              namen = [n for n in z.namelist() if "ocean_tides" in n and n.endswith(".nc")]
+              print(url, len(z.namelist()), "bestanden,", len(namen), "ocean_tides")
+              if namen:
+                  uit = doel / "EOT20" / "ocean_tides"
+                  uit.mkdir(parents=True, exist_ok=True)
+                  for n in namen:
+                      (uit / pathlib.Path(n).name).write_bytes(z.read(n))
+                  pad.unlink()
+                  break
+              pad.unlink()
+          else:
+              raise SystemExit("Geen EOT20 ocean_tides gevonden")
+          PY
+          ls -la getij/EOT20/ocean_tides | head -30
+      - name: Invoer per spot
+        env:
+          COPERNICUSMARINE_SERVICE_USERNAME: ${{ secrets.COPERNICUSMARINE_SERVICE_USERNAME }}
+          COPERNICUSMARINE_SERVICE_PASSWORD: ${{ secrets.COPERNICUSMARINE_SERVICE_PASSWORD }}
+        run: python -m pipeline.spotinvoer --spots spots/spots.json --getij getij --uit data/spotinvoer.json.gz
+      - name: Resultaat committen
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/spotinvoer.json.gz
+          git diff --cached --quiet && exit 0
+          git commit -m "Invoer per spot (golven, wind, getij)"
+          for i in 1 2 3; do git pull --rebase origin "$GITHUB_REF_NAME" && git push origin "HEAD:$GITHUB_REF_NAME" && exit 0; sleep 5; done
+          exit 1

@@ -267,7 +267,7 @@ def main(argv: list[str] | None = None) -> int:
                              "richting_2km": None if r is None else r.richting_2km})
         else:
             f = r.richting_500m if r.richting_500m is not None else r.richting_2km
-            goed.append({**rij, "kustpunt": r.kustpunt, "kust_km": r.kust_km, "richting": f,
+            goed.append({**rij, "kustpunt": r.kustpunt, "startpunt": r.startpunt, "kust_km": r.kust_km, "richting": f,
                          "richting_2km": r.richting_2km, "open_km": r.open_km, "venster": vensters(r.open_km)})
         if n % 200 == 0:
             print(f"  {n}/{len(spots)}  {time.time() - t0:.0f} s", flush=True)
