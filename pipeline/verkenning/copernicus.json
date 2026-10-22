@@ -1,0 +1,2670 @@
+{
+ "GLOBAL_ANALYSISFORECAST_WAV_001_027": {
+  "datasets": {
+   "cmems_mod_glo_wav_anfc_0.083deg_PT3H-i": {
+    "versies": [
+     {
+      "versie": "202411",
+      "dienst": "arco-geo-series",
+      "variabelen": {
+       "VCMX": {
+        "naam": "sea_surface_wave_maximum_height",
+        "eenheid": "m",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1667271600000.0,
+          "maximum_value": 1793491200000.0,
+          "step": 10800000.0
+         },
+         "latitude": {
+          "minimum_value": -80.0,
+          "maximum_value": 90.0,
+          "step": 0.08333333333333333
+         },
+         "longitude": {
+          "minimum_value": -180.0,
+          "maximum_value": 179.91666666666663,
+          "step": 0.08333333333333333
+         }
+        }
+       },
+       "VHM0": {
+        "naam": "sea_surface_wave_significant_height",
+        "eenheid": "m",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1667271600000.0,
+          "maximum_value": 1793491200000.0,
+          "step": 10800000.0
+         },
+         "latitude": {
+          "minimum_value": -80.0,
+          "maximum_value": 90.0,
+          "step": 0.08333333333333333
+         },
+         "longitude": {
+          "minimum_value": -180.0,
+          "maximum_value": 179.91666666666663,
+          "step": 0.08333333333333333
+         }
+        }
+       },
+       "VHM0_SW1": {
+        "naam": "sea_surface_primary_swell_wave_significant_height",
+        "eenheid": "m",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1667271600000.0,
+          "maximum_value": 1793491200000.0,
+          "step": 10800000.0
+         },
+         "latitude": {
+          "minimum_value": -80.0,
+          "maximum_value": 90.0,
+          "step": 0.08333333333333333
+         },
+         "longitude": {
+          "minimum_value": -180.0,
+          "maximum_value": 179.91666666666663,
+          "step": 0.08333333333333333
+         }
+        }
+       },
+       "VHM0_SW2": {
+        "naam": "sea_surface_secondary_swell_wave_significant_height",
+        "eenheid": "m",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1667271600000.0,
+          "maximum_value": 1793491200000.0,
+          "step": 10800000.0
+         },
+         "latitude": {
+          "minimum_value": -80.0,
+          "maximum_value": 90.0,
+          "step": 0.08333333333333333
+         },
+         "longitude": {
+          "minimum_value": -180.0,
+          "maximum_value": 179.91666666666663,
+          "step": 0.08333333333333333
+         }
+        }
+       },
+       "VHM0_WW": {
+        "naam": "sea_surface_wind_wave_significant_height",
+        "eenheid": "m",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1667271600000.0,
+          "maximum_value": 1793491200000.0,
+          "step": 10800000.0
+         },
+         "latitude": {
+          "minimum_value": -80.0,
+          "maximum_value": 90.0,
+          "step": 0.08333333333333333
+         },
+         "longitude": {
+          "minimum_value": -180.0,
+          "maximum_value": 179.91666666666663,
+          "step": 0.08333333333333333
+         }
+        }
+       },
+       "VMDR": {
+        "naam": "sea_surface_wave_from_direction",
+        "eenheid": "degree",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1667271600000.0,
+          "maximum_value": 1793491200000.0,
+          "step": 10800000.0
+         },
+         "latitude": {
+          "minimum_value": -80.0,
+          "maximum_value": 90.0,
+          "step": 0.08333333333333333
+         },
+         "longitude": {
+          "minimum_value": -180.0,
+          "maximum_value": 179.91666666666663,
+          "step": 0.08333333333333333
+         }
+        }
+       },
+       "VMDR_SW1": {
+        "naam": "sea_surface_primary_swell_wave_from_direction",
+        "eenheid": "degree",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1667271600000.0,
+          "maximum_value": 1793491200000.0,
+          "step": 10800000.0
+         },
+         "latitude": {
+          "minimum_value": -80.0,
+          "maximum_value": 90.0,
+          "step": 0.08333333333333333
+         },
+         "longitude": {
+          "minimum_value": -180.0,
+          "maximum_value": 179.91666666666663,
+          "step": 0.08333333333333333
+         }
+        }
+       },
+       "VMDR_SW2": {
+        "naam": "sea_surface_secondary_swell_wave_from_direction",
+        "eenheid": "degree",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1667271600000.0,
+          "maximum_value": 1793491200000.0,
+          "step": 10800000.0
+         },
+         "latitude": {
+          "minimum_value": -80.0,
+          "maximum_value": 90.0,
+          "step": 0.08333333333333333
+         },
+         "longitude": {
+          "minimum_value": -180.0,
+          "maximum_value": 179.91666666666663,
+          "step": 0.08333333333333333
+         }
+        }
+       },
+       "VMDR_WW": {
+        "naam": "sea_surface_wind_wave_from_direction",
+        "eenheid": "degree",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1667271600000.0,
+          "maximum_value": 1793491200000.0,
+          "step": 10800000.0
+         },
+         "latitude": {
+          "minimum_value": -80.0,
+          "maximum_value": 90.0,
+          "step": 0.08333333333333333
+         },
+         "longitude": {
+          "minimum_value": -180.0,
+          "maximum_value": 179.91666666666663,
+          "step": 0.08333333333333333
+         }
+        }
+       },
+       "VMXL": {
+        "naam": "sea_surface_wave_maximum_crest_height",
+        "eenheid": "m",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1667271600000.0,
+          "maximum_value": 1793491200000.0,
+          "step": 10800000.0
+         },
+         "latitude": {
+          "minimum_value": -80.0,
+          "maximum_value": 90.0,
+          "step": 0.08333333333333333
+         },
+         "longitude": {
+          "minimum_value": -180.0,
+          "maximum_value": 179.91666666666663,
+          "step": 0.08333333333333333
+         }
+        }
+       },
+       "VPED": {
+        "naam": "sea_surface_wave_from_direction_at_variance_spectral_density_maximum",
+        "eenheid": "degree",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1667271600000.0,
+          "maximum_value": 1793491200000.0,
+          "step": 10800000.0
+         },
+         "latitude": {
+          "minimum_value": -80.0,
+          "maximum_value": 90.0,
+          "step": 0.08333333333333333
+         },
+         "longitude": {
+          "minimum_value": -180.0,
+          "maximum_value": 179.91666666666663,
+          "step": 0.08333333333333333
+         }
+        }
+       },
+       "VSDX": {
+        "naam": "sea_surface_wave_stokes_drift_x_velocity",
+        "eenheid": "m s-1",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1667271600000.0,
+          "maximum_value": 1793491200000.0,
+          "step": 10800000.0
+         },
+         "latitude": {
+          "minimum_value": -80.0,
+          "maximum_value": 90.0,
+          "step": 0.08333333333333333
+         },
+         "longitude": {
+          "minimum_value": -180.0,
+          "maximum_value": 179.91666666666663,
+          "step": 0.08333333333333333
+         }
+        }
+       },
+       "VSDY": {
+        "naam": "sea_surface_wave_stokes_drift_y_velocity",
+        "eenheid": "m s-1",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1667271600000.0,
+          "maximum_value": 1793491200000.0,
+          "step": 10800000.0
+         },
+         "latitude": {
+          "minimum_value": -80.0,
+          "maximum_value": 90.0,
+          "step": 0.08333333333333333
+         },
+         "longitude": {
+          "minimum_value": -180.0,
+          "maximum_value": 179.91666666666663,
+          "step": 0.08333333333333333
+         }
+        }
+       },
+       "VTM01_SW1": {
+        "naam": "sea_surface_primary_swell_wave_mean_period",
+        "eenheid": "s",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1667271600000.0,
+          "maximum_value": 1793491200000.0,
+          "step": 10800000.0
+         },
+         "latitude": {
+          "minimum_value": -80.0,
+          "maximum_value": 90.0,
+          "step": 0.08333333333333333
+         },
+         "longitude": {
+          "minimum_value": -180.0,
+          "maximum_value": 179.91666666666663,
+          "step": 0.08333333333333333
+         }
+        }
+       },
+       "VTM01_SW2": {
+        "naam": "sea_surface_secondary_swell_wave_mean_period",
+        "eenheid": "s",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1667271600000.0,
+          "maximum_value": 1793491200000.0,
+          "step": 10800000.0
+         },
+         "latitude": {
+          "minimum_value": -80.0,
+          "maximum_value": 90.0,
+          "step": 0.08333333333333333
+         },
+         "longitude": {
+          "minimum_value": -180.0,
+          "maximum_value": 179.91666666666663,
+          "step": 0.08333333333333333
+         }
+        }
+       },
+       "VTM01_WW": {
+        "naam": "sea_surface_wind_wave_mean_period",
+        "eenheid": "s",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1667271600000.0,
+          "maximum_value": 1793491200000.0,
+          "step": 10800000.0
+         },
+         "latitude": {
+          "minimum_value": -80.0,
+          "maximum_value": 90.0,
+          "step": 0.08333333333333333
+         },
+         "longitude": {
+          "minimum_value": -180.0,
+          "maximum_value": 179.91666666666663,
+          "step": 0.08333333333333333
+         }
+        }
+       },
+       "VTM02": {
+        "naam": "sea_surface_wave_mean_period_from_variance_spectral_density_second_frequency_moment",
+        "eenheid": "s",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1667271600000.0,
+          "maximum_value": 1793491200000.0,
+          "step": 10800000.0
+         },
+         "latitude": {
+          "minimum_value": -80.0,
+          "maximum_value": 90.0,
+          "step": 0.08333333333333333
+         },
+         "longitude": {
+          "minimum_value": -180.0,
+          "maximum_value": 179.91666666666663,
+          "step": 0.08333333333333333
+         }
+        }
+       },
+       "VTM10": {
+        "naam": "sea_surface_wave_mean_period_from_variance_spectral_density_inverse_frequency_moment",
+        "eenheid": "s",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1667271600000.0,
+          "maximum_value": 1793491200000.0,
+          "step": 10800000.0
+         },
+         "latitude": {
+          "minimum_value": -80.0,
+          "maximum_value": 90.0,
+          "step": 0.08333333333333333
+         },
+         "longitude": {
+          "minimum_value": -180.0,
+          "maximum_value": 179.91666666666663,
+          "step": 0.08333333333333333
+         }
+        }
+       },
+       "VTPK": {
+        "naam": "sea_surface_wave_period_at_variance_spectral_density_maximum",
+        "eenheid": "s",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1667271600000.0,
+          "maximum_value": 1793491200000.0,
+          "step": 10800000.0
+         },
+         "latitude": {
+          "minimum_value": -80.0,
+          "maximum_value": 90.0,
+          "step": 0.08333333333333333
+         },
+         "longitude": {
+          "minimum_value": -180.0,
+          "maximum_value": 179.91666666666663,
+          "step": 0.08333333333333333
+         }
+        }
+       }
+      }
+     },
+     {
+      "versie": "202411",
+      "dienst": "arco-time-series",
+      "variabelen": {
+       "VCMX": {
+        "naam": "sea_surface_wave_maximum_height",
+        "eenheid": "m",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1667271600000.0,
+          "maximum_value": 1793491200000.0,
+          "step": 10800000.0
+         },
+         "latitude": {
+          "minimum_value": -80.0,
+          "maximum_value": 90.0,
+          "step": 0.08333333333333333
+         },
+         "longitude": {
+          "minimum_value": -180.0,
+          "maximum_value": 179.91666666666663,
+          "step": 0.08333333333333333
+         }
+        }
+       },
+       "VHM0": {
+        "naam": "sea_surface_wave_significant_height",
+        "eenheid": "m",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1667271600000.0,
+          "maximum_value": 1793491200000.0,
+          "step": 10800000.0
+         },
+         "latitude": {
+          "minimum_value": -80.0,
+          "maximum_value": 90.0,
+          "step": 0.08333333333333333
+         },
+         "longitude": {
+          "minimum_value": -180.0,
+          "maximum_value": 179.91666666666663,
+          "step": 0.08333333333333333
+         }
+        }
+       },
+       "VHM0_SW1": {
+        "naam": "sea_surface_primary_swell_wave_significant_height",
+        "eenheid": "m",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1667271600000.0,
+          "maximum_value": 1793491200000.0,
+          "step": 10800000.0
+         },
+         "latitude": {
+          "minimum_value": -80.0,
+          "maximum_value": 90.0,
+          "step": 0.08333333333333333
+         },
+         "longitude": {
+          "minimum_value": -180.0,
+          "maximum_value": 179.91666666666663,
+          "step": 0.08333333333333333
+         }
+        }
+       },
+       "VHM0_SW2": {
+        "naam": "sea_surface_secondary_swell_wave_significant_height",
+        "eenheid": "m",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1667271600000.0,
+          "maximum_value": 1793491200000.0,
+          "step": 10800000.0
+         },
+         "latitude": {
+          "minimum_value": -80.0,
+          "maximum_value": 90.0,
+          "step": 0.08333333333333333
+         },
+         "longitude": {
+          "minimum_value": -180.0,
+          "maximum_value": 179.91666666666663,
+          "step": 0.08333333333333333
+         }
+        }
+       },
+       "VHM0_WW": {
+        "naam": "sea_surface_wind_wave_significant_height",
+        "eenheid": "m",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1667271600000.0,
+          "maximum_value": 1793491200000.0,
+          "step": 10800000.0
+         },
+         "latitude": {
+          "minimum_value": -80.0,
+          "maximum_value": 90.0,
+          "step": 0.08333333333333333
+         },
+         "longitude": {
+          "minimum_value": -180.0,
+          "maximum_value": 179.91666666666663,
+          "step": 0.08333333333333333
+         }
+        }
+       },
+       "VMDR": {
+        "naam": "sea_surface_wave_from_direction",
+        "eenheid": "degree",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1667271600000.0,
+          "maximum_value": 1793491200000.0,
+          "step": 10800000.0
+         },
+         "latitude": {
+          "minimum_value": -80.0,
+          "maximum_value": 90.0,
+          "step": 0.08333333333333333
+         },
+         "longitude": {
+          "minimum_value": -180.0,
+          "maximum_value": 179.91666666666663,
+          "step": 0.08333333333333333
+         }
+        }
+       },
+       "VMDR_SW1": {
+        "naam": "sea_surface_primary_swell_wave_from_direction",
+        "eenheid": "degree",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1667271600000.0,
+          "maximum_value": 1793491200000.0,
+          "step": 10800000.0
+         },
+         "latitude": {
+          "minimum_value": -80.0,
+          "maximum_value": 90.0,
+          "step": 0.08333333333333333
+         },
+         "longitude": {
+          "minimum_value": -180.0,
+          "maximum_value": 179.91666666666663,
+          "step": 0.08333333333333333
+         }
+        }
+       },
+       "VMDR_SW2": {
+        "naam": "sea_surface_secondary_swell_wave_from_direction",
+        "eenheid": "degree",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1667271600000.0,
+          "maximum_value": 1793491200000.0,
+          "step": 10800000.0
+         },
+         "latitude": {
+          "minimum_value": -80.0,
+          "maximum_value": 90.0,
+          "step": 0.08333333333333333
+         },
+         "longitude": {
+          "minimum_value": -180.0,
+          "maximum_value": 179.91666666666663,
+          "step": 0.08333333333333333
+         }
+        }
+       },
+       "VMDR_WW": {
+        "naam": "sea_surface_wind_wave_from_direction",
+        "eenheid": "degree",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1667271600000.0,
+          "maximum_value": 1793491200000.0,
+          "step": 10800000.0
+         },
+         "latitude": {
+          "minimum_value": -80.0,
+          "maximum_value": 90.0,
+          "step": 0.08333333333333333
+         },
+         "longitude": {
+          "minimum_value": -180.0,
+          "maximum_value": 179.91666666666663,
+          "step": 0.08333333333333333
+         }
+        }
+       },
+       "VMXL": {
+        "naam": "sea_surface_wave_maximum_crest_height",
+        "eenheid": "m",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1667271600000.0,
+          "maximum_value": 1793491200000.0,
+          "step": 10800000.0
+         },
+         "latitude": {
+          "minimum_value": -80.0,
+          "maximum_value": 90.0,
+          "step": 0.08333333333333333
+         },
+         "longitude": {
+          "minimum_value": -180.0,
+          "maximum_value": 179.91666666666663,
+          "step": 0.08333333333333333
+         }
+        }
+       },
+       "VPED": {
+        "naam": "sea_surface_wave_from_direction_at_variance_spectral_density_maximum",
+        "eenheid": "degree",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1667271600000.0,
+          "maximum_value": 1793491200000.0,
+          "step": 10800000.0
+         },
+         "latitude": {
+          "minimum_value": -80.0,
+          "maximum_value": 90.0,
+          "step": 0.08333333333333333
+         },
+         "longitude": {
+          "minimum_value": -180.0,
+          "maximum_value": 179.91666666666663,
+          "step": 0.08333333333333333
+         }
+        }
+       },
+       "VSDX": {
+        "naam": "sea_surface_wave_stokes_drift_x_velocity",
+        "eenheid": "m s-1",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1667271600000.0,
+          "maximum_value": 1793491200000.0,
+          "step": 10800000.0
+         },
+         "latitude": {
+          "minimum_value": -80.0,
+          "maximum_value": 90.0,
+          "step": 0.08333333333333333
+         },
+         "longitude": {
+          "minimum_value": -180.0,
+          "maximum_value": 179.91666666666663,
+          "step": 0.08333333333333333
+         }
+        }
+       },
+       "VSDY": {
+        "naam": "sea_surface_wave_stokes_drift_y_velocity",
+        "eenheid": "m s-1",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1667271600000.0,
+          "maximum_value": 1793491200000.0,
+          "step": 10800000.0
+         },
+         "latitude": {
+          "minimum_value": -80.0,
+          "maximum_value": 90.0,
+          "step": 0.08333333333333333
+         },
+         "longitude": {
+          "minimum_value": -180.0,
+          "maximum_value": 179.91666666666663,
+          "step": 0.08333333333333333
+         }
+        }
+       },
+       "VTM01_SW1": {
+        "naam": "sea_surface_primary_swell_wave_mean_period",
+        "eenheid": "s",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1667271600000.0,
+          "maximum_value": 1793491200000.0,
+          "step": 10800000.0
+         },
+         "latitude": {
+          "minimum_value": -80.0,
+          "maximum_value": 90.0,
+          "step": 0.08333333333333333
+         },
+         "longitude": {
+          "minimum_value": -180.0,
+          "maximum_value": 179.91666666666663,
+          "step": 0.08333333333333333
+         }
+        }
+       },
+       "VTM01_SW2": {
+        "naam": "sea_surface_secondary_swell_wave_mean_period",
+        "eenheid": "s",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1667271600000.0,
+          "maximum_value": 1793491200000.0,
+          "step": 10800000.0
+         },
+         "latitude": {
+          "minimum_value": -80.0,
+          "maximum_value": 90.0,
+          "step": 0.08333333333333333
+         },
+         "longitude": {
+          "minimum_value": -180.0,
+          "maximum_value": 179.91666666666663,
+          "step": 0.08333333333333333
+         }
+        }
+       },
+       "VTM01_WW": {
+        "naam": "sea_surface_wind_wave_mean_period",
+        "eenheid": "s",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1667271600000.0,
+          "maximum_value": 1793491200000.0,
+          "step": 10800000.0
+         },
+         "latitude": {
+          "minimum_value": -80.0,
+          "maximum_value": 90.0,
+          "step": 0.08333333333333333
+         },
+         "longitude": {
+          "minimum_value": -180.0,
+          "maximum_value": 179.91666666666663,
+          "step": 0.08333333333333333
+         }
+        }
+       },
+       "VTM02": {
+        "naam": "sea_surface_wave_mean_period_from_variance_spectral_density_second_frequency_moment",
+        "eenheid": "s",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1667271600000.0,
+          "maximum_value": 1793491200000.0,
+          "step": 10800000.0
+         },
+         "latitude": {
+          "minimum_value": -80.0,
+          "maximum_value": 90.0,
+          "step": 0.08333333333333333
+         },
+         "longitude": {
+          "minimum_value": -180.0,
+          "maximum_value": 179.91666666666663,
+          "step": 0.08333333333333333
+         }
+        }
+       },
+       "VTM10": {
+        "naam": "sea_surface_wave_mean_period_from_variance_spectral_density_inverse_frequency_moment",
+        "eenheid": "s",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1667271600000.0,
+          "maximum_value": 1793491200000.0,
+          "step": 10800000.0
+         },
+         "latitude": {
+          "minimum_value": -80.0,
+          "maximum_value": 90.0,
+          "step": 0.08333333333333333
+         },
+         "longitude": {
+          "minimum_value": -180.0,
+          "maximum_value": 179.91666666666663,
+          "step": 0.08333333333333333
+         }
+        }
+       },
+       "VTPK": {
+        "naam": "sea_surface_wave_period_at_variance_spectral_density_maximum",
+        "eenheid": "s",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1667271600000.0,
+          "maximum_value": 1793491200000.0,
+          "step": 10800000.0
+         },
+         "latitude": {
+          "minimum_value": -80.0,
+          "maximum_value": 90.0,
+          "step": 0.08333333333333333
+         },
+         "longitude": {
+          "minimum_value": -180.0,
+          "maximum_value": 179.91666666666663,
+          "step": 0.08333333333333333
+         }
+        }
+       }
+      }
+     }
+    ],
+    "proef": {
+     "open_s": 4.4,
+     "dims": {
+      "time": 11688,
+      "latitude": 2041,
+      "longitude": 4320
+     },
+     "tijd_eerste": "2022-11-01T03:00:00.000000000",
+     "tijd_laatste": "2026-11-01T00:00:00.000000000",
+     "tijdstap_uur": 3.0,
+     "punten": {
+      "Nazaré": {
+       "VHM0": null,
+       "VMDR": 298.55,
+       "VTPK": null,
+       "VHM0_SW1": null,
+       "VMDR_SW1": 293.43,
+       "VTM01_SW1": null,
+       "VHM0_SW2": null,
+       "VMDR_SW2": 311.16,
+       "VTM01_SW2": null,
+       "VHM0_WW": null,
+       "VMDR_WW": 298.84,
+       "VTM01_WW": null
+      },
+      "Hossegor": {
+       "VHM0": 1.59,
+       "VMDR": 291.9,
+       "VTPK": 11.25,
+       "VHM0_SW1": 1.43,
+       "VMDR_SW1": 289.01,
+       "VTM01_SW1": 9.15,
+       "VHM0_SW2": 0.68,
+       "VMDR_SW2": 304.17,
+       "VTM01_SW2": 12.27,
+       "VHM0_WW": 0.14,
+       "VMDR_WW": 106.87,
+       "VTM01_WW": 1.75
+      },
+      "Oostende": {
+       "VHM0": null,
+       "VMDR": 68.65,
+       "VTPK": null,
+       "VHM0_SW1": null,
+       "VMDR_SW1": 46.07,
+       "VTM01_SW1": null,
+       "VHM0_SW2": null,
+       "VMDR_SW2": 248.24,
+       "VTM01_SW2": null,
+       "VHM0_WW": null,
+       "VMDR_WW": 95.96,
+       "VTM01_WW": null
+      }
+     },
+     "een_tijdstip_een_variabele_s": 0.4,
+     "rooster": [
+      2041,
+      4320
+     ],
+     "zee_cellen": 5020406
+    }
+   },
+   "cmems_mod_wav_anfc_0.083deg_static": {
+    "versies": []
+   }
+  }
+ },
+ "IBI_ANALYSISFORECAST_WAV_005_005": {
+  "datasets": {
+   "cmems_mod_ibi_wav_anfc_0.027deg_PT1H-i": {
+    "versies": [
+     {
+      "versie": "202411",
+      "dienst": "arco-geo-series",
+      "variabelen": {
+       "VCMX": {
+        "naam": "sea_surface_wave_maximum_height",
+        "eenheid": "m",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1669420800000.0,
+          "maximum_value": 1793401200000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 26.0,
+          "maximum_value": 56.000919342041016,
+          "step": 0.027778629020408348
+         },
+         "longitude": {
+          "minimum_value": -19.0,
+          "maximum_value": 5.000736236572266,
+          "step": 0.027778629903440124
+         }
+        }
+       },
+       "VHM0": {
+        "naam": "sea_surface_wave_significant_height",
+        "eenheid": "m",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1669420800000.0,
+          "maximum_value": 1793401200000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 26.0,
+          "maximum_value": 56.000919342041016,
+          "step": 0.027778629020408348
+         },
+         "longitude": {
+          "minimum_value": -19.0,
+          "maximum_value": 5.000736236572266,
+          "step": 0.027778629903440124
+         }
+        }
+       },
+       "VHM0_SW1": {
+        "naam": "sea_surface_primary_swell_wave_significant_height",
+        "eenheid": "m",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1669420800000.0,
+          "maximum_value": 1793401200000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 26.0,
+          "maximum_value": 56.000919342041016,
+          "step": 0.027778629020408348
+         },
+         "longitude": {
+          "minimum_value": -19.0,
+          "maximum_value": 5.000736236572266,
+          "step": 0.027778629903440124
+         }
+        }
+       },
+       "VHM0_SW2": {
+        "naam": "sea_surface_secondary_swell_wave_significant_height",
+        "eenheid": "m",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1669420800000.0,
+          "maximum_value": 1793401200000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 26.0,
+          "maximum_value": 56.000919342041016,
+          "step": 0.027778629020408348
+         },
+         "longitude": {
+          "minimum_value": -19.0,
+          "maximum_value": 5.000736236572266,
+          "step": 0.027778629903440124
+         }
+        }
+       },
+       "VHM0_WW": {
+        "naam": "sea_surface_wind_wave_significant_height",
+        "eenheid": "m",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1669420800000.0,
+          "maximum_value": 1793401200000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 26.0,
+          "maximum_value": 56.000919342041016,
+          "step": 0.027778629020408348
+         },
+         "longitude": {
+          "minimum_value": -19.0,
+          "maximum_value": 5.000736236572266,
+          "step": 0.027778629903440124
+         }
+        }
+       },
+       "VMDR": {
+        "naam": "sea_surface_wave_from_direction",
+        "eenheid": "degree",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1669420800000.0,
+          "maximum_value": 1793401200000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 26.0,
+          "maximum_value": 56.000919342041016,
+          "step": 0.027778629020408348
+         },
+         "longitude": {
+          "minimum_value": -19.0,
+          "maximum_value": 5.000736236572266,
+          "step": 0.027778629903440124
+         }
+        }
+       },
+       "VMDR_SW1": {
+        "naam": "sea_surface_primary_swell_wave_from_direction",
+        "eenheid": "degree",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1669420800000.0,
+          "maximum_value": 1793401200000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 26.0,
+          "maximum_value": 56.000919342041016,
+          "step": 0.027778629020408348
+         },
+         "longitude": {
+          "minimum_value": -19.0,
+          "maximum_value": 5.000736236572266,
+          "step": 0.027778629903440124
+         }
+        }
+       },
+       "VMDR_SW2": {
+        "naam": "sea_surface_secondary_swell_wave_from_direction",
+        "eenheid": "degree",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1669420800000.0,
+          "maximum_value": 1793401200000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 26.0,
+          "maximum_value": 56.000919342041016,
+          "step": 0.027778629020408348
+         },
+         "longitude": {
+          "minimum_value": -19.0,
+          "maximum_value": 5.000736236572266,
+          "step": 0.027778629903440124
+         }
+        }
+       },
+       "VMDR_WW": {
+        "naam": "sea_surface_wind_wave_from_direction",
+        "eenheid": "degree",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1669420800000.0,
+          "maximum_value": 1793401200000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 26.0,
+          "maximum_value": 56.000919342041016,
+          "step": 0.027778629020408348
+         },
+         "longitude": {
+          "minimum_value": -19.0,
+          "maximum_value": 5.000736236572266,
+          "step": 0.027778629903440124
+         }
+        }
+       },
+       "VMXL": {
+        "naam": "sea_surface_wave_maximum_crest_height",
+        "eenheid": "m",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1669420800000.0,
+          "maximum_value": 1793401200000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 26.0,
+          "maximum_value": 56.000919342041016,
+          "step": 0.027778629020408348
+         },
+         "longitude": {
+          "minimum_value": -19.0,
+          "maximum_value": 5.000736236572266,
+          "step": 0.027778629903440124
+         }
+        }
+       },
+       "VPED": {
+        "naam": "sea_surface_wave_from_direction_at_variance_spectral_density_maximum",
+        "eenheid": "degree",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1669420800000.0,
+          "maximum_value": 1793401200000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 26.0,
+          "maximum_value": 56.000919342041016,
+          "step": 0.027778629020408348
+         },
+         "longitude": {
+          "minimum_value": -19.0,
+          "maximum_value": 5.000736236572266,
+          "step": 0.027778629903440124
+         }
+        }
+       },
+       "VSDX": {
+        "naam": "sea_surface_wave_stokes_drift_x_velocity",
+        "eenheid": "m s-1",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1669420800000.0,
+          "maximum_value": 1793401200000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 26.0,
+          "maximum_value": 56.000919342041016,
+          "step": 0.027778629020408348
+         },
+         "longitude": {
+          "minimum_value": -19.0,
+          "maximum_value": 5.000736236572266,
+          "step": 0.027778629903440124
+         }
+        }
+       },
+       "VSDY": {
+        "naam": "sea_surface_wave_stokes_drift_y_velocity",
+        "eenheid": "m s-1",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1669420800000.0,
+          "maximum_value": 1793401200000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 26.0,
+          "maximum_value": 56.000919342041016,
+          "step": 0.027778629020408348
+         },
+         "longitude": {
+          "minimum_value": -19.0,
+          "maximum_value": 5.000736236572266,
+          "step": 0.027778629903440124
+         }
+        }
+       },
+       "VTM01_SW1": {
+        "naam": "sea_surface_primary_swell_wave_mean_period",
+        "eenheid": "s",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1669420800000.0,
+          "maximum_value": 1793401200000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 26.0,
+          "maximum_value": 56.000919342041016,
+          "step": 0.027778629020408348
+         },
+         "longitude": {
+          "minimum_value": -19.0,
+          "maximum_value": 5.000736236572266,
+          "step": 0.027778629903440124
+         }
+        }
+       },
+       "VTM01_SW2": {
+        "naam": "sea_surface_secondary_swell_wave_mean_period",
+        "eenheid": "s",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1669420800000.0,
+          "maximum_value": 1793401200000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 26.0,
+          "maximum_value": 56.000919342041016,
+          "step": 0.027778629020408348
+         },
+         "longitude": {
+          "minimum_value": -19.0,
+          "maximum_value": 5.000736236572266,
+          "step": 0.027778629903440124
+         }
+        }
+       },
+       "VTM01_WW": {
+        "naam": "sea_surface_wind_wave_mean_period",
+        "eenheid": "s",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1669420800000.0,
+          "maximum_value": 1793401200000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 26.0,
+          "maximum_value": 56.000919342041016,
+          "step": 0.027778629020408348
+         },
+         "longitude": {
+          "minimum_value": -19.0,
+          "maximum_value": 5.000736236572266,
+          "step": 0.027778629903440124
+         }
+        }
+       },
+       "VTM02": {
+        "naam": "sea_surface_wave_mean_period_from_variance_spectral_density_second_frequency_moment",
+        "eenheid": "s",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1669420800000.0,
+          "maximum_value": 1793401200000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 26.0,
+          "maximum_value": 56.000919342041016,
+          "step": 0.027778629020408348
+         },
+         "longitude": {
+          "minimum_value": -19.0,
+          "maximum_value": 5.000736236572266,
+          "step": 0.027778629903440124
+         }
+        }
+       },
+       "VTM10": {
+        "naam": "sea_surface_wave_mean_period_from_variance_spectral_density_inverse_frequency_moment",
+        "eenheid": "s",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1669420800000.0,
+          "maximum_value": 1793401200000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 26.0,
+          "maximum_value": 56.000919342041016,
+          "step": 0.027778629020408348
+         },
+         "longitude": {
+          "minimum_value": -19.0,
+          "maximum_value": 5.000736236572266,
+          "step": 0.027778629903440124
+         }
+        }
+       },
+       "VTPK": {
+        "naam": "sea_surface_wave_period_at_variance_spectral_density_maximum",
+        "eenheid": "s",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1669420800000.0,
+          "maximum_value": 1793401200000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 26.0,
+          "maximum_value": 56.000919342041016,
+          "step": 0.027778629020408348
+         },
+         "longitude": {
+          "minimum_value": -19.0,
+          "maximum_value": 5.000736236572266,
+          "step": 0.027778629903440124
+         }
+        }
+       }
+      }
+     },
+     {
+      "versie": "202411",
+      "dienst": "arco-time-series",
+      "variabelen": {
+       "VCMX": {
+        "naam": "sea_surface_wave_maximum_height",
+        "eenheid": "m",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1669420800000.0,
+          "maximum_value": 1793401200000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 26.0,
+          "maximum_value": 56.000919342041016,
+          "step": 0.027778629020408348
+         },
+         "longitude": {
+          "minimum_value": -19.0,
+          "maximum_value": 5.000736236572266,
+          "step": 0.027778629903440124
+         }
+        }
+       },
+       "VHM0": {
+        "naam": "sea_surface_wave_significant_height",
+        "eenheid": "m",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1669420800000.0,
+          "maximum_value": 1793401200000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 26.0,
+          "maximum_value": 56.000919342041016,
+          "step": 0.027778629020408348
+         },
+         "longitude": {
+          "minimum_value": -19.0,
+          "maximum_value": 5.000736236572266,
+          "step": 0.027778629903440124
+         }
+        }
+       },
+       "VHM0_SW1": {
+        "naam": "sea_surface_primary_swell_wave_significant_height",
+        "eenheid": "m",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1669420800000.0,
+          "maximum_value": 1793401200000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 26.0,
+          "maximum_value": 56.000919342041016,
+          "step": 0.027778629020408348
+         },
+         "longitude": {
+          "minimum_value": -19.0,
+          "maximum_value": 5.000736236572266,
+          "step": 0.027778629903440124
+         }
+        }
+       },
+       "VHM0_SW2": {
+        "naam": "sea_surface_secondary_swell_wave_significant_height",
+        "eenheid": "m",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1669420800000.0,
+          "maximum_value": 1793401200000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 26.0,
+          "maximum_value": 56.000919342041016,
+          "step": 0.027778629020408348
+         },
+         "longitude": {
+          "minimum_value": -19.0,
+          "maximum_value": 5.000736236572266,
+          "step": 0.027778629903440124
+         }
+        }
+       },
+       "VHM0_WW": {
+        "naam": "sea_surface_wind_wave_significant_height",
+        "eenheid": "m",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1669420800000.0,
+          "maximum_value": 1793401200000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 26.0,
+          "maximum_value": 56.000919342041016,
+          "step": 0.027778629020408348
+         },
+         "longitude": {
+          "minimum_value": -19.0,
+          "maximum_value": 5.000736236572266,
+          "step": 0.027778629903440124
+         }
+        }
+       },
+       "VMDR": {
+        "naam": "sea_surface_wave_from_direction",
+        "eenheid": "degree",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1669420800000.0,
+          "maximum_value": 1793401200000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 26.0,
+          "maximum_value": 56.000919342041016,
+          "step": 0.027778629020408348
+         },
+         "longitude": {
+          "minimum_value": -19.0,
+          "maximum_value": 5.000736236572266,
+          "step": 0.027778629903440124
+         }
+        }
+       },
+       "VMDR_SW1": {
+        "naam": "sea_surface_primary_swell_wave_from_direction",
+        "eenheid": "degree",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1669420800000.0,
+          "maximum_value": 1793401200000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 26.0,
+          "maximum_value": 56.000919342041016,
+          "step": 0.027778629020408348
+         },
+         "longitude": {
+          "minimum_value": -19.0,
+          "maximum_value": 5.000736236572266,
+          "step": 0.027778629903440124
+         }
+        }
+       },
+       "VMDR_SW2": {
+        "naam": "sea_surface_secondary_swell_wave_from_direction",
+        "eenheid": "degree",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1669420800000.0,
+          "maximum_value": 1793401200000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 26.0,
+          "maximum_value": 56.000919342041016,
+          "step": 0.027778629020408348
+         },
+         "longitude": {
+          "minimum_value": -19.0,
+          "maximum_value": 5.000736236572266,
+          "step": 0.027778629903440124
+         }
+        }
+       },
+       "VMDR_WW": {
+        "naam": "sea_surface_wind_wave_from_direction",
+        "eenheid": "degree",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1669420800000.0,
+          "maximum_value": 1793401200000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 26.0,
+          "maximum_value": 56.000919342041016,
+          "step": 0.027778629020408348
+         },
+         "longitude": {
+          "minimum_value": -19.0,
+          "maximum_value": 5.000736236572266,
+          "step": 0.027778629903440124
+         }
+        }
+       },
+       "VMXL": {
+        "naam": "sea_surface_wave_maximum_crest_height",
+        "eenheid": "m",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1669420800000.0,
+          "maximum_value": 1793401200000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 26.0,
+          "maximum_value": 56.000919342041016,
+          "step": 0.027778629020408348
+         },
+         "longitude": {
+          "minimum_value": -19.0,
+          "maximum_value": 5.000736236572266,
+          "step": 0.027778629903440124
+         }
+        }
+       },
+       "VPED": {
+        "naam": "sea_surface_wave_from_direction_at_variance_spectral_density_maximum",
+        "eenheid": "degree",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1669420800000.0,
+          "maximum_value": 1793401200000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 26.0,
+          "maximum_value": 56.000919342041016,
+          "step": 0.027778629020408348
+         },
+         "longitude": {
+          "minimum_value": -19.0,
+          "maximum_value": 5.000736236572266,
+          "step": 0.027778629903440124
+         }
+        }
+       },
+       "VSDX": {
+        "naam": "sea_surface_wave_stokes_drift_x_velocity",
+        "eenheid": "m s-1",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1669420800000.0,
+          "maximum_value": 1793401200000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 26.0,
+          "maximum_value": 56.000919342041016,
+          "step": 0.027778629020408348
+         },
+         "longitude": {
+          "minimum_value": -19.0,
+          "maximum_value": 5.000736236572266,
+          "step": 0.027778629903440124
+         }
+        }
+       },
+       "VSDY": {
+        "naam": "sea_surface_wave_stokes_drift_y_velocity",
+        "eenheid": "m s-1",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1669420800000.0,
+          "maximum_value": 1793401200000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 26.0,
+          "maximum_value": 56.000919342041016,
+          "step": 0.027778629020408348
+         },
+         "longitude": {
+          "minimum_value": -19.0,
+          "maximum_value": 5.000736236572266,
+          "step": 0.027778629903440124
+         }
+        }
+       },
+       "VTM01_SW1": {
+        "naam": "sea_surface_primary_swell_wave_mean_period",
+        "eenheid": "s",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1669420800000.0,
+          "maximum_value": 1793401200000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 26.0,
+          "maximum_value": 56.000919342041016,
+          "step": 0.027778629020408348
+         },
+         "longitude": {
+          "minimum_value": -19.0,
+          "maximum_value": 5.000736236572266,
+          "step": 0.027778629903440124
+         }
+        }
+       },
+       "VTM01_SW2": {
+        "naam": "sea_surface_secondary_swell_wave_mean_period",
+        "eenheid": "s",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1669420800000.0,
+          "maximum_value": 1793401200000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 26.0,
+          "maximum_value": 56.000919342041016,
+          "step": 0.027778629020408348
+         },
+         "longitude": {
+          "minimum_value": -19.0,
+          "maximum_value": 5.000736236572266,
+          "step": 0.027778629903440124
+         }
+        }
+       },
+       "VTM01_WW": {
+        "naam": "sea_surface_wind_wave_mean_period",
+        "eenheid": "s",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1669420800000.0,
+          "maximum_value": 1793401200000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 26.0,
+          "maximum_value": 56.000919342041016,
+          "step": 0.027778629020408348
+         },
+         "longitude": {
+          "minimum_value": -19.0,
+          "maximum_value": 5.000736236572266,
+          "step": 0.027778629903440124
+         }
+        }
+       },
+       "VTM02": {
+        "naam": "sea_surface_wave_mean_period_from_variance_spectral_density_second_frequency_moment",
+        "eenheid": "s",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1669420800000.0,
+          "maximum_value": 1793401200000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 26.0,
+          "maximum_value": 56.000919342041016,
+          "step": 0.027778629020408348
+         },
+         "longitude": {
+          "minimum_value": -19.0,
+          "maximum_value": 5.000736236572266,
+          "step": 0.027778629903440124
+         }
+        }
+       },
+       "VTM10": {
+        "naam": "sea_surface_wave_mean_period_from_variance_spectral_density_inverse_frequency_moment",
+        "eenheid": "s",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1669420800000.0,
+          "maximum_value": 1793401200000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 26.0,
+          "maximum_value": 56.000919342041016,
+          "step": 0.027778629020408348
+         },
+         "longitude": {
+          "minimum_value": -19.0,
+          "maximum_value": 5.000736236572266,
+          "step": 0.027778629903440124
+         }
+        }
+       },
+       "VTPK": {
+        "naam": "sea_surface_wave_period_at_variance_spectral_density_maximum",
+        "eenheid": "s",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1669420800000.0,
+          "maximum_value": 1793401200000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 26.0,
+          "maximum_value": 56.000919342041016,
+          "step": 0.027778629020408348
+         },
+         "longitude": {
+          "minimum_value": -19.0,
+          "maximum_value": 5.000736236572266,
+          "step": 0.027778629903440124
+         }
+        }
+       }
+      }
+     }
+    ],
+    "proef": {
+     "open_s": 3.9,
+     "dims": {
+      "time": 34440,
+      "latitude": 1081,
+      "longitude": 865
+     },
+     "tijd_eerste": "2022-11-26T00:00:00.000000000",
+     "tijd_laatste": "2026-10-30T23:00:00.000000000",
+     "tijdstap_uur": 1.0,
+     "punten": {
+      "Nazaré": {
+       "VHM0": 1.3,
+       "VMDR": 301.07,
+       "VTPK": 9.93,
+       "VHM0_SW1": 0.94,
+       "VMDR_SW1": 277.42,
+       "VTM01_SW1": 6.25,
+       "VHM0_SW2": 0.89,
+       "VMDR_SW2": 325.6,
+       "VTM01_SW2": 9.76,
+       "VHM0_WW": 0.0,
+       "VMDR_WW": 332.94,
+       "VTM01_WW": 0.0
+      },
+      "Hossegor": {
+       "VHM0": 0.93,
+       "VMDR": 302.15,
+       "VTPK": 10.14,
+       "VHM0_SW1": 0.93,
+       "VMDR_SW1": 302.04,
+       "VTM01_SW1": 8.62,
+       "VHM0_SW2": 0.07,
+       "VMDR_SW2": 8.37,
+       "VTM01_SW2": 6.94,
+       "VHM0_WW": 0.01,
+       "VMDR_WW": 123.77,
+       "VTM01_WW": 1.33
+      },
+      "Oostende": {
+       "VHM0": 0.17,
+       "VMDR": 262.44,
+       "VTPK": 3.78,
+       "VHM0_SW1": 0.14,
+       "VMDR_SW1": 255.91,
+       "VTM01_SW1": 3.51,
+       "VHM0_SW2": 0.07,
+       "VMDR_SW2": 292.49,
+       "VTM01_SW2": 4.27,
+       "VHM0_WW": 0.05,
+       "VMDR_WW": 201.17,
+       "VTM01_WW": 2.2
+      }
+     },
+     "een_tijdstip_een_variabele_s": 0.2,
+     "rooster": [
+      1081,
+      865
+     ],
+     "zee_cellen": 547912
+    }
+   },
+   "cmems_mod_ibi_wav_anfc_0.027deg_static": {
+    "versies": []
+   }
+  }
+ },
+ "NWSHELF_ANALYSISFORECAST_WAV_004_014": {
+  "datasets": {
+   "cmems_mod_nws_wav_anfc_1.5km_PT1H-i": {
+    "versies": [
+     {
+      "versie": "202511",
+      "dienst": "arco-geo-series",
+      "variabelen": {
+       "VCMX": {
+        "naam": "sea_surface_wave_maximum_height",
+        "eenheid": "m",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1722902400000.0,
+          "maximum_value": 1793228400000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 46.0,
+          "maximum_value": 62.74324035644531,
+          "step": 0.013513511183571681
+         },
+         "longitude": {
+          "minimum_value": -16.0,
+          "maximum_value": 13.0,
+          "step": 0.030303030303030304
+         }
+        }
+       },
+       "VHM0": {
+        "naam": "sea_surface_wave_significant_height",
+        "eenheid": "m",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1722902400000.0,
+          "maximum_value": 1793228400000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 46.0,
+          "maximum_value": 62.74324035644531,
+          "step": 0.013513511183571681
+         },
+         "longitude": {
+          "minimum_value": -16.0,
+          "maximum_value": 13.0,
+          "step": 0.030303030303030304
+         }
+        }
+       },
+       "VHM0_SW1": {
+        "naam": "sea_surface_primary_swell_wave_significant_height",
+        "eenheid": "m",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1722902400000.0,
+          "maximum_value": 1793228400000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 46.0,
+          "maximum_value": 62.74324035644531,
+          "step": 0.013513511183571681
+         },
+         "longitude": {
+          "minimum_value": -16.0,
+          "maximum_value": 13.0,
+          "step": 0.030303030303030304
+         }
+        }
+       },
+       "VHM0_SW2": {
+        "naam": "sea_surface_secondary_swell_wave_significant_height",
+        "eenheid": "m",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1722902400000.0,
+          "maximum_value": 1793228400000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 46.0,
+          "maximum_value": 62.74324035644531,
+          "step": 0.013513511183571681
+         },
+         "longitude": {
+          "minimum_value": -16.0,
+          "maximum_value": 13.0,
+          "step": 0.030303030303030304
+         }
+        }
+       },
+       "VHM0_WW": {
+        "naam": "sea_surface_wind_wave_significant_height",
+        "eenheid": "m",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1722902400000.0,
+          "maximum_value": 1793228400000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 46.0,
+          "maximum_value": 62.74324035644531,
+          "step": 0.013513511183571681
+         },
+         "longitude": {
+          "minimum_value": -16.0,
+          "maximum_value": 13.0,
+          "step": 0.030303030303030304
+         }
+        }
+       },
+       "VMDR": {
+        "naam": "sea_surface_wave_from_direction",
+        "eenheid": "degree",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1722902400000.0,
+          "maximum_value": 1793228400000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 46.0,
+          "maximum_value": 62.74324035644531,
+          "step": 0.013513511183571681
+         },
+         "longitude": {
+          "minimum_value": -16.0,
+          "maximum_value": 13.0,
+          "step": 0.030303030303030304
+         }
+        }
+       },
+       "VMDR_SW1": {
+        "naam": "sea_surface_primary_swell_wave_from_direction",
+        "eenheid": "degree",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1722902400000.0,
+          "maximum_value": 1793228400000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 46.0,
+          "maximum_value": 62.74324035644531,
+          "step": 0.013513511183571681
+         },
+         "longitude": {
+          "minimum_value": -16.0,
+          "maximum_value": 13.0,
+          "step": 0.030303030303030304
+         }
+        }
+       },
+       "VMDR_SW2": {
+        "naam": "sea_surface_secondary_swell_wave_from_direction",
+        "eenheid": "degree",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1722902400000.0,
+          "maximum_value": 1793228400000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 46.0,
+          "maximum_value": 62.74324035644531,
+          "step": 0.013513511183571681
+         },
+         "longitude": {
+          "minimum_value": -16.0,
+          "maximum_value": 13.0,
+          "step": 0.030303030303030304
+         }
+        }
+       },
+       "VMDR_WW": {
+        "naam": "sea_surface_wind_wave_from_direction",
+        "eenheid": "degree",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1722902400000.0,
+          "maximum_value": 1793228400000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 46.0,
+          "maximum_value": 62.74324035644531,
+          "step": 0.013513511183571681
+         },
+         "longitude": {
+          "minimum_value": -16.0,
+          "maximum_value": 13.0,
+          "step": 0.030303030303030304
+         }
+        }
+       },
+       "VMXL": {
+        "naam": "sea_surface_wave_maximum_crest_height",
+        "eenheid": "m",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1722902400000.0,
+          "maximum_value": 1793228400000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 46.0,
+          "maximum_value": 62.74324035644531,
+          "step": 0.013513511183571681
+         },
+         "longitude": {
+          "minimum_value": -16.0,
+          "maximum_value": 13.0,
+          "step": 0.030303030303030304
+         }
+        }
+       },
+       "VPED": {
+        "naam": "sea_surface_wave_from_direction_at_variance_spectral_density_maximum",
+        "eenheid": "degree",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1722902400000.0,
+          "maximum_value": 1793228400000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 46.0,
+          "maximum_value": 62.74324035644531,
+          "step": 0.013513511183571681
+         },
+         "longitude": {
+          "minimum_value": -16.0,
+          "maximum_value": 13.0,
+          "step": 0.030303030303030304
+         }
+        }
+       },
+       "VSDX": {
+        "naam": "sea_surface_wave_stokes_drift_x_velocity",
+        "eenheid": "m s-1",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1722902400000.0,
+          "maximum_value": 1793228400000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 46.0,
+          "maximum_value": 62.74324035644531,
+          "step": 0.013513511183571681
+         },
+         "longitude": {
+          "minimum_value": -16.0,
+          "maximum_value": 13.0,
+          "step": 0.030303030303030304
+         }
+        }
+       },
+       "VSDY": {
+        "naam": "sea_surface_wave_stokes_drift_y_velocity",
+        "eenheid": "m s-1",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1722902400000.0,
+          "maximum_value": 1793228400000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 46.0,
+          "maximum_value": 62.74324035644531,
+          "step": 0.013513511183571681
+         },
+         "longitude": {
+          "minimum_value": -16.0,
+          "maximum_value": 13.0,
+          "step": 0.030303030303030304
+         }
+        }
+       },
+       "VTM01_SW1": {
+        "naam": "sea_surface_primary_swell_wave_mean_period",
+        "eenheid": "s",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1722902400000.0,
+          "maximum_value": 1793228400000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 46.0,
+          "maximum_value": 62.74324035644531,
+          "step": 0.013513511183571681
+         },
+         "longitude": {
+          "minimum_value": -16.0,
+          "maximum_value": 13.0,
+          "step": 0.030303030303030304
+         }
+        }
+       },
+       "VTM01_SW2": {
+        "naam": "sea_surface_secondary_swell_wave_mean_period",
+        "eenheid": "s",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1722902400000.0,
+          "maximum_value": 1793228400000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 46.0,
+          "maximum_value": 62.74324035644531,
+          "step": 0.013513511183571681
+         },
+         "longitude": {
+          "minimum_value": -16.0,
+          "maximum_value": 13.0,
+          "step": 0.030303030303030304
+         }
+        }
+       },
+       "VTM01_WW": {
+        "naam": "sea_surface_wind_wave_mean_period",
+        "eenheid": "s",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1722902400000.0,
+          "maximum_value": 1793228400000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 46.0,
+          "maximum_value": 62.74324035644531,
+          "step": 0.013513511183571681
+         },
+         "longitude": {
+          "minimum_value": -16.0,
+          "maximum_value": 13.0,
+          "step": 0.030303030303030304
+         }
+        }
+       },
+       "VTM02": {
+        "naam": "sea_surface_wave_mean_period_from_variance_spectral_density_second_frequency_moment",
+        "eenheid": "s",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1722902400000.0,
+          "maximum_value": 1793228400000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 46.0,
+          "maximum_value": 62.74324035644531,
+          "step": 0.013513511183571681
+         },
+         "longitude": {
+          "minimum_value": -16.0,
+          "maximum_value": 13.0,
+          "step": 0.030303030303030304
+         }
+        }
+       },
+       "VTM10": {
+        "naam": "sea_surface_wave_mean_period_from_variance_spectral_density_inverse_frequency_moment",
+        "eenheid": "s",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1722902400000.0,
+          "maximum_value": 1793228400000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 46.0,
+          "maximum_value": 62.74324035644531,
+          "step": 0.013513511183571681
+         },
+         "longitude": {
+          "minimum_value": -16.0,
+          "maximum_value": 13.0,
+          "step": 0.030303030303030304
+         }
+        }
+       },
+       "VTPK": {
+        "naam": "sea_surface_wave_period_at_variance_spectral_density_maximum",
+        "eenheid": "s",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1722902400000.0,
+          "maximum_value": 1793228400000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 46.0,
+          "maximum_value": 62.74324035644531,
+          "step": 0.013513511183571681
+         },
+         "longitude": {
+          "minimum_value": -16.0,
+          "maximum_value": 13.0,
+          "step": 0.030303030303030304
+         }
+        }
+       },
+       "forecast_period": {
+        "naam": "forecast_period",
+        "eenheid": "s",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1722902400000.0,
+          "maximum_value": 1793228400000.0,
+          "step": 3600000.0
+         }
+        }
+       }
+      }
+     },
+     {
+      "versie": "202511",
+      "dienst": "arco-time-series",
+      "variabelen": {
+       "VCMX": {
+        "naam": "sea_surface_wave_maximum_height",
+        "eenheid": "m",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1722902400000.0,
+          "maximum_value": 1793228400000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 46.0,
+          "maximum_value": 62.74324035644531,
+          "step": 0.013513511183571681
+         },
+         "longitude": {
+          "minimum_value": -16.0,
+          "maximum_value": 13.0,
+          "step": 0.030303030303030304
+         }
+        }
+       },
+       "VHM0": {
+        "naam": "sea_surface_wave_significant_height",
+        "eenheid": "m",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1722902400000.0,
+          "maximum_value": 1793228400000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 46.0,
+          "maximum_value": 62.74324035644531,
+          "step": 0.013513511183571681
+         },
+         "longitude": {
+          "minimum_value": -16.0,
+          "maximum_value": 13.0,
+          "step": 0.030303030303030304
+         }
+        }
+       },
+       "VHM0_SW1": {
+        "naam": "sea_surface_primary_swell_wave_significant_height",
+        "eenheid": "m",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1722902400000.0,
+          "maximum_value": 1793228400000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 46.0,
+          "maximum_value": 62.74324035644531,
+          "step": 0.013513511183571681
+         },
+         "longitude": {
+          "minimum_value": -16.0,
+          "maximum_value": 13.0,
+          "step": 0.030303030303030304
+         }
+        }
+       },
+       "VHM0_SW2": {
+        "naam": "sea_surface_secondary_swell_wave_significant_height",
+        "eenheid": "m",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1722902400000.0,
+          "maximum_value": 1793228400000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 46.0,
+          "maximum_value": 62.74324035644531,
+          "step": 0.013513511183571681
+         },
+         "longitude": {
+          "minimum_value": -16.0,
+          "maximum_value": 13.0,
+          "step": 0.030303030303030304
+         }
+        }
+       },
+       "VHM0_WW": {
+        "naam": "sea_surface_wind_wave_significant_height",
+        "eenheid": "m",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1722902400000.0,
+          "maximum_value": 1793228400000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 46.0,
+          "maximum_value": 62.74324035644531,
+          "step": 0.013513511183571681
+         },
+         "longitude": {
+          "minimum_value": -16.0,
+          "maximum_value": 13.0,
+          "step": 0.030303030303030304
+         }
+        }
+       },
+       "VMDR": {
+        "naam": "sea_surface_wave_from_direction",
+        "eenheid": "degree",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1722902400000.0,
+          "maximum_value": 1793228400000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 46.0,
+          "maximum_value": 62.74324035644531,
+          "step": 0.013513511183571681
+         },
+         "longitude": {
+          "minimum_value": -16.0,
+          "maximum_value": 13.0,
+          "step": 0.030303030303030304
+         }
+        }
+       },
+       "VMDR_SW1": {
+        "naam": "sea_surface_primary_swell_wave_from_direction",
+        "eenheid": "degree",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1722902400000.0,
+          "maximum_value": 1793228400000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 46.0,
+          "maximum_value": 62.74324035644531,
+          "step": 0.013513511183571681
+         },
+         "longitude": {
+          "minimum_value": -16.0,
+          "maximum_value": 13.0,
+          "step": 0.030303030303030304
+         }
+        }
+       },
+       "VMDR_SW2": {
+        "naam": "sea_surface_secondary_swell_wave_from_direction",
+        "eenheid": "degree",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1722902400000.0,
+          "maximum_value": 1793228400000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 46.0,
+          "maximum_value": 62.74324035644531,
+          "step": 0.013513511183571681
+         },
+         "longitude": {
+          "minimum_value": -16.0,
+          "maximum_value": 13.0,
+          "step": 0.030303030303030304
+         }
+        }
+       },
+       "VMDR_WW": {
+        "naam": "sea_surface_wind_wave_from_direction",
+        "eenheid": "degree",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1722902400000.0,
+          "maximum_value": 1793228400000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 46.0,
+          "maximum_value": 62.74324035644531,
+          "step": 0.013513511183571681
+         },
+         "longitude": {
+          "minimum_value": -16.0,
+          "maximum_value": 13.0,
+          "step": 0.030303030303030304
+         }
+        }
+       },
+       "VMXL": {
+        "naam": "sea_surface_wave_maximum_crest_height",
+        "eenheid": "m",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1722902400000.0,
+          "maximum_value": 1793228400000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 46.0,
+          "maximum_value": 62.74324035644531,
+          "step": 0.013513511183571681
+         },
+         "longitude": {
+          "minimum_value": -16.0,
+          "maximum_value": 13.0,
+          "step": 0.030303030303030304
+         }
+        }
+       },
+       "VPED": {
+        "naam": "sea_surface_wave_from_direction_at_variance_spectral_density_maximum",
+        "eenheid": "degree",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1722902400000.0,
+          "maximum_value": 1793228400000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 46.0,
+          "maximum_value": 62.74324035644531,
+          "step": 0.013513511183571681
+         },
+         "longitude": {
+          "minimum_value": -16.0,
+          "maximum_value": 13.0,
+          "step": 0.030303030303030304
+         }
+        }
+       },
+       "VSDX": {
+        "naam": "sea_surface_wave_stokes_drift_x_velocity",
+        "eenheid": "m s-1",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1722902400000.0,
+          "maximum_value": 1793228400000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 46.0,
+          "maximum_value": 62.74324035644531,
+          "step": 0.013513511183571681
+         },
+         "longitude": {
+          "minimum_value": -16.0,
+          "maximum_value": 13.0,
+          "step": 0.030303030303030304
+         }
+        }
+       },
+       "VSDY": {
+        "naam": "sea_surface_wave_stokes_drift_y_velocity",
+        "eenheid": "m s-1",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1722902400000.0,
+          "maximum_value": 1793228400000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 46.0,
+          "maximum_value": 62.74324035644531,
+          "step": 0.013513511183571681
+         },
+         "longitude": {
+          "minimum_value": -16.0,
+          "maximum_value": 13.0,
+          "step": 0.030303030303030304
+         }
+        }
+       },
+       "VTM01_SW1": {
+        "naam": "sea_surface_primary_swell_wave_mean_period",
+        "eenheid": "s",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1722902400000.0,
+          "maximum_value": 1793228400000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 46.0,
+          "maximum_value": 62.74324035644531,
+          "step": 0.013513511183571681
+         },
+         "longitude": {
+          "minimum_value": -16.0,
+          "maximum_value": 13.0,
+          "step": 0.030303030303030304
+         }
+        }
+       },
+       "VTM01_SW2": {
+        "naam": "sea_surface_secondary_swell_wave_mean_period",
+        "eenheid": "s",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1722902400000.0,
+          "maximum_value": 1793228400000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 46.0,
+          "maximum_value": 62.74324035644531,
+          "step": 0.013513511183571681
+         },
+         "longitude": {
+          "minimum_value": -16.0,
+          "maximum_value": 13.0,
+          "step": 0.030303030303030304
+         }
+        }
+       },
+       "VTM01_WW": {
+        "naam": "sea_surface_wind_wave_mean_period",
+        "eenheid": "s",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1722902400000.0,
+          "maximum_value": 1793228400000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 46.0,
+          "maximum_value": 62.74324035644531,
+          "step": 0.013513511183571681
+         },
+         "longitude": {
+          "minimum_value": -16.0,
+          "maximum_value": 13.0,
+          "step": 0.030303030303030304
+         }
+        }
+       },
+       "VTM02": {
+        "naam": "sea_surface_wave_mean_period_from_variance_spectral_density_second_frequency_moment",
+        "eenheid": "s",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1722902400000.0,
+          "maximum_value": 1793228400000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 46.0,
+          "maximum_value": 62.74324035644531,
+          "step": 0.013513511183571681
+         },
+         "longitude": {
+          "minimum_value": -16.0,
+          "maximum_value": 13.0,
+          "step": 0.030303030303030304
+         }
+        }
+       },
+       "VTM10": {
+        "naam": "sea_surface_wave_mean_period_from_variance_spectral_density_inverse_frequency_moment",
+        "eenheid": "s",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1722902400000.0,
+          "maximum_value": 1793228400000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 46.0,
+          "maximum_value": 62.74324035644531,
+          "step": 0.013513511183571681
+         },
+         "longitude": {
+          "minimum_value": -16.0,
+          "maximum_value": 13.0,
+          "step": 0.030303030303030304
+         }
+        }
+       },
+       "VTPK": {
+        "naam": "sea_surface_wave_period_at_variance_spectral_density_maximum",
+        "eenheid": "s",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1722902400000.0,
+          "maximum_value": 1793228400000.0,
+          "step": 3600000.0
+         },
+         "latitude": {
+          "minimum_value": 46.0,
+          "maximum_value": 62.74324035644531,
+          "step": 0.013513511183571681
+         },
+         "longitude": {
+          "minimum_value": -16.0,
+          "maximum_value": 13.0,
+          "step": 0.030303030303030304
+         }
+        }
+       },
+       "forecast_period": {
+        "naam": "forecast_period",
+        "eenheid": "s",
+        "coordinaten": {
+         "time": {
+          "minimum_value": 1722902400000.0,
+          "maximum_value": 1793228400000.0,
+          "step": 3600000.0
+         }
+        }
+       }
+      }
+     }
+    ],
+    "proef": {
+     "open_s": 4.4,
+     "dims": {
+      "time": 19536,
+      "latitude": 1240,
+      "longitude": 958
+     },
+     "tijd_eerste": "2024-08-06T00:00:00.000000000",
+     "tijd_laatste": "2026-10-28T23:00:00.000000000",
+     "tijdstap_uur": 1.0,
+     "punten": {
+      "Nazaré": {
+       "VHM0": 2.92,
+       "VMDR": 312.6,
+       "VTPK": 11.62,
+       "VHM0_SW1": 2.72,
+       "VMDR_SW1": 310.8,
+       "VTM01_SW1": 10.19,
+       "VHM0_SW2": 0.88,
+       "VMDR_SW2": 102.1,
+       "VTM01_SW2": 4.9,
+       "VHM0_WW": 0.62,
+       "VMDR_WW": 157.5,
+       "VTM01_WW": 3.44
+      },
+      "Hossegor": {
+       "VHM0": 1.81,
+       "VMDR": 269.7,
+       "VTPK": 12.14,
+       "VHM0_SW1": 1.79,
+       "VMDR_SW1": 269.5,
+       "VTM01_SW1": 9.95,
+       "VHM0_SW2": 0.0,
+       "VMDR_SW2": 0.0,
+       "VTM01_SW2": 0.0,
+       "VHM0_WW": 0.3,
+       "VMDR_WW": 82.3,
+       "VTM01_WW": 2.1
+      },
+      "Oostende": {
+       "VHM0": 0.59,
+       "VMDR": 291.9,
+       "VTPK": 4.01,
+       "VHM0_SW1": 0.45,
+       "VMDR_SW1": 299.0,
+       "VTM01_SW1": 3.58,
+       "VHM0_SW2": 0.23,
+       "VMDR_SW2": 349.9,
+       "VTM01_SW2": 6.81,
+       "VHM0_WW": 0.29,
+       "VMDR_WW": 244.2,
+       "VTM01_WW": 2.38
+      }
+     },
+     "een_tijdstip_een_variabele_s": 3.4,
+     "rooster": [
+      1240,
+      958
+     ],
+     "zee_cellen": 731648
+    }
+   },
+   "cmems_mod_nws_wav_anfc_1.5km_static": {
+    "versies": []
+   }
+  }
+ }
+}
