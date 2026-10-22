@@ -1,0 +1,48 @@
+spot,groep,meetpunt,soort,lat,lon,afstand_km,dekking_pct,status
+"Ocean Beach, San Francisco (VS)",golven,NDBC 46026,boei,37.75,-122.838,28.8,98.5,gekozen
+"Ocean Beach, San Francisco (VS)",watertemperatuur,NDBC 46026,boei,37.75,-122.838,28.8,99.4,gekozen
+"Ocean Beach, San Francisco (VS)",wind,NDBC 46026,boei,37.75,-122.838,28.8,99.2,"gekozen; anemometer 4.1 m, omgerekend naar 10 m"
+"Ho'okipa, Maui (VS)",golven,NDBC 51205,boei,21.018,-156.421,11.5,100.0,gekozen
+"Ho'okipa, Maui (VS)",watertemperatuur,NDBC 51205,boei,21.018,-156.421,11.5,100.0,gekozen
+"Ho'okipa, Maui (VS)",wind,METAR PHOG,luchthaven,20.8889,-156.4344,9.5,99.7,gekozen
+"Cape Hatteras, Buxton (VS)",golven,NDBC 41025,boei,35.026,-75.38,28.2,97.9,gekozen
+"Cape Hatteras, Buxton (VS)",watertemperatuur,NDBC 41025,boei,35.026,-75.38,28.2,99.3,gekozen
+"Cape Hatteras, Buxton (VS)",wind,NDBC 41025,boei,35.026,-75.38,28.2,99.3,"gekozen; anemometer 4.1 m, omgerekend naar 10 m"
+"Cocoa Beach, Florida (VS)",golven,NDBC 41009,boei,28.508,-80.185,46.3,97.8,gekozen
+"Cocoa Beach, Florida (VS)",watertemperatuur,NDBC 41009,boei,28.508,-80.185,46.3,0.0,afgewezen (dekking of afstand)
+"Cocoa Beach, Florida (VS)",wind,NDBC 41009,boei,28.508,-80.185,46.3,99.6,"gekozen; anemometer 3.8 m, omgerekend naar 10 m"
+"Cocoa Beach, Florida (VS)",watertemperatuur,geen meting,,,,,,geen meting
+"Oostende, Mariakerke (BE)",wind,METAR EBOS,luchthaven,51.1989,2.8622,4.6,100.0,gekozen
+"Oostende, Mariakerke (BE)",golven,NO_TS_MO_OstendEasternPalisadeBuoy_202609,boei,51.247,2.928,2.5,100.0,gekozen
+"Oostende, Mariakerke (BE)",watertemperatuur,NO_TS_MO_OstendEasternPalisadeBuoy_202609,meetpaal/boei,51.247,2.928,2.5,97.2,gekozen
+Scheveningen (NL),wind,METAR EHRD,luchthaven,51.9537,4.4441,21.0,100.0,gekozen
+Scheveningen (NL),golven,NO_TS_MO_MaeslantkeringZeezijdeNoordMeetpaal_202609,boei,51.961,4.159,18.0,99.9,gekozen
+Scheveningen (NL),watertemperatuur,NO_TS_MO_HoekVanHollandNAP_202609,meetpaal/boei,51.979,4.12,17.6,94.2,gekozen
+"Hossegor, La Gravière (FR)",wind,METAR LFBZ,luchthaven,43.4694,-1.5344,23.6,100.0,gekozen
+"Hossegor, La Gravière (FR)",golven,IR_TS_MO_Donostia-buoy_202609,boei,43.5665,-2.0095,47.1,98.2,gekozen
+"Hossegor, La Gravière (FR)",watertemperatuur,GL_TS_MO_6200066_202609,meetpaal/boei,43.5311,-1.6145,20.8,0.3,afgewezen (dekking)
+"Hossegor, La Gravière (FR)",watertemperatuur,GL_TS_MO_6200079_202609,meetpaal/boei,43.403,-1.6755,35.2,0.3,afgewezen (dekking)
+"Hossegor, La Gravière (FR)",watertemperatuur,IR_TS_MO_Donostia-buoy_202609,meetpaal/boei,43.5665,-2.0095,47.1,96.9,gekozen
+"Nazaré, Praia do Norte (PT)",wind,METAR LPMR,luchthaven,39.8312,-8.8873,30.0,92.6,gekozen
+"Nazaré, Praia do Norte (PT)",golven,IR_TS_MO_6200199_202609,boei,39.56,-9.21,12.0,100.0,gekozen
+"Nazaré, Praia do Norte (PT)",watertemperatuur,IR_TS_MO_6200199_202609,meetpaal/boei,39.56,-9.21,12.0,100.0,gekozen
+"Tarifa, Los Lances (ES)",wind,METAR LEAG,luchthaven,36.129,-5.441,20.5,100.0,gekozen
+"Tarifa, Los Lances (ES)",golven,IR_TS_MO_Tarifa-coast-buoy_202609,boei,36.0025,-5.5924,3.5,99.3,gekozen
+"Tarifa, Los Lances (ES)",watertemperatuur,IR_TS_MO_Tarifa-coast-buoy_202609,meetpaal/boei,36.0025,-5.5924,3.5,99.4,gekozen
+"Pozo Izquierdo, Gran Canaria (ES)",wind,METAR GCLP,luchthaven,27.9225,-15.3894,11.9,100.0,gekozen
+"Pozo Izquierdo, Gran Canaria (ES)",golven,IR_TS_MO_LasPalmas-coast-buoy_202609,boei,28.05,-15.4,25.7,99.2,gekozen
+"Pozo Izquierdo, Gran Canaria (ES)",watertemperatuur,GL_TS_DB_5802026_202609,meetpaal/boei,27.7539,-15.6705,25.4,12.9,afgewezen (dekking)
+"Pozo Izquierdo, Gran Canaria (ES)",watertemperatuur,IR_TS_MO_LasPalmas-coast-buoy_202609,meetpaal/boei,28.05,-15.4,25.7,99.4,gekozen
+"Big Bay, Kaapstad (ZA)",wind,METAR FACT,luchthaven,-33.9667,18.6,23.5,99.3,gekozen
+"Big Bay, Kaapstad (ZA)",watertemperatuur,GL_TS_TS_2VTR5FE_202609,meetpaal/boei,-34.6,18.6,91.0,0.1,afgewezen (dekking)
+"Big Bay, Kaapstad (ZA)",golven,geen meting,,,,,,geen meting
+"Big Bay, Kaapstad (ZA)",watertemperatuur,geen meting,,,,,,geen meting
+"Manly, Sydney (AU)",wind,METAR YSSY,luchthaven,-33.9465,151.1731,19.8,99.3,gekozen
+"Manly, Sydney (AU)",golven,GL_TS_MO_EXAU061_202609,boei,-33.7267,151.306,8.0,99.9,gekozen
+"Manly, Sydney (AU)",watertemperatuur,geen meting,,,,,,geen meting
+"Joaquina, Florianópolis (BR)",wind,METAR SBFL,luchthaven,-27.6705,-48.5472,10.8,100.0,gekozen
+"Joaquina, Florianópolis (BR)",golven,geen meting,,,,,,geen meting
+"Joaquina, Florianópolis (BR)",watertemperatuur,geen meting,,,,,,geen meting
+"Uluwatu, Bali (ID)",wind,METAR WADD,luchthaven,-8.7482,115.1672,11.5,100.0,gekozen
+"Uluwatu, Bali (ID)",golven,geen meting,,,,,,geen meting
+"Uluwatu, Bali (ID)",watertemperatuur,geen meting,,,,,,geen meting
