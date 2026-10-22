@@ -1,5 +1,5 @@
 import maplibregl from 'maplibre-gl'
-import { FieldSet, type Kind, type Manifest } from './field'
+import { FieldSet, heeft, type Kind, type Manifest } from './field'
 import { Labels } from './labels'
 import { enablePointInfo } from './punt'
 import { ParticleLayer } from './particles'
@@ -13,7 +13,8 @@ const slider = $<HTMLInputElement>('schuif')
 const label = $('tijd')
 const playBtn = $('afspelen')
 const windBtn = $('knop-wind')
-const waveBtn = $('knop-golven')
+const swellBtn = $('knop-deining')
+const windseaBtn = $('knop-windzee')
 const altBtn = $('knop-afwisselen')
 
 // Basiskaart uit Natural Earth (publiek domein), zelf gehost: rustig grijs land, donkere zee, kustlijn en grenzen.
@@ -42,7 +43,7 @@ const map = new maplibregl.Map({
   pitchWithRotate: false,
   touchPitch: false,
   renderWorldCopies: true,
-  attributionControl: { compact: true, customAttribution: 'Wind en golven: <a href="https://www.ecmwf.int/en/forecasts/datasets/open-data">ECMWF</a> (CC BY 4.0)' },
+  attributionControl: { compact: true, customAttribution: 'Wind: <a href="https://www.ecmwf.int/en/forecasts/datasets/open-data">ECMWF</a> (CC BY 4.0) · Golven: Generated using E.U. <a href="https://marine.copernicus.eu">Copernicus Marine Service</a> Information' },
 })
 map.touchZoomRotate.disableRotation()
 map.keyboard.disableRotation()
@@ -51,7 +52,9 @@ const layer = new ParticleLayer()
 let manifest: Manifest
 let idx = 0
 let playing: number | null = null
-const show: Record<Kind, boolean> = { wind: true, wave: true }
+const show: Record<Kind, boolean> = { wind: true, swell: true, windsea: false }
+const KINDS: Kind[] = ['wind', 'swell', 'windsea']
+const knop: Record<Kind, HTMLElement> = { wind: windBtn, swell: swellBtn, windsea: windseaBtn }
 
 // Velden per soort en uur; de laatste paar bewaren zodat terugschuiven direct werkt.
 const cache = new Map<string, FieldSet>()
@@ -73,7 +76,7 @@ function fieldSet(kind: Kind, i: number): FieldSet {
 function updateFine() {
   const fine = map.getZoom() >= FINE_ZOOM
   const b = map.getBounds()
-  for (const fs of [layer.wind, layer.wave]) fs?.useFine(fine, b.getWest(), b.getSouth(), b.getEast(), b.getNorth())
+  for (const fs of [layer.wind, layer.swell.field, layer.windsea.field]) fs?.useFine(fine, b.getWest(), b.getSouth(), b.getEast(), b.getNorth())
 }
 
 /** Tijdstip kiezen: het oude veld blijft zichtbaar tot het nieuwe binnen is. */
@@ -81,11 +84,16 @@ async function setTime(i: number) {
   idx = i
   slider.value = String(i)
   label.textContent = fmtTime(manifest.times[i].time)
-  const jobs = (['wind', 'wave'] as Kind[]).filter((k) => show[k]).map(async (k) => {
+  const t = manifest.times[i]
+  const jobs = KINDS.filter((k) => show[k]).map(async (k) => {
+    if (k !== 'wind' && !heeft(t, k)) {
+      layer[k].field = null // na de horizon van het golfmodel: geen golven
+      return
+    }
     const fs = await fieldSet(k, i).loadCoarse()
     if (idx !== i) return
     if (k === 'wind') layer.wind = fs
-    else layer.wave = fs
+    else layer[k].field = fs
   })
   await Promise.allSettled(jobs)
   if (idx === i) {
@@ -141,20 +149,19 @@ function togglePlay(on = playing === null) {
     await setTime(next)
     // Alvast het volgende tijdstip ophalen.
     const after = (next + 1) % manifest.times.length
-    for (const k of ['wind', 'wave'] as Kind[]) if (show[k]) fieldSet(k, after).loadCoarse().catch(() => {})
+    for (const k of KINDS) if (show[k] && heeft(manifest.times[after], k)) fieldSet(k, after).loadCoarse().catch(() => {})
     busy = false
   }, PLAY_MS)
 }
 
 function setLayer(kind: Kind, on: boolean) {
   show[kind] = on
-  const btn = kind === 'wind' ? windBtn : waveBtn
-  btn.classList.toggle('aan', on)
-  btn.setAttribute('aria-pressed', String(on))
+  knop[kind].classList.toggle('aan', on)
+  knop[kind].setAttribute('aria-pressed', String(on))
   if (kind === 'wind') layer.showWind = on
-  else layer.showWaves = on
+  else layer[kind].show = on
   if (on) setTime(idx)
-  altBtn.hidden = !(show.wind && show.wave)
+  altBtn.hidden = !(show.wind && (show.swell || show.windsea))
   map.triggerRepaint()
 }
 
@@ -181,7 +188,8 @@ async function start() {
     if (Math.abs(Date.parse(t.time) - now) < Math.abs(Date.parse(manifest.times[best].time) - now)) best = i
   })
   const run = new Date(manifest.run)
-  $('bron').textContent = `ECMWF-run ${run.getUTCDate()}/${run.getUTCMonth() + 1} ${String(run.getUTCHours()).padStart(2, '0')} UTC · wind 10 m · golven WAM · ${manifest.times.length} tijdstippen tot ${fmtDay.format(new Date(manifest.times[manifest.times.length - 1].time))}`
+  const golfTot = [...manifest.times].reverse().find((t) => t.waves)
+  $('bron').textContent = `Wind: ECMWF-run ${run.getUTCDate()}/${run.getUTCMonth() + 1} ${String(run.getUTCHours()).padStart(2, '0')} UTC, tot ${fmtDay.format(new Date(manifest.times[manifest.times.length - 1].time))} · golven: Copernicus${golfTot ? `, tot ${fmtDay.format(new Date(golfTot.time))}` : ''}`
   buildDayTicks()
   window.addEventListener('resize', buildDayTicks)
   await setTime(best)
@@ -193,7 +201,9 @@ slider.addEventListener('input', () => setTime(Number(slider.value)))
 slider.addEventListener('pointerdown', () => togglePlay(false))
 playBtn.addEventListener('click', () => togglePlay())
 windBtn.addEventListener('click', () => setLayer('wind', !show.wind))
-waveBtn.addEventListener('click', () => setLayer('wave', !show.wave))
+swellBtn.addEventListener('click', () => setLayer('swell', !show.swell))
+windseaBtn.addEventListener('click', () => setLayer('windsea', !show.windsea))
+setLayer('windsea', false)
 altBtn.addEventListener('click', () => setAlternate(!layer.alternate))
 let savedAlt = true
 try { savedAlt = localStorage.getItem('afwisselen') !== '0' } catch { /* privévenster */ }
@@ -201,7 +211,8 @@ setAlternate(savedAlt)
 map.on('moveend', updateFine)
 enablePointInfo(map, {
   wind: () => fieldSet('wind', idx),
-  wave: () => fieldSet('wave', idx),
+  swell: () => (heeft(manifest.times[idx], 'swell') ? fieldSet('swell', idx) : null),
+  windsea: () => (heeft(manifest.times[idx], 'windsea') ? fieldSet('windsea', idx) : null),
   time: () => manifest.times[idx].time,
   run: () => manifest.run,
 })

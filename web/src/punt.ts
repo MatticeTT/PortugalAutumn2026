@@ -14,7 +14,8 @@ const fmt = (x: number, d = 1) => x.toLocaleString('nl-NL', { minimumFractionDig
 
 export interface PointContext {
   wind: () => FieldSet
-  wave: () => FieldSet
+  swell: () => FieldSet | null
+  windsea: () => FieldSet | null
   time: () => string // ISO-tijd van het getoonde tijdstip
   run: () => string
 }
@@ -27,11 +28,14 @@ export function enablePointInfo(map: maplibregl.Map, ctx: PointContext) {
     const lon = lngLat.wrap().lng, lat = lngLat.lat
     const onLand = map.queryRenderedFeatures(map.project(lngLat), { layers: ['land'] }).length > 0
       && map.queryRenderedFeatures(map.project(lngLat), { layers: ['meren'] }).length === 0
-    const [w, g] = await Promise.all([ctx.wind().exactGrid(lon, lat), ctx.wave().exactGrid(lon, lat)])
+    const sw = ctx.swell(), ws2 = ctx.windsea()
+    const [w, g, z] = await Promise.all([ctx.wind().exactGrid(lon, lat), sw?.exactGrid(lon, lat), ws2?.exactGrid(lon, lat)])
     const ws: WindSample = { u: 0, v: 0 }
     const gs: WaveSample = { ex: 0, ny: 0, period: 0, height: 0 }
+    const zs: WaveSample = { ex: 0, ny: 0, period: 0, height: 0 }
     const hasWind = sampleWind(w.grid, lon360(w.grid, lon), lat, ws)
-    const hasWave = !onLand && sampleWave(g.grid, lon360(g.grid, lon), lat, gs)
+    const hasWave = !onLand && !!g && sampleWave(g.grid, lon360(g.grid, lon), lat, gs)
+    const hasSea = !onLand && !!z && sampleWave(z.grid, lon360(z.grid, lon), lat, zs)
 
     const rows: string[] = []
     if (hasWind) {
@@ -40,20 +44,20 @@ export function enablePointInfo(map: maplibregl.Map, ctx: PointContext) {
       rows.push(`<tr><th>Wind</th><td><b>${fmt(ms * 1.94384, 0)} kn</b> · ${fmt(ms)} m/s · ${beaufort(ms)} bft</td></tr>`,
         `<tr><th></th><td>uit ${kompas(from)} (${fmt(from, 0)}°)</td></tr>`)
     }
-    if (hasWave) {
-      const from = ((Math.atan2(-gs.ex, -gs.ny) * 180) / Math.PI + 360) % 360
-      rows.push(`<tr><th>Golven</th><td><b>${fmt(gs.height)} m</b> · ${fmt(gs.period, 0)} s</td></tr>`,
-        `<tr><th></th><td>uit ${kompas(from)} (${fmt(from, 0)}°)</td></tr>`,
-        `<tr><th>Energie</th><td>${fmt(wavePower(gs.height, gs.period), 0)} kW/m</td></tr>`)
-    } else {
-      rows.push(`<tr><th>Golven</th><td>land</td></tr>`)
+    const golf = (naam: string, x: WaveSample) => {
+      const from = ((Math.atan2(-x.ex, -x.ny) * 180) / Math.PI + 360) % 360
+      rows.push(`<tr><th>${naam}</th><td><b>${fmt(x.height)} m</b> · ${fmt(x.period, 0)} s · uit ${kompas(from)} (${fmt(from, 0)}°)</td></tr>`,
+        `<tr><th></th><td>energie ${fmt(wavePower(x.height, x.period), 0)} kW/m</td></tr>`)
     }
-    const res = Math.min(w.deg, g.deg)
+    if (hasWave) golf('Deining', gs)
+    if (hasSea) golf('Windzee', zs)
+    if (!hasWave && !hasSea) rows.push(`<tr><th>Golven</th><td>${onLand ? 'land' : g ? 'geen' : 'na de horizon van het golfmodel'}</td></tr>`)
+    const res = Math.min(w.deg, g?.deg ?? w.deg)
     popup.setLngLat(lngLat).setHTML(`
       <div class="punt-kop">${dateFmt.format(new Date(ctx.time()))}</div>
       <div class="punt-coord">${fmt(Math.abs(lat), 3)}° ${lat >= 0 ? 'N' : 'Z'}, ${fmt(Math.abs(lon), 3)}° ${lon >= 0 ? 'O' : 'W'}</div>
       <table>${rows.join('')}</table>
-      <div class="punt-bron">ECMWF, run ${ctx.run().replace('T', ' ').replace(':00Z', ' UTC')} · raster ${fmt(res, 2)}°<br>golven: significante golfhoogte en piekperiode; vlak aan de kust aangevuld vanuit de dichtstbijzijnde zeecellen</div>`).addTo(map)
+      <div class="punt-bron">wind: ECMWF, run ${ctx.run().replace('T', ' ').replace(':00Z', ' UTC')} · golven: Copernicus Marine · raster ${fmt(res, 2)}°<br>golven: significante hoogte en piekperiode per golfsysteem; vlak aan de kust aangevuld vanuit de dichtstbijzijnde zeecellen</div>`).addTo(map)
   }
 
   map.on('click', (e) => { show(e.lngLat).catch(() => {}) })

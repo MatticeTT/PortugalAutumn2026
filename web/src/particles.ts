@@ -184,16 +184,122 @@ function program(gl: WebGLRenderingContext, vs: string, fs: string) {
   return { p, u, attr: (n: string) => gl.getAttribLocation(p, n) }
 }
 
+/** Wat een golfsysteem van de laag nodig heeft: het beeld en willekeurige posities daarin. */
+interface Host {
+  view: View
+  rx: number
+  ry: number
+  randomPos(): void
+  inView(x: number, y: number): boolean
+  zoom(): number
+}
+
+/** Eén golfsysteem (deining of windzee): eigen deeltjes en eigen beeldbuffer. */
+class WaveSystem {
+  field: FieldSet | null = null
+  show = true
+  trails!: Trails
+  private x = new Float64Array(WAVE.max)
+  private y = new Float64Array(WAVE.max)
+  private age = new Float32Array(WAVE.max)
+  private life = new Float32Array(WAVE.max)
+  private ex = new Float32Array(WAVE.max) // looprichting (oost, noord)
+  private ny = new Float32Array(WAVE.max)
+  private h = new Float32Array(WAVE.max)
+  private t = new Float32Array(WAVE.max) // piekperiode (s)
+  private sea = new Uint8Array(WAVE.max)
+  count = 0
+  private s: WaveSample = { ex: 0, ny: 0, period: 0, height: 0 }
+
+  constructor(private host: Host) {}
+
+  spawn(i: number, fresh: boolean) {
+    const f = this.field!, H = this.host
+    let sea = false
+    for (let t = 0; t < 8 && !sea; t++) {
+      H.randomPos()
+      sea = f.wave(lonOf(H.rx), latOf(H.ry), this.s)
+    }
+    this.x[i] = H.rx
+    this.y[i] = H.ry
+    this.sea[i] = 0 // pas tekenen na de eerste stap
+    this.life[i] = WAVE.minLife + Math.random() * (WAVE.maxLife - WAVE.minLife)
+    this.age[i] = fresh ? Math.random() * this.life[i] : 0
+  }
+
+  step(dt: number) {
+    const f = this.field!, H = this.host
+    const target = Math.min(WAVE.max, Math.max(200, Math.round(H.view.area / WAVE.density)))
+    for (let i = this.count; i < target; i++) this.spawn(i, true)
+    this.count = target
+    const k = (WAVE.pxPerS * dt) / H.view.world
+    const s = this.s
+    for (let i = 0; i < this.count; i++) {
+      this.age[i] += dt
+      if (this.age[i] > this.life[i] || !H.inView(this.x[i], this.y[i])) {
+        this.spawn(i, false)
+        continue
+      }
+      if (!f.wave(lonOf(this.x[i]), latOf(this.y[i]), s)) {
+        this.sea[i] = 0 // op land of buiten het golfmodel: niet tekenen
+        continue
+      }
+      this.sea[i] = 1
+      this.ex[i] = s.ex
+      this.ny[i] = s.ny
+      this.h[i] = s.height
+      this.t[i] = s.period
+      const sp = Math.max(s.period, 3) * k
+      this.x[i] += s.ex * sp
+      this.y[i] -= s.ny * sp
+    }
+  }
+
+  /** Per golf een korte kam dwars op de looprichting, op de huidige positie. */
+  build(d: Float32Array): number {
+    const w = this.host.view.world
+    // Uitgezoomd kleinere kammen, anders overheersen ze de wind.
+    const zs = Math.max(0.55, Math.min(1, (this.host.zoom() - 0.5) / 3))
+    const half = (WAVE.width * zs + 1) / 2 / w
+    let o = 0
+    let n = 0
+    for (let i = 0; i < this.count; i++) {
+      if (!this.sea[i]) continue
+      const age = this.age[i], life = this.life[i]
+      const fade = Math.max(0, Math.min(1, age / 0.6, (life - age) / 1))
+      const a = fade * waveBrightness(wavePower(this.h[i], this.t[i]))
+      const L = (WAVE.halfLength * zs) / w
+      // Looprichting op het scherm (y naar beneden); de kam ligt er dwars op.
+      const dx = this.ex[i], dy = -this.ny[i]
+      const qx = -dy * L, qy = dx * L
+      const cx = this.x[i], cy = this.y[i]
+      o = quad(d, o, cx - qx, cy - qy, cx + qx, cy + qy, dx * half, dy * half, a)
+      n++
+    }
+    return n
+  }
+
+  /** Na uitzoomen een deel van de deeltjes naar een willekeurige plek in het nieuwe beeld. */
+  scatter(p: number) {
+    for (let i = 0; i < this.count; i++) if (Math.random() < p) this.spawn(i, true)
+  }
+
+  active() {
+    return this.show && !!this.field?.coarse
+  }
+}
+
 export class ParticleLayer implements CustomLayerInterface {
   readonly id = 'golven'
   readonly type = 'custom' as const
   readonly renderingMode = '2d' as const
 
   wind: FieldSet | null = null
-  wave: FieldSet | null = null
   showWind = true
-  showWaves = true
-  /** Met beide lagen aan: om beurt wind en golven tonen in plaats van tegelijk. */
+  /** Golven in twee lagen: deining (de golven waarop je surft) en windzee (golven van de wind ter plaatse). */
+  readonly swell = new WaveSystem(this)
+  readonly windsea = new WaveSystem(this)
+  /** Met wind en golven aan: om beurt wind en golven tonen in plaats van tegelijk. */
   alternate = false
   private altStart = performance.now() / 1000
 
@@ -206,11 +312,10 @@ export class ParticleLayer implements CustomLayerInterface {
   private segBuf!: WebGLBuffer
   private segData = new Float32Array(Math.max(WIND.max, WAVE.max) * 6 * 4)
   private windTrails!: Trails
-  private waveTrails!: Trails
   private last = 0
   private dpr = 1
   private prev: View | null = null
-  private view: View = { x0: 0, x1: 1, y0: 0, y1: 1, cx: 0.5, cy: 0.5, world: 512, area: 1 }
+  view: View = { x0: 0, x1: 1, y0: 0, y1: 1, cx: 0.5, cy: 0.5, world: 512, area: 1 }
 
   // Wind
   private wx = new Float64Array(WIND.max)
@@ -221,20 +326,7 @@ export class ParticleLayer implements CustomLayerInterface {
   private wLife = new Float32Array(WIND.max)
   private wSpeed = new Float32Array(WIND.max)
   private wCount = 0
-  // Golven
-  private gx = new Float64Array(WAVE.max)
-  private gy = new Float64Array(WAVE.max)
-  private gAge = new Float32Array(WAVE.max)
-  private gLife = new Float32Array(WAVE.max)
-  private gEx = new Float32Array(WAVE.max) // looprichting (oost, noord)
-  private gNy = new Float32Array(WAVE.max)
-  private gH = new Float32Array(WAVE.max)
-  private gT = new Float32Array(WAVE.max) // piekperiode (s)
-  private gSea = new Uint8Array(WAVE.max)
-  private gCount = 0
-
   private ws: WindSample = { u: 0, v: 0 }
-  private gs: WaveSample = { ex: 0, ny: 0, period: 0, height: 0 }
 
   onAdd(map: MlMap, gl: WebGLRenderingContext) {
     this.map = map
@@ -249,16 +341,22 @@ export class ParticleLayer implements CustomLayerInterface {
     gl.bindBuffer(gl.ARRAY_BUFFER, this.segBuf)
     gl.bufferData(gl.ARRAY_BUFFER, this.segData.byteLength, gl.DYNAMIC_DRAW)
     this.windTrails = new Trails(gl)
-    this.waveTrails = new Trails(gl)
+    this.swell.trails = new Trails(gl)
+    this.windsea.trails = new Trails(gl)
   }
 
   onRemove() {
     const gl = this.gl
     this.windTrails.dispose()
-    this.waveTrails.dispose()
+    this.swell.trails.dispose()
+    this.windsea.trails.dispose()
     gl.deleteBuffer(this.quad)
     gl.deleteBuffer(this.segBuf)
     for (const p of [this.seg, this.fade, this.draw]) gl.deleteProgram(p.p)
+  }
+
+  zoom() {
+    return this.map.getZoom()
   }
 
   private updateView() {
@@ -289,18 +387,19 @@ export class ParticleLayer implements CustomLayerInterface {
     if (covered > 0.85) return
     const p = 1 - covered
     for (let i = 0; i < this.wCount; i++) if (Math.random() < p) this.spawnWind(i, true)
-    for (let i = 0; i < this.gCount; i++) if (Math.random() < p) this.spawnWave(i, true)
+    this.swell.scatter(p)
+    this.windsea.scatter(p)
     this.dist = v
   }
 
-  private inView(x: number, y: number) {
+  inView(x: number, y: number) {
     const v = this.view
     return x >= v.x0 && x <= v.x1 && y >= v.y0 && y <= v.y1
   }
 
-  private rx = 0
-  private ry = 0
-  private randomPos() {
+  rx = 0
+  ry = 0
+  randomPos() {
     const v = this.view
     this.rx = v.x0 + Math.random() * (v.x1 - v.x0)
     this.ry = Math.max(0, Math.min(1, v.y0 + Math.random() * (v.y1 - v.y0)))
@@ -355,75 +454,6 @@ export class ParticleLayer implements CustomLayerInterface {
       const a = fade * WIND.alpha
       const f = half / Math.sqrt(len2)
       o = quad(d, o, ax, ay, bx, by, -dy * f, dx * f, a)
-      n++
-    }
-    return n
-  }
-
-  // ---- Golven ----
-
-  private spawnWave(i: number, fresh: boolean) {
-    const f = this.wave!
-    let sea = false
-    for (let t = 0; t < 8 && !sea; t++) {
-      this.randomPos()
-      sea = f.wave(lonOf(this.rx), latOf(this.ry), this.gs)
-    }
-    this.gx[i] = this.rx
-    this.gy[i] = this.ry
-    this.gSea[i] = 0 // pas tekenen na de eerste stap
-    this.gLife[i] = WAVE.minLife + Math.random() * (WAVE.maxLife - WAVE.minLife)
-    this.gAge[i] = fresh ? Math.random() * this.gLife[i] : 0
-  }
-
-  private stepWaves(dt: number) {
-    const f = this.wave!
-    const target = Math.min(WAVE.max, Math.max(200, Math.round(this.view.area / WAVE.density)))
-    for (let i = this.gCount; i < target; i++) this.spawnWave(i, true)
-    this.gCount = target
-    const k = (WAVE.pxPerS * dt) / this.view.world
-    const s = this.gs
-    for (let i = 0; i < this.gCount; i++) {
-      this.gAge[i] += dt
-      if (this.gAge[i] > this.gLife[i] || !this.inView(this.gx[i], this.gy[i])) {
-        this.spawnWave(i, false)
-        continue
-      }
-      if (!f.wave(lonOf(this.gx[i]), latOf(this.gy[i]), s)) {
-        this.gSea[i] = 0 // op land of buiten het golfmodel: niet tekenen
-        continue
-      }
-      this.gSea[i] = 1
-      this.gEx[i] = s.ex
-      this.gNy[i] = s.ny
-      this.gH[i] = s.height
-      this.gT[i] = s.period
-      const sp = Math.max(s.period, 3) * k
-      this.gx[i] += s.ex * sp
-      this.gy[i] -= s.ny * sp
-    }
-  }
-
-  /** Per golf een korte kam dwars op de looprichting, op de huidige positie. */
-  private buildWaves(): number {
-    const d = this.segData
-    const w = this.view.world
-    // Uitgezoomd kleinere kammen, anders overheersen ze de wind.
-    const zs = Math.max(0.55, Math.min(1, (this.map.getZoom() - 0.5) / 3))
-    const half = (WAVE.width * zs + 1) / 2 / w
-    let o = 0
-    let n = 0
-    for (let i = 0; i < this.gCount; i++) {
-      if (!this.gSea[i]) continue
-      const age = this.gAge[i], life = this.gLife[i]
-      const fade = Math.max(0, Math.min(1, age / 0.6, (life - age) / 1))
-      const a = fade * waveBrightness(wavePower(this.gH[i], this.gT[i]))
-      const L = (WAVE.halfLength * zs) / w
-      // Looprichting op het scherm (y naar beneden); de kam ligt er dwars op.
-      const dx = this.gEx[i], dy = -this.gNy[i]
-      const qx = -dy * L, qy = dx * L
-      const cx = this.gx[i], cy = this.gy[i]
-      o = quad(d, o, cx - qx, cy - qy, cx + qx, cy + qy, dx * half, dy * half, a)
       n++
     }
     return n
@@ -495,11 +525,11 @@ export class ParticleLayer implements CustomLayerInterface {
     if (this.prev && Math.abs(this.view.cx - this.prev.cx) > 0.5) {
       this.prev = this.view
       this.windTrails.clear()
-      this.waveTrails.clear()
-      this.wCount = this.gCount = 0
+      for (const g of [this.swell, this.windsea]) { g.trails.clear(); g.count = 0 }
+      this.wCount = 0
     }
 
-    if (this.wave?.coarse || this.wind?.coarse) this.redistribute()
+    if (this.swell.field?.coarse || this.windsea.field?.coarse || this.wind?.coarse) this.redistribute()
 
     if ('bindVertexArray' in gl) gl.bindVertexArray(null) // de VAO's van MapLibre niet aanpassen
     gl.disable(gl.DEPTH_TEST)
@@ -507,13 +537,15 @@ export class ParticleLayer implements CustomLayerInterface {
     gl.disable(gl.CULL_FACE)
     const w = gl.drawingBufferWidth, h = gl.drawingBufferHeight
 
-    if (this.showWaves && this.wave?.coarse) {
-      this.waveTrails.resize(w, h)
-      this.stepWaves(dt)
-      this.paint(this.waveTrails, WAVE.fade, this.buildWaves(), matrix, [1, 1, 1], dt)
-    } else {
-      this.waveTrails.clear()
-      this.gCount = 0
+    for (const g of [this.swell, this.windsea]) {
+      if (g.active()) {
+        g.trails.resize(w, h)
+        g.step(dt)
+        this.paint(g.trails, WAVE.fade, g.build(this.segData), matrix, [1, 1, 1], dt)
+      } else {
+        g.trails.clear()
+        g.count = 0
+      }
     }
     if (this.showWind && this.wind?.coarse) {
       this.windTrails.resize(w, h)
@@ -534,7 +566,7 @@ export class ParticleLayer implements CustomLayerInterface {
 
   /** Zichtbaarheid van golven en wind (0..1). Beide lagen blijven doorrekenen, zodat een wissel direct vol oogt. */
   private opacities(): [number, number] {
-    if (!this.alternate || !this.showWind || !this.showWaves) return [1, 1]
+    if (!this.alternate || !this.showWind || !(this.swell.show || this.windsea.show)) return [1, 1]
     const t = (performance.now() / 1000 - this.altStart) % (2 * ALT_HOLD)
     const ramp = (x: number) => Math.max(0, Math.min(1, x / ALT_FADE))
     // Eerst wind, dan golven; elke overgang duurt ALT_FADE seconden.
@@ -547,8 +579,8 @@ export class ParticleLayer implements CustomLayerInterface {
    * Eén beeldbuffer op de kaart leggen. De golven liggen onder de landlaag: MapLibre tekent land in een eerdere,
    * ondoorzichtige ronde met dieptebuffer, zodat de diepetest golven op land precies langs de kustlijn wegsnijdt.
    */
-  drawTrails(gl: WebGLRenderingContext | WebGL2RenderingContext, kind: 'wind' | 'wave') {
-    const t = kind === 'wind' ? this.windTrails : this.waveTrails
+  drawTrails(gl: WebGLRenderingContext | WebGL2RenderingContext, kind: 'wind' | 'swell' | 'windsea') {
+    const t = kind === 'wind' ? this.windTrails : this[kind].trails
     const op = this.opacities()[kind === 'wind' ? 1 : 0]
     if (!t || t.empty || op <= 0) return
     if ('bindVertexArray' in gl) gl.bindVertexArray(null)
@@ -570,8 +602,10 @@ export class ParticleLayer implements CustomLayerInterface {
 
   /** Deze laag (onder het land) tekent de golven en houdt de animatie gaande. */
   render(gl: WebGLRenderingContext | WebGL2RenderingContext) {
-    this.drawTrails(gl, 'wave')
-    if ((this.showWind && this.wind) || (this.showWaves && this.wave) || !this.windTrails.empty || !this.waveTrails.empty) this.map.triggerRepaint()
+    this.drawTrails(gl, 'windsea')
+    this.drawTrails(gl, 'swell')
+    const busy = (this.showWind && this.wind) || this.swell.active() || this.windsea.active()
+    if (busy || !this.windTrails.empty || !this.swell.trails.empty || !this.windsea.trails.empty) this.map.triggerRepaint()
   }
 
   /** Aparte laag bovenop de kaart voor de wind, die ook over land loopt. */

@@ -93,3 +93,27 @@ def test_fill_coast_reaches_inland_a_few_cells():
     h, d, t = build.fill_coast(hs, dirp, per, cells=3)
     assert np.isfinite(h[:, 100:103]).all() and np.isnan(h[:, 103:-3]).all()
     assert np.allclose(h[:, 102], 2.0) and np.allclose(d[:, 102], 300.0, atol=0.01) and np.allclose(t[:, 102], 11.0)
+
+
+def test_copernicus_naar_kaartrooster():
+    """1/12 graad (vanaf 80 zuid, lengte -180) naar het kaartrooster van 0,25 graad (vanaf 90 noord, lengte 0)."""
+    from pipeline import golven
+
+    nlat, nlon = 2041, 4320
+    lat = -80 + np.arange(nlat) / 12
+    lon = -180 + np.arange(nlon) / 12
+    h = np.broadcast_to(1.0 + (lon + 180) / 360, (nlat, nlon)).astype(np.float32).copy()  # hoogte volgt de lengte
+    d = np.full((nlat, nlon), 270.0, np.float32)
+    tp = np.full((nlat, nlon), 10.0, np.float32)
+    h[(np.abs(lat - 50) < 0.01)[:, None] & (np.abs(lon - 2) < 0.01)[None, :]] = np.nan  # één landcel op 50 N, 2 O
+    hm, dm, tm = golven.naar_kaartrooster(h, d, tp, -80.0, -180.0)
+    assert hm.shape == (721, 1440)
+    j = lambda la: int(round((90 - la) * 4))  # noqa: E731
+    i = lambda lo: int(round((lo % 360) * 4))  # noqa: E731
+    # 10 graden oost: fijne kolom bij lengte 10 heeft hoogte 1 + 190/360
+    assert hm[j(40), i(10)] == np.float32(1 + 190 / 360) or abs(hm[j(40), i(10)] - (1 + 190 / 360)) < 1e-4
+    assert abs(hm[j(40), i(-30)] - (1 + 150 / 360)) < 1e-4  # 30 west = kolom 1320
+    assert abs(dm[j(40), i(10)] - 270) < 1e-3 and abs(tm[j(40), i(10)] - 10) < 1e-4
+    assert np.isnan(hm[j(-85), i(10)])  # buiten het golfmodel
+    assert np.isnan(hm[j(50), i(2)])  # middelste fijne cel is land: kaartcel is land
+    assert np.isfinite(hm[j(50), i(2.25)])  # buur ernaast: zee, gemiddeld zonder de landcel

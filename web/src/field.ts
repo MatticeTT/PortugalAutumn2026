@@ -5,12 +5,14 @@ export interface Manifest {
   run: string
   source: string
   ext: string
-  times: { h: number; time: string; coarseDeg: number; fine: boolean }[]
+  /** waves: of er deining is voor dit tijdstip, windsea: of er windzee is; *Fine: met fijne tegels. */
+  times: { h: number; time: string; coarseDeg: number; fine: boolean; waves?: boolean; wavesFine?: boolean; windsea?: boolean; windseaFine?: boolean }[]
   fine: { deg: number; tileDeg: number; tilePx: number; rows: number; cols: number }
   encoding: { windMax: number; waveHMax: number; wavePeriodMax: number }
 }
 
-export type Kind = 'wind' | 'wave'
+/** wind van ECMWF; deining (swell) en windzee (windsea) van Copernicus */
+export type Kind = 'wind' | 'swell' | 'windsea'
 
 /** Een regelmatig raster: lon0/lat0 is de linkerbovenhoek (celmiddelpunt), stapgrootte deg. */
 export interface Grid {
@@ -146,6 +148,11 @@ export function sampleWave(g: Grid, lon: number, lat: number, out: WaveSample): 
   return true
 }
 
+/** Of er voor dit tijdstip gegevens van deze soort zijn (golven stoppen na de horizon van het golfmodel). */
+export function heeft(t: Manifest['times'][number], kind: Kind) {
+  return kind === 'wind' || (kind === 'swell' ? !!t.waves : !!t.windsea)
+}
+
 /**
  * Velden van één soort voor één tijdstip: het grove wereldraster plus fijne tegels die voor het zichtbare
  * gebied worden bijgeladen. Bemonsteren gebruikt de fijne tegel als die er is, anders het grove raster.
@@ -161,7 +168,7 @@ export class FieldSet {
 
   constructor(readonly kind: Kind, t: Manifest['times'][number], private m: Manifest, private base: string, private onTile: () => void) {
     this.hour = t.h
-    this.hasFine = t.fine
+    this.hasFine = kind === 'wind' ? t.fine : kind === 'swell' ? !!t.wavesFine : !!t.windseaFine
     this.coarseDeg = t.coarseDeg
   }
 

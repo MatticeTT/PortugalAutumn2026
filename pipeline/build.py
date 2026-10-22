@@ -1,16 +1,18 @@
-"""Wereldwijde wind en golven van ECMWF per tijdstip omzetten naar compacte afbeeldingen voor de browser.
+"""Wereldwijde wind en golven per tijdstip omzetten naar compacte afbeeldingen voor de browser.
 
-Bron: ECMWF IFS open data (CC BY 4.0), hetzelfde model dat Windy standaard toont, raster van 0,25 graad:
-  wind    10u, 10v          (stream oper)  wind op 10 m, oost- en noordcomponent in m/s
-  golven  swh, mwd, pp1d    (stream wave, ECMWF WAM)  significante golfhoogte (m), gemiddelde richting
-          waar de golven vandaan komen (graden), piekperiode (s)
+Wind: ECMWF IFS open data (CC BY 4.0), hetzelfde model dat Windy standaard toont, raster van 0,25 graad:
+  10u, 10v (stream oper): wind op 10 m, oost- en noordcomponent in m/s.
 De runs van 00 en 12 UTC lopen tot 360 uur (15 dagen): per 3 uur tot +144, daarna per 6 uur.
+Golven: Copernicus Marine, deining en windzee apart, tot ongeveer 10 dagen vooruit (zie golven.py).
+Zonder Copernicus-login (of met --ecmwf-golven) vallen de golven terug op ECMWF WAM (swh, mwd, pp1d), één laag.
 Per veld wordt alleen het nodige stuk van het GRIB2-bestand opgehaald (byte-range via het .index-bestand).
 
 Uitvoer (map --out, standaard web/public/data), lossless WebP:
   manifest.json                     run, tijdstippen, rasters en codering
-  <uur>/wind.webp, <uur>/wave.webp  wereldraster van 1 graad, of 0,5 graad na --fine-hours tot --mid-hours
+  <uur>/wind.webp                   wereldraster van 1 graad, of 0,5 graad na --fine-hours tot --mid-hours
+  <uur>/swell.webp, windsea.webp    deining en windzee, zelfde rasters, zolang het golfmodel loopt
   <uur>/wind/<rij>_<kol>.webp enz.  fijn raster (0,25 graad) in tegels van 45 x 45 graden, tot --fine-hours
+                                    (windzee tot --windsea-fine-hours)
 
 Codering (alle pixels ondoorzichtig):
   wind  R,G = u,v (m/s) met wortelcompressie: s = teken(x) * sqrt(|x| / WIND_MAX), byte = (s + 1) * 127.5
@@ -33,6 +35,8 @@ from pathlib import Path
 import eccodes
 import numpy as np
 from PIL import Image
+
+from pipeline import golven
 
 # Spiegels van dezelfde bestanden; Google Cloud remt het minst.
 MIRRORS = (
@@ -241,19 +245,34 @@ def write_tiles(rgb: np.ndarray, base: Path, name: str) -> None:
             save_img(wrapped[j0 : j0 + TILE_PX + 1, i0 : i0 + TILE_PX + 1], base / name / f"{r}_{c}.{EXT}")
 
 
-def process_hour(run: dt.datetime, h: int, out: Path, fine: bool, coarse_deg: float) -> int:
+def write_waves(base: Path, name: str, hs: np.ndarray, dirp: np.ndarray, per: np.ndarray, step: int, fine: bool) -> None:
+    hs, dirp, per = fill_coast(hs, dirp, per)
+    save_img(coarse_wave(hs, dirp, per, step), base / f"{name}.{EXT}")
+    if fine:
+        write_tiles(encode_wave(hs, dirp, per), base, name)
+
+
+def process_hour(run: dt.datetime, h: int, out: Path, fine: bool, coarse_deg: float,
+                 bron: "golven.Bron | None", windsea_fine: bool) -> tuple[int, bool]:
+    """Eén tijdstip; geeft terug of er golven voor zijn."""
     wind = fetch_fields(run, "oper", h, WIND_FIELDS)
-    wave = fetch_fields(run, "wave", h, WAVE_FIELDS)
     base = out / f"{h:03d}"
     step = int(coarse_deg * 4)
     u, v = (wind[k] for k in WIND_FIELDS)
-    hs, dirp, per = fill_coast(*(wave[k] for k in WAVE_FIELDS))
     save_img(coarse_wind(u, v, step), base / f"wind.{EXT}")
-    save_img(coarse_wave(hs, dirp, per, step), base / f"wave.{EXT}")
     if fine:
         write_tiles(encode_wind(u, v), base, "wind")
-        write_tiles(encode_wave(hs, dirp, per), base, "wave")
-    return h
+    t = run + dt.timedelta(hours=h)
+    if bron is not None:
+        if not bron.heeft(t):
+            return h, False
+        for name in golven.SYSTEMEN:
+            write_waves(base, name, *bron.velden(t, name), step, fine and (name == "swell" or windsea_fine))
+        return h, True
+    # Reserve zonder Copernicus: ECMWF WAM, één laag (totale zee) als deining getoond.
+    wave = fetch_fields(run, "wave", h, WAVE_FIELDS)
+    write_waves(base, "swell", *(wave[k] for k in WAVE_FIELDS), step, fine)
+    return h, True
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -263,6 +282,8 @@ def main(argv: list[str] | None = None) -> int:
     # Vercel (gratis plan) aanvaardt hooguit 100 MB per publicatie: de verre toekomst grover.
     p.add_argument("--fine-hours", type=int, default=120, help="fijne tegels (0,25 graad) tot dit uur")
     p.add_argument("--mid-hours", type=int, default=240, help="daarna wereldraster van 0,5 graad tot dit uur, dan 1")
+    p.add_argument("--windsea-fine-hours", type=int, default=48, help="fijne tegels voor de windzee tot dit uur")
+    p.add_argument("--ecmwf-golven", action="store_true", help="golven van ECMWF WAM in plaats van Copernicus")
     p.add_argument("--workers", type=int, default=4)
     a = p.parse_args(argv)
 
@@ -273,17 +294,31 @@ def main(argv: list[str] | None = None) -> int:
 
     run = latest_run(hs[-1])
     print(f"ECMWF-run {run:%Y-%m-%d %H}Z, {len(hs)} tijdstippen", flush=True)
+    bron = None
+    if not a.ecmwf_golven:
+        if not golven.beschikbaar():
+            raise SystemExit("Geen Copernicus-login (COPERNICUSMARINE_SERVICE_USERNAME/PASSWORD); gebruik --ecmwf-golven")
+        bron = golven.Bron()
+        print(f"Copernicus-golven tot {bron.laatste:%Y-%m-%d %H}Z", flush=True)
     a.out.mkdir(parents=True, exist_ok=True)
+    met_golven: dict[int, bool] = {}
     with ThreadPoolExecutor(a.workers) as ex:
-        for h in ex.map(lambda h: process_hour(run, h, a.out, h <= a.fine_hours, coarse_deg(h)), hs):
-            print(f"  +{h:03d} u klaar", flush=True)
+        for h, g in ex.map(lambda h: process_hour(run, h, a.out, h <= a.fine_hours, coarse_deg(h), bron,
+                                                   h <= a.windsea_fine_hours), hs):
+            met_golven[h] = g
+            print(f"  +{h:03d} u klaar{'' if g else ' (geen golven)'}", flush=True)
 
     manifest = {
         "run": run.strftime("%Y-%m-%dT%H:%MZ"),
-        "source": "ECMWF IFS open data 0,25 graad (wind 10 m) en ECMWF WAM (golven), CC BY 4.0",
+        "source": "Wind: ECMWF IFS open data 0,25 graad (CC BY 4.0). Golven: "
+                  + ("ECMWF WAM" if bron is None else "Generated using E.U. Copernicus Marine Service Information (MFWAM)"),
         "ext": EXT,
         "times": [{"h": h, "time": (run + dt.timedelta(hours=h)).strftime("%Y-%m-%dT%H:%MZ"),
-                   "coarseDeg": coarse_deg(h), "fine": h <= a.fine_hours} for h in hs],
+                   "coarseDeg": coarse_deg(h), "fine": h <= a.fine_hours,
+                   "waves": met_golven[h], "wavesFine": met_golven[h] and h <= a.fine_hours,
+                   "windsea": met_golven[h] and bron is not None,
+                   "windseaFine": met_golven[h] and bron is not None and h <= min(a.fine_hours, a.windsea_fine_hours)}
+                  for h in hs],
         "fine": {"deg": 0.25, "tileDeg": TILE_DEG, "tilePx": TILE_PX + 1,
                  "rows": 180 // TILE_DEG, "cols": 360 // TILE_DEG},
         "encoding": {"windMax": WIND_MAX, "waveHMax": H_MAX, "wavePeriodMax": T_MAX},
