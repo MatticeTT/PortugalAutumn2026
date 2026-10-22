@@ -1,5 +1,5 @@
 {
-"_leesmij": "Spotkennis Portugal (vasteland), verzameld door AI uit online gidsen (zie bronnen per spot). Velden: zoek = naam voor de positie in OpenStreetMap (Nominatim); soort = strand | zandbank | rif | point | riviermonding | pier; richting_golf = links | rechts | beide; werkt_bij_tij = deel van [laag, half, hoog] waarbij de spot werkt (null = onbekend); deining_beste = [van, tot] kompasgraden waar de deining het best vandaan komt (null = onbekend); wind_aflandig = [van, tot] kompasgraden; vlaggen = ondiep (gevaarlijk ondiep bij laagwater), strekdam, pier, stroming, closeout; vorm = woorden voor de regels (hol, ondiep, zacht, wall, zwaar). Wat de bronnen niet zeggen blijft leeg: niet gokken. Bronnen spreken elkaar soms tegen; dan staat het in 'twijfel'.",
+"_leesmij": "Spotkennis Portugal (vasteland), verzameld door AI uit online gidsen (zie bronnen per spot). Velden: zoek = naam voor de positie in OpenStreetMap (Nominatim); soort = strand | zandbank | rif | point | riviermonding | pier; richting_golf = links | rechts | beide; werkt_bij_tij = deel van [laag, half, hoog] waarbij de spot werkt (null = onbekend); deining_beste = [van, tot] kompasgraden waar de deining het best vandaan komt (null = onbekend); wind_aflandig = [van, tot] kompasgraden; vlaggen = ondiep (gevaarlijk ondiep bij laagwater), strekdam, pier, stroming, closeout; vorm = woorden voor de regels (hol, ondiep, zacht, wall, zwaar). Wat de bronnen niet zeggen blijft leeg: niet gokken. Bronnen spreken elkaar soms tegen; dan staat het in 'twijfel'. positie = [lat, lon] uit een bron, alleen waar OpenStreetMap de spot niet vindt (bron in positie_bron).",
 "regio": "Portugal",
 "spots": [
 {
@@ -268,7 +268,12 @@
 "bronnen": [
 "https://www.surfertoday.com/surfing/supertubos-the-greatest-barreling-wave-of-the-old-continent",
 "https://www.mondo.surf/surf-spot/supertubos/guide/1218"
-]
+],
+"positie": [
+39.344707,
+-9.36587
+],
+"positie_bron": "https://www.mondo.surf/surf-spot/supertubos/guide/1218"
 },
 {
 "naam": "Molhe Leste",
@@ -372,7 +377,12 @@
 "vorm": null,
 "bronnen": [
 "https://www.campervanlife.com/travel-guide/europe/portugal/surfing-peniche/"
-]
+],
+"positie": [
+39.417895,
+-9.253267
+],
+"positie_bron": "https://www.mondo.surf/surf-spot/belgas/guide/5186"
 },
 {
 "naam": "Almagreira",

@@ -127,6 +127,33 @@ def wd_kandidaten(items: list[dict]) -> tuple[list[dict], dict]:
     return uit, weg
 
 
+KENNIS_VELDEN = ("soort", "richting_golf", "bodem", "werkt_bij_tij", "deining_beste", "wind_aflandig", "vlaggen", "vorm",
+                 "opmerking", "twijfel", "bronnen")
+
+
+def kennis_kandidaten() -> list[dict]:
+    """Spots uit de AI-spotkennis (spots/kennis/<regio>.json) met hun positie uit OpenStreetMap."""
+    uit = []
+    for pad in sorted((MAP / "kennis").glob("*.json")):
+        if pad.stem.endswith("_posities"):
+            continue
+        pos_pad = pad.with_name(pad.stem + "_posities.json")
+        pos = json.loads(pos_pad.read_text()) if pos_pad.exists() else {}
+        for s in json.loads(pad.read_text())["spots"]:
+            if s.get("positie"):
+                p = {"lat": s["positie"][0], "lon": s["positie"][1]}
+                bron_pos = s["positie_bron"]
+            else:
+                p = pos.get(s.get("zoek") or s["naam"])
+                if not p:
+                    continue
+                bron_pos = "osm:" + p["osm"]
+            uit.append({"naam": s["naam"], "naam_en": None, "lat": p["lat"], "lon": p["lon"],
+                        "bronnen": [f"kennis:{pad.stem}", bron_pos], "rang": -1, "labels": {},
+                        "kennis": {k: s.get(k) for k in KENNIS_VELDEN if s.get(k) is not None}})
+    return uit
+
+
 def samenvoegen(kand: list[dict]) -> list[dict]:
     """Zelfde of overlappende naam binnen SAMEN_KM wordt één spot; de beste bron geeft de positie."""
     kand = sorted(kand, key=lambda k: k["rang"])
@@ -154,6 +181,8 @@ def samenvoegen(kand: list[dict]) -> list[dict]:
             gevonden["_sleutels"] |= sleutels
             for a, b in k["labels"].items():
                 gevonden["labels"].setdefault(a, b)
+            if "kennis" in k and "kennis" not in gevonden:
+                gevonden["kennis"] = k["kennis"]
             continue
         k = dict(k, _sleutels=sleutels)
         rooster.setdefault(cel, []).append(k)
@@ -212,8 +241,9 @@ def main(argv: list[str] | None = None) -> int:
     wd = json.loads(wd_pad.read_text()) if wd_pad.exists() else {"items": []}
     k1, w1 = osm_kandidaten(osm["objecten"])
     k2, w2 = wd_kandidaten(wd["items"])
-    spots = samenvoegen(k1 + k2)
-    print(f"OSM {len(osm['objecten'])} -> {len(k1)} (weg: {w1}); Wikidata {len(wd['items'])} -> {len(k2)} (weg: {w2}); "
+    k0 = kennis_kandidaten()
+    spots = samenvoegen(k0 + k1 + k2)
+    print(f"OSM {len(osm['objecten'])} -> {len(k1)} (weg: {w1}); Wikidata {len(wd['items'])} -> {len(k2)} (weg: {w2}); spotkennis {len(k0)}; "
           f"na samenvoegen {len(spots)}", flush=True)
     if a.max:
         spots = spots[:a.max]
@@ -225,8 +255,10 @@ def main(argv: list[str] | None = None) -> int:
     for n, s in enumerate(spots):
         r = kust.analyse(s["lon"], s["lat"])
         reden = twijfel(r)
+        if reden == "richting_draait" and "kennis" in s:
+            reden = None  # bekende surfspot: de kust draait (kaap, point), dat is geen reden om hem weg te laten
         rij = {"naam": s["naam"], "lat": round(s["lat"], 5), "lon": round(s["lon"], 5), "bronnen": s["bronnen"],
-               "labels": s["labels"]}
+               "labels": s["labels"], **({"kennis": s["kennis"]} if "kennis" in s else {})}
         if reden:
             redenen[reden] = redenen.get(reden, 0) + 1
             nakijken.append({**rij, "reden": reden,

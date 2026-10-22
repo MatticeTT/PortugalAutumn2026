@@ -48,6 +48,8 @@ def main() -> int:
         oud = json.loads(uitpad.read_text()) if uitpad.exists() else {}
         uit = {}
         for s in json.loads(pad.read_text())["spots"]:
+            if s.get("positie"):
+                continue  # positie staat al in de spotkennis, met bron
             q = s.get("zoek") or s["naam"]
             if q in oud and oud[q] is not None and oud[q].get("versie") == 2:
                 uit[q] = oud[q]
