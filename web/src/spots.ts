@@ -8,9 +8,9 @@ export const PLANKEN: Record<string, string> = {
   LB: 'Longboard', MM: 'Minimal', MID: 'Midlength', GR: 'Groveler', FI: 'Fish', SB: 'Shortboard', SU: 'Step-up', GUN: 'Gun',
 }
 
-type Vak = [string, string, number] // van, tot (ISO, UTC), gemiddelde score
+export type Vak = [string, string, number] // van, tot (ISO, UTC), gemiddelde score
 
-interface SpotIndex {
+export interface SpotIndex {
   run: string
   drempel: number
   min_uren: number
@@ -49,6 +49,9 @@ const relWoord = (rel: number) => (rel <= 45 ? 'aflandig' : rel < 135 ? 'zijwind
 
 export class Spots {
   private index: SpotIndex | null = null
+  get data(): SpotIndex | null {
+    return this.index
+  }
   private detail = new Map<number, Promise<SpotDetail>>()
   private dag = new Date()
   private tijd = new Date()
@@ -128,6 +131,12 @@ export class Spots {
       this.detail.set(id, p)
     }
     return p
+  }
+
+  /** Popup van een spot openen (bv. vanuit de planning). */
+  open(id: number) {
+    const s = this.index?.spots.find((x) => x.id === id)
+    if (s) this.toon(id, [s.lon, s.lat])
   }
 
   private async toon(id: number, xy: [number, number]) {

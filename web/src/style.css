@@ -68,6 +68,34 @@ input[type=range] { width: 100%; margin: 4px 0; accent-color: #fff; touch-action
 .spot { z-index: 2; width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid #1b2430; background: #fff; color: #1b2430;
   font: 700 13px/1 system-ui, sans-serif; display: grid; place-items: center; padding: 0; cursor: pointer; }
 .spot-pop table td b { margin-left: 4px; }
-.planken { position: absolute; left: 12px; top: 56px; z-index: 2; display: flex; flex-wrap: wrap; gap: 4px; max-width: calc(100% - 24px); }
+.planken { position: absolute; left: 12px; top: 64px; z-index: 2; display: flex; flex-wrap: wrap; gap: 4px; max-width: calc(100% - 24px); }
 .planken button { font-size: 12px; padding: 4px 8px; }
 @media (max-width: 600px) { .planken { top: 112px; } }
+
+/* Tabbladen en panelen (planning, profiel) */
+.tabs { position: absolute; left: 12px; top: max(12px, env(safe-area-inset-top)); z-index: 3; display: flex; gap: 4px; }
+.tabs button { padding: 6px 12px; }
+.paneel { position: absolute; inset: 0; z-index: 2; overflow-y: auto; background: #0e1013;
+  padding: 64px 16px 32px; max-width: 640px; margin: 0 auto; }
+.paneel[hidden] { display: none; }
+.paneel h2 { margin: 8px 0 4px; font-size: 20px; }
+.paneel h3 { margin: 18px 0 6px; font-size: 15px; }
+.paneel h3::first-letter { text-transform: uppercase; }
+.zacht { color: var(--zacht); font-size: 12px; }
+.plan { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.plan button { width: 100%; display: flex; gap: 10px; align-items: center; text-align: left; padding: 8px 10px;
+  background: var(--paneel); border: 1px solid var(--rand); border-radius: 10px; }
+.plan .cijfer { width: 26px; height: 26px; border-radius: 50%; background: #fff; color: #1b2430; display: grid; place-items: center; flex: none; }
+.veld { display: grid; gap: 6px; margin: 14px 0; }
+.veld input[type=number], .veld input[type=search] { font: inherit; color: inherit; background: #1b2026; border: 1px solid var(--rand);
+  border-radius: 8px; padding: 8px 10px; width: 100%; }
+.rij { display: flex; gap: 6px; }
+.vinken { display: flex; flex-wrap: wrap; gap: 6px 14px; }
+.vink { display: flex; gap: 6px; align-items: center; }
+/* Volgorde boven elkaar: tabbladen bovenaan links; lagen rechts eronder; plankfilter daaronder. */
+.lagen { top: calc(max(12px, env(safe-area-inset-top)) + 46px); }
+.planken { top: 108px; }
+@media (max-width: 600px) { .planken { top: 152px; } }
+.paneel { z-index: 4; }
+.tabs { z-index: 5; }
+.lagen, .planken { z-index: 3; }

@@ -4,6 +4,8 @@ import { Labels } from './labels'
 import { enablePointInfo } from './punt'
 import { ParticleLayer } from './particles'
 import { PLANKEN, Spots } from './spots'
+import { toonPlanning } from './planning'
+import { laadProfiel, toonProfiel } from './profiel'
 
 const DATA = './data'
 const FINE_ZOOM = 3 // vanaf dit zoomniveau het fijne raster (0,25 graad) voor het zichtbare gebied
@@ -54,7 +56,10 @@ const spots = new Spots(map, `${DATA}/spots`)
 // Plankfilter: welke planken meetellen voor de spots op de kaart (onthouden in deze browser).
 function bouwPlankfilter() {
   const box = $('planken')
-  let gekozen = new Set(Object.keys(PLANKEN))
+  box.textContent = ''
+  // Standaard: de planken uit het profiel, anders alle; een eigen keuze op de kaart gaat voor.
+  const eigen = laadProfiel().planken
+  let gekozen = new Set(eigen.length ? eigen : Object.keys(PLANKEN))
   try {
     const s = JSON.parse(localStorage.getItem('planken') ?? 'null')
     if (Array.isArray(s) && s.length) gekozen = new Set(s.filter((x: string) => x in PLANKEN))
@@ -223,7 +228,40 @@ async function start() {
   window.addEventListener('resize', buildDayTicks)
   bouwPlankfilter()
   spots.load().catch(() => {})
+  bouwTabs()
   await setTime(best)
+}
+
+// Tabbladen: Kaart, Planning, Profiel. Planning en profiel liggen als paneel over de kaart.
+function bouwTabs() {
+  const paneel = $('paneel')
+  const tabs = document.querySelectorAll<HTMLButtonElement>('#tabs button')
+  const kies = (naam: string) => {
+    tabs.forEach((t) => t.classList.toggle('aan', t.dataset.tab === naam))
+    paneel.hidden = naam === 'kaart'
+    if (naam === 'planning') {
+      toonPlanning(paneel, spots.data, spots.planken, laadProfiel(), ({ id, van }) => {
+        kies('kaart')
+        const s = spots.data!.spots.find((x) => x.id === id)!
+        // Het tijdstip van de kaart dat het dichtst bij het begin van de sessie ligt (+1 uur).
+        const doel = Date.parse(van) + 3600e3
+        let best = 0
+        manifest.times.forEach((t, i) => {
+          if (Math.abs(Date.parse(t.time) - doel) < Math.abs(Date.parse(manifest.times[best].time) - doel)) best = i
+        })
+        setTime(best).then(() => spots.open(id))
+        map.flyTo({ center: [s.lon, s.lat], zoom: Math.max(map.getZoom(), 8) })
+      })
+    } else if (naam === 'profiel') {
+      toonProfiel(paneel, (p) => {
+        if (p.planken.length) {
+          try { localStorage.removeItem('planken') } catch { /* privévenster */ }
+        }
+        bouwPlankfilter()
+      })
+    }
+  }
+  tabs.forEach((t) => t.addEventListener('click', () => kies(t.dataset.tab!)))
 }
 
 new Labels(map).load('./basis/plaatsen.geojson').catch(() => {})
