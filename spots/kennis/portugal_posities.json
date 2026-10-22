@@ -95,14 +95,6 @@
   "gevonden": "Praia do Norte, Nazaré, Leiria, Portugal",
   "versie": 2
  },
- "Supertubos, Peniche": {
-  "lat": 39.3610054,
-  "lon": -9.379383,
-  "osm": "node/13001428453",
-  "soort": "amenity=driving_school",
-  "gevonden": "Supertubos, Rua Ramiro Matos Bilhau, Peniche, Leiria, 2520-486, Portugal",
-  "versie": 2
- },
  "Molhe Leste, Peniche": {
   "lat": 39.3497344,
   "lon": -9.3679762,
@@ -135,7 +127,6 @@
   "gevonden": "Praia do Lagido, Casais do Baleal, Ferrel, Peniche, Leiria, Portugal",
   "versie": 2
  },
- "Belgas, Peniche": null,
  "Praia da Almagreira, Peniche": {
   "lat": 39.3788134,
   "lon": -9.3139779,
