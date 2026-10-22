@@ -3,6 +3,7 @@ import { FieldSet, heeft, type Kind, type Manifest } from './field'
 import { Labels } from './labels'
 import { enablePointInfo } from './punt'
 import { ParticleLayer } from './particles'
+import { PLANKEN, Spots } from './spots'
 
 const DATA = './data'
 const FINE_ZOOM = 3 // vanaf dit zoomniveau het fijne raster (0,25 graad) voor het zichtbare gebied
@@ -48,6 +49,33 @@ map.touchZoomRotate.disableRotation()
 map.keyboard.disableRotation()
 
 const layer = new ParticleLayer()
+const spots = new Spots(map, `${DATA}/spots`)
+
+// Plankfilter: welke planken meetellen voor de spots op de kaart (onthouden in deze browser).
+function bouwPlankfilter() {
+  const box = $('planken')
+  let gekozen = new Set(Object.keys(PLANKEN))
+  try {
+    const s = JSON.parse(localStorage.getItem('planken') ?? 'null')
+    if (Array.isArray(s) && s.length) gekozen = new Set(s.filter((x: string) => x in PLANKEN))
+  } catch { /* privévenster */ }
+  for (const [k, naam] of Object.entries(PLANKEN)) {
+    const b = document.createElement('button')
+    b.className = 'laag' + (gekozen.has(k) ? ' aan' : '')
+    b.textContent = naam
+    b.setAttribute('aria-pressed', String(gekozen.has(k)))
+    b.addEventListener('click', () => {
+      if (gekozen.has(k)) gekozen.delete(k)
+      else gekozen.add(k)
+      b.classList.toggle('aan', gekozen.has(k))
+      b.setAttribute('aria-pressed', String(gekozen.has(k)))
+      try { localStorage.setItem('planken', JSON.stringify([...gekozen])) } catch { /* privévenster */ }
+      spots.setPlanken(new Set(gekozen))
+    })
+    box.append(b)
+  }
+  spots.setPlanken(new Set(gekozen))
+}
 let manifest: Manifest
 let idx = 0
 let playing: number | null = null
@@ -82,6 +110,7 @@ function updateFine() {
 /** Tijdstip kiezen: het oude veld blijft zichtbaar tot het nieuwe binnen is. */
 async function setTime(i: number) {
   idx = i
+  spots.setTime(manifest.times[i].time)
   slider.value = String(i)
   label.textContent = fmtTime(manifest.times[i].time)
   const t = manifest.times[i]
@@ -192,6 +221,8 @@ async function start() {
   $('bron').textContent = `Wind: ECMWF-run ${run.getUTCDate()}/${run.getUTCMonth() + 1} ${String(run.getUTCHours()).padStart(2, '0')} UTC, tot ${fmtDay.format(new Date(manifest.times[manifest.times.length - 1].time))} · golven: Copernicus${golfTot ? `, tot ${fmtDay.format(new Date(golfTot.time))}` : ''}`
   buildDayTicks()
   window.addEventListener('resize', buildDayTicks)
+  bouwPlankfilter()
+  spots.load().catch(() => {})
   await setTime(best)
 }
 

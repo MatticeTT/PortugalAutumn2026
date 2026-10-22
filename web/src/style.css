@@ -63,3 +63,11 @@ input[type=range] { width: 100%; margin: 4px 0; accent-color: #fff; touch-action
 .punt table { border-collapse: collapse; margin: 6px 0; font-variant-numeric: tabular-nums; }
 .punt th { text-align: left; font-weight: 500; color: var(--zacht); padding: 1px 10px 1px 0; vertical-align: top; }
 .punt td { padding: 1px 0; }
+
+/* Surfspots: rondje met het cijfer (4 of 5) */
+.spot { z-index: 2; width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid #1b2430; background: #fff; color: #1b2430;
+  font: 700 13px/1 system-ui, sans-serif; display: grid; place-items: center; padding: 0; cursor: pointer; }
+.spot-pop table td b { margin-left: 4px; }
+.planken { position: absolute; left: 12px; top: 56px; z-index: 2; display: flex; flex-wrap: wrap; gap: 4px; max-width: calc(100% - 24px); }
+.planken button { font-size: 12px; padding: 4px 8px; }
+@media (max-width: 600px) { .planken { top: 112px; } }

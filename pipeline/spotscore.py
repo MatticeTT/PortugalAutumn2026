@@ -237,17 +237,20 @@ def situatie(v: dict, systemen: dict, wind: tuple, getij, donker: bool) -> dict:
                 getij_stand=getij[1] if getij else None, getij_bereik_m=getij[2] if getij else None)
 
 
-def tijdvakken(tijden: list[dt.datetime], scores: list[float | None]) -> list[list[str]]:
-    """Aaneengesloten stukken met score >= kaartdrempel van minstens MIN_UREN uur, als [van, tot]."""
+def tijdvakken(tijden: list[dt.datetime], scores: list[float | None]) -> list[list]:
+    """Aaneengesloten stukken (zonder gat in de tijd) met score >= kaartdrempel van minstens MIN_UREN uur,
+    als [van, tot, gemiddelde score]."""
     uit, start = [], None
     for k, s in enumerate(scores + [None]):
+        aansluitend = k > 0 and k < len(tijden) and tijden[k] - tijden[k - 1] == KWARTIER
         goed = s is not None and s >= DREMPEL
+        if start is not None and (not goed or not aansluitend):
+            if (k - start) * 0.25 >= MIN_UREN:
+                stuk = scores[start:k]
+                uit.append([iso(tijden[start]), iso(tijden[k - 1] + KWARTIER), round(sum(stuk) / len(stuk), 2)])
+            start = None
         if goed and start is None:
             start = k
-        if not goed and start is not None:
-            if (k - start) * 0.25 >= MIN_UREN:
-                uit.append([iso(tijden[start]), iso(tijden[k - 1] + KWARTIER)])
-            start = None
     return uit
 
 
