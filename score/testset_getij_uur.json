@@ -1,0 +1,4469 @@
+{
+ "_leesmij": "Testdagen per uur (review 6): een gewoon getij (laagwater 03:00, periode 12u25), Bretagne (5 m) en Middellandse Zee (0,3 m), een halftij-bank en een laag-tot-halftij-bank. Zelfde golf en wind de hele dag (1,0 m, 12 s, 5 kn offshore), zodat alleen het tij verandert. getij_stand = waterstand tussen laag- en hoogwater (0..1). Regelversie 2026-10-22g.",
+ "situaties": [
+  {
+   "nr": 1,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, halftij-bank, 00:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "half",
+    "getij_stand": 0.4735,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 0
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 2,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, halftij-bank, 01:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "laag",
+    "getij_stand": 0.2348,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 1
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 3,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, halftij-bank, 02:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "laag",
+    "getij_stand": 0.0626,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 2
+   },
+   "regel": {
+    "LB": 2.15,
+    "MM": 2.29,
+    "MID": 3.17,
+    "GR": 2.2,
+    "FI": 2.87,
+    "SB": 3.37,
+    "SU": 3.32,
+    "GUN": 1.16
+   },
+   "expert": []
+  },
+  {
+   "nr": 4,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, halftij-bank, 03:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "laag",
+    "getij_stand": 0.0,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 3
+   },
+   "regel": {
+    "LB": 1.88,
+    "MM": 1.98,
+    "MID": 2.65,
+    "GR": 1.91,
+    "FI": 2.43,
+    "SB": 2.8,
+    "SU": 2.77,
+    "GUN": 1.12
+   },
+   "expert": []
+  },
+  {
+   "nr": 5,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, halftij-bank, 04:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "laag",
+    "getij_stand": 0.0626,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 4
+   },
+   "regel": {
+    "LB": 2.15,
+    "MM": 2.29,
+    "MID": 3.17,
+    "GR": 2.2,
+    "FI": 2.87,
+    "SB": 3.37,
+    "SU": 3.32,
+    "GUN": 1.16
+   },
+   "expert": []
+  },
+  {
+   "nr": 6,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, halftij-bank, 05:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "laag",
+    "getij_stand": 0.2348,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 5
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 7,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, halftij-bank, 06:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "half",
+    "getij_stand": 0.4735,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 6
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 8,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, halftij-bank, 07:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "hoog",
+    "getij_stand": 0.7187,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 7
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 9,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, halftij-bank, 08:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "hoog",
+    "getij_stand": 0.9092,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 8
+   },
+   "regel": {
+    "LB": 2.29,
+    "MM": 2.44,
+    "MID": 3.42,
+    "GR": 2.34,
+    "FI": 3.09,
+    "SB": 3.64,
+    "SU": 3.59,
+    "GUN": 1.18
+   },
+   "expert": []
+  },
+  {
+   "nr": 10,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, halftij-bank, 09:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "hoog",
+    "getij_stand": 0.9972,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 9
+   },
+   "regel": {
+    "LB": 1.89,
+    "MM": 1.99,
+    "MID": 2.67,
+    "GR": 1.92,
+    "FI": 2.45,
+    "SB": 2.82,
+    "SU": 2.79,
+    "GUN": 1.13
+   },
+   "expert": []
+  },
+  {
+   "nr": 11,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, halftij-bank, 10:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "hoog",
+    "getij_stand": 0.9606,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 10
+   },
+   "regel": {
+    "LB": 2.05,
+    "MM": 2.17,
+    "MID": 2.97,
+    "GR": 2.09,
+    "FI": 2.7,
+    "SB": 3.14,
+    "SU": 3.1,
+    "GUN": 1.15
+   },
+   "expert": []
+  },
+  {
+   "nr": 12,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, halftij-bank, 11:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "hoog",
+    "getij_stand": 0.8086,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 11
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.67,
+    "FI": 3.61,
+    "SB": 4.3,
+    "SU": 4.23,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 13,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, halftij-bank, 12:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "half",
+    "getij_stand": 0.5793,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 12
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 14,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, halftij-bank, 13:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "laag",
+    "getij_stand": 0.3302,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 13
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 15,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, halftij-bank, 14:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "laag",
+    "getij_stand": 0.1236,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 14
+   },
+   "regel": {
+    "LB": 2.44,
+    "MM": 2.6,
+    "MID": 3.7,
+    "GR": 2.49,
+    "FI": 3.33,
+    "SB": 3.94,
+    "SU": 3.88,
+    "GUN": 1.2
+   },
+   "expert": []
+  },
+  {
+   "nr": 16,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, halftij-bank, 15:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "laag",
+    "getij_stand": 0.0112,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 15
+   },
+   "regel": {
+    "LB": 1.92,
+    "MM": 2.03,
+    "MID": 2.74,
+    "GR": 1.96,
+    "FI": 2.5,
+    "SB": 2.89,
+    "SU": 2.86,
+    "GUN": 1.13
+   },
+   "expert": []
+  },
+  {
+   "nr": 17,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, halftij-bank, 16:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "laag",
+    "getij_stand": 0.0214,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 16
+   },
+   "regel": {
+    "LB": 1.97,
+    "MM": 2.08,
+    "MID": 2.82,
+    "GR": 2.0,
+    "FI": 2.57,
+    "SB": 2.98,
+    "SU": 2.94,
+    "GUN": 1.14
+   },
+   "expert": []
+  },
+  {
+   "nr": 18,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, halftij-bank, 17:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "laag",
+    "getij_stand": 0.1514,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 17
+   },
+   "regel": {
+    "LB": 2.54,
+    "MM": 2.71,
+    "MID": 3.89,
+    "GR": 2.6,
+    "FI": 3.49,
+    "SB": 4.15,
+    "SU": 4.08,
+    "GUN": 1.22
+   },
+   "expert": []
+  },
+  {
+   "nr": 19,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, halftij-bank, 18:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "half",
+    "getij_stand": 0.3688,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 18
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 20,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, halftij-bank, 19:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "half",
+    "getij_stand": 0.619,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 19
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 21,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, halftij-bank, 20:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "hoog",
+    "getij_stand": 0.8394,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 20
+   },
+   "regel": {
+    "LB": 2.56,
+    "MM": 2.74,
+    "MID": 3.93,
+    "GR": 2.62,
+    "FI": 3.53,
+    "SB": 4.2,
+    "SU": 4.14,
+    "GUN": 1.22
+   },
+   "expert": []
+  },
+  {
+   "nr": 22,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, halftij-bank, 21:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "hoog",
+    "getij_stand": 0.9748,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 21
+   },
+   "regel": {
+    "LB": 1.98,
+    "MM": 2.1,
+    "MID": 2.85,
+    "GR": 2.02,
+    "FI": 2.6,
+    "SB": 3.02,
+    "SU": 2.98,
+    "GUN": 1.14
+   },
+   "expert": []
+  },
+  {
+   "nr": 23,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, halftij-bank, 22:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "hoog",
+    "getij_stand": 0.9913,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 22
+   },
+   "regel": {
+    "LB": 1.91,
+    "MM": 2.02,
+    "MID": 2.72,
+    "GR": 1.95,
+    "FI": 2.48,
+    "SB": 2.87,
+    "SU": 2.84,
+    "GUN": 1.13
+   },
+   "expert": []
+  },
+  {
+   "nr": 24,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, halftij-bank, 23:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "hoog",
+    "getij_stand": 0.8846,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 23
+   },
+   "regel": {
+    "LB": 2.4,
+    "MM": 2.56,
+    "MID": 3.63,
+    "GR": 2.46,
+    "FI": 3.27,
+    "SB": 3.87,
+    "SU": 3.81,
+    "GUN": 1.2
+   },
+   "expert": []
+  },
+  {
+   "nr": 25,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, laagwater-bank, 00:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "half",
+    "getij_stand": 0.4735,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 0
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 26,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, laagwater-bank, 01:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "laag",
+    "getij_stand": 0.2348,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 1
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 27,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, laagwater-bank, 02:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "laag",
+    "getij_stand": 0.0626,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 2
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 28,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, laagwater-bank, 03:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "laag",
+    "getij_stand": 0.0,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 3
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 29,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, laagwater-bank, 04:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "laag",
+    "getij_stand": 0.0626,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 4
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 30,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, laagwater-bank, 05:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "laag",
+    "getij_stand": 0.2348,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 5
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 31,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, laagwater-bank, 06:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "half",
+    "getij_stand": 0.4735,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 6
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 32,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, laagwater-bank, 07:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "hoog",
+    "getij_stand": 0.7187,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 7
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 33,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, laagwater-bank, 08:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "hoog",
+    "getij_stand": 0.9092,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 8
+   },
+   "regel": {
+    "LB": 2.29,
+    "MM": 2.44,
+    "MID": 3.42,
+    "GR": 2.34,
+    "FI": 3.09,
+    "SB": 3.64,
+    "SU": 3.59,
+    "GUN": 1.18
+   },
+   "expert": []
+  },
+  {
+   "nr": 34,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, laagwater-bank, 09:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "hoog",
+    "getij_stand": 0.9972,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 9
+   },
+   "regel": {
+    "LB": 1.89,
+    "MM": 1.99,
+    "MID": 2.67,
+    "GR": 1.92,
+    "FI": 2.45,
+    "SB": 2.82,
+    "SU": 2.79,
+    "GUN": 1.13
+   },
+   "expert": []
+  },
+  {
+   "nr": 35,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, laagwater-bank, 10:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "hoog",
+    "getij_stand": 0.9606,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 10
+   },
+   "regel": {
+    "LB": 2.05,
+    "MM": 2.17,
+    "MID": 2.97,
+    "GR": 2.09,
+    "FI": 2.7,
+    "SB": 3.14,
+    "SU": 3.1,
+    "GUN": 1.15
+   },
+   "expert": []
+  },
+  {
+   "nr": 36,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, laagwater-bank, 11:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "hoog",
+    "getij_stand": 0.8086,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 11
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.67,
+    "FI": 3.61,
+    "SB": 4.3,
+    "SU": 4.23,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 37,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, laagwater-bank, 12:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "half",
+    "getij_stand": 0.5793,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 12
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 38,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, laagwater-bank, 13:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "laag",
+    "getij_stand": 0.3302,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 13
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 39,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, laagwater-bank, 14:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "laag",
+    "getij_stand": 0.1236,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 14
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 40,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, laagwater-bank, 15:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "laag",
+    "getij_stand": 0.0112,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 15
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 41,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, laagwater-bank, 16:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "laag",
+    "getij_stand": 0.0214,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 16
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 42,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, laagwater-bank, 17:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "laag",
+    "getij_stand": 0.1514,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 17
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 43,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, laagwater-bank, 18:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "half",
+    "getij_stand": 0.3688,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 18
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 44,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, laagwater-bank, 19:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "half",
+    "getij_stand": 0.619,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 19
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 45,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, laagwater-bank, 20:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "hoog",
+    "getij_stand": 0.8394,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 20
+   },
+   "regel": {
+    "LB": 2.56,
+    "MM": 2.74,
+    "MID": 3.93,
+    "GR": 2.62,
+    "FI": 3.53,
+    "SB": 4.2,
+    "SU": 4.14,
+    "GUN": 1.22
+   },
+   "expert": []
+  },
+  {
+   "nr": 46,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, laagwater-bank, 21:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "hoog",
+    "getij_stand": 0.9748,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 21
+   },
+   "regel": {
+    "LB": 1.98,
+    "MM": 2.1,
+    "MID": 2.85,
+    "GR": 2.02,
+    "FI": 2.6,
+    "SB": 3.02,
+    "SU": 2.98,
+    "GUN": 1.14
+   },
+   "expert": []
+  },
+  {
+   "nr": 47,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, laagwater-bank, 22:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "hoog",
+    "getij_stand": 0.9913,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 22
+   },
+   "regel": {
+    "LB": 1.91,
+    "MM": 2.02,
+    "MID": 2.72,
+    "GR": 1.95,
+    "FI": 2.48,
+    "SB": 2.87,
+    "SU": 2.84,
+    "GUN": 1.13
+   },
+   "expert": []
+  },
+  {
+   "nr": 48,
+   "groep": "Getij per uur",
+   "titel": "Bretagne, laagwater-bank, 23:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "hoog",
+    "getij_stand": 0.8846,
+    "getij_bereik_m": 5.0,
+    "getij_kust": "Bretagne",
+    "uur": 23
+   },
+   "regel": {
+    "LB": 2.4,
+    "MM": 2.56,
+    "MID": 3.63,
+    "GR": 2.46,
+    "FI": 3.27,
+    "SB": 3.87,
+    "SU": 3.81,
+    "GUN": 1.2
+   },
+   "expert": []
+  },
+  {
+   "nr": 49,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, halftij-bank, 00:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "half",
+    "getij_stand": 0.4735,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 0
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 50,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, halftij-bank, 01:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "laag",
+    "getij_stand": 0.2348,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 1
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 51,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, halftij-bank, 02:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "laag",
+    "getij_stand": 0.0626,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 2
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.67,
+    "FI": 3.61,
+    "SB": 4.3,
+    "SU": 4.23,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 52,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, halftij-bank, 03:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "laag",
+    "getij_stand": 0.0,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 3
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.79,
+    "MID": 4.02,
+    "GR": 2.67,
+    "FI": 3.61,
+    "SB": 4.29,
+    "SU": 4.23,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 53,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, halftij-bank, 04:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "laag",
+    "getij_stand": 0.0626,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 4
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.67,
+    "FI": 3.61,
+    "SB": 4.3,
+    "SU": 4.23,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 54,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, halftij-bank, 05:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "laag",
+    "getij_stand": 0.2348,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 5
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 55,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, halftij-bank, 06:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "half",
+    "getij_stand": 0.4735,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 6
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 56,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, halftij-bank, 07:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "hoog",
+    "getij_stand": 0.7187,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 7
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 57,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, halftij-bank, 08:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "hoog",
+    "getij_stand": 0.9092,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 8
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.67,
+    "FI": 3.61,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 58,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, halftij-bank, 09:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "hoog",
+    "getij_stand": 0.9972,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 9
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.79,
+    "MID": 4.02,
+    "GR": 2.67,
+    "FI": 3.61,
+    "SB": 4.29,
+    "SU": 4.23,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 59,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, halftij-bank, 10:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "hoog",
+    "getij_stand": 0.9606,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 10
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.79,
+    "MID": 4.02,
+    "GR": 2.67,
+    "FI": 3.61,
+    "SB": 4.3,
+    "SU": 4.23,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 60,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, halftij-bank, 11:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "hoog",
+    "getij_stand": 0.8086,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 11
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 61,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, halftij-bank, 12:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "half",
+    "getij_stand": 0.5793,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 12
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 62,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, halftij-bank, 13:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "laag",
+    "getij_stand": 0.3302,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 13
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 63,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, halftij-bank, 14:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "laag",
+    "getij_stand": 0.1236,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 14
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.67,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 64,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, halftij-bank, 15:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "laag",
+    "getij_stand": 0.0112,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 15
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.79,
+    "MID": 4.02,
+    "GR": 2.67,
+    "FI": 3.61,
+    "SB": 4.29,
+    "SU": 4.23,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 65,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, halftij-bank, 16:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "laag",
+    "getij_stand": 0.0214,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 16
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.79,
+    "MID": 4.02,
+    "GR": 2.67,
+    "FI": 3.61,
+    "SB": 4.3,
+    "SU": 4.23,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 66,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, halftij-bank, 17:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "laag",
+    "getij_stand": 0.1514,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 17
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.67,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 67,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, halftij-bank, 18:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "half",
+    "getij_stand": 0.3688,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 18
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 68,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, halftij-bank, 19:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "half",
+    "getij_stand": 0.619,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 19
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 69,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, halftij-bank, 20:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "hoog",
+    "getij_stand": 0.8394,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 20
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.67,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 70,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, halftij-bank, 21:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "hoog",
+    "getij_stand": 0.9748,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 21
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.79,
+    "MID": 4.02,
+    "GR": 2.67,
+    "FI": 3.61,
+    "SB": 4.3,
+    "SU": 4.23,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 71,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, halftij-bank, 22:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "hoog",
+    "getij_stand": 0.9913,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 22
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.79,
+    "MID": 4.02,
+    "GR": 2.67,
+    "FI": 3.61,
+    "SB": 4.29,
+    "SU": 4.23,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 72,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, halftij-bank, 23:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "hoog",
+    "getij_stand": 0.8846,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 23
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.67,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 73,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, laagwater-bank, 00:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "half",
+    "getij_stand": 0.4735,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 0
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 74,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, laagwater-bank, 01:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "laag",
+    "getij_stand": 0.2348,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 1
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 75,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, laagwater-bank, 02:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "laag",
+    "getij_stand": 0.0626,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 2
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 76,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, laagwater-bank, 03:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "laag",
+    "getij_stand": 0.0,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 3
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 77,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, laagwater-bank, 04:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "laag",
+    "getij_stand": 0.0626,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 4
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 78,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, laagwater-bank, 05:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "laag",
+    "getij_stand": 0.2348,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 5
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 79,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, laagwater-bank, 06:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "half",
+    "getij_stand": 0.4735,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 6
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 80,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, laagwater-bank, 07:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "hoog",
+    "getij_stand": 0.7187,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 7
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 81,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, laagwater-bank, 08:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "hoog",
+    "getij_stand": 0.9092,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 8
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.67,
+    "FI": 3.61,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 82,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, laagwater-bank, 09:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "hoog",
+    "getij_stand": 0.9972,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 9
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.79,
+    "MID": 4.02,
+    "GR": 2.67,
+    "FI": 3.61,
+    "SB": 4.29,
+    "SU": 4.23,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 83,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, laagwater-bank, 10:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "hoog",
+    "getij_stand": 0.9606,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 10
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.79,
+    "MID": 4.02,
+    "GR": 2.67,
+    "FI": 3.61,
+    "SB": 4.3,
+    "SU": 4.23,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 84,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, laagwater-bank, 11:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "hoog",
+    "getij_stand": 0.8086,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 11
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 85,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, laagwater-bank, 12:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "half",
+    "getij_stand": 0.5793,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 12
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 86,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, laagwater-bank, 13:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "laag",
+    "getij_stand": 0.3302,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 13
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 87,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, laagwater-bank, 14:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "laag",
+    "getij_stand": 0.1236,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 14
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 88,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, laagwater-bank, 15:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "laag",
+    "getij_stand": 0.0112,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 15
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 89,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, laagwater-bank, 16:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "laag",
+    "getij_stand": 0.0214,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 16
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 90,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, laagwater-bank, 17:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "laag",
+    "getij_stand": 0.1514,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 17
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 91,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, laagwater-bank, 18:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "half",
+    "getij_stand": 0.3688,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 18
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 92,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, laagwater-bank, 19:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "half",
+    "getij_stand": 0.619,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 19
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.68,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 93,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, laagwater-bank, 20:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "hoog",
+    "getij_stand": 0.8394,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 20
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.67,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 94,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, laagwater-bank, 21:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "hoog",
+    "getij_stand": 0.9748,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 21
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.79,
+    "MID": 4.02,
+    "GR": 2.67,
+    "FI": 3.61,
+    "SB": 4.3,
+    "SU": 4.23,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 95,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, laagwater-bank, 22:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "hoog",
+    "getij_stand": 0.9913,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 22
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.79,
+    "MID": 4.02,
+    "GR": 2.67,
+    "FI": 3.61,
+    "SB": 4.29,
+    "SU": 4.23,
+    "GUN": 1.23
+   },
+   "expert": []
+  },
+  {
+   "nr": 96,
+   "groep": "Getij per uur",
+   "titel": "Middellandse Zee, laagwater-bank, 23:00",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "hoog",
+    "getij_stand": 0.8846,
+    "getij_bereik_m": 0.3,
+    "getij_kust": "Middellandse Zee",
+    "uur": 23
+   },
+   "regel": {
+    "LB": 2.61,
+    "MM": 2.8,
+    "MID": 4.03,
+    "GR": 2.67,
+    "FI": 3.62,
+    "SB": 4.3,
+    "SU": 4.24,
+    "GUN": 1.23
+   },
+   "expert": []
+  }
+ ]
+}

@@ -1,0 +1,1170 @@
+{
+ "_leesmij": "Alle getallen van de plankscore. Nieuwe plank = één blok onder 'planken'. Status volgt de bouwopdracht: gemeten, berekend, expert, eigenaar, nog te meten.",
+ "versie": "2026-10-22g",
+ "score": {
+  "formule": "score = 1 + 4 * (product van alle factoren) ^ alfa; daarna harde grenzen",
+  "alfa": {
+   "waarde": 0.9526865990492169,
+   "status": "expert, afgestemd"
+  },
+  "goed_vanaf": {
+   "waarde": 3.5,
+   "status": "eigenaar: 4 of 5 = goed; afronden: ,5 naar boven"
+  },
+  "kaart_drempel": {
+   "waarde": 3.8,
+   "status": "eigenaar: gekozen 22/10 (voorstel 3,8; 3,7 is ook verdedigbaar). Eén getal: hier aanpassen volstaat."
+  },
+  "kaart_uren": {
+   "waarde": 3,
+   "status": "eigenaar: minstens 3 uur na elkaar goed"
+  }
+ },
+ "fysica": {
+  "breekindex_gamma": {
+   "waarde": 0.78,
+   "status": "berekend; McCowan, getoetst Gibraltar Point; echte golven 0,6-1,2",
+   "bron": "McCowan 1894; Komar"
+  },
+  "golfhoogte_strand": {
+   "formule": "Hb = 0.39 g^0.2 (T H0'^2)^0.4, H0' = H sqrt(cos hoek)",
+   "status": "berekend",
+   "bron": "Komar & Gaughan 1972"
+  },
+  "iribarren": {
+   "formule": "xi = tanb T / sqrt(2 pi Hb / g)",
+   "grenzen": {
+    "zacht": "<0.3",
+    "tussen": "0.3-0.5",
+    "hol": "0.5-1.0",
+    "shorebreak_strand": ">=1.0 (alleen op strand met helling)"
+   },
+   "status": "berekend; grens 1,0 = eigenaar (review 22/10)"
+  },
+  "langsstroming": {
+   "formule": "V = 1.17 sqrt(g Hb) sin(tb) cos(tb)",
+   "geldt_voor": "zandstrand; op point als schatting; NIET op rif of big wave",
+   "status": "berekend",
+   "bron": "Komar 1979"
+  },
+  "kracht": {
+   "formule": "P = 0.49 Hs^2 T (kW/m, diep water)",
+   "status": "berekend"
+  },
+  "sets": {
+   "waarde": 1.27,
+   "status": "berekend (Rayleigh)"
+  },
+  "schuimkoppen_kn": {
+   "waarde": 7,
+   "status": "gemeten",
+   "bron": "Callaghan 2008 (3,7 m/s)"
+  },
+  "offshore_te_sterk": {
+   "formule": "r = offshore (m/s) / sqrt(g Hb/0.78); straf boven r = 1.2",
+   "status": "expert; Feddersen 2023: boven 0,5 niet holler"
+  },
+  "inpeddelen_offshore_kn": {
+   "waarde": 18,
+   "status": "expert"
+  },
+  "windstoten": {
+   "vanaf_kn": 6,
+   "tot_kn": 14,
+   "factor": 0.55,
+   "formule": "factor = 1 - (1 - 0,55) x smooth((stoot - wind - 6) / (14 - 6)); smooth = halve cosinus, dus geleidelijk",
+   "status": "expert (review 22/10: geen klif meer; vroeger x 0,55 vanaf 12 kn verschil, daaronder niets)"
+  },
+  "wind_gewicht": {
+   "ref_m": 1.2,
+   "ondergrens": 0.6,
+   "formule": "C = wind x deel(richting) x g. Strand en point: g = max(0,6; wortel(1,2/H)). Rif: g = max(1; wortel(1,2/H)) x (1 + 0,4 x zwaar), zwaar = 1 bij vorm zwaar of zwaarder, anders geleidelijk van 0 (1,5 m) naar 1 (2,5 m)",
+   "status": "expert: kleine golf verwaait sneller; grote golf op strand of point heeft wat minder last van chop, met ondergrens; op rif en big wave geen korting en een vaste extra weging",
+   "rif_factor": {
+    "waarde": 1.4,
+    "vorm_vanaf_xi": 0.95,
+    "vanaf_m": 1.5,
+    "vol_vanaf_m": 2.5,
+    "status": "22e (review 4): alleen op zware riffen en grote golven, want daar is de take-off kritisch. Volle 1,4 bij vorm 'zwaar' of zwaarder (xi vanaf 0,95), of bij golven vanaf 2,5 m; tussen 1,5 en 2,5 m geleidelijk; kleine, gewone riffen x1 (een rif houdt bij lichte onshore zijn vorm vaak beter dan een beachbreak). Gun op 5 m, recht onshore: 5 kn 4,1; 7,5 kn 3,2; 10 kn 2,3. Zonder invloed op de 100. NOG TE TOETSEN met nagekeken big-wave sessies"
+   }
+  },
+  "stroming_drempel_ms": {
+   "waarde": 0.25,
+   "vloer": 0.3,
+   "status": "expert; peddelen 1,15 m/s houdbaar 6 min, sprint 1,5 m/s"
+  },
+  "strekdam_remfactor": {
+   "waarde": "0.4-0.7",
+   "status": "expert, NOG TE METEN"
+  },
+  "steil_strand_helling": {
+   "waarde": 0.07,
+   "status": "berekend: golf 1,5 m breekt binnen ~25 m van de waterlijn"
+  },
+  "breed_vlak_xi": {
+   "waarde": 0.16,
+   "status": "expert"
+  },
+  "wind_richting": {
+   "formule": "chop = wind x deel(richting) x gewicht(golfhoogte). Deel: 0 tot 45 graden (offshore tot cross-offshore) = 0; van 45 naar 90 graden (zuivere zijwind) loopt het geleidelijk op naar 0,8; van 90 naar 180 (onshore) van 0,8 naar 1.",
+   "zij": {
+    "waarde": 0.8,
+    "status": "zelfde als vroeger (afgestemd op de 100)"
+   },
+   "geen_chop_tot_graden": {
+    "waarde": 45,
+    "status": "fysica (review 3): wind van het land heeft vlak bij de kust geen stuk water (fetch) om chop op te bouwen. Vroeger telde 0,8 x zijwind ook bij cross-offshore, en scoorde cross-onshore slechter dan recht onshore. Grens 45 graden = expert, NOG TE TOETSEN"
+   }
+  },
+  "periode": {
+   "verwacht": "PIEKPERIODE Tp per systeem (deining 1, deining 2, windzee), in seconden. Alle grenzen (9, 11, 13 s), Komar & Gaughan, Iribarren en kracht rekenen daarmee.",
+   "tm01_gedeeld_door_tp": {
+    "waarde": 0.835,
+    "status": "berekend: JONSWAP met piekfactor 3,3, verhouding Tm01/Tp = 0,7303 + 0,04936 g - 0,006556 g^2 + 0,000361 g^3 (DNV-RP-C205, 3.5.5) = 0,835. Dus Tp = Tm01 / 0,835 (ongeveer +20%). Voor smalle, oude deining (piekfactor 5 tot 7) is de verhouding 0,86 tot 0,87; NOG TE TOETSEN tegen boeien met spectra (NDBC, Copernicus In Situ)."
+   },
+   "bron_model": "Copernicus IBI_ANALYSISFORECAST_WAV_005_005 en NW-shelf: per systeem alleen Tm01 (VTM01_WW, VTM01_SW1, VTM01_SW2); VTPK (piek) bestaat alleen voor het totale spectrum. Gebruik VTPK niet per systeem.",
+   "status": "vastgelegd 22/10 (review 5)",
+   "per_bron": {
+    "Copernicus IBI, NW-shelf en Global (MFWAM)": {
+     "geeft": "Tm01 per systeem (VTM01_SW1, VTM01_SW2, VTM01_WW); VTPK alleen voor het hele spectrum",
+     "omrekenen": "ja: Tp = Tm01 / 0,835",
+     "status": "gelezen in de productgidsen"
+    },
+    "NOAA GFS-Wave (WAVEWATCH III)": {
+     "geeft": "SWPER (1e tot 3e deining) en WVPER (windzee); de GRIB-lijst noemt ze 'mean period'",
+     "omrekenen": "NOG NA TE GAAN voor gebruik: oudere NOAA-documentatie noemt de periode van de hoofdgolf een piekperiode, en WAVEWATCH III geeft per deining mogelijk een piekperiode onder dezelfde naam. Toets: vergelijk SWPER een maand lang met de piekperiode (DPD) van een paar NDBC-boeien. SWPER ongeveer gelijk aan DPD = piek, niet omrekenen; ongeveer 0,83 x DPD = gemiddeld, wel omrekenen. Tot dan GFS-Wave niet gebruiken voor de score.",
+     "status": "niet eenduidig in de documentatie"
+    },
+    "Eigen invoer of spotrapport": {
+     "geeft": "meestal piekperiode",
+     "omrekenen": "nee"
+    }
+   }
+  }
+ },
+ "veiligheid": {
+  "alles_1_bij": [
+   "bliksem binnen 16 km of 30 min na laatste donder",
+   "donker: zon dieper dan -6 graden",
+   "riool/vuil water",
+   "zwemzone",
+   "gevaarlijk ondiep (rif/rots bij laagwater)",
+   "uitstroom rivier",
+   "wind vanaf 30 kn"
+  ],
+  "mist_max": 2.0,
+  "status": "bliksem: NWS; daglicht: eigenaar; rest expert"
+ },
+ "open_strand": {
+  "gun_max": 2.0,
+  "vlak_groot": {
+   "boven_m": 2.5,
+   "xi_onder": 0.3,
+   "max": 2.0
+  },
+  "te_groot_boven_m": 3.0,
+  "uitzondering": "steil strand met Iribarren < 1 (diep water dicht bij kust, Puerto-type) valt niet onder deze grenzen",
+  "status": "expert (review 22/10)"
+ },
+ "spot_vorm": {
+  "_leesmij": "Voor rif en point zonder helling: vormklasse uit spotkennis -> Iribarren-equivalent",
+  "zacht": 0.3,
+  "wall": 0.5,
+  "steil_niet_extreem": 0.5,
+  "hol": 0.85,
+  "ondiep": 0.9,
+  "zwaar": 0.95,
+  "extreem": 1.0,
+  "vol": 0.22,
+  "status": "expert"
+ },
+ "vlaggen_uit_spotkennis": {
+  "ondiep": "spotveld 'gevaarlijk ondiep bij laagwater' = ja EN getij laag",
+  "vol": "spotveld 'bank te vol bij hoogwater' = ja EN getij hoog",
+  "closeout": "spotveld 'close-out boven' < golfhoogte",
+  "point": "spottype point",
+  "terugslag": "strekdam binnen bereik EN hoogwater",
+  "pier": "pier binnen bereik",
+  "open": "spottype strand of zandbank (niet rif/point)",
+  "status": "expert; velden zie databronnen-doc par. 14",
+  "tij": "spotveld 'werkt bij tij' + getij van het uur -> factor uit 'tijvenster' (geen vlag, een factor)"
+ },
+ "planken": {
+  "LB": {
+   "naam": "Longboard",
+   "a": {
+    "waarde": 0.2936091054064287,
+    "inschatting": 0.3,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "b": {
+    "waarde": 0.5478337714602185,
+    "inschatting": 0.55,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "c": {
+    "waarde": 0.8985503273343857,
+    "inschatting": 1.2,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "d": {
+    "waarde": 2.0951036662540314,
+    "inschatting": 2.6,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "hol": {
+    "waarde": 0.3402231152655129,
+    "inschatting": 0.42,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "holw": {
+    "waarde": 0.30598052905140954,
+    "inschatting": 0.35,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "kp": {
+    "waarde": 0.10174196694410728,
+    "inschatting": 0.1,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "kw": {
+    "waarde": 9.894338933578931,
+    "inschatting": 9.0,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "ko": {
+    "waarde": 5.642519355205699,
+    "inschatting": 6.0,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "kr": {
+    "waarde": 0.49965349052114516,
+    "inschatting": 0.45,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "ks": {
+    "waarde": 0.7155585534427815,
+    "inschatting": 0.9,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "zacht_min": {
+    "waarde": 0.0,
+    "status": "expert"
+   },
+   "periode_T0": {
+    "waarde": 9,
+    "status": "expert"
+   },
+   "point": {
+    "waarde": 1.0,
+    "status": "expert"
+   },
+   "steil_strand": {
+    "waarde": 0.65,
+    "status": "expert"
+   },
+   "terugslag": {
+    "waarde": 0.4,
+    "status": "expert"
+   },
+   "vol": {
+    "waarde": 0.75,
+    "status": "expert"
+   },
+   "inpeddel_breedte": {
+    "waarde": 7.0,
+    "status": "expert"
+   },
+   "klein_onder": {
+    "waarde": 0.9,
+    "status": "expert"
+   },
+   "closeout_max": {
+    "waarde": 2.0,
+    "status": "expert"
+   },
+   "pier_max": {
+    "waarde": 2.4,
+    "status": "expert"
+   },
+   "open_strand_max": {
+    "waarde": 1.3,
+    "status": "expert"
+   }
+  },
+  "MM": {
+   "naam": "Mini-mal",
+   "a": {
+    "waarde": 0.2526751955258476,
+    "inschatting": 0.25,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "b": {
+    "waarde": 0.6069089825043197,
+    "inschatting": 0.55,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "c": {
+    "waarde": 0.9608738209909842,
+    "inschatting": 1.4,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "d": {
+    "waarde": 2.169925961157297,
+    "inschatting": 2.6,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "hol": {
+    "waarde": 0.4442427590948488,
+    "inschatting": 0.47,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "holw": {
+    "waarde": 0.3805398620165698,
+    "inschatting": 0.4,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "kp": {
+    "waarde": 0.15220110614036844,
+    "inschatting": 0.15,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "kw": {
+    "waarde": 12.054669345304617,
+    "inschatting": 11.0,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "ko": {
+    "waarde": 7.844817371695261,
+    "inschatting": 8.0,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "kr": {
+    "waarde": 0.6602961356936187,
+    "inschatting": 0.55,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "ks": {
+    "waarde": 0.6438336784255313,
+    "inschatting": 0.8,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "zacht_min": {
+    "waarde": 0.0,
+    "status": "expert"
+   },
+   "periode_T0": {
+    "waarde": 9,
+    "status": "expert"
+   },
+   "point": {
+    "waarde": 1.0,
+    "status": "expert"
+   },
+   "steil_strand": {
+    "waarde": 0.65,
+    "status": "expert"
+   },
+   "terugslag": {
+    "waarde": 0.45,
+    "status": "expert"
+   },
+   "vol": {
+    "waarde": 0.6,
+    "status": "expert"
+   },
+   "inpeddel_breedte": {
+    "waarde": 7.0,
+    "status": "expert"
+   },
+   "klein_onder": {
+    "waarde": 0.9,
+    "status": "expert"
+   },
+   "closeout_max": {
+    "waarde": 2.0,
+    "status": "expert"
+   },
+   "pier_max": {
+    "waarde": 2.4,
+    "status": "expert"
+   },
+   "open_strand_max": {
+    "waarde": 1.3,
+    "status": "expert"
+   }
+  },
+  "MID": {
+   "naam": "Midlength",
+   "a": {
+    "waarde": 0.3406235865734832,
+    "inschatting": 0.35,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "b": {
+    "waarde": 0.5502687299552667,
+    "inschatting": 0.8,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "c": {
+    "waarde": 0.9276341143573613,
+    "inschatting": 1.9,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "d": {
+    "waarde": 3.455692692698957,
+    "inschatting": 3.2,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "hol": {
+    "waarde": 0.5006140108744821,
+    "inschatting": 0.58,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "holw": {
+    "waarde": 0.2707698342697511,
+    "inschatting": 0.5,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "kp": {
+    "waarde": 0.4672433333829455,
+    "inschatting": 0.4,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "kw": {
+    "waarde": 14.142712730164638,
+    "inschatting": 12.0,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "ko": {
+    "waarde": 9.738997765640015,
+    "inschatting": 10.0,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "kr": {
+    "waarde": 0.7785687191620668,
+    "inschatting": 0.7,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "ks": {
+    "waarde": 0.7734345617323196,
+    "inschatting": 0.8,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "zacht_min": {
+    "waarde": 0.0,
+    "status": "expert"
+   },
+   "periode_T0": {
+    "waarde": 9,
+    "status": "expert"
+   },
+   "point": {
+    "waarde": 1.0,
+    "status": "expert"
+   },
+   "steil_strand": {
+    "waarde": 0.65,
+    "status": "expert"
+   },
+   "terugslag": {
+    "waarde": 0.6,
+    "status": "expert"
+   },
+   "vol": {
+    "waarde": 0.65,
+    "status": "expert"
+   },
+   "inpeddel_breedte": {
+    "waarde": 7.0,
+    "status": "expert"
+   },
+   "klein_onder": {
+    "waarde": 1.0,
+    "status": "expert"
+   },
+   "closeout_max": {
+    "waarde": 2.0,
+    "status": "expert"
+   },
+   "pier_max": {
+    "waarde": 2.4,
+    "status": "expert"
+   },
+   "open_strand_max": {
+    "waarde": 1.3,
+    "status": "expert"
+   }
+  },
+  "GR": {
+   "naam": "Groveler",
+   "a": {
+    "waarde": 0.25000000065886574,
+    "inschatting": 0.25,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "b": {
+    "waarde": 0.4976468002086567,
+    "inschatting": 0.5,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "c": {
+    "waarde": 0.8476469306680591,
+    "inschatting": 1.3,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "d": {
+    "waarde": 2.1683955150291805,
+    "inschatting": 2.2,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "hol": {
+    "waarde": 0.3728889099278476,
+    "inschatting": 0.42,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "holw": {
+    "waarde": 0.3370392619414182,
+    "inschatting": 0.35,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "kp": {
+    "waarde": 0.23748155858052386,
+    "inschatting": 0.2,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "kw": {
+    "waarde": 21.04484303089706,
+    "inschatting": 17.0,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "ko": {
+    "waarde": 10.097194154778137,
+    "inschatting": 10.0,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "kr": {
+    "waarde": 1.300227781466869,
+    "inschatting": 1.0,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "ks": {
+    "waarde": 0.7271170392840429,
+    "inschatting": 0.75,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "zacht_min": {
+    "waarde": 0.0,
+    "status": "expert"
+   },
+   "periode_T0": {
+    "waarde": 9,
+    "status": "expert"
+   },
+   "point": {
+    "waarde": 0.7,
+    "status": "expert"
+   },
+   "steil_strand": {
+    "waarde": 0.65,
+    "status": "expert"
+   },
+   "terugslag": {
+    "waarde": 0.6,
+    "status": "expert"
+   },
+   "vol": {
+    "waarde": 0.6,
+    "status": "expert"
+   },
+   "inpeddel_breedte": {
+    "waarde": 7.0,
+    "status": "expert"
+   },
+   "klein_onder": {
+    "waarde": 0.9,
+    "status": "expert"
+   },
+   "closeout_max": {
+    "waarde": 2.0,
+    "status": "expert"
+   },
+   "pier_max": {
+    "waarde": 3.0,
+    "status": "expert"
+   },
+   "open_strand_max": {
+    "waarde": 1.3,
+    "status": "expert"
+   }
+  },
+  "FI": {
+   "naam": "Fish",
+   "a": {
+    "waarde": 0.3813383672577618,
+    "inschatting": 0.4,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "b": {
+    "waarde": 0.606832527315743,
+    "inschatting": 0.7,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "c": {
+    "waarde": 1.0631168597434026,
+    "inschatting": 1.5,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "d": {
+    "waarde": 2.660349942264847,
+    "inschatting": 2.6,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "hol": {
+    "waarde": 0.5409420868466726,
+    "inschatting": 0.62,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "holw": {
+    "waarde": 0.39999999996553615,
+    "inschatting": 0.4,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "kp": {
+    "waarde": 0.5655141636905401,
+    "inschatting": 0.6,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "kw": {
+    "waarde": 10.852689143109986,
+    "inschatting": 9.5,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "ko": {
+    "waarde": 8.839058746416608,
+    "inschatting": 9.0,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "kr": {
+    "waarde": 0.5910878371456539,
+    "inschatting": 0.5,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "ks": {
+    "waarde": 0.6064101829039098,
+    "inschatting": 0.7,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "zacht_min": {
+    "waarde": 0.25,
+    "status": "expert"
+   },
+   "periode_T0": {
+    "waarde": 9,
+    "status": "expert"
+   },
+   "point": {
+    "waarde": 1.0,
+    "status": "expert"
+   },
+   "steil_strand": {
+    "waarde": 0.65,
+    "status": "expert"
+   },
+   "terugslag": {
+    "waarde": 0.45,
+    "status": "expert"
+   },
+   "vol": {
+    "waarde": 0.45,
+    "status": "expert"
+   },
+   "inpeddel_breedte": {
+    "waarde": 7.0,
+    "status": "expert"
+   },
+   "klein_onder": {
+    "waarde": 1.0,
+    "status": "expert"
+   },
+   "closeout_max": {
+    "waarde": 2.0,
+    "status": "expert"
+   },
+   "pier_max": {
+    "waarde": 3.0,
+    "status": "expert"
+   },
+   "open_strand_max": {
+    "waarde": 1.3,
+    "status": "expert"
+   }
+  },
+  "SB": {
+   "naam": "Shortboard",
+   "a": {
+    "waarde": 0.6705955950207999,
+    "inschatting": 0.7,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "b": {
+    "waarde": 0.9529012850822481,
+    "inschatting": 1.2,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "c": {
+    "waarde": 2.398601286342865,
+    "inschatting": 2.4,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "d": {
+    "waarde": 3.800152633257296,
+    "inschatting": 4.0,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "hol": {
+    "waarde": 1.1820271161562255,
+    "inschatting": 1.2,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "holw": {
+    "waarde": 0.8000000001095593,
+    "inschatting": 0.8,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "kp": {
+    "waarde": 0.9624208743659608,
+    "inschatting": 1.4,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "kw": {
+    "waarde": 12.242458383493702,
+    "inschatting": 11.0,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "ko": {
+    "waarde": 9.479218590026258,
+    "inschatting": 9.0,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "kr": {
+    "waarde": 0.6973382802724287,
+    "inschatting": 0.6,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "ks": {
+    "waarde": 0.837512392388616,
+    "inschatting": 0.6,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "zacht_min": {
+    "waarde": 0.4,
+    "status": "expert"
+   },
+   "periode_T0": {
+    "waarde": 9,
+    "status": "expert"
+   },
+   "point": {
+    "waarde": 0.95,
+    "status": "expert"
+   },
+   "steil_strand": {
+    "waarde": 0.78,
+    "status": "expert"
+   },
+   "terugslag": {
+    "waarde": 0.6,
+    "status": "expert"
+   },
+   "vol": {
+    "waarde": 0.45,
+    "status": "expert"
+   },
+   "inpeddel_breedte": {
+    "waarde": 7.0,
+    "status": "expert"
+   },
+   "klein_onder": {
+    "waarde": 1.0,
+    "status": "expert"
+   },
+   "closeout_max": {
+    "waarde": 2.2,
+    "status": "expert"
+   },
+   "pier_max": {
+    "waarde": 3.0,
+    "status": "expert"
+   },
+   "open_strand_max": {
+    "waarde": 1.3,
+    "status": "expert"
+   },
+   "shorebreak": {
+    "waarde": 0.3,
+    "status": "expert"
+   }
+  },
+  "SU": {
+   "naam": "Step-up",
+   "a": {
+    "waarde": 1.241726788435405,
+    "inschatting": 1.2,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "b": {
+    "waarde": 1.5446824185097787,
+    "inschatting": 2.0,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "c": {
+    "waarde": 3.960632241630691,
+    "inschatting": 4.0,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "d": {
+    "waarde": 6.120677619489933,
+    "inschatting": 6.0,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "hol": {
+    "waarde": 1.2999999911756428,
+    "inschatting": 1.3,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "holw": {
+    "waarde": 0.9999999726627997,
+    "inschatting": 1.0,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "kp": {
+    "waarde": 2.923424934756577,
+    "inschatting": 3.0,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "kw": {
+    "waarde": 10.854614145470697,
+    "inschatting": 12.0,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "ko": {
+    "waarde": 14.493735502444846,
+    "inschatting": 14.0,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "kr": {
+    "waarde": 0.5675089604398044,
+    "inschatting": 0.6,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "ks": {
+    "waarde": 0.9238954746495774,
+    "inschatting": 0.8,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "zacht_min": {
+    "waarde": 0.35,
+    "status": "expert"
+   },
+   "periode_T0": {
+    "waarde": 11,
+    "status": "expert"
+   },
+   "point": {
+    "waarde": 1.0,
+    "status": "expert"
+   },
+   "steil_strand": {
+    "waarde": 0.78,
+    "status": "expert"
+   },
+   "terugslag": {
+    "waarde": 0.6,
+    "status": "expert"
+   },
+   "vol": {
+    "waarde": 0.45,
+    "status": "expert"
+   },
+   "inpeddel_breedte": {
+    "waarde": 8.0,
+    "status": "expert"
+   },
+   "klein_onder": {
+    "waarde": 1.0,
+    "status": "expert"
+   },
+   "closeout_max": {
+    "waarde": 1.5,
+    "status": "expert"
+   },
+   "pier_max": {
+    "waarde": 3.0,
+    "status": "expert"
+   },
+   "open_strand_max": {
+    "waarde": 1.6,
+    "status": "expert"
+   }
+  },
+  "GUN": {
+   "naam": "Gun",
+   "a": {
+    "waarde": 1.9806438021898773,
+    "inschatting": 2.0,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "b": {
+    "waarde": 4.002705019067258,
+    "inschatting": 4.2,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "c": {
+    "waarde": 7.999999840678728,
+    "inschatting": 8.0,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "d": {
+    "waarde": 14.000000000263583,
+    "inschatting": 14.0,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "hol": {
+    "waarde": 1.9999999816728,
+    "inschatting": 2.0,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "holw": {
+    "waarde": 1.9999999587806607,
+    "inschatting": 2.0,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "kp": {
+    "waarde": 8.00363903764099,
+    "inschatting": 8.0,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "kw": {
+    "waarde": 11.0000000000942,
+    "inschatting": 11.0,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "ko": {
+    "waarde": 14.00000041059685,
+    "inschatting": 14.0,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "kr": {
+    "waarde": 0.4999999932595829,
+    "inschatting": 0.5,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "ks": {
+    "waarde": 1.0156058003221267,
+    "inschatting": 0.85,
+    "status": "expert, afgestemd op 100 nagekeken situaties"
+   },
+   "zacht_min": {
+    "waarde": 0.2,
+    "status": "expert"
+   },
+   "periode_T0": {
+    "waarde": 13,
+    "status": "expert"
+   },
+   "point": {
+    "waarde": 1.0,
+    "status": "expert"
+   },
+   "steil_strand": {
+    "waarde": 0.65,
+    "status": "expert"
+   },
+   "terugslag": {
+    "waarde": 0.6,
+    "status": "expert"
+   },
+   "vol": {
+    "waarde": 0.45,
+    "status": "expert"
+   },
+   "inpeddel_breedte": {
+    "waarde": 8.0,
+    "status": "expert"
+   },
+   "klein_onder": {
+    "waarde": 1.0,
+    "status": "expert"
+   },
+   "closeout_max": {
+    "waarde": 1.5,
+    "status": "expert"
+   },
+   "pier_max": {
+    "waarde": 3.0,
+    "status": "expert"
+   },
+   "open_strand_max": {
+    "waarde": 1.6,
+    "status": "expert"
+   },
+   "open_strand_gun_max": {
+    "waarde": 2.0,
+    "status": "expert"
+   },
+   "tow_in_boven_m": {
+    "waarde": 6.0,
+    "status": "expert"
+   },
+   "tow_in_max": {
+    "waarde": 4.0,
+    "status": "expert"
+   }
+  }
+ },
+ "uitleg_velden": {
+  "a": "golfhoogte (m) waar de plank begint te werken",
+  "b": "vanaf hier is de hoogte ideaal",
+  "c": "tot hier is de hoogte ideaal",
+  "d": "daarboven duidelijk te groot (flank = (d-c)/2)",
+  "hol": "Iribarren tot waar de golf niet te hol is",
+  "holw": "hoe snel 'te hol' afstraft",
+  "kp": "golfkracht (kW/m) die de plank nodig heeft",
+  "kw": "verdraagzaamheid voor onshore/zijwind-chop",
+  "ko": "verdraagzaamheid voor offshore sterker dan de golf",
+  "kr": "verdraagzaamheid voor rommel (windzee, kruisende deining)",
+  "ks": "verdraagzaamheid voor stroming (peddelen)",
+  "zacht_min": "Iribarren onder dewelke de golf te zacht is",
+  "periode_T0": "periode (s) vanaf dewelke de deining genoeg lijn en duw heeft",
+  "point": "factor op een lange point-wall",
+  "steil_strand": "factor op steil strand met overklappende golf (Iribarren < 1)",
+  "terugslag": "factor bij terugslag van een strekdam",
+  "vol": "factor bij te volle bank of rif",
+  "inpeddel_breedte": "kn boven 18 kn offshore waarbij inpeddelen gehalveerd is",
+  "klein_onder": "onder deze hoogte (m) geen 5 (behalve point met T>=13 s)",
+  "closeout_max": "hoogste score bij close-out",
+  "pier_max": "hoogste score naast een pier",
+  "open_strand_max": "hoogste score op open strand boven 3 m",
+  "shorebreak": "vormfactor bij shorebreak (anders 0,15)"
+ },
+ "tijvenster": {
+  "methode": "Factor = 1 / (1 + (r / r0)^2), met r = dh / hb. dh = meter water dat de waterstand nu buiten het venster ligt (stand buiten het stuk x getijverschil van die cyclus). hb = breekdiepte = Hb / 0,78. Geen bakjes: de factor loopt geleidelijk mee met het water.",
+  "breekverhouding": {
+   "waarde": 0.78,
+   "status": "fysica: golf breekt waar de diepte ongeveer Hb/0,78 is (ongeveer 1,3 x de golfhoogte)"
+  },
+  "r0": {
+   "waarde": 0.5,
+   "status": "afgeleid uit Guedes e.a. 2011 (JGR): 1,1 m extra water boven de bank bij golven onder 1 m maakte van 'de meeste golven breken' 'breken amper'. Dat is r ongeveer 0,8 en moet een factor rond 0,3 geven. NOG TE TOETSEN met echte spots"
+  },
+  "standaard_bereik_m": {
+   "waarde": 2.0,
+   "status": "alleen als het getijverschil van die dag ontbreekt; in de app komt het uit het getijmodel (FES2022 of EOT20)"
+  },
+  "_leesmij": "Spotveld 'werkt bij tij' (laag, half, hoog) wordt een stuk van de waterstand. Valt de waterstand van dat uur erin: factor 1. Erbuiten: hoe meer meter water verschil tegenover de breekdiepte, hoe lager, geleidelijk. Zo telt tij bijna niet in de Middellandse Zee en sterk in Bretagne, hebben grote golven er minder last van, en is er geen sprong van het ene uur op het andere. Niet toegepast als het venster onbekend is, of als de vlag 'vol' of 'ondiep' al geldt.",
+  "status": "review 6 (22g): rekent met de waterstand in plaats van bakjes. NOG TE TOETSEN",
+  "bakjes": {
+   "laag_tot": {
+    "waarde": 0.3333333333333333
+   },
+   "hoog_vanaf": {
+    "waarde": 0.6666666666666666
+   },
+   "definitie": "Alleen voor tekst ('nu halftij') en voor de vlaggen 'ondiep bij laagwater' en 'vol bij hoogwater': onderste, middelste en bovenste derde van de waterstand. De tijfactor gebruikt de stand zelf (getij_stand).",
+   "status": "vastgelegd 22/10 (review 5, voorstel reviewer)"
+  },
+  "stukken": {
+   "laag": [
+    0.0,
+    0.3
+   ],
+   "half": [
+    0.2,
+    0.8
+   ],
+   "hoog": [
+    0.7,
+    1.0
+   ],
+   "_leesmij": "Stuk van de waterstand (0 = laagwater, 1 = hoogwater van die cyclus) per woord uit het spotveld. Overlappend, zoals surfers de woorden gebruiken. Bij een gewoon getij duurt 'half' (20-80%) ongeveer 2u30 per opkomend of afgaand tij, 'laag' en 'hoog' elk ongeveer 2u15 aan elke kant van laag- of hoogwater.",
+   "status": "expert (review 6: halftij moet ongeveer de middelste 2 a 3 uur zijn), NOG TE TOETSEN"
+  },
+  "stand_uit_woord": {
+   "laag": 0.05,
+   "half": 0.5,
+   "hoog": 0.95,
+   "_leesmij": "Alleen voor invoer die het tij als woord geeft (de oude testsets): 'laag tij' = rond laagwater, 'hoogwater' = rond hoogwater. In de app komt de stand uit het getijmodel."
+  }
+ },
+ "richting": {
+  "_leesmij": "Deiningsrichting t.o.v. loodrecht op de kust (0 = recht erop). Factor 'deiningsrichting': op een point, of overal waar het spotveld deining_venster gekend is.",
+  "venster_breedte": {
+   "waarde": 15,
+   "status": "expert: spotveld deining_venster [min, max] in graden, zelfde hoekdefinitie als bij points (loodlijn op de kustlijn ter hoogte van de spot). Buiten het venster ligt de spot in de schaduw van een kaap of eiland; 15 graden ernaast = factor 0,5. Verplicht voor points, aanbevolen voor elke spot achter een kaap of eiland. NOG TE TOETSEN"
+  },
+  "point": {
+   "recht": {
+    "waarde": 0.55,
+    "status": "expert (review 3): rechte deining buigt niet rond de kaap: secties en dichtklappers"
+   },
+   "vanaf": {
+    "waarde": 20,
+    "status": "expert"
+   },
+   "tot": {
+    "waarde": 60,
+    "status": "expert"
+   },
+   "breedte": {
+    "waarde": 20,
+    "status": "expert: boven 60 graden komt de point in zijn eigen schaduw"
+   },
+   "_leesmij": "Zonder deining_venster: onder 20 graden van 1 naar 0,55 bij recht; 20 tot 60 graden factor 1; daarboven af. Met deining_venster (redactie: VERPLICHT voor points) telt het venster. NOG TE TOETSEN Negatieve hoek (deining van de baaikant) zonder venster: schaduw, 0,55 / (1 + (hoek/15)^2).",
+   "hoek_definitie": "DEFINITIE (vast voor de bouw): hoek = verschil tussen de richting waar de deining vandaan komt (diep water, uit het golfmodel) en de loodlijn op de algemene kustlijn ter hoogte van de punt (over ongeveer 1 km rond de punt, zoals op een kaart van 1:25 000), naar zee gericht. Dus NIET de baai erachter en NIET de lijn waarlangs de golf pelt. Positief = deining komt van de kant waar de golf begint te breken (de punt), negatief = van de baaikant. Voorbeeld: kust bij de punt loopt noord-zuid met zee in het westen; loodlijn = 270 graden; deining uit 300 graden geeft hoek 30.",
+   "breekhoek_stroming": {
+    "waarde": 10,
+    "status": "expert (review 4): op een point pelt de golf onder een vrij vaste hoek met de wall, dus stroming langs de point groeit met de golfhoogte, niet met de deiningshoek. Komar met breekhoek 10 graden: 1 m 0,6 m/s; 2 m 0,9; 3 m 1,1. Minder als de deining bijna recht staat. Spotveld langs_factor schaalt dit per spot (bv. 1,5 voor een 'loopband' zoals Snapper). NOG TE TOETSEN"
+   },
+   "stroming_gewicht": {
+    "waarde": 0.25,
+    "status": "getoetst op de 100 (review 4): op een point rijd je met de stroming mee en peddel je terug via de geul. Jouw handscores straffen stroming op points nauwelijks (39: dubbel overhead, ongeveer 1,2 m/s, gun 4,6). Volledig meetellen maakt de afwijking op de points twee keer zo groot (0,32 naar 0,63); 0,25 laat ze gelijk. De volle stroming staat wel op de pagina en telt voor het label 'sterke stroming'. NOG TE TOETSEN met echte sessies"
+   }
+  },
+  "zand": {
+   "kruis_vanaf": {
+    "waarde": 0.3,
+    "status": "Review 3 stelde voor: kruisende deining maakt pieken, pas vanaf 0,5 rommel. Getest op de 100 en niet overgenomen: jouw handscores (situaties 9, 29, 57) zien kruisende deining als rommel; met 0,5 wordt de afwijking groter (0,36 naar 0,41). Blijft 0,3 zoals vroeger. NOG TE TOETSEN met echte sessies"
+   },
+   "_leesmij": "Geen factor 'dichtklappen uit rechte lange deining'. Getest op de 100 en verworpen: situatie 69 (holle A-frames, 5 graden, 14 s) kreeg van de eigenaar 4,8 en zou zakken; 74 idem. Dichtklappen hangt vooral af van de vorm van de bank (geulen of een rechte bank), en die zit niet in de zeetoestand. Blijft de vaste spotvlag 'closeout', plus het spotveld voor de bankvorm als dat ooit uit satellietbeelden komt."
+  }
+ },
+ "expert_label": {
+  "_leesmij": "Apart label naast de score, verandert de score niet (niveau telt niet mee in de score, beslissing eigenaar). Op de kaart: 'alleen voor ervaren surfers'.",
+  "groot_m": {
+   "waarde": 2.5,
+   "status": "expert"
+  },
+  "hol_xi": {
+   "waarde": 0.85,
+   "status": "expert: vormklasse 'hol' of zwaarder"
+  },
+  "hol_m": {
+   "waarde": 1.5,
+   "status": "expert"
+  },
+  "shorebreak_m": {
+   "waarde": 1.5,
+   "status": "expert"
+  },
+  "status": "expert (review 3), NOG TE TOETSEN",
+  "ondiep_m": {
+   "waarde": 0.8,
+   "status": "expert (review 4): vorm met 'ondiep' (koraal of rotsen vlak onder water) al vanaf 0,8 m: daar halen beginners zich open"
+  },
+  "stroming_ms": {
+   "waarde": 1.0,
+   "status": "expert (review 4): sterke stroming of muistroom vanaf 1 m/s; muistromen zijn de grootste doodsoorzaak bij surfers zonder ervaring"
+  }
+ }
+}

@@ -1,0 +1,6162 @@
+{
+ "_leesmij": "Testset 100: 'hand' = nagekeken surferscore (de waarheid voor afstemmen), 'regel' = wat de regel versie 2026-10-22g geeft. Hoeken: deining t.o.v. loodrecht op het strand; wind rel: 0 offshore, 90 zij, 180 onshore. Systemen: [naam, H voor de kust m, T s, hoek]. Nieuw in 22b: 'getij' (laag/half/hoog of null als de beschrijving het niet eenduidig zegt) en spotveld 'werkt_bij_tij' (alleen bekend voor situatie 3). Invoer en handscores ongewijzigd. Nieuw in 22d: 'expert' = verwacht label 'alleen voor ervaren surfers' (lijst met redenen, leeg = geen label); het label verandert de score niet. Nieuw in 22g: 'getij_stand' = waterstand tussen laag- en hoogwater (0..1); hier afgeleid uit het woord (laag 0,05, half 0,5, hoog 0,95).",
+ "situaties": [
+  {
+   "nr": 1,
+   "titel": "Belgisch strand na een westerstorm, kentering bij hoogwater naast een strekdam",
+   "ruw": {
+    "spot": {
+     "tanb": 0.05,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.2,
+      8,
+      15
+     ],
+     [
+      "windzee",
+      0.4,
+      4,
+      45
+     ]
+    ],
+    "wind": [
+     8,
+     0,
+     12
+    ],
+    "stroom": 0.2,
+    "langs_factor": 0.6,
+    "vlaggen": [],
+    "open": true,
+    "getij": "hoog",
+    "getij_stand": 0.95
+   },
+   "berekend": {
+    "Hb": 1.6141983958362105,
+    "T": 8,
+    "xi": 0.393392526523113,
+    "stroming": 0.4596759146148678,
+    "kracht": 5.6448,
+    "rommel": 0.2777841664708622,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 3.0,
+    "MM": 2.4,
+    "MID": 3.4,
+    "GR": 3.0,
+    "FI": 3.2,
+    "SB": 3.1,
+    "SU": 1.8,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 2.08,
+    "MM": 2.35,
+    "MID": 3.34,
+    "GR": 2.42,
+    "FI": 2.84,
+    "SB": 3.83,
+    "SU": 2.28,
+    "GUN": 1.05
+   },
+   "expert": []
+  },
+  {
+   "nr": 2,
+   "titel": "Dezelfde plek en golf, maar halverwege de vloed",
+   "ruw": {
+    "spot": {
+     "tanb": 0.02,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.2,
+      8,
+      15
+     ],
+     [
+      "windzee",
+      0.4,
+      4,
+      45
+     ]
+    ],
+    "wind": [
+     8,
+     0,
+     12
+    ],
+    "stroom": 1.2,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": "half",
+    "getij_stand": 0.5
+   },
+   "berekend": {
+    "Hb": 1.6141983958362105,
+    "T": 8,
+    "xi": 0.1573570106092452,
+    "stroming": 1.6327931910247795,
+    "kracht": 5.6448,
+    "rommel": 0.2777841664708622,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 2.6,
+    "MM": 1.8,
+    "MID": 2.6,
+    "GR": 2.0,
+    "FI": 1.9,
+    "SB": 1.6,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 1.38,
+    "MM": 1.47,
+    "MID": 1.8,
+    "GR": 1.49,
+    "FI": 1.37,
+    "SB": 1.31,
+    "SU": 1.16,
+    "GUN": 1.01
+   },
+   "expert": [
+    "sterke stroming"
+   ]
+  },
+  {
+   "nr": 3,
+   "titel": "Portugees zandstrand in de herfst, ochtend",
+   "ruw": {
+    "spot": {
+     "tanb": 0.05,
+     "werkt_bij_tij": [
+      "laag",
+      "half"
+     ]
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.6,
+      13,
+      20
+     ],
+     [
+      "deining2",
+      0.5,
+      9,
+      50
+     ],
+     [
+      "windzee",
+      0.2,
+      4,
+      0
+     ]
+    ],
+    "wind": [
+     6,
+     0,
+     10
+    ],
+    "stroom": 0.1,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": "half",
+    "getij_stand": 0.5
+   },
+   "berekend": {
+    "Hb": 2.440428353706834,
+    "T": 13,
+    "xi": 0.5199060785693145,
+    "stroming": 0.6320985067019284,
+    "kracht": 16.3072,
+    "rommel": 0.12122169140920426,
+    "kruis": 0.2924370217681765
+   },
+   "hand": {
+    "LB": 1.0,
+    "MM": 1.1,
+    "MID": 2.0,
+    "GR": 1.0,
+    "FI": 1.8,
+    "SB": 4.8,
+    "SU": 4.4,
+    "GUN": 1.7
+   },
+   "regel": {
+    "LB": 1.32,
+    "MM": 1.44,
+    "MID": 2.35,
+    "GR": 1.43,
+    "FI": 1.75,
+    "SB": 4.23,
+    "SU": 4.2,
+    "GUN": 1.85
+   },
+   "expert": []
+  },
+  {
+   "nr": 4,
+   "titel": "Kleine point break met lange deining, windstil",
+   "ruw": {
+    "spot": {
+     "tanb": 0.02,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.6,
+      15,
+      40
+     ]
+    ],
+    "wind": [
+     2,
+     0,
+     3
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [
+     "point"
+    ],
+    "open": true,
+    "getij": "half",
+    "getij_stand": 0.5
+   },
+   "berekend": {
+    "Hb": 1.0865694720486956,
+    "T": 15,
+    "xi": 0.3596144007355686,
+    "stroming": 0.3855717024168134,
+    "kracht": 2.646,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 5.0,
+    "MM": 4.7,
+    "MID": 4.8,
+    "GR": 3.2,
+    "FI": 4.7,
+    "SB": 3.0,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 4.52,
+    "MM": 4.67,
+    "MID": 4.72,
+    "GR": 3.43,
+    "FI": 4.66,
+    "SB": 3.89,
+    "SU": 1.2,
+    "GUN": 1.05
+   },
+   "expert": []
+  },
+  {
+   "nr": 5,
+   "titel": "Storm met harde onshore wind",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      2.0,
+      9,
+      0
+     ],
+     [
+      "windzee",
+      1.5,
+      6,
+      10
+     ]
+    ],
+    "wind": [
+     25,
+     170,
+     38
+    ],
+    "stroom": 0.4,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": "half",
+    "getij_stand": 0.5
+   },
+   "berekend": {
+    "Hb": 2.581781050042186,
+    "T": 9,
+    "xi": 0.2099658329962675,
+    "stroming": 0.4,
+    "kracht": 17.64,
+    "rommel": 0.6713563339971518,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 1.0,
+    "MM": 1.0,
+    "MID": 1.0,
+    "GR": 1.0,
+    "FI": 1.0,
+    "SB": 1.0,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 1.02,
+    "MM": 1.04,
+    "MID": 1.2,
+    "GR": 1.17,
+    "FI": 1.04,
+    "SB": 1.15,
+    "SU": 1.08,
+    "GUN": 1.02
+   },
+   "expert": [
+    "grote golven"
+   ]
+  },
+  {
+   "nr": 6,
+   "titel": "Noordzeedag met alleen windzee, onshore, halverwege het tij",
+   "ruw": {
+    "spot": {
+     "tanb": 0.02,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.3,
+      7,
+      15
+     ],
+     [
+      "windzee",
+      1.0,
+      5,
+      15
+     ]
+    ],
+    "wind": [
+     12,
+     155,
+     18
+    ],
+    "stroom": 0.6,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": "half",
+    "getij_stand": 0.5
+   },
+   "berekend": {
+    "Hb": 1.1560162034666748,
+    "T": 5,
+    "xi": 0.11621511298542224,
+    "stroming": 1.0940947611339804,
+    "kracht": 2.45,
+    "rommel": 1.5,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 2.8,
+    "MM": 2.2,
+    "MID": 2.7,
+    "GR": 2.9,
+    "FI": 1.3,
+    "SB": 1.2,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 1.02,
+    "MM": 1.04,
+    "MID": 1.08,
+    "GR": 1.17,
+    "FI": 1.01,
+    "SB": 1.02,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "expert": [
+    "sterke stroming"
+   ]
+  },
+  {
+   "nr": 7,
+   "titel": "Groot rif met diep kanaal, winterdeining",
+   "ruw": {
+    "spot": {
+     "tanb": null,
+     "vorm": "Hol (rif; uit spotkennis, geen helling gekend)",
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      3.0,
+      15,
+      0
+     ]
+    ],
+    "wind": [
+     10,
+     0,
+     14
+    ],
+    "stroom": 0.2,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "half",
+    "getij_stand": 0.5
+   },
+   "berekend": {
+    "Hb": 4.380583024876819,
+    "T": 15,
+    "xi": 0.85,
+    "stroming": 0.2,
+    "kracht": 66.15,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 1.0,
+    "MM": 1.0,
+    "MID": 1.0,
+    "GR": 1.0,
+    "FI": 1.0,
+    "SB": 1.2,
+    "SU": 4.2,
+    "GUN": 4.4
+   },
+   "regel": {
+    "LB": 1.04,
+    "MM": 1.07,
+    "MID": 1.21,
+    "GR": 1.06,
+    "FI": 1.16,
+    "SB": 1.49,
+    "SU": 4.49,
+    "GUN": 4.94
+   },
+   "expert": [
+    "grote golven",
+    "holle golf over rif of rotsen"
+   ]
+  },
+  {
+   "nr": 8,
+   "titel": "Steil strand bij hoogwater met lange deining",
+   "ruw": {
+    "spot": {
+     "tanb": 0.12,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.4,
+      14,
+      0
+     ]
+    ],
+    "wind": [
+     4,
+     0,
+     6
+    ],
+    "stroom": 0.1,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": "hoog",
+    "getij_stand": 0.95
+   },
+   "berekend": {
+    "Hb": 2.316071973804432,
+    "T": 14,
+    "xi": 1.379360628325674,
+    "stroming": 0.1,
+    "kracht": 13.445599999999997,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 1.0,
+    "MM": 1.0,
+    "MID": 1.0,
+    "GR": 1.0,
+    "FI": 1.0,
+    "SB": 1.1,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 1.01,
+    "MM": 1.02,
+    "MID": 1.03,
+    "GR": 1.01,
+    "FI": 1.04,
+    "SB": 2.19,
+    "SU": 1.62,
+    "GUN": 1.14
+   },
+   "expert": [
+    "zware shorebreak"
+   ]
+  },
+  {
+   "nr": 9,
+   "titel": "Kruisende deining en zeebries in de namiddag",
+   "ruw": {
+    "spot": {
+     "tanb": 0.035,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.0,
+      11,
+      10
+     ],
+     [
+      "deining2",
+      0.8,
+      9,
+      60
+     ],
+     [
+      "windzee",
+      0.3,
+      4,
+      10
+     ]
+    ],
+    "wind": [
+     10,
+     170,
+     14
+    ],
+    "stroom": 0.2,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 1.5969674569164496,
+    "T": 11,
+    "xi": 0.38067755032166006,
+    "stroming": 0.4096262755400893,
+    "kracht": 5.39,
+    "rommel": 0.2546618714280169,
+    "kruis": 0.58865296714732
+   },
+   "hand": {
+    "LB": 2.0,
+    "MM": 2.2,
+    "MID": 3.1,
+    "GR": 3.2,
+    "FI": 2.3,
+    "SB": 2.4,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 1.49,
+    "MM": 1.84,
+    "MID": 2.7,
+    "GR": 2.4,
+    "FI": 1.99,
+    "SB": 2.69,
+    "SU": 2.11,
+    "GUN": 1.05
+   },
+   "expert": []
+  },
+  {
+   "nr": 10,
+   "titel": "Dezelfde topochtend als situatie 3, maar met onweer",
+   "ruw": {
+    "spot": {
+     "tanb": 0.05,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.6,
+      13,
+      20
+     ],
+     [
+      "deining2",
+      0.5,
+      9,
+      50
+     ]
+    ],
+    "wind": [
+     6,
+     0,
+     10
+    ],
+    "stroom": 0.1,
+    "langs_factor": 1.0,
+    "vlaggen": [
+     "bliksem"
+    ],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 2.440428353706834,
+    "T": 13,
+    "xi": 0.5199060785693145,
+    "stroming": 0.6320985067019284,
+    "kracht": 16.3072,
+    "rommel": 0.0,
+    "kruis": 0.2924370217681765
+   },
+   "hand": {
+    "LB": 1.0,
+    "MM": 1.0,
+    "MID": 1.0,
+    "GR": 1.0,
+    "FI": 1.0,
+    "SB": 1.0,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 1.0,
+    "MM": 1.0,
+    "MID": 1.0,
+    "GR": 1.0,
+    "FI": 1.0,
+    "SB": 1.0,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "expert": []
+  },
+  {
+   "nr": 11,
+   "titel": "Kniehoog op een vlak zandstrand, windstil",
+   "ruw": {
+    "spot": {
+     "tanb": 0.015,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.25,
+      10,
+      10
+     ]
+    ],
+    "wind": [
+     2,
+     0,
+     3
+    ],
+    "stroom": 0.2,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": "half",
+    "getij_stand": 0.5
+   },
+   "berekend": {
+    "Hb": 0.5070969506918602,
+    "T": 10,
+    "xi": 0.2632026933243506,
+    "stroming": 0.2732669782852981,
+    "kracht": 0.30625,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 4.4,
+    "MM": 4.0,
+    "MID": 3.0,
+    "GR": 3.8,
+    "FI": 2.2,
+    "SB": 1.3,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 4.3,
+    "MM": 3.49,
+    "MID": 2.1,
+    "GR": 3.55,
+    "FI": 1.56,
+    "SB": 1.03,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "expert": []
+  },
+  {
+   "nr": 12,
+   "titel": "Knie tot heup, zacht, lichte onshore",
+   "ruw": {
+    "spot": {
+     "tanb": 0.02,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.42,
+      8,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     180,
+     7
+    ],
+    "stroom": 0.3,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": "half",
+    "getij_stand": 0.5
+   },
+   "berekend": {
+    "Hb": 0.7023836914727878,
+    "T": 8,
+    "xi": 0.2385488584136647,
+    "stroming": 0.4267949686169997,
+    "kracht": 0.6914879999999999,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 3.8,
+    "MM": 3.9,
+    "MID": 3.0,
+    "GR": 4.5,
+    "FI": 2.8,
+    "SB": 1.4,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 3.63,
+    "MM": 3.8,
+    "MID": 3.2,
+    "GR": 3.99,
+    "FI": 2.61,
+    "SB": 1.15,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "expert": []
+  },
+  {
+   "nr": 13,
+   "titel": "Enkelhoog, windstil",
+   "ruw": {
+    "spot": {
+     "tanb": 0.02,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.17,
+      6,
+      0
+     ]
+    ],
+    "wind": [
+     1,
+     0,
+     2
+    ],
+    "stroom": 0.1,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 0.30550480536131075,
+    "T": 6,
+    "xi": 0.27127938529303725,
+    "stroming": 0.1,
+    "kracht": 0.08496600000000001,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 2.0,
+    "MM": 1.4,
+    "MID": 1.1,
+    "GR": 1.3,
+    "FI": 1.0,
+    "SB": 1.0,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 1.21,
+    "MM": 1.14,
+    "MID": 1.01,
+    "GR": 1.08,
+    "FI": 1.01,
+    "SB": 1.0,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "expert": []
+  },
+  {
+   "nr": 14,
+   "titel": "Kleine point break, lange deining, glassy",
+   "ruw": {
+    "spot": {
+     "tanb": null,
+     "vorm": "Lange, zachte wall die langs de point afpelt (uit spotkennis)",
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.29,
+      14,
+      35
+     ]
+    ],
+    "wind": [
+     2,
+     0,
+     3
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [
+     "point"
+    ],
+    "open": false,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 0.6068953764127567,
+    "T": 14,
+    "xi": 0.3,
+    "stroming": 0.20641974503936886,
+    "kracht": 0.5769259999999999,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 4.8,
+    "MM": 4.3,
+    "MID": 3.6,
+    "GR": 3.4,
+    "FI": 3.4,
+    "SB": 2.0,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 4.88,
+    "MM": 4.75,
+    "MID": 3.47,
+    "GR": 3.45,
+    "FI": 3.11,
+    "SB": 1.12,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "expert": []
+  },
+  {
+   "nr": 15,
+   "titel": "Heuphoog, slap en rommelig, onshore",
+   "ruw": {
+    "spot": {
+     "tanb": 0.02,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.61,
+      7,
+      10
+     ],
+     [
+      "windzee",
+      0.5,
+      4,
+      15
+     ]
+    ],
+    "wind": [
+     10,
+     180,
+     14
+    ],
+    "stroom": 0.3,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 0.8975157450350136,
+    "T": 7,
+    "xi": 0.18465095882978735,
+    "stroming": 0.4850602014751602,
+    "kracht": 1.276303,
+    "rommel": 0.67660288246599,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 2.0,
+    "MM": 2.8,
+    "MID": 2.9,
+    "GR": 3.8,
+    "FI": 2.0,
+    "SB": 1.3,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 1.38,
+    "MM": 1.68,
+    "MID": 1.89,
+    "GR": 2.7,
+    "FI": 1.3,
+    "SB": 1.17,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "expert": []
+  },
+  {
+   "nr": 16,
+   "titel": "Heuphoog en schoon op een zandbank bij laag tij",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.49,
+      11,
+      10
+     ]
+    ],
+    "wind": [
+     6,
+     0,
+     9
+    ],
+    "stroom": 0.2,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": "laag",
+    "getij_stand": 0.05
+   },
+   "berekend": {
+    "Hb": 0.9025118858797087,
+    "T": 11,
+    "xi": 0.4340422881557443,
+    "stroming": 0.31852140247759775,
+    "kracht": 1.294139,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 4.0,
+    "MM": 4.4,
+    "MID": 4.2,
+    "GR": 4.0,
+    "FI": 4.7,
+    "SB": 3.3,
+    "SU": 1.1,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 4.62,
+    "MM": 4.91,
+    "MID": 4.4,
+    "GR": 4.7,
+    "FI": 4.35,
+    "SB": 3.33,
+    "SU": 1.04,
+    "GUN": 1.01
+   },
+   "expert": []
+  },
+  {
+   "nr": 17,
+   "titel": "Kleine golf verwaaid door zeebries",
+   "ruw": {
+    "spot": {
+     "tanb": 0.02,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.39,
+      9,
+      10
+     ],
+     [
+      "windzee",
+      0.5,
+      4,
+      0
+     ]
+    ],
+    "wind": [
+     14,
+     175,
+     18
+    ],
+    "stroom": 0.3,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 0.693885291137774,
+    "T": 9,
+    "xi": 0.27000588736467507,
+    "stroming": 0.411363851136782,
+    "kracht": 0.6707610000000002,
+    "rommel": 0.8873822287292822,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 1.8,
+    "MM": 2.0,
+    "MID": 2.1,
+    "GR": 2.8,
+    "FI": 1.3,
+    "SB": 1.1,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 1.14,
+    "MM": 1.32,
+    "MID": 1.39,
+    "GR": 2.46,
+    "FI": 1.14,
+    "SB": 1.02,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "expert": []
+  },
+  {
+   "nr": 18,
+   "titel": "Kleine shorebreak op een steil strand",
+   "ruw": {
+    "spot": {
+     "tanb": 0.12,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.28,
+      12,
+      0
+     ]
+    ],
+    "wind": [
+     3,
+     0,
+     4
+    ],
+    "stroom": 0.1,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": "hoog",
+    "getij_stand": 0.95
+   },
+   "berekend": {
+    "Hb": 0.6008932589998915,
+    "T": 12,
+    "xi": 2.3211777323166682,
+    "stroming": 0.1,
+    "kracht": 0.46099200000000007,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 1.0,
+    "MM": 1.0,
+    "MID": 1.1,
+    "GR": 1.6,
+    "FI": 1.7,
+    "SB": 1.8,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 1.02,
+    "MM": 1.03,
+    "MID": 1.01,
+    "GR": 1.02,
+    "FI": 1.02,
+    "SB": 1.01,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "expert": []
+  },
+  {
+   "nr": 19,
+   "titel": "Kniehoog en glassy naast een strekdam",
+   "ruw": {
+    "spot": {
+     "tanb": 0.02,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.26,
+      9,
+      10
+     ]
+    ],
+    "wind": [
+     2,
+     0,
+     3
+    ],
+    "stroom": 0.15,
+    "langs_factor": 0.6,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 0.501666007125475,
+    "T": 9,
+    "xi": 0.3175482600877541,
+    "stroming": 0.19831730968786987,
+    "kracht": 0.298116,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 4.0,
+    "MM": 3.2,
+    "MID": 2.3,
+    "GR": 3.2,
+    "FI": 2.0,
+    "SB": 1.1,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 4.2,
+    "MM": 3.4,
+    "MID": 2.02,
+    "GR": 3.5,
+    "FI": 1.52,
+    "SB": 1.03,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "expert": []
+  },
+  {
+   "nr": 20,
+   "titel": "Heuphoog met lichte offshore, maar sterke langsstroming",
+   "ruw": {
+    "spot": {
+     "tanb": 0.025,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.45,
+      10,
+      20
+     ]
+    ],
+    "wind": [
+     6,
+     0,
+     9
+    ],
+    "stroom": 0.7,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": "half",
+    "getij_stand": 0.5
+   },
+   "berekend": {
+    "Hb": 0.7964577564880972,
+    "T": 10,
+    "xi": 0.3500283373900356,
+    "stroming": 0.9261968457405511,
+    "kracht": 0.9922500000000001,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 2.6,
+    "MM": 2.3,
+    "MID": 2.3,
+    "GR": 2.4,
+    "FI": 2.1,
+    "SB": 1.4,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 3.15,
+    "MM": 2.93,
+    "MID": 2.92,
+    "GR": 3.09,
+    "FI": 2.42,
+    "SB": 1.52,
+    "SU": 1.01,
+    "GUN": 1.0
+   },
+   "expert": []
+  },
+  {
+   "nr": 21,
+   "titel": "Borsthoge beach break, lichte offshore",
+   "ruw": {
+    "spot": {
+     "tanb": 0.035,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.67,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     8,
+     0,
+     12
+    ],
+    "stroom": 0.2,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 1.200248944355627,
+    "T": 12,
+    "xi": 0.4790250154684634,
+    "stroming": 0.34447642410667545,
+    "kracht": 2.6395320000000004,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 3.0,
+    "MM": 3.8,
+    "MID": 4.6,
+    "GR": 3.6,
+    "FI": 4.6,
+    "SB": 4.7,
+    "SU": 2.2,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 3.65,
+    "MM": 4.37,
+    "MID": 4.67,
+    "GR": 3.81,
+    "FI": 4.64,
+    "SB": 4.51,
+    "SU": 1.33,
+    "GUN": 1.05
+   },
+   "expert": []
+  },
+  {
+   "nr": 22,
+   "titel": "Schouderhoge point, offshore",
+   "ruw": {
+    "spot": {
+     "tanb": null,
+     "vorm": "Lange wall die netjes afpelt (point, uit spotkennis)",
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.83,
+      13,
+      30
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [
+     "point"
+    ],
+    "open": false,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 1.3971739380584431,
+    "T": 13,
+    "xi": 0.5,
+    "stroming": 0.44490529250830047,
+    "kracht": 4.388293,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 3.8,
+    "MM": 4.0,
+    "MID": 4.8,
+    "GR": 2.8,
+    "FI": 4.8,
+    "SB": 4.8,
+    "SU": 2.4,
+    "GUN": 1.1
+   },
+   "regel": {
+    "LB": 2.92,
+    "MM": 3.63,
+    "MID": 4.5,
+    "GR": 2.52,
+    "FI": 4.38,
+    "SB": 4.64,
+    "SU": 2.49,
+    "GUN": 1.14
+   },
+   "expert": []
+  },
+  {
+   "nr": 23,
+   "titel": "Heup tot borst, glassy zandstrand",
+   "ruw": {
+    "spot": {
+     "tanb": 0.025,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.66,
+      10,
+      10
+     ]
+    ],
+    "wind": [
+     2,
+     0,
+     3
+    ],
+    "stroom": 0.2,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 1.1024886839540147,
+    "T": 10,
+    "xi": 0.29750721872012303,
+    "stroming": 0.35921721829696074,
+    "kracht": 2.13444,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 4.2,
+    "MM": 4.6,
+    "MID": 4.6,
+    "GR": 4.5,
+    "FI": 4.4,
+    "SB": 3.6,
+    "SU": 1.2,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 4.52,
+    "MM": 4.68,
+    "MID": 4.69,
+    "GR": 4.39,
+    "FI": 4.63,
+    "SB": 3.29,
+    "SU": 1.12,
+    "GUN": 1.02
+   },
+   "expert": []
+  },
+  {
+   "nr": 24,
+   "titel": "Borsthoog, cross-offshore 10 kn",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.78,
+      9,
+      15
+     ]
+    ],
+    "wind": [
+     10,
+     45,
+     14
+    ],
+    "stroom": 0.3,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 1.1988051657042398,
+    "T": 9,
+    "xi": 0.3081300332717787,
+    "stroming": 0.5862247470654851,
+    "kracht": 2.6830440000000007,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 3.2,
+    "MM": 3.8,
+    "MID": 4.0,
+    "GR": 3.9,
+    "FI": 4.0,
+    "SB": 3.8,
+    "SU": 1.2,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 3.67,
+    "MM": 3.76,
+    "MID": 4.16,
+    "GR": 3.6,
+    "FI": 3.89,
+    "SB": 3.24,
+    "SU": 1.18,
+    "GUN": 1.02
+   },
+   "expert": []
+  },
+  {
+   "nr": 25,
+   "titel": "Schouder tot hoofd, hol op de zandbank bij laag tij",
+   "ruw": {
+    "spot": {
+     "tanb": 0.05,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.96,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     3,
+     0,
+     4
+    ],
+    "stroom": 0.2,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": "laag",
+    "getij_stand": 0.05
+   },
+   "berekend": {
+    "Hb": 1.600399757649315,
+    "T": 12,
+    "xi": 0.5926272011869899,
+    "stroming": 0.39260169754514623,
+    "kracht": 5.419008,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 1.8,
+    "MM": 2.0,
+    "MID": 3.0,
+    "GR": 1.8,
+    "FI": 3.2,
+    "SB": 4.8,
+    "SU": 4.0,
+    "GUN": 1.2
+   },
+   "regel": {
+    "LB": 2.03,
+    "MM": 2.63,
+    "MID": 3.73,
+    "GR": 2.24,
+    "FI": 3.59,
+    "SB": 4.78,
+    "SU": 4.07,
+    "GUN": 1.19
+   },
+   "expert": []
+  },
+  {
+   "nr": 26,
+   "titel": "Hoofdhoge point, lange walls",
+   "ruw": {
+    "spot": {
+     "tanb": null,
+     "vorm": "Lange, sterke wall die afpelt (point, uit spotkennis)",
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.02,
+      14,
+      30
+     ]
+    ],
+    "wind": [
+     6,
+     0,
+     9
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [
+     "point"
+    ],
+    "open": false,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 1.697235131900674,
+    "T": 14,
+    "xi": 0.5,
+    "stroming": 0.5017222981341759,
+    "kracht": 7.137144,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 2.8,
+    "MM": 2.9,
+    "MID": 4.7,
+    "GR": 1.9,
+    "FI": 4.0,
+    "SB": 4.8,
+    "SU": 4.1,
+    "GUN": 1.2
+   },
+   "regel": {
+    "LB": 2.2,
+    "MM": 2.65,
+    "MID": 3.95,
+    "GR": 1.99,
+    "FI": 3.5,
+    "SB": 4.74,
+    "SU": 4.45,
+    "GUN": 1.32
+   },
+   "expert": []
+  },
+  {
+   "nr": 27,
+   "titel": "Borsthoog en zacht bij opkomend tij",
+   "ruw": {
+    "spot": {
+     "tanb": 0.018,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.7,
+      11,
+      10
+     ]
+    ],
+    "wind": [
+     3,
+     0,
+     4
+    ],
+    "stroom": 0.3,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 1.200534094155675,
+    "T": 11,
+    "xi": 0.22579925812254928,
+    "stroming": 0.4576286047199679,
+    "kracht": 2.6410999999999993,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 4.2,
+    "MM": 4.6,
+    "MID": 4.6,
+    "GR": 4.0,
+    "FI": 3.8,
+    "SB": 2.8,
+    "SU": 1.1,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 3.98,
+    "MM": 4.16,
+    "MID": 4.48,
+    "GR": 3.9,
+    "FI": 3.96,
+    "SB": 2.65,
+    "SU": 1.18,
+    "GUN": 1.04
+   },
+   "expert": []
+  },
+  {
+   "nr": 28,
+   "titel": "Rif met diep water, schouderhoog",
+   "ruw": {
+    "spot": {
+     "tanb": null,
+     "vorm": "Steil, maar niet extreem hol (rif met water erboven, uit spotkennis)",
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.9,
+      10,
+      15
+     ]
+    ],
+    "wind": [
+     6,
+     0,
+     9
+    ],
+    "stroom": 0.2,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 1.402070744008677,
+    "T": 10,
+    "xi": 0.5,
+    "stroming": 0.2,
+    "kracht": 3.9690000000000003,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 3.0,
+    "MM": 3.6,
+    "MID": 4.6,
+    "GR": 3.0,
+    "FI": 4.0,
+    "SB": 4.7,
+    "SU": 2.8,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 2.91,
+    "MM": 3.61,
+    "MID": 4.48,
+    "GR": 3.11,
+    "FI": 4.35,
+    "SB": 4.79,
+    "SU": 2.31,
+    "GUN": 1.06
+   },
+   "expert": []
+  },
+  {
+   "nr": 29,
+   "titel": "Twee deiningen kruisen: korte pieken",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.82,
+      8,
+      5
+     ],
+     [
+      "deining2",
+      0.75,
+      8,
+      55
+     ]
+    ],
+    "wind": [
+     2,
+     0,
+     3
+    ],
+    "stroom": 0.3,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 1.2051002474105195,
+    "T": 8,
+    "xi": 0.2731770579148218,
+    "stroming": 0.40924141606070263,
+    "kracht": 2.6358079999999995,
+    "rommel": 0.0,
+    "kruis": 0.7466150825076013
+   },
+   "hand": {
+    "LB": 2.0,
+    "MM": 2.8,
+    "MID": 3.0,
+    "GR": 3.8,
+    "FI": 3.2,
+    "SB": 3.6,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 2.58,
+    "MM": 3.06,
+    "MID": 3.46,
+    "GR": 3.42,
+    "FI": 3.05,
+    "SB": 2.4,
+    "SU": 1.08,
+    "GUN": 1.01
+   },
+   "expert": []
+  },
+  {
+   "nr": 30,
+   "titel": "Hoofdhoge zachte point",
+   "ruw": {
+    "spot": {
+     "tanb": null,
+     "vorm": "Zachte lange wall (point, uit spotkennis)",
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.19,
+      12,
+      30
+     ]
+    ],
+    "wind": [
+     3,
+     0,
+     4
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [
+     "point"
+    ],
+    "open": false,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 1.8051808956873527,
+    "T": 12,
+    "xi": 0.3,
+    "stroming": 0.6209949594251978,
+    "kracht": 8.326668,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 3.2,
+    "MM": 3.2,
+    "MID": 4.7,
+    "GR": 1.9,
+    "FI": 4.0,
+    "SB": 4.0,
+    "SU": 4.0,
+    "GUN": 1.2
+   },
+   "regel": {
+    "LB": 2.28,
+    "MM": 2.43,
+    "MID": 3.74,
+    "GR": 1.97,
+    "FI": 3.2,
+    "SB": 3.63,
+    "SU": 3.96,
+    "GUN": 1.37
+   },
+   "expert": []
+  },
+  {
+   "nr": 31,
+   "titel": "Close-outs op een rechte zandbank",
+   "ruw": {
+    "spot": {
+     "tanb": 0.04,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.71,
+      13,
+      0
+     ]
+    ],
+    "wind": [
+     4,
+     0,
+     6
+    ],
+    "stroom": 0.2,
+    "langs_factor": 1.0,
+    "vlaggen": [
+     "closeout"
+    ],
+    "open": true,
+    "getij": "laag",
+    "getij_stand": 0.05
+   },
+   "berekend": {
+    "Hb": 1.3061180413921334,
+    "T": 13,
+    "xi": 0.5685343365191984,
+    "stroming": 0.2,
+    "kracht": 3.2111169999999998,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 1.8,
+    "MM": 1.9,
+    "MID": 2.0,
+    "GR": 2.0,
+    "FI": 2.0,
+    "SB": 2.2,
+    "SU": 1.5,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 2.0,
+    "MM": 2.0,
+    "MID": 2.0,
+    "GR": 2.0,
+    "FI": 2.0,
+    "SB": 2.2,
+    "SU": 1.5,
+    "GUN": 1.08
+   },
+   "expert": []
+  },
+  {
+   "nr": 32,
+   "titel": "Heup tot borst, offshore 12 kn",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.53,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     12,
+     0,
+     16
+    ],
+    "stroom": 0.2,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 0.9950208614489714,
+    "T": 12,
+    "xi": 0.4509526851013295,
+    "stroming": 0.3197859940513757,
+    "kracht": 1.6516920000000002,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 3.0,
+    "MM": 3.6,
+    "MID": 3.8,
+    "GR": 4.0,
+    "FI": 4.6,
+    "SB": 3.8,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 3.39,
+    "MM": 4.19,
+    "MID": 4.21,
+    "GR": 4.11,
+    "FI": 4.02,
+    "SB": 3.61,
+    "SU": 1.08,
+    "GUN": 1.02
+   },
+   "expert": []
+  },
+  {
+   "nr": 33,
+   "titel": "Holle beach break overhead",
+   "ruw": {
+    "spot": {
+     "tanb": 0.04,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.32,
+      14,
+      10
+     ]
+    ],
+    "wind": [
+     8,
+     0,
+     12
+    ],
+    "stroom": 0.3,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 2.196086040412245,
+    "T": 14,
+    "xi": 0.47218036206560027,
+    "stroming": 0.5265328183504732,
+    "kracht": 11.952864000000002,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 1.0,
+    "MM": 1.0,
+    "MID": 2.0,
+    "GR": 1.0,
+    "FI": 2.0,
+    "SB": 4.0,
+    "SU": 4.8,
+    "GUN": 2.0
+   },
+   "regel": {
+    "LB": 1.57,
+    "MM": 1.71,
+    "MID": 2.83,
+    "GR": 1.68,
+    "FI": 2.17,
+    "SB": 4.6,
+    "SU": 4.49,
+    "GUN": 1.67
+   },
+   "expert": []
+  },
+  {
+   "nr": 34,
+   "titel": "Overhead point, lange deining, glad",
+   "ruw": {
+    "spot": {
+     "tanb": null,
+     "vorm": "Lange krachtige wall (point, uit spotkennis)",
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.6,
+      15,
+      30
+     ]
+    ],
+    "wind": [
+     3,
+     0,
+     4
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [
+     "point"
+    ],
+    "open": false,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 2.5011696543578767,
+    "T": 15,
+    "xi": 0.5,
+    "stroming": 0.688976282970189,
+    "kracht": 18.816000000000003,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 1.6,
+    "MM": 1.2,
+    "MID": 3.0,
+    "GR": 1.0,
+    "FI": 2.0,
+    "SB": 3.8,
+    "SU": 4.8,
+    "GUN": 3.2
+   },
+   "regel": {
+    "LB": 1.43,
+    "MM": 1.58,
+    "MID": 2.64,
+    "GR": 1.38,
+    "FI": 2.01,
+    "SB": 4.72,
+    "SU": 4.91,
+    "GUN": 2.13
+   },
+   "expert": [
+    "grote golven"
+   ]
+  },
+  {
+   "nr": 35,
+   "titel": "Rif dubbel overhead",
+   "ruw": {
+    "spot": {
+     "tanb": null,
+     "vorm": "Zwaar en hol (rif, uit spotkennis)",
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      2.19,
+      16,
+      0
+     ]
+    ],
+    "wind": [
+     6,
+     0,
+     9
+    ],
+    "stroom": 0.2,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 3.4946339638079937,
+    "T": 16,
+    "xi": 0.95,
+    "stroming": 0.2,
+    "kracht": 37.601424,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 1.0,
+    "MM": 1.0,
+    "MID": 1.0,
+    "GR": 1.0,
+    "FI": 1.0,
+    "SB": 1.8,
+    "SU": 4.6,
+    "GUN": 3.8
+   },
+   "regel": {
+    "LB": 1.05,
+    "MM": 1.09,
+    "MID": 1.24,
+    "GR": 1.07,
+    "FI": 1.22,
+    "SB": 2.23,
+    "SU": 4.98,
+    "GUN": 4.09
+   },
+   "expert": [
+    "grote golven",
+    "holle golf over rif of rotsen"
+   ]
+  },
+  {
+   "nr": 36,
+   "titel": "Big-wave rif met kanaal",
+   "ruw": {
+    "spot": {
+     "tanb": null,
+     "vorm": "Zeer zwaar (big-wave rif, uit spotkennis)",
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      3.16,
+      17,
+      0
+     ]
+    ],
+    "wind": [
+     4,
+     0,
+     6
+    ],
+    "stroom": 0.2,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 4.8009550869018875,
+    "T": 17,
+    "xi": 1.0,
+    "stroming": 0.2,
+    "kracht": 83.18004800000001,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 1.0,
+    "MM": 1.0,
+    "MID": 1.0,
+    "GR": 1.0,
+    "FI": 1.0,
+    "SB": 1.0,
+    "SU": 3.6,
+    "GUN": 4.8
+   },
+   "regel": {
+    "LB": 1.02,
+    "MM": 1.04,
+    "MID": 1.1,
+    "GR": 1.03,
+    "FI": 1.09,
+    "SB": 1.35,
+    "SU": 3.55,
+    "GUN": 4.97
+   },
+   "expert": [
+    "grote golven",
+    "holle golf over rif of rotsen"
+   ]
+  },
+  {
+   "nr": 37,
+   "titel": "Overhead, rommelig, onshore",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.39,
+      10,
+      10
+     ],
+     [
+      "windzee",
+      0.8,
+      5,
+      10
+     ]
+    ],
+    "wind": [
+     12,
+     180,
+     16
+    ],
+    "stroom": 0.4,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 2.000556550667535,
+    "T": 10,
+    "xi": 0.26502717546395005,
+    "stroming": 0.6887105144003336,
+    "kracht": 9.467289999999998,
+    "rommel": 0.487133673013329,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 1.0,
+    "MM": 1.0,
+    "MID": 2.0,
+    "GR": 1.0,
+    "FI": 1.2,
+    "SB": 2.0,
+    "SU": 2.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 1.21,
+    "MM": 1.35,
+    "MID": 2.05,
+    "GR": 1.64,
+    "FI": 1.45,
+    "SB": 1.92,
+    "SU": 1.72,
+    "GUN": 1.08
+   },
+   "expert": []
+  },
+  {
+   "nr": 38,
+   "titel": "Open beach break 3 m, alles sluit",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.93,
+      14,
+      0
+     ]
+    ],
+    "wind": [
+     4,
+     0,
+     6
+    ],
+    "stroom": 0.4,
+    "langs_factor": 1.0,
+    "vlaggen": [
+     "closeout"
+    ],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 2.9943011008786566,
+    "T": 14,
+    "xi": 0.30328164351972314,
+    "stroming": 0.4,
+    "kracht": 25.552813999999998,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 1.0,
+    "MM": 1.0,
+    "MID": 1.0,
+    "GR": 1.0,
+    "FI": 1.0,
+    "SB": 1.0,
+    "SU": 1.4,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 1.33,
+    "MM": 1.35,
+    "MID": 2.0,
+    "GR": 1.37,
+    "FI": 1.6,
+    "SB": 2.2,
+    "SU": 1.5,
+    "GUN": 1.5
+   },
+   "expert": [
+    "grote golven"
+   ]
+  },
+  {
+   "nr": 39,
+   "titel": "Point dubbel overhead, offshore 15 kn",
+   "ruw": {
+    "spot": {
+     "tanb": null,
+     "vorm": "Zware lange wall (point, uit spotkennis)",
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      2.29,
+      17,
+      30
+     ]
+    ],
+    "wind": [
+     15,
+     0,
+     20
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [
+     "point"
+    ],
+    "open": false,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 3.5031490482077765,
+    "T": 17,
+    "xi": 0.5,
+    "stroming": 0.8508954803878633,
+    "kracht": 43.683353000000004,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 1.0,
+    "MM": 1.0,
+    "MID": 1.6,
+    "GR": 1.0,
+    "FI": 1.0,
+    "SB": 1.8,
+    "SU": 4.4,
+    "GUN": 4.6
+   },
+   "regel": {
+    "LB": 1.18,
+    "MM": 1.24,
+    "MID": 1.84,
+    "GR": 1.17,
+    "FI": 1.43,
+    "SB": 2.16,
+    "SU": 4.97,
+    "GUN": 4.14
+   },
+   "expert": [
+    "grote golven",
+    "sterke stroming"
+   ]
+  },
+  {
+   "nr": 40,
+   "titel": "Zachte point overhead",
+   "ruw": {
+    "spot": {
+     "tanb": null,
+     "vorm": "Zachte lange wall (point, uit spotkennis)",
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.35,
+      12,
+      30
+     ]
+    ],
+    "wind": [
+     3,
+     0,
+     4
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [
+     "point"
+    ],
+    "open": false,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 1.996871756395425,
+    "T": 12,
+    "xi": 0.3,
+    "stroming": 0.68633827044859,
+    "kracht": 10.7163,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 3.0,
+    "MM": 2.0,
+    "MID": 4.2,
+    "GR": 1.0,
+    "FI": 3.0,
+    "SB": 3.8,
+    "SU": 4.0,
+    "GUN": 1.2
+   },
+   "regel": {
+    "LB": 1.98,
+    "MM": 2.08,
+    "MID": 3.39,
+    "GR": 1.75,
+    "FI": 2.76,
+    "SB": 3.65,
+    "SU": 4.09,
+    "GUN": 1.52
+   },
+   "expert": []
+  },
+  {
+   "nr": 41,
+   "titel": "Outer reef 8–10 m",
+   "ruw": {
+    "spot": {
+     "tanb": null,
+     "vorm": "Extreem zwaar (big-wave rif, uit spotkennis)",
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      6.39,
+      20,
+      0
+     ]
+    ],
+    "wind": [
+     5,
+     0,
+     8
+    ],
+    "stroom": 0.3,
+    "langs_factor": 1.0,
+    "vlaggen": [
+     "tow"
+    ],
+    "open": false,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 8.999348978432668,
+    "T": 20,
+    "xi": 1.0,
+    "stroming": 0.3,
+    "kracht": 400.15457999999995,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 1.0,
+    "MM": 1.0,
+    "MID": 1.0,
+    "GR": 1.0,
+    "FI": 1.0,
+    "SB": 1.0,
+    "SU": 1.0,
+    "GUN": 4.0
+   },
+   "regel": {
+    "LB": 1.01,
+    "MM": 1.01,
+    "MID": 1.03,
+    "GR": 1.01,
+    "FI": 1.02,
+    "SB": 1.05,
+    "SU": 1.2,
+    "GUN": 4.0
+   },
+   "expert": [
+    "grote golven",
+    "holle golf over rif of rotsen"
+   ]
+  },
+  {
+   "nr": 42,
+   "titel": "Borsthoog, lichte onshore 8 kn",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.7,
+      11,
+      10
+     ]
+    ],
+    "wind": [
+     8,
+     180,
+     11
+    ],
+    "stroom": 0.3,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 1.200534094155675,
+    "T": 11,
+    "xi": 0.37633209687091546,
+    "stroming": 0.4576286047199679,
+    "kracht": 2.6410999999999993,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 3.0,
+    "MM": 3.3,
+    "MID": 3.8,
+    "GR": 3.9,
+    "FI": 3.0,
+    "SB": 3.2,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 2.96,
+    "MM": 3.47,
+    "MID": 3.97,
+    "GR": 3.76,
+    "FI": 3.43,
+    "SB": 3.46,
+    "SU": 1.23,
+    "GUN": 1.03
+   },
+   "expert": []
+  },
+  {
+   "nr": 43,
+   "titel": "Borsthoog, onshore 15 kn",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.7,
+      11,
+      10
+     ],
+     [
+      "windzee",
+      0.6,
+      4,
+      10
+     ]
+    ],
+    "wind": [
+     15,
+     180,
+     20
+    ],
+    "stroom": 0.4,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 1.200534094155675,
+    "T": 11,
+    "xi": 0.37633209687091546,
+    "stroming": 0.5576286047199679,
+    "kracht": 2.6410999999999993,
+    "rommel": 0.589806413560037,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 1.0,
+    "MM": 2.0,
+    "MID": 2.0,
+    "GR": 2.9,
+    "FI": 1.8,
+    "SB": 2.0,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 1.28,
+    "MM": 1.59,
+    "MID": 1.99,
+    "GR": 2.67,
+    "FI": 1.45,
+    "SB": 1.65,
+    "SU": 1.04,
+    "GUN": 1.0
+   },
+   "expert": []
+  },
+  {
+   "nr": 44,
+   "titel": "Borsthoog, zijwind 12 kn",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.7,
+      11,
+      10
+     ]
+    ],
+    "wind": [
+     12,
+     90,
+     16
+    ],
+    "stroom": 0.5,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 1.200534094155675,
+    "T": 11,
+    "xi": 0.37633209687091546,
+    "stroming": 0.657628604719968,
+    "kracht": 2.6410999999999993,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 2.2,
+    "MM": 2.9,
+    "MID": 3.0,
+    "GR": 3.2,
+    "FI": 2.8,
+    "SB": 3.0,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 2.31,
+    "MM": 2.71,
+    "MID": 3.27,
+    "GR": 3.21,
+    "FI": 2.58,
+    "SB": 2.85,
+    "SU": 1.17,
+    "GUN": 1.02
+   },
+   "expert": []
+  },
+  {
+   "nr": 45,
+   "titel": "Borsthoog, offshore 18 kn",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.7,
+      11,
+      10
+     ]
+    ],
+    "wind": [
+     18,
+     0,
+     24
+    ],
+    "stroom": 0.2,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 1.200534094155675,
+    "T": 11,
+    "xi": 0.37633209687091546,
+    "stroming": 0.35762860471996794,
+    "kracht": 2.6410999999999993,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 2.0,
+    "MM": 2.8,
+    "MID": 3.0,
+    "GR": 3.0,
+    "FI": 3.0,
+    "SB": 3.0,
+    "SU": 1.8,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 2.04,
+    "MM": 2.66,
+    "MID": 3.17,
+    "GR": 2.88,
+    "FI": 2.99,
+    "SB": 2.89,
+    "SU": 1.25,
+    "GUN": 1.03
+   },
+   "expert": []
+  },
+  {
+   "nr": 46,
+   "titel": "Hoofdhoog, offshore 25 kn",
+   "ruw": {
+    "spot": {
+     "tanb": 0.035,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.99,
+      13,
+      10
+     ]
+    ],
+    "wind": [
+     25,
+     0,
+     32
+    ],
+    "stroom": 0.2,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 1.6936532065227072,
+    "T": 13,
+    "xi": 0.4368614488984055,
+    "stroming": 0.38816159091229807,
+    "kracht": 6.243237,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 1.0,
+    "MM": 1.0,
+    "MID": 2.0,
+    "GR": 1.0,
+    "FI": 1.8,
+    "SB": 2.0,
+    "SU": 3.0,
+    "GUN": 2.0
+   },
+   "regel": {
+    "LB": 1.15,
+    "MM": 1.29,
+    "MID": 1.66,
+    "GR": 1.35,
+    "FI": 1.49,
+    "SB": 1.85,
+    "SU": 2.2,
+    "GUN": 1.1
+   },
+   "expert": []
+  },
+  {
+   "nr": 47,
+   "titel": "Heuphoog, glassy ochtend",
+   "ruw": {
+    "spot": {
+     "tanb": 0.022,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.54,
+      9,
+      10
+     ]
+    ],
+    "wind": [
+     1,
+     0,
+     2
+    ],
+    "stroom": 0.2,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 0.9002248636777397,
+    "T": 9,
+    "xi": 0.2607559685222755,
+    "stroming": 0.3444512731588597,
+    "kracht": 1.285956,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 4.8,
+    "MM": 4.6,
+    "MID": 4.0,
+    "GR": 4.5,
+    "FI": 4.0,
+    "SB": 2.9,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 4.91,
+    "MM": 4.87,
+    "MID": 4.4,
+    "GR": 4.79,
+    "FI": 4.3,
+    "SB": 2.35,
+    "SU": 1.02,
+    "GUN": 1.0
+   },
+   "expert": []
+  },
+  {
+   "nr": 48,
+   "titel": "Heuphoog, onshore 12 kn",
+   "ruw": {
+    "spot": {
+     "tanb": 0.022,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.54,
+      9,
+      10
+     ],
+     [
+      "windzee",
+      0.5,
+      4,
+      10
+     ]
+    ],
+    "wind": [
+     12,
+     180,
+     16
+    ],
+    "stroom": 0.3,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 0.9002248636777397,
+    "T": 9,
+    "xi": 0.2607559685222755,
+    "stroming": 0.4444512731588597,
+    "kracht": 1.285956,
+    "rommel": 0.6798106881203432,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 2.0,
+    "MM": 2.2,
+    "MID": 2.8,
+    "GR": 3.6,
+    "FI": 1.8,
+    "SB": 1.0,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 1.39,
+    "MM": 1.76,
+    "MID": 2.04,
+    "GR": 3.26,
+    "FI": 1.47,
+    "SB": 1.29,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "expert": []
+  },
+  {
+   "nr": 49,
+   "titel": "Overhead, onshore 10 kn",
+   "ruw": {
+    "spot": {
+     "tanb": 0.035,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.17,
+      14,
+      10
+     ],
+     [
+      "windzee",
+      0.5,
+      4,
+      10
+     ]
+    ],
+    "wind": [
+     10,
+     180,
+     14
+    ],
+    "stroom": 0.4,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 1.9940630943980582,
+    "T": 14,
+    "xi": 0.4335819574039473,
+    "stroming": 0.6057100696176924,
+    "kracht": 9.390653999999998,
+    "rommel": 0.3069022669137476,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 1.0,
+    "MM": 1.0,
+    "MID": 2.0,
+    "GR": 1.0,
+    "FI": 2.0,
+    "SB": 3.0,
+    "SU": 3.2,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 1.37,
+    "MM": 1.56,
+    "MID": 2.5,
+    "GR": 1.76,
+    "FI": 1.79,
+    "SB": 3.3,
+    "SU": 2.87,
+    "GUN": 1.26
+   },
+   "expert": []
+  },
+  {
+   "nr": 50,
+   "titel": "Wind net gedraaid naar offshore, nog restchop",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.67,
+      12,
+      10
+     ],
+     [
+      "windzee",
+      0.3,
+      4,
+      10
+     ]
+    ],
+    "wind": [
+     6,
+     0,
+     9
+    ],
+    "stroom": 0.3,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 1.200248944355627,
+    "T": 12,
+    "xi": 0.41059287040153997,
+    "stroming": 0.4444764241066754,
+    "kracht": 2.6395320000000004,
+    "rommel": 0.3388353083753973,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 3.0,
+    "MM": 3.8,
+    "MID": 4.0,
+    "GR": 3.9,
+    "FI": 3.8,
+    "SB": 3.8,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 3.0,
+    "MM": 3.56,
+    "MID": 3.97,
+    "GR": 3.72,
+    "FI": 3.59,
+    "SB": 3.76,
+    "SU": 1.24,
+    "GUN": 1.03
+   },
+   "expert": []
+  },
+  {
+   "nr": 51,
+   "titel": "Offshore 8 kn met stoten tot 30 kn",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.73,
+      10,
+      10
+     ]
+    ],
+    "wind": [
+     8,
+     0,
+     30
+    ],
+    "stroom": 0.3,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 1.195080830398115,
+    "T": 10,
+    "xi": 0.3428997623611422,
+    "stroming": 0.47257657110694484,
+    "kracht": 2.6112099999999994,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 2.0,
+    "MM": 2.2,
+    "MID": 2.2,
+    "GR": 2.4,
+    "FI": 2.2,
+    "SB": 2.2,
+    "SU": 1.6,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 2.68,
+    "MM": 2.77,
+    "MID": 2.95,
+    "GR": 2.63,
+    "FI": 2.87,
+    "SB": 2.55,
+    "SU": 1.15,
+    "GUN": 1.02
+   },
+   "expert": []
+  },
+  {
+   "nr": 52,
+   "titel": "Kniehoog, lichte onshore 6 kn",
+   "ruw": {
+    "spot": {
+     "tanb": 0.02,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.34,
+      8,
+      10
+     ]
+    ],
+    "wind": [
+     6,
+     180,
+     8
+    ],
+    "stroom": 0.2,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 0.5931412396662781,
+    "T": 8,
+    "xi": 0.2595885256909549,
+    "stroming": 0.3070886580771385,
+    "kracht": 0.45315200000000005,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 3.0,
+    "MM": 3.0,
+    "MID": 2.0,
+    "GR": 3.6,
+    "FI": 2.0,
+    "SB": 1.0,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 3.14,
+    "MM": 3.41,
+    "MID": 2.49,
+    "GR": 3.68,
+    "FI": 1.99,
+    "SB": 1.05,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "expert": []
+  },
+  {
+   "nr": 53,
+   "titel": "Schouderhoog, zijwind 16 kn",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.89,
+      12,
+      10
+     ],
+     [
+      "windzee",
+      0.4,
+      4,
+      80
+     ]
+    ],
+    "wind": [
+     16,
+     90,
+     22
+    ],
+    "stroom": 0.6,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 1.506341689620203,
+    "T": 12,
+    "xi": 0.3665095727813543,
+    "stroming": 0.7812914124516563,
+    "kracht": 4.657548,
+    "rommel": 0.169752036929717,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 1.4,
+    "MM": 2.0,
+    "MID": 2.0,
+    "GR": 2.2,
+    "FI": 2.0,
+    "SB": 2.2,
+    "SU": 1.4,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 1.49,
+    "MM": 1.72,
+    "MID": 2.46,
+    "GR": 2.17,
+    "FI": 1.79,
+    "SB": 2.34,
+    "SU": 1.92,
+    "GUN": 1.05
+   },
+   "expert": []
+  },
+  {
+   "nr": 54,
+   "titel": "Wind tegen de getijstroom in",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.7,
+      11,
+      10
+     ],
+     [
+      "windzee",
+      0.3,
+      3,
+      10
+     ]
+    ],
+    "wind": [
+     12,
+     150,
+     16
+    ],
+    "stroom": 0.8,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 1.200534094155675,
+    "T": 11,
+    "xi": 0.37633209687091546,
+    "stroming": 0.957628604719968,
+    "kracht": 2.6410999999999993,
+    "rommel": 0.30193259497627734,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 2.0,
+    "MM": 2.2,
+    "MID": 2.8,
+    "GR": 3.0,
+    "FI": 2.0,
+    "SB": 2.8,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 1.51,
+    "MM": 1.76,
+    "MID": 2.22,
+    "GR": 2.37,
+    "FI": 1.63,
+    "SB": 1.95,
+    "SU": 1.08,
+    "GUN": 1.01
+   },
+   "expert": []
+  },
+  {
+   "nr": 55,
+   "titel": "Noordzee-windzee, wind net gedraaid naar zuidoost",
+   "ruw": {
+    "spot": {
+     "tanb": 0.02,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "windzee",
+      1.0,
+      5,
+      15
+     ]
+    ],
+    "wind": [
+     6,
+     20,
+     9
+    ],
+    "stroom": 0.5,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 1.1560162034666748,
+    "T": 5,
+    "xi": 0.11621511298542224,
+    "stroming": 0.9940947611339804,
+    "kracht": 2.45,
+    "rommel": 0.35,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 3.0,
+    "MM": 2.8,
+    "MID": 3.0,
+    "GR": 3.0,
+    "FI": 2.0,
+    "SB": 1.8,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 1.36,
+    "MM": 1.4,
+    "MID": 1.53,
+    "GR": 1.48,
+    "FI": 1.14,
+    "SB": 1.13,
+    "SU": 1.01,
+    "GUN": 1.0
+   },
+   "expert": []
+  },
+  {
+   "nr": 56,
+   "titel": "Windzee na een storm, wind gaat liggen",
+   "ruw": {
+    "spot": {
+     "tanb": 0.02,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "windzee",
+      1.5,
+      6,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     30,
+     8
+    ],
+    "stroom": 0.5,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 1.733295060939639,
+    "T": 6,
+    "xi": 0.11389104185403565,
+    "stroming": 0.9159846066324336,
+    "kracht": 6.615,
+    "rommel": 0.35,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 2.2,
+    "MM": 2.8,
+    "MID": 3.0,
+    "GR": 2.9,
+    "FI": 2.8,
+    "SB": 2.6,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 1.23,
+    "MM": 1.26,
+    "MID": 1.6,
+    "GR": 1.33,
+    "FI": 1.13,
+    "SB": 1.22,
+    "SU": 1.1,
+    "GUN": 1.01
+   },
+   "expert": []
+  },
+  {
+   "nr": 57,
+   "titel": "Deining plus windzee uit een andere richting",
+   "ruw": {
+    "spot": {
+     "tanb": 0.025,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.53,
+      12,
+      10
+     ],
+     [
+      "windzee",
+      0.6,
+      5,
+      60
+     ]
+    ],
+    "wind": [
+     8,
+     120,
+     11
+    ],
+    "stroom": 0.3,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 0.9950208614489714,
+    "T": 12,
+    "xi": 0.375793904251108,
+    "stroming": 0.4197859940513757,
+    "kracht": 1.6516920000000002,
+    "rommel": 0.5932848058256905,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 2.2,
+    "MM": 2.8,
+    "MID": 3.0,
+    "GR": 3.4,
+    "FI": 2.8,
+    "SB": 2.8,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 2.12,
+    "MM": 2.72,
+    "MID": 3.01,
+    "GR": 3.85,
+    "FI": 2.32,
+    "SB": 2.32,
+    "SU": 1.03,
+    "GUN": 1.01
+   },
+   "expert": []
+  },
+  {
+   "nr": 58,
+   "titel": "Windzee 2 m, onshore 18 kn",
+   "ruw": {
+    "spot": {
+     "tanb": 0.02,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "windzee",
+      2.0,
+      6,
+      10
+     ]
+    ],
+    "wind": [
+     18,
+     180,
+     24
+    ],
+    "stroom": 0.6,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 2.1818429605629985,
+    "T": 6,
+    "xi": 0.10151122557465647,
+    "stroming": 1.1231229100000821,
+    "kracht": 11.76,
+    "rommel": 1.2,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 1.0,
+    "MM": 1.0,
+    "MID": 1.0,
+    "GR": 1.2,
+    "FI": 1.0,
+    "SB": 1.0,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 1.01,
+    "MM": 1.01,
+    "MID": 1.06,
+    "GR": 1.06,
+    "FI": 1.0,
+    "SB": 1.02,
+    "SU": 1.01,
+    "GUN": 1.0
+   },
+   "expert": [
+    "sterke stroming"
+   ]
+  },
+  {
+   "nr": 59,
+   "titel": "Lange deining met windzee erop",
+   "ruw": {
+    "spot": {
+     "tanb": 0.02,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.36,
+      15,
+      10
+     ],
+     [
+      "windzee",
+      0.5,
+      4,
+      10
+     ]
+    ],
+    "wind": [
+     6,
+     160,
+     9
+    ],
+    "stroom": 0.3,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 0.7983944261262208,
+    "T": 15,
+    "xi": 0.41952425618702194,
+    "stroming": 0.3769121565380277,
+    "kracht": 0.9525599999999999,
+    "rommel": 0.7665164785895637,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 3.0,
+    "MM": 3.0,
+    "MID": 3.2,
+    "GR": 3.6,
+    "FI": 3.0,
+    "SB": 2.0,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 1.84,
+    "MM": 2.39,
+    "MID": 2.48,
+    "GR": 3.61,
+    "FI": 1.88,
+    "SB": 1.37,
+    "SU": 1.01,
+    "GUN": 1.0
+   },
+   "expert": []
+  },
+  {
+   "nr": 60,
+   "titel": "Restchop van gisteren, nu windstil",
+   "ruw": {
+    "spot": {
+     "tanb": 0.025,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.7,
+      11,
+      10
+     ],
+     [
+      "windzee",
+      0.2,
+      4,
+      15
+     ]
+    ],
+    "wind": [
+     2,
+     0,
+     3
+    ],
+    "stroom": 0.3,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 1.200534094155675,
+    "T": 11,
+    "xi": 0.31361008072576296,
+    "stroming": 0.4576286047199679,
+    "kracht": 2.6410999999999993,
+    "rommel": 0.24302413982782764,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 3.2,
+    "MM": 3.8,
+    "MID": 4.0,
+    "GR": 3.9,
+    "FI": 3.8,
+    "SB": 3.6,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 3.43,
+    "MM": 3.8,
+    "MID": 4.19,
+    "GR": 3.81,
+    "FI": 3.89,
+    "SB": 3.23,
+    "SU": 1.23,
+    "GUN": 1.03
+   },
+   "expert": []
+  },
+  {
+   "nr": 61,
+   "titel": "Zandbank die alleen bij laag tij werkt, nu hoogwater",
+   "ruw": {
+    "spot": {
+     "tanb": 0.015,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.7,
+      11,
+      10
+     ]
+    ],
+    "wind": [
+     4,
+     0,
+     6
+    ],
+    "stroom": 0.2,
+    "langs_factor": 1.0,
+    "vlaggen": [
+     "vol"
+    ],
+    "open": true,
+    "getij": "hoog",
+    "getij_stand": 0.95
+   },
+   "berekend": {
+    "Hb": 1.200534094155675,
+    "T": 11,
+    "xi": 0.18816604843545773,
+    "stroming": 0.35762860471996794,
+    "kracht": 2.6410999999999993,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 3.0,
+    "MM": 2.4,
+    "MID": 3.0,
+    "GR": 2.4,
+    "FI": 2.0,
+    "SB": 1.4,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 3.39,
+    "MM": 3.08,
+    "MID": 3.42,
+    "GR": 2.88,
+    "FI": 2.19,
+    "SB": 1.64,
+    "SU": 1.07,
+    "GUN": 1.02
+   },
+   "expert": []
+  },
+  {
+   "nr": 62,
+   "titel": "Rif te ondiep bij laagwater springtij",
+   "ruw": {
+    "spot": {
+     "tanb": null,
+     "vorm": "Zeer hol en ondiep (rif bij laagwater, uit spotkennis)",
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.84,
+      13,
+      0
+     ]
+    ],
+    "wind": [
+     4,
+     0,
+     6
+    ],
+    "stroom": 0.2,
+    "langs_factor": 1.0,
+    "vlaggen": [
+     "ondiep"
+    ],
+    "open": false,
+    "getij": "laag",
+    "getij_stand": 0.05
+   },
+   "berekend": {
+    "Hb": 1.4941671303018154,
+    "T": 13,
+    "xi": 0.9,
+    "stroming": 0.2,
+    "kracht": 4.494672,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 1.0,
+    "MM": 1.0,
+    "MID": 1.0,
+    "GR": 1.0,
+    "FI": 1.0,
+    "SB": 1.0,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 1.0,
+    "MM": 1.0,
+    "MID": 1.0,
+    "GR": 1.0,
+    "FI": 1.0,
+    "SB": 1.0,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "expert": [
+    "ondiep rif of rotsen"
+   ]
+  },
+  {
+   "nr": 63,
+   "titel": "Zelfde rif bij halftij",
+   "ruw": {
+    "spot": {
+     "tanb": null,
+     "vorm": "Hol (rif bij halftij, uit spotkennis)",
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.84,
+      13,
+      0
+     ]
+    ],
+    "wind": [
+     6,
+     0,
+     9
+    ],
+    "stroom": 0.2,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": "half",
+    "getij_stand": 0.5
+   },
+   "berekend": {
+    "Hb": 1.4941671303018154,
+    "T": 13,
+    "xi": 0.85,
+    "stroming": 0.2,
+    "kracht": 4.494672,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 2.0,
+    "MM": 2.0,
+    "MID": 3.0,
+    "GR": 2.0,
+    "FI": 3.2,
+    "SB": 4.8,
+    "SU": 4.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 1.59,
+    "MM": 2.12,
+    "MID": 2.31,
+    "GR": 1.74,
+    "FI": 2.98,
+    "SB": 4.83,
+    "SU": 3.59,
+    "GUN": 1.16
+   },
+   "expert": []
+  },
+  {
+   "nr": 64,
+   "titel": "Opkomend tij maakt de golf zachter",
+   "ruw": {
+    "spot": {
+     "tanb": 0.018,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.53,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     3,
+     0,
+     4
+    ],
+    "stroom": 0.3,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 0.9950208614489714,
+    "T": 12,
+    "xi": 0.2705716110607977,
+    "stroming": 0.4197859940513757,
+    "kracht": 1.6516920000000002,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 4.8,
+    "MM": 4.6,
+    "MID": 4.0,
+    "GR": 4.0,
+    "FI": 3.8,
+    "SB": 2.8,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 4.69,
+    "MM": 4.71,
+    "MID": 4.4,
+    "GR": 4.56,
+    "FI": 4.35,
+    "SB": 2.8,
+    "SU": 1.06,
+    "GUN": 1.02
+   },
+   "expert": []
+  },
+  {
+   "nr": 65,
+   "titel": "Point break bij laagwater: droogvallende rotsen",
+   "ruw": {
+    "spot": {
+     "tanb": null,
+     "vorm": "Hol en ondiep: rotsen bijna boven (uit spotkennis)",
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.57,
+      12,
+      30
+     ]
+    ],
+    "wind": [
+     4,
+     0,
+     6
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [
+     "ondiep"
+    ],
+    "open": false,
+    "getij": "laag",
+    "getij_stand": 0.05
+   },
+   "berekend": {
+    "Hb": 1.001804652187315,
+    "T": 12,
+    "xi": 0.9,
+    "stroming": 0.0,
+    "kracht": 1.9104119999999998,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 1.0,
+    "MM": 1.0,
+    "MID": 1.0,
+    "GR": 1.0,
+    "FI": 1.0,
+    "SB": 1.0,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 1.0,
+    "MM": 1.0,
+    "MID": 1.0,
+    "GR": 1.0,
+    "FI": 1.0,
+    "SB": 1.0,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "expert": [
+    "ondiep rif of rotsen"
+   ]
+  },
+  {
+   "nr": 66,
+   "titel": "Vlak strand bij laagwater: golven breken ver uit",
+   "ruw": {
+    "spot": {
+     "tanb": 0.01,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.62,
+      9,
+      10
+     ]
+    ],
+    "wind": [
+     4,
+     0,
+     6
+    ],
+    "stroom": 0.3,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": "laag",
+    "getij_stand": 0.05
+   },
+   "berekend": {
+    "Hb": 1.0054242306072867,
+    "T": 9,
+    "xi": 0.11215338997817995,
+    "stroming": 0.4613153750072211,
+    "kracht": 1.695204,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 3.0,
+    "MM": 3.0,
+    "MID": 3.0,
+    "GR": 3.2,
+    "FI": 2.0,
+    "SB": 1.8,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 3.85,
+    "MM": 3.86,
+    "MID": 3.77,
+    "GR": 3.75,
+    "FI": 1.96,
+    "SB": 1.62,
+    "SU": 1.01,
+    "GUN": 1.0
+   },
+   "expert": []
+  },
+  {
+   "nr": 67,
+   "titel": "Zandbank verschoven na een storm: alles sluit",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.69,
+      11,
+      0
+     ]
+    ],
+    "wind": [
+     4,
+     0,
+     6
+    ],
+    "stroom": 0.3,
+    "langs_factor": 1.0,
+    "vlaggen": [
+     "closeout"
+    ],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 1.1940836592192896,
+    "T": 11,
+    "xi": 0.3773472000287723,
+    "stroming": 0.3,
+    "kracht": 2.5661789999999995,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 2.0,
+    "MM": 2.0,
+    "MID": 2.0,
+    "GR": 2.2,
+    "FI": 2.0,
+    "SB": 2.4,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 2.0,
+    "MM": 2.0,
+    "MID": 2.0,
+    "GR": 2.0,
+    "FI": 2.0,
+    "SB": 2.2,
+    "SU": 1.31,
+    "GUN": 1.04
+   },
+   "expert": []
+  },
+  {
+   "nr": 68,
+   "titel": "Rif bij hoogwater: golf te dik",
+   "ruw": {
+    "spot": {
+     "tanb": null,
+     "vorm": "Vol en traag (te veel water op het rif, uit spotkennis)",
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.81,
+      12,
+      10
+     ]
+    ],
+    "wind": [
+     4,
+     0,
+     6
+    ],
+    "stroom": 0.2,
+    "langs_factor": 1.0,
+    "vlaggen": [
+     "vol"
+    ],
+    "open": false,
+    "getij": "hoog",
+    "getij_stand": 0.95
+   },
+   "berekend": {
+    "Hb": 1.3970099702268584,
+    "T": 12,
+    "xi": 0.22,
+    "stroming": 0.2,
+    "kracht": 3.8578680000000007,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 3.2,
+    "MM": 3.2,
+    "MID": 3.8,
+    "GR": 3.0,
+    "FI": 3.0,
+    "SB": 2.0,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 2.84,
+    "MM": 2.65,
+    "MID": 3.31,
+    "GR": 2.48,
+    "FI": 2.34,
+    "SB": 1.84,
+    "SU": 1.36,
+    "GUN": 1.05
+   },
+   "expert": []
+  },
+  {
+   "nr": 69,
+   "titel": "Holle A-frames bij halftij",
+   "ruw": {
+    "spot": {
+     "tanb": 0.045,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.88,
+      14,
+      5
+     ]
+    ],
+    "wind": [
+     6,
+     0,
+     9
+    ],
+    "stroom": 0.2,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": "half",
+    "getij_stand": 0.5
+   },
+   "berekend": {
+    "Hb": 1.59504687624368,
+    "T": 14,
+    "xi": 0.6233018178602354,
+    "stroming": 0.28264005258841085,
+    "kracht": 5.312384,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 1.2,
+    "MM": 2.0,
+    "MID": 3.0,
+    "GR": 2.0,
+    "FI": 3.2,
+    "SB": 4.8,
+    "SU": 4.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 1.98,
+    "MM": 2.62,
+    "MID": 3.62,
+    "GR": 2.19,
+    "FI": 3.67,
+    "SB": 4.87,
+    "SU": 4.11,
+    "GUN": 1.21
+   },
+   "expert": []
+  },
+  {
+   "nr": 70,
+   "titel": "Rif met sterke stroming in het kanaal",
+   "ruw": {
+    "spot": {
+     "tanb": null,
+     "vorm": "Hol (rif, uit spotkennis)",
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.85,
+      13,
+      10
+     ]
+    ],
+    "wind": [
+     6,
+     0,
+     9
+    ],
+    "stroom": 0.9,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 1.4991720389139094,
+    "T": 13,
+    "xi": 0.85,
+    "stroming": 0.9,
+    "kracht": 4.6023249999999996,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 2.0,
+    "MM": 2.0,
+    "MID": 3.0,
+    "GR": 2.0,
+    "FI": 3.0,
+    "SB": 3.4,
+    "SU": 3.4,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 1.33,
+    "MM": 1.57,
+    "MID": 1.78,
+    "GR": 1.42,
+    "FI": 1.95,
+    "SB": 3.45,
+    "SU": 2.82,
+    "GUN": 1.12
+   },
+   "expert": []
+  },
+  {
+   "nr": 71,
+   "titel": "Belgische kust rond kentering",
+   "ruw": {
+    "spot": {
+     "tanb": 0.02,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.7,
+      7,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     30,
+     8
+    ],
+    "stroom": 0.2,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 1.001974433373419,
+    "T": 7,
+    "xi": 0.17476090503879824,
+    "stroming": 0.40656434446436185,
+    "kracht": 1.6806999999999996,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 3.2,
+    "MM": 3.0,
+    "MID": 3.4,
+    "GR": 3.4,
+    "FI": 2.8,
+    "SB": 1.8,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 3.61,
+    "MM": 3.64,
+    "MID": 3.52,
+    "GR": 3.52,
+    "FI": 2.54,
+    "SB": 1.75,
+    "SU": 1.01,
+    "GUN": 1.0
+   },
+   "expert": []
+  },
+  {
+   "nr": 72,
+   "titel": "Naast een strekdam, stroom 0,5 m/s",
+   "ruw": {
+    "spot": {
+     "tanb": 0.02,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.61,
+      7,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     20,
+     8
+    ],
+    "stroom": 0.5,
+    "langs_factor": 0.6,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 0.8975157450350136,
+    "T": 7,
+    "xi": 0.18465095882978735,
+    "stroming": 0.6110361208850962,
+    "kracht": 1.276303,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 3.8,
+    "MM": 3.6,
+    "MID": 3.6,
+    "GR": 3.8,
+    "FI": 2.8,
+    "SB": 1.8,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 3.26,
+    "MM": 3.14,
+    "MID": 3.07,
+    "GR": 3.2,
+    "FI": 2.22,
+    "SB": 1.52,
+    "SU": 1.01,
+    "GUN": 1.0
+   },
+   "expert": []
+  },
+  {
+   "nr": 73,
+   "titel": "Schuine deining maakt sterke langsstroming",
+   "ruw": {
+    "spot": {
+     "tanb": 0.025,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.8,
+      10,
+      35
+     ]
+    ],
+    "wind": [
+     4,
+     0,
+     6
+    ],
+    "stroom": 0.1,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 1.1945826584145454,
+    "T": 10,
+    "xi": 0.2858093783002252,
+    "stroming": 0.6645178496117472,
+    "kracht": 3.1360000000000006,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 2.8,
+    "MM": 2.8,
+    "MID": 3.0,
+    "GR": 3.0,
+    "FI": 3.0,
+    "SB": 3.0,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 3.46,
+    "MM": 3.51,
+    "MID": 3.95,
+    "GR": 3.41,
+    "FI": 3.62,
+    "SB": 2.97,
+    "SU": 1.22,
+    "GUN": 1.03
+   },
+   "expert": []
+  },
+  {
+   "nr": 74,
+   "titel": "Muistroom naast een zandbank",
+   "ruw": {
+    "spot": {
+     "tanb": 0.035,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.73,
+      12,
+      0
+     ]
+    ],
+    "wind": [
+     4,
+     0,
+     6
+    ],
+    "stroom": 0.0,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": "laag",
+    "getij_stand": 0.05
+   },
+   "berekend": {
+    "Hb": 1.2933890952225495,
+    "T": 12,
+    "xi": 0.4614549004863859,
+    "stroming": 0.0,
+    "kracht": 3.1334519999999992,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 3.0,
+    "MM": 3.6,
+    "MID": 4.2,
+    "GR": 3.6,
+    "FI": 4.2,
+    "SB": 4.2,
+    "SU": 1.6,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 3.46,
+    "MM": 4.1,
+    "MID": 4.63,
+    "GR": 3.61,
+    "FI": 4.6,
+    "SB": 4.67,
+    "SU": 1.62,
+    "GUN": 1.07
+   },
+   "expert": []
+  },
+  {
+   "nr": 75,
+   "titel": "Getijstroom tegen de deining in",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.89,
+      10,
+      10
+     ]
+    ],
+    "wind": [
+     4,
+     0,
+     6
+    ],
+    "stroom": 0.6,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 1.4003964378982146,
+    "T": 10,
+    "xi": 0.3167672873586556,
+    "stroming": 0.802192970224219,
+    "kracht": 3.88129,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 2.0,
+    "MM": 3.0,
+    "MID": 4.0,
+    "GR": 3.0,
+    "FI": 3.4,
+    "SB": 4.0,
+    "SU": 1.6,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 2.54,
+    "MM": 2.58,
+    "MID": 3.35,
+    "GR": 2.56,
+    "FI": 2.89,
+    "SB": 3.01,
+    "SU": 1.84,
+    "GUN": 1.05
+   },
+   "expert": []
+  },
+  {
+   "nr": 76,
+   "titel": "Riviermonding bij afgaand tij",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.7,
+      11,
+      10
+     ]
+    ],
+    "wind": [
+     4,
+     0,
+     6
+    ],
+    "stroom": 1.5,
+    "langs_factor": 1.0,
+    "vlaggen": [
+     "uitstroom"
+    ],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 1.200534094155675,
+    "T": 11,
+    "xi": 0.37633209687091546,
+    "stroming": 1.657628604719968,
+    "kracht": 2.6410999999999993,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 1.0,
+    "MM": 1.0,
+    "MID": 1.0,
+    "GR": 1.0,
+    "FI": 1.0,
+    "SB": 1.0,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 1.0,
+    "MM": 1.0,
+    "MID": 1.0,
+    "GR": 1.0,
+    "FI": 1.0,
+    "SB": 1.0,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "expert": [
+    "sterke stroming"
+   ]
+  },
+  {
+   "nr": 77,
+   "titel": "Getijstroom mee met de deining",
+   "ruw": {
+    "spot": {
+     "tanb": 0.02,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.44,
+      10,
+      10
+     ]
+    ],
+    "wind": [
+     3,
+     0,
+     4
+    ],
+    "stroom": 0.5,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 0.79707857054202,
+    "T": 10,
+    "xi": 0.2799135991891173,
+    "stroming": 0.6151384430469131,
+    "kracht": 0.9486399999999999,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 4.0,
+    "MM": 4.0,
+    "MID": 3.0,
+    "GR": 3.9,
+    "FI": 3.0,
+    "SB": 1.8,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 4.17,
+    "MM": 3.99,
+    "MID": 3.68,
+    "GR": 4.05,
+    "FI": 3.23,
+    "SB": 1.52,
+    "SU": 1.01,
+    "GUN": 1.0
+   },
+   "expert": []
+  },
+  {
+   "nr": 78,
+   "titel": "Stroming 0,6 m/s, glassy",
+   "ruw": {
+    "spot": {
+     "tanb": 0.025,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.58,
+      10,
+      10
+     ]
+    ],
+    "wind": [
+     2,
+     0,
+     3
+    ],
+    "stroom": 0.5,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 0.9942174627160901,
+    "T": 10,
+    "xi": 0.31328808979185296,
+    "stroming": 0.643593213528497,
+    "kracht": 1.6483599999999998,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 4.0,
+    "MM": 3.6,
+    "MID": 3.6,
+    "GR": 3.6,
+    "FI": 3.4,
+    "SB": 2.4,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 4.02,
+    "MM": 3.92,
+    "MID": 3.98,
+    "GR": 3.93,
+    "FI": 3.57,
+    "SB": 2.85,
+    "SU": 1.06,
+    "GUN": 1.01
+   },
+   "expert": []
+  },
+  {
+   "nr": 79,
+   "titel": "Strekdam kaatst golven terug",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.65,
+      8,
+      10
+     ]
+    ],
+    "wind": [
+     4,
+     0,
+     6
+    ],
+    "stroom": 0.2,
+    "langs_factor": 0.6,
+    "vlaggen": [
+     "terugslag"
+    ],
+    "open": true,
+    "getij": "hoog",
+    "getij_stand": 0.95
+   },
+   "berekend": {
+    "Hb": 0.9961062663848053,
+    "T": 8,
+    "xi": 0.3004712855668766,
+    "stroming": 0.3078522380426904,
+    "kracht": 1.6562000000000001,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 2.0,
+    "MM": 2.2,
+    "MID": 2.8,
+    "GR": 3.0,
+    "FI": 2.2,
+    "SB": 2.8,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 2.46,
+    "MM": 2.66,
+    "MID": 3.05,
+    "GR": 3.07,
+    "FI": 2.51,
+    "SB": 2.18,
+    "SU": 1.02,
+    "GUN": 1.0
+   },
+   "expert": []
+  },
+  {
+   "nr": 80,
+   "titel": "Donker, voor zonsopgang",
+   "ruw": {
+    "spot": {
+     "tanb": 0.025,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.58,
+      10,
+      10
+     ]
+    ],
+    "wind": [
+     4,
+     0,
+     6
+    ],
+    "stroom": 0.2,
+    "langs_factor": 1.0,
+    "vlaggen": [
+     "donker"
+    ],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 0.9942174627160901,
+    "T": 10,
+    "xi": 0.31328808979185296,
+    "stroming": 0.34359321352849703,
+    "kracht": 1.6483599999999998,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 1.0,
+    "MM": 1.0,
+    "MID": 1.0,
+    "GR": 1.0,
+    "FI": 1.0,
+    "SB": 1.0,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 1.0,
+    "MM": 1.0,
+    "MID": 1.0,
+    "GR": 1.0,
+    "FI": 1.0,
+    "SB": 1.0,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "expert": []
+  },
+  {
+   "nr": 81,
+   "titel": "Dichte mist, zicht 100 m",
+   "ruw": {
+    "spot": {
+     "tanb": 0.025,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.58,
+      10,
+      10
+     ]
+    ],
+    "wind": [
+     2,
+     0,
+     3
+    ],
+    "stroom": 0.2,
+    "langs_factor": 1.0,
+    "vlaggen": [
+     "mist"
+    ],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 0.9942174627160901,
+    "T": 10,
+    "xi": 0.31328808979185296,
+    "stroming": 0.34359321352849703,
+    "kracht": 1.6483599999999998,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 2.0,
+    "MM": 2.0,
+    "MID": 2.0,
+    "GR": 2.0,
+    "FI": 2.0,
+    "SB": 1.8,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 2.0,
+    "MM": 2.0,
+    "MID": 2.0,
+    "GR": 2.0,
+    "FI": 2.0,
+    "SB": 2.0,
+    "SU": 1.06,
+    "GUN": 1.01
+   },
+   "expert": []
+  },
+  {
+   "nr": 82,
+   "titel": "Storm 35 kn, 3 m windzee",
+   "ruw": {
+    "spot": {
+     "tanb": 0.02,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "windzee",
+      3.0,
+      7,
+      10
+     ]
+    ],
+    "wind": [
+     35,
+     170,
+     45
+    ],
+    "stroom": 0.8,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 3.209779595116887,
+    "T": 7,
+    "xi": 0.09764162515857258,
+    "stroming": 1.4593887532431293,
+    "kracht": 30.87,
+    "rommel": 1.2,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 1.0,
+    "MM": 1.0,
+    "MID": 1.0,
+    "GR": 1.0,
+    "FI": 1.0,
+    "SB": 1.0,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 1.0,
+    "MM": 1.0,
+    "MID": 1.0,
+    "GR": 1.0,
+    "FI": 1.0,
+    "SB": 1.0,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "expert": [
+    "grote golven",
+    "sterke stroming"
+   ]
+  },
+  {
+   "nr": 83,
+   "titel": "IJskoud water, offshore",
+   "ruw": {
+    "spot": {
+     "tanb": 0.025,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.73,
+      10,
+      10
+     ]
+    ],
+    "wind": [
+     15,
+     0,
+     20
+    ],
+    "stroom": 0.3,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 1.195080830398115,
+    "T": 10,
+    "xi": 0.2857498019676185,
+    "stroming": 0.47257657110694484,
+    "kracht": 2.6112099999999994,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 3.0,
+    "MM": 3.2,
+    "MID": 3.6,
+    "GR": 3.4,
+    "FI": 3.4,
+    "SB": 3.2,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 2.56,
+    "MM": 3.13,
+    "MID": 3.64,
+    "GR": 3.25,
+    "FI": 3.41,
+    "SB": 2.66,
+    "SU": 1.19,
+    "GUN": 1.02
+   },
+   "expert": []
+  },
+  {
+   "nr": 84,
+   "titel": "Na zware regen met riooloverstort",
+   "ruw": {
+    "spot": {
+     "tanb": 0.025,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.58,
+      10,
+      10
+     ]
+    ],
+    "wind": [
+     4,
+     0,
+     6
+    ],
+    "stroom": 0.2,
+    "langs_factor": 1.0,
+    "vlaggen": [
+     "riool"
+    ],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 0.9942174627160901,
+    "T": 10,
+    "xi": 0.31328808979185296,
+    "stroming": 0.34359321352849703,
+    "kracht": 1.6483599999999998,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 1.0,
+    "MM": 1.0,
+    "MID": 1.0,
+    "GR": 1.0,
+    "FI": 1.0,
+    "SB": 1.0,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 1.0,
+    "MM": 1.0,
+    "MID": 1.0,
+    "GR": 1.0,
+    "FI": 1.0,
+    "SB": 1.0,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "expert": []
+  },
+  {
+   "nr": 85,
+   "titel": "Zeer druk: 50 surfers op één piek",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.7,
+      11,
+      10
+     ]
+    ],
+    "wind": [
+     4,
+     0,
+     6
+    ],
+    "stroom": 0.2,
+    "langs_factor": 1.0,
+    "vlaggen": [
+     "drukte"
+    ],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 1.200534094155675,
+    "T": 11,
+    "xi": 0.37633209687091546,
+    "stroming": 0.35762860471996794,
+    "kracht": 2.6410999999999993,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 3.2,
+    "MM": 2.8,
+    "MID": 3.2,
+    "GR": 3.2,
+    "FI": 3.2,
+    "SB": 3.0,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 4.11,
+    "MM": 4.38,
+    "MID": 4.65,
+    "GR": 4.06,
+    "FI": 4.62,
+    "SB": 4.24,
+    "SU": 1.33,
+    "GUN": 1.04
+   },
+   "expert": []
+  },
+  {
+   "nr": 86,
+   "titel": "Bewaakte zwemzone in juli",
+   "ruw": {
+    "spot": {
+     "tanb": 0.02,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.54,
+      9,
+      10
+     ]
+    ],
+    "wind": [
+     4,
+     0,
+     6
+    ],
+    "stroom": 0.3,
+    "langs_factor": 1.0,
+    "vlaggen": [
+     "zwemzone"
+    ],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 0.9002248636777397,
+    "T": 9,
+    "xi": 0.23705088047479592,
+    "stroming": 0.4444512731588597,
+    "kracht": 1.285956,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 1.0,
+    "MM": 1.0,
+    "MID": 1.0,
+    "GR": 1.0,
+    "FI": 1.0,
+    "SB": 1.0,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 1.0,
+    "MM": 1.0,
+    "MID": 1.0,
+    "GR": 1.0,
+    "FI": 1.0,
+    "SB": 1.0,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "expert": []
+  },
+  {
+   "nr": 87,
+   "titel": "Beschutte baai bij een grote storm buiten",
+   "ruw": {
+    "spot": {
+     "tanb": 0.02,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.51,
+      13,
+      10
+     ]
+    ],
+    "wind": [
+     8,
+     0,
+     12
+    ],
+    "stroom": 0.1,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 0.9962594958239773,
+    "T": 13,
+    "xi": 0.32548552586698376,
+    "stroming": 0.21071807865351622,
+    "kracht": 1.6568370000000001,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 4.8,
+    "MM": 4.6,
+    "MID": 4.0,
+    "GR": 4.0,
+    "FI": 4.0,
+    "SB": 3.0,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 4.89,
+    "MM": 4.96,
+    "MID": 4.4,
+    "GR": 4.74,
+    "FI": 4.4,
+    "SB": 3.35,
+    "SU": 1.08,
+    "GUN": 1.02
+   },
+   "expert": []
+  },
+  {
+   "nr": 88,
+   "titel": "Open kust tijdens dezelfde storm",
+   "ruw": {
+    "spot": {
+     "tanb": 0.025,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      2.41,
+      9,
+      0
+     ],
+     [
+      "windzee",
+      1.8,
+      6,
+      10
+     ]
+    ],
+    "wind": [
+     20,
+     180,
+     28
+    ],
+    "stroom": 0.6,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 2.9971539162628753,
+    "T": 9,
+    "xi": 0.1623949666790401,
+    "stroming": 0.6,
+    "kracht": 25.613721,
+    "rommel": 0.6691268389979593,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 1.0,
+    "MM": 1.0,
+    "MID": 1.0,
+    "GR": 1.0,
+    "FI": 1.0,
+    "SB": 1.0,
+    "SU": 1.2,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 1.03,
+    "MM": 1.07,
+    "MID": 1.32,
+    "GR": 1.2,
+    "FI": 1.05,
+    "SB": 1.16,
+    "SU": 1.16,
+    "GUN": 1.07
+   },
+   "expert": [
+    "grote golven"
+   ]
+  },
+  {
+   "nr": 89,
+   "titel": "Holle linkse rifbreak",
+   "ruw": {
+    "spot": {
+     "tanb": null,
+     "vorm": "Hol (rif, uit spotkennis)",
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.04,
+      14,
+      15
+     ]
+    ],
+    "wind": [
+     6,
+     0,
+     9
+    ],
+    "stroom": 0.2,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": false,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 1.8007515839392945,
+    "T": 14,
+    "xi": 0.85,
+    "stroming": 0.2,
+    "kracht": 7.419776000000001,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 1.0,
+    "MM": 1.0,
+    "MID": 2.0,
+    "GR": 1.0,
+    "FI": 2.0,
+    "SB": 4.8,
+    "SU": 4.2,
+    "GUN": 1.2
+   },
+   "regel": {
+    "LB": 1.36,
+    "MM": 1.7,
+    "MID": 2.08,
+    "GR": 1.48,
+    "FI": 2.41,
+    "SB": 4.94,
+    "SU": 4.49,
+    "GUN": 1.36
+   },
+   "expert": [
+    "holle golf over rif of rotsen"
+   ]
+  },
+  {
+   "nr": 90,
+   "titel": "Golf die vlak naast een pier breekt",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.9,
+      10,
+      15
+     ]
+    ],
+    "wind": [
+     4,
+     0,
+     6
+    ],
+    "stroom": 0.4,
+    "langs_factor": 1.0,
+    "vlaggen": [
+     "pier"
+    ],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 1.402070744008677,
+    "T": 10,
+    "xi": 0.31657809439608037,
+    "stroming": 0.7013212731293148,
+    "kracht": 3.9690000000000003,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 2.0,
+    "MM": 2.0,
+    "MID": 2.4,
+    "GR": 3.0,
+    "FI": 2.4,
+    "SB": 3.0,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 2.4,
+    "MM": 2.4,
+    "MID": 2.4,
+    "GR": 2.76,
+    "FI": 3.0,
+    "SB": 3.0,
+    "SU": 1.94,
+    "GUN": 1.05
+   },
+   "expert": []
+  },
+  {
+   "nr": 91,
+   "titel": "Vlakke slikbank",
+   "ruw": {
+    "spot": {
+     "tanb": 0.008,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.24,
+      6,
+      10
+     ]
+    ],
+    "wind": [
+     3,
+     0,
+     4
+    ],
+    "stroom": 0.2,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 0.40009993941232874,
+    "T": 6,
+    "xi": 0.09482035218991837,
+    "stroming": 0.2963008487725731,
+    "kracht": 0.169344,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 2.0,
+    "MM": 1.4,
+    "MID": 1.0,
+    "GR": 1.4,
+    "FI": 1.0,
+    "SB": 1.0,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 1.47,
+    "MM": 1.35,
+    "MID": 1.06,
+    "GR": 1.32,
+    "FI": 1.01,
+    "SB": 1.0,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "expert": []
+  },
+  {
+   "nr": 92,
+   "titel": "Strand kijkt van de deining weg",
+   "ruw": {
+    "spot": {
+     "tanb": 0.03,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      1.5,
+      11,
+      160
+     ]
+    ],
+    "wind": [
+     4,
+     0,
+     6
+    ],
+    "stroom": 0.1,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 0.0,
+    "T": 11,
+    "xi": 0.5,
+    "stroming": 0.1,
+    "kracht": 12.127500000000001,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 1.0,
+    "MM": 1.0,
+    "MID": 1.0,
+    "GR": 1.0,
+    "FI": 1.0,
+    "SB": 1.0,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 1.0,
+    "MM": 1.0,
+    "MID": 1.0,
+    "GR": 1.0,
+    "FI": 1.0,
+    "SB": 1.0,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "expert": []
+  },
+  {
+   "nr": 93,
+   "titel": "Rotsstrand met keien, shorebreak",
+   "ruw": {
+    "spot": {
+     "tanb": 0.18,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.58,
+      10,
+      0
+     ]
+    ],
+    "wind": [
+     4,
+     0,
+     6
+    ],
+    "stroom": 0.2,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 1.0003242642635841,
+    "T": 10,
+    "xi": 2.248778461153536,
+    "stroming": 0.2,
+    "kracht": 1.6483599999999998,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 1.0,
+    "MM": 1.0,
+    "MID": 1.6,
+    "GR": 1.8,
+    "FI": 1.8,
+    "SB": 2.2,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 1.02,
+    "MM": 1.03,
+    "MID": 1.02,
+    "GR": 1.02,
+    "FI": 1.04,
+    "SB": 1.36,
+    "SU": 1.01,
+    "GUN": 1.0
+   },
+   "expert": []
+  },
+  {
+   "nr": 94,
+   "titel": "Zomer: windzee met zeebries",
+   "ruw": {
+    "spot": {
+     "tanb": 0.02,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "windzee",
+      0.3,
+      5,
+      10
+     ]
+    ],
+    "wind": [
+     10,
+     170,
+     13
+    ],
+    "stroom": 0.6,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 0.4446558369232858,
+    "T": 5,
+    "xi": 0.1873840281806243,
+    "stroming": 0.7283633246624127,
+    "kracht": 0.2205,
+    "rommel": 1.2,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 2.0,
+    "MM": 1.4,
+    "MID": 1.0,
+    "GR": 1.6,
+    "FI": 1.0,
+    "SB": 1.0,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 1.02,
+    "MM": 1.03,
+    "MID": 1.01,
+    "GR": 1.17,
+    "FI": 1.0,
+    "SB": 1.0,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "expert": []
+  },
+  {
+   "nr": 95,
+   "titel": "Winter: noordwesterstorm bij springtij",
+   "ruw": {
+    "spot": {
+     "tanb": 0.02,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "windzee",
+      2.0,
+      7,
+      10
+     ]
+    ],
+    "wind": [
+     25,
+     160,
+     34
+    ],
+    "stroom": 1.3,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 2.320610241780428,
+    "T": 7,
+    "xi": 0.11483426707421462,
+    "stroming": 1.7774050238116672,
+    "kracht": 13.719999999999999,
+    "rommel": 1.2,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 1.0,
+    "MM": 1.0,
+    "MID": 1.0,
+    "GR": 1.0,
+    "FI": 1.0,
+    "SB": 1.0,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 1.0,
+    "MM": 1.01,
+    "MID": 1.03,
+    "GR": 1.04,
+    "FI": 1.0,
+    "SB": 1.01,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "expert": [
+    "sterke stroming"
+   ]
+  },
+  {
+   "nr": 96,
+   "titel": "Herfst: noordwesterdeining, windstil, strekdam",
+   "ruw": {
+    "spot": {
+     "tanb": 0.02,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.61,
+      9,
+      0
+     ]
+    ],
+    "wind": [
+     2,
+     0,
+     3
+    ],
+    "stroom": 0.5,
+    "langs_factor": 0.6,
+    "vlaggen": [],
+    "open": true,
+    "getij": "half",
+    "getij_stand": 0.5
+   },
+   "berekend": {
+    "Hb": 0.9985257760769377,
+    "T": 9,
+    "xi": 0.2250802736387587,
+    "stroming": 0.5,
+    "kracht": 1.640961,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 4.0,
+    "MM": 4.4,
+    "MID": 4.4,
+    "GR": 4.4,
+    "FI": 3.8,
+    "SB": 2.8,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 4.48,
+    "MM": 4.46,
+    "MID": 4.37,
+    "GR": 4.36,
+    "FI": 3.72,
+    "SB": 2.37,
+    "SU": 1.03,
+    "GUN": 1.01
+   },
+   "expert": []
+  },
+  {
+   "nr": 97,
+   "titel": "Zuidwester 15 kn",
+   "ruw": {
+    "spot": {
+     "tanb": 0.02,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "windzee",
+      1.0,
+      6,
+      30
+     ]
+    ],
+    "wind": [
+     15,
+     120,
+     20
+    ],
+    "stroom": 0.4,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 1.190340365978751,
+    "T": 6,
+    "xi": 0.1374327494205159,
+    "stroming": 1.2078747453541672,
+    "kracht": 2.94,
+    "rommel": 1.2,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 1.2,
+    "MM": 2.0,
+    "MID": 2.0,
+    "GR": 2.8,
+    "FI": 1.2,
+    "SB": 1.2,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 1.03,
+    "MM": 1.07,
+    "MID": 1.14,
+    "GR": 1.27,
+    "FI": 1.02,
+    "SB": 1.03,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "expert": [
+    "sterke stroming"
+   ]
+  },
+  {
+   "nr": 98,
+   "titel": "Oostenwind, maar geen deining",
+   "ruw": {
+    "spot": {
+     "tanb": 0.02,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "windzee",
+      0.2,
+      4,
+      10
+     ]
+    ],
+    "wind": [
+     10,
+     0,
+     14
+    ],
+    "stroom": 0.5,
+    "langs_factor": 1.0,
+    "vlaggen": [],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 0.2940268458995451,
+    "T": 4,
+    "xi": 0.18434911792276393,
+    "stroming": 0.6060947648635855,
+    "kracht": 0.07840000000000001,
+    "rommel": 0.35,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 1.8,
+    "MM": 1.2,
+    "MID": 1.0,
+    "GR": 1.2,
+    "FI": 1.0,
+    "SB": 1.0,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 1.01,
+    "MM": 1.02,
+    "MID": 1.0,
+    "GR": 1.01,
+    "FI": 1.0,
+    "SB": 1.0,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "expert": []
+  },
+  {
+   "nr": 99,
+   "titel": "Kentering om 7 uur, nog donker",
+   "ruw": {
+    "spot": {
+     "tanb": 0.02,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.65,
+      8,
+      10
+     ]
+    ],
+    "wind": [
+     4,
+     0,
+     6
+    ],
+    "stroom": 0.2,
+    "langs_factor": 1.0,
+    "vlaggen": [
+     "donker"
+    ],
+    "open": true,
+    "getij": null,
+    "getij_stand": null
+   },
+   "berekend": {
+    "Hb": 0.9961062663848053,
+    "T": 8,
+    "xi": 0.20031419037791773,
+    "stroming": 0.37975373007115065,
+    "kracht": 1.6562000000000001,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 1.0,
+    "MM": 1.0,
+    "MID": 1.0,
+    "GR": 1.0,
+    "FI": 1.0,
+    "SB": 1.0,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 1.0,
+    "MM": 1.0,
+    "MID": 1.0,
+    "GR": 1.0,
+    "FI": 1.0,
+    "SB": 1.0,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "expert": []
+  },
+  {
+   "nr": 100,
+   "titel": "Strekdam schermt sterke ebstroom af",
+   "ruw": {
+    "spot": {
+     "tanb": 0.02,
+     "werkt_bij_tij": null
+    },
+    "systemen": [
+     [
+      "deining1",
+      0.61,
+      7,
+      10
+     ]
+    ],
+    "wind": [
+     5,
+     20,
+     8
+    ],
+    "stroom": 0.3,
+    "langs_factor": 0.5,
+    "vlaggen": [],
+    "open": true,
+    "getij": "half",
+    "getij_stand": 0.5
+   },
+   "berekend": {
+    "Hb": 0.8975157450350136,
+    "T": 7,
+    "xi": 0.18465095882978735,
+    "stroming": 0.3925301007375801,
+    "kracht": 1.276303,
+    "rommel": 0.0,
+    "kruis": 0.0
+   },
+   "hand": {
+    "LB": 3.8,
+    "MM": 3.6,
+    "MID": 3.6,
+    "GR": 3.8,
+    "FI": 2.8,
+    "SB": 1.8,
+    "SU": 1.0,
+    "GUN": 1.0
+   },
+   "regel": {
+    "LB": 3.7,
+    "MM": 3.66,
+    "MID": 3.42,
+    "GR": 3.62,
+    "FI": 2.55,
+    "SB": 1.6,
+    "SU": 1.01,
+    "GUN": 1.0
+   },
+   "expert": []
+  }
+ ]
+}
