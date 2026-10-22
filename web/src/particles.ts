@@ -299,7 +299,7 @@ export class ParticleLayer implements CustomLayerInterface {
   /** Golven in twee lagen: deining (de golven waarop je surft) en windzee (golven van de wind ter plaatse). */
   readonly swell = new WaveSystem(this)
   readonly windsea = new WaveSystem(this)
-  /** Met wind en golven aan: om beurt wind en golven tonen in plaats van tegelijk. */
+  /** Om beurt wind, deining en windzee tonen (de lagen die aan staan) in plaats van tegelijk. */
   alternate = false
   private altStart = performance.now() / 1000
 
@@ -559,20 +559,31 @@ export class ParticleLayer implements CustomLayerInterface {
     gl.viewport(0, 0, w, h)
   }
 
-  /** Afwisselen opnieuw laten beginnen met wind. */
+  /** Afwisselen opnieuw laten beginnen met de eerste laag die aan staat. */
   restartAlternation() {
     this.altStart = performance.now() / 1000
   }
 
-  /** Zichtbaarheid van golven en wind (0..1). Beide lagen blijven doorrekenen, zodat een wissel direct vol oogt. */
-  private opacities(): [number, number] {
-    if (!this.alternate || !this.showWind || !(this.swell.show || this.windsea.show)) return [1, 1]
-    const t = (performance.now() / 1000 - this.altStart) % (2 * ALT_HOLD)
+  /**
+   * Zichtbaarheid (0..1) per laag. Met afwisselen aan komen de lagen die aan staan om beurt in beeld: wind, deining,
+   * windzee, telkens ALT_HOLD seconden met een overgang van ALT_FADE seconden. Alle lagen blijven doorrekenen, zodat
+   * een wissel direct vol oogt.
+   */
+  private opacity(kind: 'wind' | 'swell' | 'windsea'): number {
+    const aan = (['wind', 'swell', 'windsea'] as const).filter((k) => (k === 'wind' ? this.showWind && !!this.wind : this[k].show))
+    if (!this.alternate || aan.length < 2) return 1
+    const i = aan.indexOf(kind as never)
+    if (i < 0) return 0
+    const n = aan.length
+    const t = (performance.now() / 1000 - this.altStart) % (n * ALT_HOLD)
     const ramp = (x: number) => Math.max(0, Math.min(1, x / ALT_FADE))
-    // Eerst wind, dan golven; elke overgang duurt ALT_FADE seconden.
-    const wind = t < ALT_HOLD ? 1 - ramp(t - (ALT_HOLD - ALT_FADE)) : ramp(t - (2 * ALT_HOLD - ALT_FADE))
     const s = (x: number) => x * x * (3 - 2 * x)
-    return [s(1 - wind), s(wind)]
+    // Laag i is aan van i*HOLD tot (i+1)*HOLD; de laatste ALT_FADE seconden gaat ze over in de volgende.
+    const start = i * ALT_HOLD
+    const d = (t - start + n * ALT_HOLD) % (n * ALT_HOLD) // tijd sinds het begin van deze beurt
+    if (d < ALT_HOLD) return s(1 - ramp(d - (ALT_HOLD - ALT_FADE)))
+    // Net voor de eigen beurt: inkomen tijdens de overgang van de vorige laag.
+    return s(ramp(d - (n * ALT_HOLD - ALT_FADE)))
   }
 
   /**
@@ -581,7 +592,7 @@ export class ParticleLayer implements CustomLayerInterface {
    */
   drawTrails(gl: WebGLRenderingContext | WebGL2RenderingContext, kind: 'wind' | 'swell' | 'windsea') {
     const t = kind === 'wind' ? this.windTrails : this[kind].trails
-    const op = this.opacities()[kind === 'wind' ? 1 : 0]
+    const op = this.opacity(kind)
     if (!t || t.empty || op <= 0) return
     if ('bindVertexArray' in gl) gl.bindVertexArray(null)
     if (kind === 'wind') gl.disable(gl.DEPTH_TEST) // wind ligt bovenop alles
