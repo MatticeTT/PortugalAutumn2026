@@ -19,10 +19,12 @@ MAP = Path(__file__).parent / "kennis"
 URL = "https://nominatim.openstreetmap.org/search"
 AGENT = "surfkaart/1.0 (persoonlijk project; github.com/MatticeTT/PortugalAutumn2026)"
 LAND = {"portugal": "pt"}
+VOORKEUR = {("natural", "beach"), ("leisure", "surf_spot"), ("sport", "surfing"), ("leisure", "water_sports"),
+            ("natural", "reef"), ("natural", "cape"), ("natural", "bay")}
 
 
 def zoek(q: str, land: str | None) -> dict | None:
-    par = {"q": q, "format": "jsonv2", "limit": 1}
+    par = {"q": q, "format": "jsonv2", "limit": 10}
     if land:
         par["countrycodes"] = land
     req = urllib.request.Request(URL + "?" + urllib.parse.urlencode(par), headers={"User-Agent": AGENT})
@@ -30,9 +32,11 @@ def zoek(q: str, land: str | None) -> dict | None:
         res = json.load(r)
     if not res:
         return None
-    x = res[0]
+    # Voorrang aan een strand of surfplek; anders het eerste resultaat.
+    goed = [x for x in res if (x.get("category"), x.get("type")) in VOORKEUR or x.get("type") in ("beach", "surf_spot")]
+    x = (goed or res)[0]
     return {"lat": float(x["lat"]), "lon": float(x["lon"]), "osm": f"{x['osm_type']}/{x['osm_id']}",
-            "soort": f"{x.get('category')}={x.get('type')}", "gevonden": x.get("display_name")}
+            "soort": f"{x.get('category')}={x.get('type')}", "gevonden": x.get("display_name"), "versie": 2}
 
 
 def main() -> int:
@@ -45,7 +49,7 @@ def main() -> int:
         uit = {}
         for s in json.loads(pad.read_text())["spots"]:
             q = s.get("zoek") or s["naam"]
-            if q in oud and oud[q] is not None:
+            if q in oud and oud[q] is not None and oud[q].get("versie") == 2:
                 uit[q] = oud[q]
                 continue
             try:
