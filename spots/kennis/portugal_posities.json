@@ -4,322 +4,368 @@
   "lon": -8.8664452,
   "osm": "way/1474542134",
   "soort": "natural=beach",
-  "gevonden": "Praia de Moledo, Moledo, Moledo e Cristelo, Caminha, Viana do Castelo, Portugal"
+  "gevonden": "Praia de Moledo, Moledo, Moledo e Cristelo, Caminha, Viana do Castelo, Portugal",
+  "versie": 2
  },
  "Praia de Afife, Viana do Castelo": {
   "lat": 41.7850245,
   "lon": -8.8715242,
   "osm": "node/3859586890",
   "soort": "natural=beach",
-  "gevonden": "Praia de Afife, Afife, Viana do Castelo, Portugal"
+  "gevonden": "Praia de Afife, Afife, Viana do Castelo, Portugal",
+  "versie": 2
  },
  "Praia do Cabedelo, Viana do Castelo": {
   "lat": 41.6767935,
   "lon": -8.8292152,
   "osm": "way/1474807103",
   "soort": "natural=beach",
-  "gevonden": "Praia do Cabedelo, Darque, Viana do Castelo, Portugal"
+  "gevonden": "Praia do Cabedelo, Darque, Viana do Castelo, Portugal",
+  "versie": 2
  },
  "Praia de Aguçadoura, Póvoa de Varzim": {
-  "lat": 41.4286905,
-  "lon": -8.7829813,
-  "osm": "node/13612043327",
-  "soort": "highway=bus_stop",
-  "gevonden": "Praia, Rua da Praia, Aguçadoura, Póvoa de Varzim, Porto, 4495-031, Portugal"
+  "lat": 41.4388901,
+  "lon": -8.7808912,
+  "osm": "node/11105958933",
+  "soort": "natural=beach",
+  "gevonden": "Praia da Barranha, Aguçadoura, Póvoa de Varzim, Porto, 4495-030, Portugal",
+  "versie": 2
  },
  "Praia de Leça da Palmeira, Matosinhos": {
   "lat": 41.1895834,
   "lon": -8.7058844,
   "osm": "way/446746773",
   "soort": "natural=beach",
-  "gevonden": "Praia de Leça, Leça da Palmeira, Matosinhos, Porto, Portugal"
+  "gevonden": "Praia de Leça, Leça da Palmeira, Matosinhos, Porto, Portugal",
+  "versie": 2
  },
  "Praia de Matosinhos": {
   "lat": 41.176484,
   "lon": -8.6930137,
   "osm": "way/338635402",
   "soort": "natural=beach",
-  "gevonden": "Praia de Matosinhos, Matosinhos, Porto, Portugal"
+  "gevonden": "Praia de Matosinhos, Matosinhos, Porto, Portugal",
+  "versie": 2
  },
  "Praia da Baía, Espinho": {
   "lat": 41.0070324,
   "lon": -8.6460934,
   "osm": "way/62075883",
   "soort": "natural=beach",
-  "gevonden": "Praia da Baía, Espinho, Aveiro, Portugal"
+  "gevonden": "Praia da Baía, Espinho, Aveiro, Portugal",
+  "versie": 2
  },
  "Praia da Barra, Ílhavo": {
   "lat": 40.6361168,
   "lon": -8.7487754,
   "osm": "way/168740954",
   "soort": "natural=beach",
-  "gevonden": "Praia da Barra, Barra, Gafanha da Nazaré, Ílhavo, Aveiro, Portugal"
+  "gevonden": "Praia da Barra, Barra, Gafanha da Nazaré, Ílhavo, Aveiro, Portugal",
+  "versie": 2
  },
  "Praia de Buarcos, Figueira da Foz": {
   "lat": 40.1604069,
   "lon": -8.8694247,
   "osm": "node/5353507799",
   "soort": "place=hamlet",
-  "gevonden": "Praia de Buarcos, Buarcos, Figueira da Foz, Coimbra, 3080-343, Portugal"
+  "gevonden": "Praia de Buarcos, Buarcos, Figueira da Foz, Coimbra, 3080-343, Portugal",
+  "versie": 2
  },
  "Praia do Cabedelo, Figueira da Foz": {
   "lat": 40.1359563,
   "lon": -8.8627103,
   "osm": "way/212896665",
   "soort": "natural=beach",
-  "gevonden": "Praia do Cabedelo, Cova, São Pedro, Figueira da Foz, Coimbra, Portugal"
+  "gevonden": "Praia do Cabedelo, Cova, São Pedro, Figueira da Foz, Coimbra, Portugal",
+  "versie": 2
  },
  "Praia da Cova Gala, Figueira da Foz": {
   "lat": 40.1234301,
   "lon": -8.8635636,
   "osm": "way/212896662",
   "soort": "natural=beach",
-  "gevonden": "Praia da Cova-Gala, Cova, São Pedro, Figueira da Foz, Coimbra, Portugal"
+  "gevonden": "Praia da Cova-Gala, Cova, São Pedro, Figueira da Foz, Coimbra, Portugal",
+  "versie": 2
  },
  "Praia do Norte, Nazaré": {
   "lat": 39.622828,
   "lon": -9.0834021,
   "osm": "relation/6150268",
   "soort": "natural=beach",
-  "gevonden": "Praia do Norte, Nazaré, Leiria, Portugal"
+  "gevonden": "Praia do Norte, Nazaré, Leiria, Portugal",
+  "versie": 2
  },
- "Praia do Medão, Peniche": {
+ "Supertubos, Peniche": {
   "lat": 39.3610054,
   "lon": -9.379383,
   "osm": "node/13001428453",
   "soort": "amenity=driving_school",
-  "gevonden": "Supertubos, Rua Ramiro Matos Bilhau, Peniche, Leiria, 2520-486, Portugal"
+  "gevonden": "Supertubos, Rua Ramiro Matos Bilhau, Peniche, Leiria, 2520-486, Portugal",
+  "versie": 2
  },
  "Molhe Leste, Peniche": {
   "lat": 39.3497344,
   "lon": -9.3679762,
   "osm": "node/5422670882",
   "soort": "leisure=water_sports",
-  "gevonden": "Spot de Surf do Molhe Leste, Rua da Praia do Molho Leste, Peniche, Leiria, 2520-620, Portugal"
+  "gevonden": "Spot de Surf do Molhe Leste, Rua da Praia do Molho Leste, Peniche, Leiria, 2520-620, Portugal",
+  "versie": 2
  },
  "Praia da Consolação, Peniche": {
   "lat": 39.3377703,
   "lon": -9.360162,
   "osm": "way/530345667",
   "soort": "natural=beach",
-  "gevonden": "Praia da Consolação, Consolação, Atouguia da Baleia, Peniche, Leiria, Portugal"
+  "gevonden": "Praia da Consolação, Consolação, Atouguia da Baleia, Peniche, Leiria, Portugal",
+  "versie": 2
  },
  "Praia do Baleal, Peniche": {
   "lat": 39.3655067,
   "lon": -9.3419459,
   "osm": "way/138709494",
   "soort": "natural=beach",
-  "gevonden": "Praia do Baleal, Baleal, Ferrel, Peniche, Leiria, Portugal"
+  "gevonden": "Praia do Baleal, Baleal, Ferrel, Peniche, Leiria, Portugal",
+  "versie": 2
  },
  "Praia do Lagido, Peniche": {
   "lat": 39.3737814,
   "lon": -9.3287256,
   "osm": "way/138709035",
   "soort": "natural=beach",
-  "gevonden": "Praia do Lagido, Casais do Baleal, Ferrel, Peniche, Leiria, Portugal"
+  "gevonden": "Praia do Lagido, Casais do Baleal, Ferrel, Peniche, Leiria, Portugal",
+  "versie": 2
  },
- "Praia das Belgas, Peniche": null,
+ "Belgas, Peniche": null,
  "Praia da Almagreira, Peniche": {
   "lat": 39.3788134,
   "lon": -9.3139779,
   "osm": "node/4938263215",
   "soort": "place=locality",
-  "gevonden": "Praia da Almagreira, Ferrel, Peniche, Leiria, 2520-102, Portugal"
+  "gevonden": "Praia da Almagreira, Ferrel, Peniche, Leiria, 2520-102, Portugal",
+  "versie": 2
  },
  "Praia de São Lourenço, Mafra": {
   "lat": 39.0116874,
   "lon": -9.4211587,
   "osm": "way/27264077",
   "soort": "natural=beach",
-  "gevonden": "Praia de São Lourenço, Santo Isidoro, Mafra, Lisboa, Portugal"
+  "gevonden": "Praia de São Lourenço, Santo Isidoro, Mafra, Lisboa, Portugal",
+  "versie": 2
  },
  "Praia dos Coxos, Mafra": {
   "lat": 39.0042534,
   "lon": -9.4254409,
   "osm": "way/27264941",
   "soort": "natural=beach",
-  "gevonden": "Praia dos Coxos, Santo Isidoro, Mafra, Lisboa, Portugal"
+  "gevonden": "Praia dos Coxos, Santo Isidoro, Mafra, Lisboa, Portugal",
+  "versie": 2
  },
  "Praia da Ribeira d'Ilhas, Mafra": {
   "lat": 38.9845189,
   "lon": -9.4177254,
   "osm": "node/10923693582",
   "soort": "tourism=viewpoint",
-  "gevonden": "Alto de Ribeira d'Ilhas, Rua dos Oceanos, Alto de Ribeira d'Ilhas, Ericeira, Mafra, Lisboa, Portugal"
+  "gevonden": "Alto de Ribeira d'Ilhas, Rua dos Oceanos, Alto de Ribeira d'Ilhas, Ericeira, Mafra, Lisboa, Portugal",
+  "versie": 2
  },
  "Pedra Branca, Ericeira": {
   "lat": 38.978666,
   "lon": -9.4217864,
   "osm": "way/876569604",
   "soort": "natural=beach",
-  "gevonden": "Pedra Branca, Ericeira, Mafra, Lisboa, Portugal"
+  "gevonden": "Pedra Branca, Ericeira, Mafra, Lisboa, Portugal",
+  "versie": 2
  },
  "Praia da Foz do Lizandro, Mafra": {
   "lat": 38.9420044,
   "lon": -9.4155343,
   "osm": "way/1341368308",
   "soort": "natural=beach",
-  "gevonden": "Praia da Foz do Lizandro, Foz do Lizandro, Carvoeira, Mafra, Lisboa, Portugal"
+  "gevonden": "Praia da Foz do Lizandro, Foz do Lizandro, Carvoeira, Mafra, Lisboa, Portugal",
+  "versie": 2
  },
  "Praia de São Julião, Sintra": {
   "lat": 38.929468,
   "lon": -9.4213377,
   "osm": "way/1342250797",
   "soort": "natural=beach",
-  "gevonden": "Praia de São Julião, Carvoeira, São João das Lampas, Sintra, Lisboa, Portugal"
+  "gevonden": "Praia de São Julião, Carvoeira, São João das Lampas, Sintra, Lisboa, Portugal",
+  "versie": 2
  },
  "Praia Grande, Colares, Sintra": {
-  "lat": 38.8132675,
-  "lon": -9.4747676,
-  "osm": "node/13039348810",
-  "soort": "place=village",
-  "gevonden": "Praia Grande, Colares, Sintra, Lisboa, 2705, Portugal"
+  "lat": 38.8128061,
+  "lon": -9.4784048,
+  "osm": "way/1341611681",
+  "soort": "natural=beach",
+  "gevonden": "Praia Grande do Rodízio, Rodízio, Praia Grande, Colares, Sintra, Lisboa, Portugal",
+  "versie": 2
  },
  "Praia das Maçãs, Sintra": {
-  "lat": 38.825643,
-  "lon": -9.4629412,
-  "osm": "relation/10155974",
-  "soort": "boundary=census",
-  "gevonden": "Praia das Maçãs, Praia Grande, Colares, Sintra, Lisboa, Portugal"
+  "lat": 38.8249184,
+  "lon": -9.4701399,
+  "osm": "way/1023897546",
+  "soort": "natural=beach",
+  "gevonden": "Praia das Maçãs, Rodízio, Praia Grande, Colares, Sintra, Lisboa, Portugal",
+  "versie": 2
  },
  "Praia do Guincho, Cascais": {
   "lat": 38.7331576,
   "lon": -9.4727845,
   "osm": "way/147727446",
   "soort": "natural=beach",
-  "gevonden": "Praia do Guincho, Cascais e Estoril, Cascais, Lisboa, Portugal"
+  "gevonden": "Praia do Guincho, Cascais e Estoril, Cascais, Lisboa, Portugal",
+  "versie": 2
  },
  "Praia de Carcavelos, Cascais": {
   "lat": 38.6792232,
   "lon": -9.3352361,
   "osm": "way/157464438",
   "soort": "natural=beach",
-  "gevonden": "Praia de Carcavelos, Carcavelos e Parede, Cascais, Lisboa, 2775-604, Portugal"
+  "gevonden": "Praia de Carcavelos, Carcavelos e Parede, Cascais, Lisboa, 2775-604, Portugal",
+  "versie": 2
  },
  "Praia de São João da Caparica, Almada": {
   "lat": 38.6565837,
   "lon": -9.2509671,
   "osm": "way/222122956",
   "soort": "natural=beach",
-  "gevonden": "Praia de São João, Costa de Caparica, Almada, Setúbal, Portugal"
+  "gevonden": "Praia de São João, Costa de Caparica, Almada, Setúbal, Portugal",
+  "versie": 2
  },
  "Praia da Fonte da Telha, Almada": {
   "lat": 38.5719146,
   "lon": -9.1961386,
   "osm": "way/222678478",
   "soort": "natural=beach",
-  "gevonden": "Fonte da Telha, Costa de Caparica, Almada, Setúbal, Portugal"
+  "gevonden": "Fonte da Telha, Costa de Caparica, Almada, Setúbal, Portugal",
+  "versie": 2
  },
  "Praia de São Torpes, Sines": {
   "lat": 37.919859,
   "lon": -8.8048885,
   "osm": "way/208112443",
   "soort": "natural=beach",
-  "gevonden": "Praia de São Torpes, Sines, Setúbal, Portugal"
+  "gevonden": "Praia de São Torpes, Sines, Setúbal, Portugal",
+  "versie": 2
  },
  "Praia da Vieirinha, Sines": {
   "lat": 37.8960958,
   "lon": -8.7977735,
   "osm": "way/232239487",
   "soort": "natural=beach",
-  "gevonden": "Praia da Vieirinha - Vale de Figueiros, Sines, Setúbal, Portugal"
+  "gevonden": "Praia da Vieirinha - Vale de Figueiros, Sines, Setúbal, Portugal",
+  "versie": 2
  },
  "Praia dos Aivados, Odemira": {
   "lat": 37.8099571,
   "lon": -8.7956516,
   "osm": "way/208883907",
   "soort": "natural=beach",
-  "gevonden": "Praia dos Aivados, Vila Nova de Milfontes, Odemira, Beja, Portugal"
+  "gevonden": "Praia dos Aivados, Vila Nova de Milfontes, Odemira, Beja, Portugal",
+  "versie": 2
  },
  "Praia do Malhão, Odemira": {
-  "lat": 37.7801664,
-  "lon": -8.8020777,
-  "osm": "way/208200024",
+  "lat": 37.7867186,
+  "lon": -8.8014404,
+  "osm": "way/393008274",
   "soort": "natural=beach",
-  "gevonden": "Praia do Malhão Sul, Vila Nova de Milfontes, Odemira, Beja, Portugal"
+  "gevonden": "Praia do Malhão Norte, Vila Nova de Milfontes, Odemira, Beja, Portugal",
+  "versie": 2
  },
  "Praia do Farol, Vila Nova de Milfontes": {
   "lat": 37.719422,
   "lon": -8.7910061,
   "osm": "way/208113986",
   "soort": "natural=beach",
-  "gevonden": "Praia do Farol, Vila Nova de Milfontes, Odemira, Beja, Portugal"
+  "gevonden": "Praia do Farol, Vila Nova de Milfontes, Odemira, Beja, Portugal",
+  "versie": 2
  },
  "Praia de Almograve, Odemira": {
   "lat": 37.6520474,
   "lon": -8.8022301,
   "osm": "way/504562243",
   "soort": "natural=beach",
-  "gevonden": "Praia Grande de Almograve, Longueira/Almograve, Odemira, Beja, Portugal"
+  "gevonden": "Praia Grande de Almograve, Longueira/Almograve, Odemira, Beja, Portugal",
+  "versie": 2
  },
  "Praia da Arrifana, Aljezur": {
   "lat": 37.2923713,
   "lon": -8.8648353,
   "osm": "way/1241777732",
   "soort": "natural=beach",
-  "gevonden": "Praia da Arrifana, Arrifana, Aljezur, Faro, Portugal"
+  "gevonden": "Praia da Arrifana, Arrifana, Aljezur, Faro, Portugal",
+  "versie": 2
  },
  "Praia da Amoreira, Aljezur": {
   "lat": 37.3506041,
   "lon": -8.8447837,
   "osm": "way/1242019126",
   "soort": "natural=beach",
-  "gevonden": "Praia da Amoreira, Aljezur, Faro, Portugal"
+  "gevonden": "Praia da Amoreira, Aljezur, Faro, Portugal",
+  "versie": 2
  },
  "Praia da Bordeira, Aljezur": {
   "lat": 37.1994397,
   "lon": -8.9003871,
   "osm": "way/1241619236",
   "soort": "natural=beach",
-  "gevonden": "Praia da Bordeira, Bordeira, Aljezur, Faro, Portugal"
+  "gevonden": "Praia da Bordeira, Bordeira, Aljezur, Faro, Portugal",
+  "versie": 2
  },
  "Praia do Amado, Aljezur": {
   "lat": 37.1643588,
   "lon": -8.9032987,
   "osm": "way/1239998556",
   "soort": "natural=beach",
-  "gevonden": "Praia do Amado, Bordeira, Aljezur, Faro, Portugal"
+  "gevonden": "Praia do Amado, Bordeira, Aljezur, Faro, Portugal",
+  "versie": 2
  },
  "Praia da Cordoama, Vila do Bispo": {
   "lat": 37.1092335,
   "lon": -8.9372063,
   "osm": "way/1327926836",
   "soort": "natural=beach",
-  "gevonden": "Praia da Cordoama, Vila do Bispo e Raposeira, Vila do Bispo, Faro, Portugal"
+  "gevonden": "Praia da Cordoama, Vila do Bispo e Raposeira, Vila do Bispo, Faro, Portugal",
+  "versie": 2
  },
  "Praia do Tonel, Sagres": {
   "lat": 37.005792,
   "lon": -8.9477973,
   "osm": "way/1255056880",
   "soort": "natural=beach",
-  "gevonden": "Praia do Tonel, Sagres, Vila do Bispo, Faro, Portugal"
+  "gevonden": "Praia do Tonel, Sagres, Vila do Bispo, Faro, Portugal",
+  "versie": 2
  },
  "Praia do Beliche, Sagres": {
   "lat": 37.0259333,
   "lon": -8.9638736,
   "osm": "way/94838670",
   "soort": "natural=beach",
-  "gevonden": "Praia do Beliche, Sagres, Vila do Bispo, Faro, Portugal"
+  "gevonden": "Praia do Beliche, Sagres, Vila do Bispo, Faro, Portugal",
+  "versie": 2
  },
  "Praia do Zavial, Vila do Bispo": {
   "lat": 37.0463451,
   "lon": -8.8715093,
   "osm": "way/156814657",
   "soort": "natural=beach",
-  "gevonden": "Praia do Zavial, Vila do Bispo e Raposeira, Vila do Bispo, Faro, Portugal"
+  "gevonden": "Praia do Zavial, Vila do Bispo e Raposeira, Vila do Bispo, Faro, Portugal",
+  "versie": 2
  },
  "Praia de Alvor, Portimão": {
   "lat": 37.1230676,
   "lon": -8.587989,
   "osm": "node/2274228611",
   "soort": "place=suburb",
-  "gevonden": "Praia de Alvor, Alvor, Portimão, Faro, 8501-906, Portugal"
+  "gevonden": "Praia de Alvor, Alvor, Portimão, Faro, 8501-906, Portugal",
+  "versie": 2
  },
  "Praia da Rocha, Portimão": {
   "lat": 37.1155086,
   "lon": -8.5320834,
   "osm": "way/98687797",
   "soort": "natural=beach",
-  "gevonden": "Praia da Rocha, Portimão, Faro, Portugal"
+  "gevonden": "Praia da Rocha, Portimão, Faro, Portugal",
+  "versie": 2
  }
 }
