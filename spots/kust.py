@@ -9,7 +9,8 @@ Per spot:
   richting      richting waarin het strand naar zee kijkt (graden, 270 = west): loodrecht op de kustlijn binnen
                 500 m, 1 km en 2 km van het kustpunt (hoofdas van de kustpunten), aan de kant waar water is. De
                 regels (overdracht plankscore) meten de kustlijn over ongeveer 1 km: dat is de strandrichting.
-  open_km       per 5 graden: afstand tot het eerste land vanaf een punt net voor de kust, tot 300 km
+  open_km       per 5 graden: afstand tot het eerste land vanaf een punt 1 km voor de kust (of net voor de kust als
+                daar land ligt), tot 300 km
 """
 
 from __future__ import annotations
@@ -157,6 +158,10 @@ class Kust:
                     break
         open_km = None
         if start is not None:
-            open_km = [self.straal(start[0], start[1], b) for b in range(0, 360, STAP_GRADEN)]
+            # Open zee gemeten vanaf 1 km voor de kust: een kleine kaap vlak naast het strand houdt de deining niet
+            # tegen (ze buigt eromheen), een grote kaap of een eiland wel.
+            ver = verplaats(q[0], q[1], f, 1.0)
+            o = ver if not self.is_land(*ver) else start
+            open_km = [self.straal(o[0], o[1], b) for b in range(0, 360, STAP_GRADEN)]
         return Resultaat(round(d, 3), (round(q[0], 5), round(q[1], 5)), r500, r1k, r2k,
                          None if start is None else (round(start[0], 5), round(start[1], 5)), open_km)
