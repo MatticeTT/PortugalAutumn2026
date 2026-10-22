@@ -14,7 +14,6 @@ const label = $('tijd')
 const playBtn = $('afspelen')
 const windBtn = $('knop-wind')
 const swellBtn = $('knop-deining')
-const windseaBtn = $('knop-windzee')
 const altBtn = $('knop-afwisselen')
 
 // Basiskaart uit Natural Earth (publiek domein), zelf gehost: rustig grijs land, donkere zee, kustlijn en grenzen.
@@ -54,7 +53,8 @@ let idx = 0
 let playing: number | null = null
 const show: Record<Kind, boolean> = { wind: true, swell: true, windsea: false }
 const KINDS: Kind[] = ['wind', 'swell', 'windsea']
-const knop: Record<Kind, HTMLElement> = { wind: windBtn, swell: swellBtn, windsea: windseaBtn }
+// Op de kaart: wind en deining. Windzee staat niet op de kaart, alleen in de info van een punt.
+const knop: Partial<Record<Kind, HTMLElement>> = { wind: windBtn, swell: swellBtn }
 
 // Velden per soort en uur; de laatste paar bewaren zodat terugschuiven direct werkt.
 const cache = new Map<string, FieldSet>()
@@ -156,12 +156,12 @@ function togglePlay(on = playing === null) {
 
 function setLayer(kind: Kind, on: boolean) {
   show[kind] = on
-  knop[kind].classList.toggle('aan', on)
-  knop[kind].setAttribute('aria-pressed', String(on))
+  knop[kind]?.classList.toggle('aan', on)
+  knop[kind]?.setAttribute('aria-pressed', String(on))
   if (kind === 'wind') layer.showWind = on
   else layer[kind].show = on
   if (on) setTime(idx)
-  altBtn.hidden = !(show.wind && (show.swell || show.windsea))
+  altBtn.hidden = !(show.wind && show.swell)
   map.triggerRepaint()
 }
 
@@ -202,8 +202,6 @@ slider.addEventListener('pointerdown', () => togglePlay(false))
 playBtn.addEventListener('click', () => togglePlay())
 windBtn.addEventListener('click', () => setLayer('wind', !show.wind))
 swellBtn.addEventListener('click', () => setLayer('swell', !show.swell))
-windseaBtn.addEventListener('click', () => setLayer('windsea', !show.windsea))
-setLayer('windsea', false)
 altBtn.addEventListener('click', () => setAlternate(!layer.alternate))
 let savedAlt = true
 try { savedAlt = localStorage.getItem('afwisselen') !== '0' } catch { /* privévenster */ }
