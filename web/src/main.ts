@@ -258,6 +258,8 @@ function tekenPlanning() {
   planning.teken({
     data: spots.index, planken: surf.planken, verblijf, rijtijd: (id) => rij.get(id), rijStatus, dagen: dagenMetScore(),
     zetVerblijf: (v) => kiesVerblijf(v),
+    gewicht: surf.gewicht,
+    zetGewicht: (kg) => { surf = { ...surf, gewicht: kg }; bewaarSurf(surf) },
     zetPlanken: (p) => {
       surf = { ...surf, planken: p }
       bewaarSurf(surf)

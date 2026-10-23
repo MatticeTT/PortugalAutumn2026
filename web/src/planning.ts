@@ -8,8 +8,7 @@ import { plaatsVan, rijTekst, zoekInDeBuurt, zoekPlaats, type Gevonden, type Ver
 
 const dagFmt = new Intl.DateTimeFormat('nl-NL', { weekday: 'short' })
 const maandFmt = new Intl.DateTimeFormat('nl-NL', { month: 'short' })
-const RIJTIJDEN = [30, 45, 60, 90, 120, 180] // minuten
-const STANDAARD_RIJTIJD = 60
+const STANDAARD_RIJTIJD = 120 // minuten, zoals in de eerste versie
 const PIN = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>'
 
 export interface PlanningOpties {
@@ -22,6 +21,8 @@ export interface PlanningOpties {
   dagen: string[]
   zetVerblijf: (v: Verblijf) => void
   zetPlanken: (p: string[]) => void
+  gewicht: number | null
+  zetGewicht: (kg: number | null) => void
   open: (s: SpotKort, dag: string) => void
 }
 
@@ -68,9 +69,13 @@ export class Planning {
       <div class="keuzelijn"><span class="gekozen"></span><button type="button" class="linkknop" data-a="hier">Gebruik mijn locatie</button></div>
       <p class="fout" hidden></p>
       <div class="stap"><span class="nr">2</span><h3>Hoe lang wil je maximaal rijden?</h3></div>
-      <div class="chips rijtijd">${RIJTIJDEN.map((m) => `<button type="button" data-m="${m}" aria-pressed="false">${rijTekst(m)}</button>`).join('')}</div>
+      <div class="tijden">
+        <label><input name="uren" type="number" inputmode="numeric" min="0" max="12" step="1" aria-label="Uren"> u</label>
+        <label><input name="min" type="number" inputmode="numeric" min="0" max="59" step="1" aria-label="Minuten"> min</label>
+      </div>
       <div class="stap"><span class="nr">3</span><h3>Met welke planken?</h3></div>
-      <div class="chips planken">${Object.entries(PLANKEN).map(([k, n]) => `<button type="button" data-p="${k}" aria-pressed="false">${n}</button>`).join('')}</div>`
+      <div class="chips planken">${Object.entries(PLANKEN).map(([k, n]) => `<button type="button" data-p="${k}" aria-pressed="false">${n}</button>`).join('')}</div>
+      <div class="gewicht"><label>Gewicht <input name="gewicht" type="number" inputmode="numeric" min="20" max="200" step="1"> kg</label></div>`
     const veld = el.querySelector<HTMLInputElement>('input[type=search]')!
     const lijst = el.querySelector('.gevonden')!
     const fout = el.querySelector<HTMLElement>('.fout')!
@@ -83,7 +88,13 @@ export class Planning {
         try { g = await plaatsVan(g0) } catch { toonFout('Deze plaats kon niet worden geladen. Kies een andere.'); return }
       }
       lijst.innerHTML = ''; resultaten = []; veld.value = ''; veld.setAttribute('aria-expanded', 'false'); toonFout('')
-      this.o.zetVerblijf({ naam: g.naam, lat: g.lat, lon: g.lon, max: this.o.verblijf?.max ?? STANDAARD_RIJTIJD })
+      this.o.zetVerblijf({ naam: g.naam, lat: g.lat, lon: g.lon, max: ingevuld() || this.o.verblijf?.max || STANDAARD_RIJTIJD })
+    }
+    // Ingevulde rijtijd (stap 2) in minuten; 0 als er niets bruikbaars staat.
+    const ingevuld = () => {
+      const u = Number(el.querySelector<HTMLInputElement>('input[name=uren]')!.value || 0)
+      const m = Number(el.querySelector<HTMLInputElement>('input[name=min]')!.value || 0)
+      return Math.max(0, Math.round(u)) * 60 + Math.max(0, Math.min(59, Math.round(m)))
     }
     const markeer = (i: number) => {
       actief = i
@@ -128,11 +139,21 @@ export class Planning {
         (pos) => kies({ naam: 'Mijn locatie', lat: pos.coords.latitude, lon: pos.coords.longitude }),
         () => toonFout('Je locatie is niet beschikbaar.'))
     }
-    el.querySelectorAll<HTMLButtonElement>('.rijtijd button').forEach((b) => b.addEventListener('click', () => {
+    // Rijtijd in uren en minuten (zoals in de eerste versie); telt pas als je klaar bent met typen.
+    const uren = el.querySelector<HTMLInputElement>('input[name=uren]')!
+    const min = el.querySelector<HTMLInputElement>('input[name=min]')!
+    const zetRijtijd = () => {
+      const max = ingevuld()
       const v = this.o.verblijf
-      if (!v) { toonFout('Kies eerst waar je verblijft.'); veld.focus(); return }
-      this.o.zetVerblijf({ ...v, max: Number(b.dataset.m) })
-    }))
+      if (max < 1) { toonFout('Vul in hoe lang je wil rijden.'); return }
+      if (!v) return // wordt gebruikt zodra je je verblijf kiest
+      toonFout('')
+      if (max !== v.max) this.o.zetVerblijf({ ...v, max })
+    }
+    uren.addEventListener('change', zetRijtijd)
+    min.addEventListener('change', zetRijtijd)
+    const kg = el.querySelector<HTMLInputElement>('input[name=gewicht]')!
+    kg.addEventListener('change', () => this.o.zetGewicht(Number(kg.value) || null))
     el.querySelectorAll<HTMLButtonElement>('.planken button').forEach((b) => b.addEventListener('click', () => {
       const alle = this.o.planken.length === Object.keys(PLANKEN).length
       const p = b.dataset.p!
@@ -149,7 +170,14 @@ export class Planning {
     if (v) zoekInDeBuurt(v.lon, v.lat)
     el.querySelector('.gekozen')!.innerHTML = v ? `<b>${esc(v.naam.split(',').slice(0, 2).join(','))}</b>` : ''
     el.querySelector<HTMLInputElement>('input[type=search]')!.placeholder = v ? 'Ander verblijf zoeken' : 'Adres, hotel of dorp'
-    el.querySelectorAll<HTMLButtonElement>('.rijtijd button').forEach((b) => b.setAttribute('aria-pressed', String(!!v && Number(b.dataset.m) === v.max)))
+    const max = v?.max ?? STANDAARD_RIJTIJD
+    const uren = el.querySelector<HTMLInputElement>('input[name=uren]')!, min = el.querySelector<HTMLInputElement>('input[name=min]')!
+    if (v || !uren.value) {
+      if (document.activeElement !== uren) uren.value = String(Math.floor(max / 60))
+      if (document.activeElement !== min) min.value = String(max % 60)
+    }
+    const kg = el.querySelector<HTMLInputElement>('input[name=gewicht]')!
+    if (document.activeElement !== kg) kg.value = this.o.gewicht ? String(this.o.gewicht) : ''
     const alle = this.o.planken.length === Object.keys(PLANKEN).length
     el.querySelectorAll<HTMLButtonElement>('.planken button').forEach((b) => b.setAttribute('aria-pressed', String(!alle && this.o.planken.includes(b.dataset.p!))))
   }

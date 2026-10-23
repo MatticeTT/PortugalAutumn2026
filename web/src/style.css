@@ -242,3 +242,9 @@ main { flex: 1; position: relative; min-height: 0; }
 .plekspeld i { display: block; width: 22px; height: 22px; margin: 0 2px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg);
   background: #e5484d; border: 2px solid #fff; box-shadow: 0 1px 4px rgb(0 0 0 / 0.5); }
 .planlijst .uitleg { margin: -2px 0 12px; font-size: 13px; color: var(--zacht); }
+/* Rijtijd in uren en minuten, gewicht (zoals in de eerste versie) */
+.tijden { display: flex; gap: 14px; align-items: center; }
+.tijden label, .gewicht label { display: inline-flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 600; }
+.tijden input, .gewicht input { width: 4.2em; font: inherit; font-size: 18px; font-weight: 700; text-align: center; color: var(--tekst);
+  background: var(--bg); border: 1px solid var(--lijn); border-radius: 8px; padding: 6px 4px; }
+.gewicht { margin-top: 10px; }
