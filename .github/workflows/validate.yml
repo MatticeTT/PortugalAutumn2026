@@ -2,8 +2,6 @@
 name: validate
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "41 6 * * 1"   # elke maandag opnieuw meten
   push:
     paths:
       - pipeline/validate/**

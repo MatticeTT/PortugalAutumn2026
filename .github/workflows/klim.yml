@@ -3,8 +3,6 @@
 name: klim
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "41 3 * * 1"   # maandag 03:41 UTC
   push:
     paths:
       - pipeline/klim/ophalen.py
