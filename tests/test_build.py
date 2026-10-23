@@ -44,10 +44,13 @@ def test_tiles_cover_globe_with_overlap(tmp_path):
     build.write_tiles(rgb, tmp_path, "wind")
     from PIL import Image
 
-    last = np.array(Image.open(tmp_path / "wind" / "3_7.webp"))
+    # Laatste rij met fijne tegels (0 .. 45 zuid); de rij daaronder (45 .. 90 zuid) heeft alleen het wereldraster.
+    last = np.array(Image.open(tmp_path / "wind" / f"{build.FINE_ROWS - 1}_7.webp"))
     assert last.shape == (build.TILE_PX + 1, build.TILE_PX + 1, 3)
-    assert np.array_equal(last[:, -1], rgb[540:, 0])  # oostrand = lengte 0 (rond de wereld)
-    assert np.array_equal(last[-1], np.concatenate([rgb[-1, 1260:], rgb[-1, :1]]))
+    j0 = (build.FINE_ROWS - 1) * build.TILE_PX
+    assert np.array_equal(last[:, -1], rgb[j0:j0 + build.TILE_PX + 1, 0])  # oostrand = lengte 0 (rond de wereld)
+    assert np.array_equal(last[-1], np.concatenate([rgb[j0 + build.TILE_PX, 1260:], rgb[j0 + build.TILE_PX, :1]]))
+    assert not (tmp_path / "wind" / f"{build.FINE_ROWS}_0.webp").exists()
 
 
 def test_hours_follow_ecmwf_steps():

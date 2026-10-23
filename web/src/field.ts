@@ -6,8 +6,11 @@ export interface Manifest {
   source: string
   ext: string
   /** waves: of er deining is voor dit tijdstip, windsea: of er windzee is; *Fine: met fijne tegels. */
-  times: { h: number; time: string; coarseDeg: number; fine: boolean; waves?: boolean; wavesFine?: boolean; windsea?: boolean; windseaFine?: boolean }[]
+  times: { h: number; time: string; coarseDeg: number; fine: boolean; waves?: boolean; wavesFine?: boolean; windsea?: boolean; windseaFine?: boolean; wavesRegio?: boolean }[]
+  /** Fijne tegels voor de rijen 0 .. rows-1 (vanaf 90 noord); zuidelijker alleen het wereldraster. */
   fine: { deg: number; tileDeg: number; tilePx: number; rows: number; cols: number }
+  /** Deining rond Portugal uit IBI (1/36 graad), dezelfde golven als het kompas: <uur>/swell-regio.webp. */
+  regio?: { lon0: number; lat0: number; deg: number; w: number; h: number } | null
   encoding: { windMax: number; waveHMax: number; wavePeriodMax: number }
 }
 
@@ -88,6 +91,12 @@ async function loadGrid(url: string, kind: Kind, m: Manifest, geo: Omit<Grid, 'a
   return { ...geo, width, height, a: w.ex, b: w.ny, c: w.per, d: w.hs, sea: w.sea }
 }
 
+/** Lengte in het bereik van het raster: wereldraster rondlopend, tegels 0..360, de regio rond Portugal -180..180. */
+export function lonVoor(g: Grid, lon: number) {
+  if (g.wrap) return lon
+  return g.lon0 < 0 ? ((((lon + 180) % 360) + 360) % 360) - 180 : ((lon % 360) + 360) % 360
+}
+
 /** Index en gewichten van de vier buren (in een gedeeld object, om geheugenallocatie te vermijden). */
 const C = { i00: 0, i10: 0, i01: 0, i11: 0, tx: 0, ty: 0 }
 function cell(g: Grid, lon: number, lat: number): boolean {
@@ -159,6 +168,9 @@ export function heeft(t: Manifest['times'][number], kind: Kind) {
  */
 export class FieldSet {
   coarse: Grid | null = null
+  /** Fijne deining rond Portugal (IBI); heeft voorrang op alle andere rasters waar ze zee heeft. */
+  regio: Grid | null = null
+  private heeftRegio: boolean
   private tiles: (Grid | 'loading' | 'error' | undefined)[] = []
   private fineOn = false
 
@@ -170,6 +182,7 @@ export class FieldSet {
     this.hour = t.h
     this.hasFine = kind === 'wind' ? t.fine : kind === 'swell' ? !!t.wavesFine : !!t.windseaFine
     this.coarseDeg = t.coarseDeg
+    this.heeftRegio = kind === 'swell' && !!t.wavesRegio && !!m.regio
   }
 
   private url(name: string) {
@@ -180,7 +193,24 @@ export class FieldSet {
     if (!this.coarse) {
       this.coarse = await loadGrid(this.url(this.kind), this.kind, this.m, { lon0: 0, lat0: 90, deg: this.coarseDeg, wrap: true })
     }
+    if (this.heeftRegio && !this.regio) {
+      const r = this.m.regio!
+      // Klein bestand: altijd mee laden. Lukt het niet, dan gewoon het wereldraster.
+      this.regio = await loadGrid(this.url(`${this.kind}-regio`), this.kind, this.m, { lon0: r.lon0, lat0: r.lat0, deg: r.deg, wrap: false })
+        .catch(() => null)
+    }
     return this
+  }
+
+  private inRegio(lon: number, lat: number) {
+    const g = this.regio
+    if (!g) return false
+    const l = lonVoor(g, lon)
+    return l >= g.lon0 && l <= g.lon0 + (g.width - 1) * g.deg && lat <= g.lat0 && lat >= g.lat0 - (g.height - 1) * g.deg
+  }
+
+  private rij(lat: number) {
+    return Math.max(0, Math.floor((90 - lat) / this.m.fine.tileDeg))
   }
 
   /** Fijne tegels voor het gebied [west, zuid, oost, noord] (lengte mag buiten -180..180 liggen). */
@@ -210,7 +240,8 @@ export class FieldSet {
    */
   async exactGrid(lon: number, lat: number): Promise<{ grid: Grid; deg: number }> {
     await this.loadCoarse()
-    if (this.hasFine) {
+    if (this.inRegio(lon, lat)) return { grid: this.regio!, deg: this.regio!.deg }
+    if (this.hasFine && this.rij(lat) < this.m.fine.rows) {
       const f = this.m.fine
       const l = ((lon % 360) + 360) % 360
       const c = Math.min(f.cols - 1, Math.floor(l / f.tileDeg))
@@ -232,7 +263,8 @@ export class FieldSet {
 
   /** Het fijnste raster dat op dit punt beschikbaar is. */
   grid(lon: number, lat: number): Grid | null {
-    if (this.fineOn) {
+    if (this.inRegio(lon, lat)) return this.regio
+    if (this.fineOn && this.rij(lat) < this.m.fine.rows) {
       const f = this.m.fine
       const l = ((lon % 360) + 360) % 360
       const c = Math.min(f.cols - 1, Math.floor(l / f.tileDeg))
@@ -246,13 +278,12 @@ export class FieldSet {
   wind(lon: number, lat: number, out: WindSample): boolean {
     const g = this.grid(lon, lat)
     if (!g) return false
-    // Tegels beginnen op 0 graden oost: lengte in 0..360 brengen.
-    return sampleWind(g, g.wrap ? lon : ((lon % 360) + 360) % 360, lat, out)
+    return sampleWind(g, lonVoor(g, lon), lat, out)
   }
 
   wave(lon: number, lat: number, out: WaveSample): boolean {
     const g = this.grid(lon, lat)
     if (!g) return false
-    return sampleWave(g, g.wrap ? lon : ((lon % 360) + 360) % 360, lat, out)
+    return sampleWave(g, lonVoor(g, lon), lat, out)
   }
 }

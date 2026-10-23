@@ -12,7 +12,9 @@ Uitvoer (map --out, standaard web/public/data), lossless WebP:
   <uur>/wind.webp                   wereldraster van 1 graad, of 0,5 graad na --fine-hours tot --mid-hours
   <uur>/swell.webp                  deining, zolang het golfmodel loopt (de windzee staat niet op de kaart)
   <uur>/wind/<rij>_<kol>.webp enz.  fijn raster (0,25 graad) in tegels van 45 x 45 graden, tot --fine-hours
-                                    (windzee tot --windsea-fine-hours)
+                                    (windzee tot --windsea-fine-hours); niet ten zuiden van 45 zuid (geen surf,
+                                    daar volstaat het wereldraster; zo blijft de site onder de 100 MB van Vercel)
+  <uur>/swell-regio.webp            deining rond Portugal uit IBI (1/36 graad), zoals het kompas (golven.Regio)
 
 Codering (alle pixels ondoorzichtig):
   wind  R,G = u,v (m/s) met wortelcompressie: s = teken(x) * sqrt(|x| / WIND_MAX), byte = (s + 1) * 127.5
@@ -51,6 +53,8 @@ NI, NJ = 1440, 721  # 0,25 graad; na het verschuiven: lengte 0..359,75 oost, bre
 TILE_DEG = 45
 TILE_PX = TILE_DEG * 4  # 180 cellen; de tegel krijgt er één rij en kolom bij voor naadloos interpoleren
 EXT = "webp"
+FINE_ROWS = 3  # fijne tegels voor de rijen 90 N .. 45 Z; daaronder alleen het wereldraster
+REGIO_KUST = 2  # cellen van 1/36 graad die de regionale golven landinwaarts worden doorgetrokken
 
 WIND_FIELDS = ("10u", "10v")
 WAVE_FIELDS = ("swh", "mwd", "pp1d")
@@ -240,6 +244,8 @@ def write_tiles(rgb: np.ndarray, base: Path, name: str) -> None:
     """Fijne tegels (0,25 graad) van één veld."""
     wrapped = np.concatenate([rgb, rgb[:, :1]], axis=1)  # kolom 1440 = kolom 0 (lengte 360 = 0)
     for r in range(180 // TILE_DEG):
+        if r >= FINE_ROWS:
+            continue
         for c in range(360 // TILE_DEG):
             j0, i0 = r * TILE_PX, c * TILE_PX
             save_img(wrapped[j0 : j0 + TILE_PX + 1, i0 : i0 + TILE_PX + 1], base / name / f"{r}_{c}.{EXT}")
@@ -253,7 +259,7 @@ def write_waves(base: Path, name: str, hs: np.ndarray, dirp: np.ndarray, per: np
 
 
 def process_hour(run: dt.datetime, h: int, out: Path, fine: bool, coarse_deg: float,
-                 bron: "golven.Bron | None", windsea_fine: bool) -> tuple[int, bool]:
+                 bron: "golven.Bron | None", windsea_fine: bool, regio: "golven.Regio | None" = None) -> tuple[int, bool, bool]:
     """Eén tijdstip; geeft terug of er golven voor zijn."""
     wind = fetch_fields(run, "oper", h, WIND_FIELDS)
     base = out / f"{h:03d}"
@@ -265,15 +271,18 @@ def process_hour(run: dt.datetime, h: int, out: Path, fine: bool, coarse_deg: fl
     t = run + dt.timedelta(hours=h)
     if bron is not None:
         if not bron.heeft(t):
-            return h, False
+            return h, False, False
         # Alleen de deining staat op de kaart; de windzee telt mee in de score per spot (pipeline/spotscore.py).
         # Zo blijft de site onder de 100 MB van Vercel.
         write_waves(base, "swell", *bron.velden(t, "swell"), step, fine)
-        return h, True
+        met_regio = regio is not None and regio.heeft(t)
+        if met_regio:
+            save_img(encode_wave(*fill_coast(*regio.velden(t), cells=REGIO_KUST)), base / f"swell-regio.{EXT}")
+        return h, True, met_regio
     # Reserve zonder Copernicus: ECMWF WAM, één laag (totale zee) als deining getoond.
     wave = fetch_fields(run, "wave", h, WAVE_FIELDS)
     write_waves(base, "swell", *(wave[k] for k in WAVE_FIELDS), step, fine)
-    return h, True
+    return h, True, False
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -296,18 +305,21 @@ def main(argv: list[str] | None = None) -> int:
 
     run = latest_run(hs[-1])
     print(f"ECMWF-run {run:%Y-%m-%d %H}Z, {len(hs)} tijdstippen", flush=True)
-    bron = None
+    bron = regio = None
     if not a.ecmwf_golven:
         if not golven.beschikbaar():
             raise SystemExit("Geen Copernicus-login (COPERNICUSMARINE_SERVICE_USERNAME/PASSWORD); gebruik --ecmwf-golven")
         bron = golven.Bron()
         print(f"Copernicus-golven tot {bron.laatste:%Y-%m-%d %H}Z", flush=True)
+        regio = golven.Regio()
+        print(f"IBI-deining rond Portugal: {regio.meta}", flush=True)
     a.out.mkdir(parents=True, exist_ok=True)
     met_golven: dict[int, bool] = {}
+    met_regio: dict[int, bool] = {}
     with ThreadPoolExecutor(a.workers) as ex:
-        for h, g in ex.map(lambda h: process_hour(run, h, a.out, h <= a.fine_hours, coarse_deg(h), bron,
-                                                   h <= a.windsea_fine_hours), hs):
-            met_golven[h] = g
+        for h, g, r in ex.map(lambda h: process_hour(run, h, a.out, h <= a.fine_hours, coarse_deg(h), bron,
+                                                      h <= a.windsea_fine_hours, regio), hs):
+            met_golven[h], met_regio[h] = g, r
             print(f"  +{h:03d} u klaar{'' if g else ' (geen golven)'}", flush=True)
 
     manifest = {
@@ -318,10 +330,11 @@ def main(argv: list[str] | None = None) -> int:
         "times": [{"h": h, "time": (run + dt.timedelta(hours=h)).strftime("%Y-%m-%dT%H:%MZ"),
                    "coarseDeg": coarse_deg(h), "fine": h <= a.fine_hours,
                    "waves": met_golven[h], "wavesFine": met_golven[h] and h <= a.fine_hours,
-                   "windsea": False, "windseaFine": False}
+                   "windsea": False, "windseaFine": False, "wavesRegio": met_regio[h]}
                   for h in hs],
         "fine": {"deg": 0.25, "tileDeg": TILE_DEG, "tilePx": TILE_PX + 1,
-                 "rows": 180 // TILE_DEG, "cols": 360 // TILE_DEG},
+                 "rows": FINE_ROWS, "cols": 360 // TILE_DEG},
+        "regio": regio.meta if regio is not None else None,
         "encoding": {"windMax": WIND_MAX, "waveHMax": H_MAX, "wavePeriodMax": T_MAX},
     }
     (a.out / "manifest.json").write_text(json.dumps(manifest, indent=1))

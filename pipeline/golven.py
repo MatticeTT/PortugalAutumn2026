@@ -63,6 +63,42 @@ class Bron:
         return naar_kaartrooster(h, d, tm / TM01_GEDEELD_DOOR_TP, self.lat0, self.lon0)
 
 
+# Fijne deining voor de kaart rond Portugal: IBI (1/36 graad, per uur), dezelfde golven als het kompas en de score
+# per spot (pipeline/spotinvoer.py). Zo wijst de animatie ook in beschutte baaien dezelfde kant op als het kompas.
+IBI = "cmems_mod_ibi_wav_anfc_0.027deg_PT1H-i"
+REGIO = (-10.2, 36.6, -6.0, 42.4)  # west, zuid, oost, noord (zelfde vak als de fijne kust)
+
+
+class Regio:
+    """IBI-deining voor het vak REGIO; rijen van noord naar zuid, NaN op land."""
+
+    def __init__(self):
+        import copernicusmarine
+
+        w, s, e, n = REGIO
+        self.ds = copernicusmarine.open_dataset(dataset_id=IBI, variables=list(SYSTEMEN["swell"]), minimum_longitude=w,
+                                                maximum_longitude=e, minimum_latitude=s, maximum_latitude=n)
+        lat = self.ds["latitude"].values.astype(float)
+        lon = self.ds["longitude"].values.astype(float)
+        self.omkeren = lat[0] < lat[-1]
+        self.meta = {"lon0": round(float(lon[0]), 6), "lat0": round(float(lat.max()), 6),
+                     "deg": round(float(lon[1] - lon[0]), 8), "w": int(len(lon)), "h": int(len(lat))}
+        if abs(abs(lat[1] - lat[0]) - self.meta["deg"]) > 1e-6:
+            raise RuntimeError("IBI-rooster niet vierkant")
+        self.tijden = {np.datetime64(t, "s").astype(dt.datetime).replace(tzinfo=dt.UTC) for t in self.ds["time"].values}
+
+    def heeft(self, t: dt.datetime) -> bool:
+        return t in self.tijden
+
+    def velden(self, t: dt.datetime) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+        """Hoogte, richting (vandaan) en piekperiode van de deining."""
+        tt = np.datetime64(t.replace(tzinfo=None), "ns")
+        h, d, tm = (np.asarray(self.ds[v].sel(time=tt).values, dtype=np.float32) for v in SYSTEMEN["swell"])
+        if self.omkeren:
+            h, d, tm = h[::-1], d[::-1], tm[::-1]
+        return h, d, tm / TM01_GEDEELD_DOOR_TP
+
+
 def _som3(x: np.ndarray) -> np.ndarray:
     """Som over de 3 x 3 buren; lengte loopt rond, breedte niet."""
     p = np.pad(x, ((1, 1), (0, 0)))
