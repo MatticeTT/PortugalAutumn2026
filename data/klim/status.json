@@ -1,48 +1,44 @@
 {
  "osm": {
-  "ok": false,
-  "fout": "RuntimeError: Overpass: HTTP Error 500: Internal Server Error",
-  "geprobeerd": "2026-10-10T09:51Z",
-  "opgehaald": "2026-10-07T19:21Z"
+  "ok": true,
+  "opgehaald": "2026-10-23T08:33Z"
  },
  "c2c": {
   "ok": true,
-  "opgehaald": "2026-10-10T09:51Z"
+  "opgehaald": "2026-10-23T08:33Z"
  },
  "osm_es": {
   "ok": false,
-  "fout": "RuntimeError: Overpass: HTTP Error 500: Internal Server Error",
-  "geprobeerd": "2026-10-10T09:58Z",
+  "fout": "RuntimeError: Overpass: HTTP Error 504: Gateway Timeout",
+  "geprobeerd": "2026-10-23T08:34Z",
   "opgehaald": null
  },
  "c2c_es": {
   "ok": true,
-  "opgehaald": "2026-10-10T09:58Z"
+  "opgehaald": "2026-10-23T08:34Z"
  },
  "osm_fr": {
-  "ok": false,
-  "fout": "RuntimeError: Overpass: HTTP Error 500: Internal Server Error",
-  "geprobeerd": "2026-10-10T10:16Z",
-  "opgehaald": null
+  "ok": true,
+  "opgehaald": "2026-10-23T09:29Z"
  },
  "c2c_fr": {
   "ok": true,
-  "opgehaald": "2026-10-10T10:16Z"
+  "opgehaald": "2026-10-23T09:29Z"
  },
  "osm_be": {
   "ok": true,
-  "opgehaald": "2026-10-10T11:11Z"
+  "opgehaald": "2026-10-23T11:45Z"
  },
  "c2c_be": {
   "ok": true,
-  "opgehaald": "2026-10-10T11:11Z"
+  "opgehaald": "2026-10-23T11:45Z"
  },
  "osm_nl": {
   "ok": true,
-  "opgehaald": "2026-10-10T11:18Z"
+  "opgehaald": "2026-10-23T11:50Z"
  },
  "c2c_nl": {
   "ok": true,
-  "opgehaald": "2026-10-10T11:18Z"
+  "opgehaald": "2026-10-23T11:50Z"
  }
 }
