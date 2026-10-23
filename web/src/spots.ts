@@ -41,7 +41,8 @@ export interface SpotDetail {
   deining: ([number, number, number] | null)[] // hoogte m, richting vandaan, periode s
   windzee: (number | null)[]
   breker: (number | null)[]
-  wind: ([number, number, number] | null)[] // kn, rel (0 aflandig, 180 aanlandig), stoten kn
+  wind: (number[] | null)[] // kn, rel (0 aflandig, 180 aanlandig), stoten kn, richting vandaan (graden)
+  venster?: number[][] // richtingen [van, tot] vanwaar deining open zee heeft
   vlaggen: Record<string, string[]>
   expert: string[]
   getij: [string, 'hoog' | 'laag', number][]

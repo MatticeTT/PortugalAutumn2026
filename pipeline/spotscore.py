@@ -301,7 +301,7 @@ def reken_spot(spot: dict, invoer: dict, stranden: list[dict], van: dt.datetime,
             per_plank[p].append(uit[p][0])
             grenzen[p].append(uit[p][2])
         rijen.append((t, kn, rel, stoot, systemen.get("deining1"), systemen.get("windzee"), fk["Hb"], s["flags"],
-                      R.expert_label(fk)))
+                      R.expert_label(fk), vandaan))
         t += KWARTIER
     if not tijden:
         return None
@@ -318,14 +318,18 @@ def reken_spot(spot: dict, invoer: dict, stranden: list[dict], van: dt.datetime,
     r = lambda x, n=1: None if x is None else round(x, n)
     return {"naam": spot["naam"], "lat": spot["lat"], "lon": spot["lon"], "richting": v["f"], "soort": v["soort"],
             "werkt_bij_tij": kennis.get("werkt_bij_tij"), "gevaren": kennis.get("vlaggen") or [],
-            "bodem": kennis.get("bodem"), "herkomst": v["herkomst"], "golfbron": invoer["golven"]["bron"],
+            "bodem": kennis.get("bodem"), "herkomst": v["herkomst"],
+            # Richtingen (van, tot in graden) vanwaar deining open zee heeft naar het strand (voor het kompas).
+            "venster": [[round(x) % 360 for x in vt] for vt in spot.get("venster") or []], "golfbron": invoer["golven"]["bron"],
             "start": iso(tijden[uren[0]]), "uren": len(uren),
             "score": {p: [round(per_plank[p][i] * 10) for i in uren] for p in R.PL},
             "deining": [None if rijen[i][4] is None or i in nacht else [r(rijen[i][4][0]), round(rijen[i][4][1]), r(rijen[i][4][2], 0)]
                         for i in uren],
             "windzee": [None if rijen[i][5] is None or i in nacht else r(rijen[i][5][0]) for i in uren],
             "breker": [None if i in nacht else r(rijen[i][6]) for i in uren],
-            "wind": [None if i in nacht else [round(rijen[i][1]), round(rijen[i][2]), round(rijen[i][3])] for i in uren],
+            # Wind: kn, rel (0 aflandig, 180 aanlandig), stoten kn, richting waar de wind vandaan komt (graden).
+            "wind": [None if i in nacht else [round(rijen[i][1]), round(rijen[i][2]), round(rijen[i][3]), round(rijen[i][9]) % 360]
+                     for i in uren],
             "vlaggen": {str(n): rijen[i][7] for n, i in enumerate(uren) if rijen[i][7] and rijen[i][7] != ["donker"]},
             # Label "alleen voor ervaren surfers" per uur als letters (zie EXPERT_CODE), "" = geen label.
             "expert": ["" if i in nacht else "".join(EXPERT_CODE.get(x, "?") for x in rijen[i][8]) for i in uren],

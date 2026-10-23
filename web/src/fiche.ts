@@ -5,6 +5,7 @@ import {
   dagNaam, dagSleutel, esc, EXPERT, golfWoord, kompas, krachtWoord, PLANKEN, rond, routeLink, SOORT, uur, vakkenOpDag,
   windWoord, type SpotData, type SpotDetail, type SpotKort,
 } from './spots'
+import { kompasLegende, kompasSvg } from './kompas'
 import { rijTekst } from './verblijf'
 
 const VAN_UUR = 6
@@ -149,6 +150,7 @@ export class Fiche {
     for (const g of d.gevaren) if (GEVAAR[g]) letop.add(GEVAAR[g])
     if (d.vlaggen[String(i)]?.includes('bliksem')) letop.add('Kans op onweer')
     if (letop.size) uit.push(li('Let op', [...letop].join(' · ') + (d.expert[i] ? '<br>Alleen voor ervaren surfers' : ''), 'letop'))
-    return `<ul class="waarom">${uit.join('')}</ul>`
+    const k = { richting: d.richting, venster: d.venster ?? [], deining: dn, breker: d.breker[i], wind: d.wind[i]!.length > 3 ? d.wind[i] : null }
+    return `<div class="kompasblok">${kompasSvg(k)}${kompasLegende(k)}</div><ul class="waarom">${uit.join('')}</ul>`
   }
 }

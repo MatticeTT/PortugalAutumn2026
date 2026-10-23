@@ -9,7 +9,7 @@ import { enablePointInfo } from './punt'
 import { dagSleutel, SpotData, vakkenOpDag, type SpotKort } from './spots'
 import { leesSurf, surfPaneel } from './surfpaneel'
 import { themaKnop } from './thema'
-import { bewaarVerblijf, leesVerblijf, rijtijden, rijTekst, vraagVerblijf, type Verblijf } from './verblijf'
+import { bewaarVerblijf, leesVerblijf, rijtijden, rijTekst, vraagVerblijf, zoekInDeBuurt, type Verblijf } from './verblijf'
 import { zoekveld } from './zoek'
 
 const DATA = './data'
@@ -322,10 +322,24 @@ surfPaneel($('knop-surfen'), $('surfpaneel'), (s) => {
   fiche.ververs()
   tekenPlanning()
 })
+// Gezochte plaats: een speld op de kaart, ingezoomd zodat de stranden in de buurt met hun cijfer zichtbaar zijn.
+let plekMarker: maplibregl.Marker | null = null
 zoekveld(() => spots.index, (s) => {
   kiesTab('kaart')
   openSpot(s)
+}, (g) => {
+  kiesTab('kaart')
+  fiche.sluit()
+  plekMarker?.remove()
+  const el = document.createElement('div')
+  el.className = 'plekspeld'
+  el.innerHTML = '<i></i>'
+  el.title = g.titel
+  plekMarker = new maplibregl.Marker({ element: el, anchor: 'bottom' }).setLngLat([g.lon, g.lat]).addTo(map)
+  map.flyTo({ center: [g.lon, g.lat], zoom: Math.max(map.getZoom(), 10.5), padding: { top: 0, bottom: 0, left: 0, right: 0 } })
 })
+// Plaatsen in de buurt van wat je bekijkt eerst (zoals Google Maps).
+map.on('moveend', () => { const c = map.getCenter(); zoekInDeBuurt(c.lng, c.lat) })
 map.on('moveend', updateFine)
 new Labels(map).load('./basis/plaatsen.geojson').catch(() => {})
 enablePointInfo(map, {
