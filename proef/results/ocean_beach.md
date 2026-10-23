@@ -39,12 +39,12 @@ Bias = gemiddelde van voorspelling − meting. Richtingen: kortste hoekverschil;
 | Golfhoogte (m) | meteofrance_wave | kort | 709 | 98.5 | 0.05 | 0.11 | 0.13 | 0.95 | 88 |
 | Golfhoogte (m) | ncep_gfswave025 | kort | 709 | 98.5 | -0.33 | 0.33 | 0.38 | 0.91 | 60 |
 | Piekperiode (s) | ecmwf_wam025 | kort | 709 | 98.5 | -0.43 | 1.10 | 1.76 | 0.73 | — |
-| Gemiddelde periode (s) | best_match | kort | 709 | 98.5 | 2.31 | 2.31 | 2.46 | 0.73 | — |
+| Gemiddelde periode (s) | best_match | kort | 709 | 98.5 | 2.32 | 2.32 | 2.46 | 0.72 | — |
 | Gemiddelde periode (s) | ecmwf_wam025 | kort | 709 | 98.5 | 2.56 | 2.56 | 2.69 | 0.74 | — |
-| Gemiddelde periode (s) | meteofrance_wave | kort | 709 | 98.5 | 2.31 | 2.31 | 2.46 | 0.73 | — |
+| Gemiddelde periode (s) | meteofrance_wave | kort | 709 | 98.5 | 2.32 | 2.32 | 2.46 | 0.72 | — |
 | Gemiddelde periode (s) | ncep_gfswave025 | kort | 709 | 98.5 | 5.87 | 5.87 | 6.51 | -0.02 | — |
-| Golfrichting (°) | best_match | kort | 709 | 98.5 | 12.32 | 23.14 | 33.19 | — | — |
-| Golfrichting (°) | ecmwf_wam025 | kort | 709 | 98.5 | 4.50 | 22.87 | 30.06 | — | — |
-| Golfrichting (°) | meteofrance_wave | kort | 709 | 98.5 | 12.32 | 23.14 | 33.19 | — | — |
-| Golfrichting (°) | ncep_gfswave025 | kort | 709 | 98.5 | -22.68 | 32.12 | 39.61 | — | — |
+| Golfrichting (°) | best_match | kort | 709 | 98.5 | 12.32 | 23.14 | 33.21 | — | — |
+| Golfrichting (°) | ecmwf_wam025 | kort | 709 | 98.5 | 4.50 | 22.88 | 30.07 | — | — |
+| Golfrichting (°) | meteofrance_wave | kort | 709 | 98.5 | 12.32 | 23.14 | 33.21 | — | — |
+| Golfrichting (°) | ncep_gfswave025 | kort | 709 | 98.5 | -22.67 | 32.13 | 39.61 | — | — |
 | Watertemperatuur (°C) | best_match | kort | 716 | 99.4 | -0.30 | 0.64 | 0.84 | 0.18 | — |

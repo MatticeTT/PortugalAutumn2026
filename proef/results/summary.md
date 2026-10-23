@@ -4,9 +4,9 @@ MAE van het beste model per variabele: wind op 1 dag vooruit, golven en watertem
 
 | Spot | Windsnelheid (kn) | Windrichting (°) | Windvlagen (kn) | Golfhoogte (m) | Piekperiode (s) | Gemiddelde periode (s) | Golfrichting (°) | Watertemperatuur (°C) |
 |---|---|---|---|---|---|---|---|---|
-| Ocean Beach, San Francisco (VS) | 2.42 (ecmwf_ifs025, n=714) | 11.36 (best_match, n=642) | 4.87 (best_match, n=712) | 0.11 (ecmwf_wam025, n=709) | 1.10 (ecmwf_wam025, n=709) | 2.31 (best_match, n=709) | 22.87 (ecmwf_wam025, n=709) | 0.64 (best_match, n=716) |
+| Ocean Beach, San Francisco (VS) | 2.42 (ecmwf_ifs025, n=714) | 11.36 (best_match, n=642) | 4.87 (best_match, n=712) | 0.11 (ecmwf_wam025, n=709) | 1.10 (ecmwf_wam025, n=709) | 2.32 (best_match, n=709) | 22.88 (ecmwf_wam025, n=709) | 0.64 (best_match, n=716) |
 | Ho'okipa, Maui (VS) | 3.69 (gfs_seamless, n=718) | 21.09 (gfs_seamless, n=653) | 8.71 (best_match, n=718) | 0.12 (ecmwf_wam025, n=720) | 1.20 (ecmwf_wam025, n=720) | 0.83 (best_match, n=720) | 14.61 (ecmwf_wam025, n=720) | 0.54 (best_match, n=720) |
-| Cape Hatteras, Buxton (VS) | 2.55 (ecmwf_ifs025, n=715) | 17.54 (ecmwf_ifs025, n=621) | 4.47 (best_match, n=714) | 0.13 (ncep_gfswave025, n=705) | 1.00 (ecmwf_wam025, n=705) | 1.48 (ecmwf_wam025, n=705) | 19.82 (ecmwf_wam025, n=705) | 0.67 (best_match, n=715) |
+| Cape Hatteras, Buxton (VS) | 2.55 (ecmwf_ifs025, n=715) | 17.54 (ecmwf_ifs025, n=621) | 4.47 (best_match, n=714) | 0.13 (ncep_gfswave025, n=705) | 1.01 (ecmwf_wam025, n=705) | 1.48 (ecmwf_wam025, n=705) | 19.81 (ecmwf_wam025, n=705) | 0.67 (best_match, n=715) |
 | Cocoa Beach, Florida (VS) | 2.47 (ecmwf_ifs025, n=717) | 28.68 (ecmwf_ifs025, n=564) | 5.14 (best_match, n=717) | 0.11 (ncep_gfswave025, n=704) | 0.91 (ecmwf_wam025, n=703) | 1.71 (ecmwf_wam025, n=704) | 13.20 (ncep_gfswave025, n=703) | geen meting |
 | Oostende, Mariakerke (BE) | 1.97 (ecmwf_ifs025, n=720) | 13.57 (ecmwf_ifs025, n=555) | 4.89 (best_match, n=720) | 0.13 (ecmwf_wam025, n=720) | geen meting | geen meting | geen meting | 0.28 (best_match, n=700) |
 | Scheveningen (NL) | 1.67 (gfs_seamless, n=720) | 11.07 (ecmwf_ifs025, n=473) | 5.28 (gfs_seamless, n=720) | 0.51 (best_match, n=719) | 1.97 (ecmwf_wam025, n=719) | 1.59 (ecmwf_wam025, n=719) | geen meting | 0.31 (best_match, n=678) |

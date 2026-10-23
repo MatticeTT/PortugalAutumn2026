@@ -43,7 +43,7 @@ Bias = gemiddelde van voorspelling − meting. Richtingen: kortste hoekverschil;
 | Gemiddelde periode (s) | ecmwf_wam025 | kort | 704 | 97.8 | 1.71 | 1.71 | 1.94 | 0.78 | — |
 | Gemiddelde periode (s) | meteofrance_wave | kort | 704 | 97.8 | 2.42 | 2.42 | 2.71 | 0.65 | — |
 | Gemiddelde periode (s) | ncep_gfswave025 | kort | 704 | 97.8 | 3.03 | 3.03 | 3.29 | 0.64 | — |
-| Golfrichting (°) | best_match | kort | 703 | 97.6 | 3.52 | 16.35 | 22.57 | — | — |
-| Golfrichting (°) | ecmwf_wam025 | kort | 703 | 97.6 | 4.45 | 17.21 | 23.03 | — | — |
-| Golfrichting (°) | meteofrance_wave | kort | 703 | 97.6 | 3.52 | 16.35 | 22.57 | — | — |
+| Golfrichting (°) | best_match | kort | 703 | 97.6 | 3.51 | 16.35 | 22.57 | — | — |
+| Golfrichting (°) | ecmwf_wam025 | kort | 703 | 97.6 | 4.44 | 17.21 | 23.03 | — | — |
+| Golfrichting (°) | meteofrance_wave | kort | 703 | 97.6 | 3.51 | 16.35 | 22.57 | — | — |
 | Golfrichting (°) | ncep_gfswave025 | kort | 703 | 97.6 | 0.90 | 13.20 | 20.35 | — | — |

@@ -1,7 +1,7 @@
 spot,wind_kn_mae,wind_kn_model,wind_kn_n,windrichting_mae,windrichting_model,windrichting_n,vlaag_kn_mae,vlaag_kn_model,vlaag_kn_n,hs_m_mae,hs_m_model,hs_m_n,tp_s_mae,tp_s_model,tp_s_n,tm_s_mae,tm_s_model,tm_s_n,golfrichting_mae,golfrichting_model,golfrichting_n,sst_c_mae,sst_c_model,sst_c_n
-"Ocean Beach, San Francisco (VS)",2.42,ecmwf_ifs025,714,11.36,best_match,642,4.87,best_match,712,0.11,ecmwf_wam025,709,1.1,ecmwf_wam025,709,2.31,best_match,709,22.87,ecmwf_wam025,709,0.64,best_match,716
+"Ocean Beach, San Francisco (VS)",2.42,ecmwf_ifs025,714,11.36,best_match,642,4.87,best_match,712,0.11,ecmwf_wam025,709,1.1,ecmwf_wam025,709,2.32,best_match,709,22.88,ecmwf_wam025,709,0.64,best_match,716
 "Ho'okipa, Maui (VS)",3.69,gfs_seamless,718,21.09,gfs_seamless,653,8.71,best_match,718,0.12,ecmwf_wam025,720,1.2,ecmwf_wam025,720,0.83,best_match,720,14.61,ecmwf_wam025,720,0.54,best_match,720
-"Cape Hatteras, Buxton (VS)",2.55,ecmwf_ifs025,715,17.54,ecmwf_ifs025,621,4.47,best_match,714,0.13,ncep_gfswave025,705,1.0,ecmwf_wam025,705,1.48,ecmwf_wam025,705,19.82,ecmwf_wam025,705,0.67,best_match,715
+"Cape Hatteras, Buxton (VS)",2.55,ecmwf_ifs025,715,17.54,ecmwf_ifs025,621,4.47,best_match,714,0.13,ncep_gfswave025,705,1.01,ecmwf_wam025,705,1.48,ecmwf_wam025,705,19.81,ecmwf_wam025,705,0.67,best_match,715
 "Cocoa Beach, Florida (VS)",2.47,ecmwf_ifs025,717,28.68,ecmwf_ifs025,564,5.14,best_match,717,0.11,ncep_gfswave025,704,0.91,ecmwf_wam025,703,1.71,ecmwf_wam025,704,13.2,ncep_gfswave025,703,geen meting,geen meting,0
 "Oostende, Mariakerke (BE)",1.97,ecmwf_ifs025,720,13.57,ecmwf_ifs025,555,4.89,best_match,720,0.13,ecmwf_wam025,720,geen meting,geen meting,0,geen meting,geen meting,0,geen meting,geen meting,0,0.28,best_match,700
 Scheveningen (NL),1.67,gfs_seamless,720,11.07,ecmwf_ifs025,473,5.28,gfs_seamless,720,0.51,best_match,719,1.97,ecmwf_wam025,719,1.59,ecmwf_wam025,719,geen meting,geen meting,0,0.31,best_match,678
