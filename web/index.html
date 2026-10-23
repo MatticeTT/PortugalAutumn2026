@@ -18,15 +18,14 @@
         <button type="button" data-tab="kaart" aria-current="page">Kaart</button>
         <button type="button" data-tab="planning">Planning</button>
       </nav>
-      <button id="verblijfknop" class="verblijfknop" type="button">Waar verblijf je?</button>
-      <div class="zoek">
-        <input id="zoek" type="search" placeholder="Strand of plaats" autocomplete="off" aria-label="Zoek een strand of plaats"
-          role="combobox" aria-expanded="false" aria-controls="zoeklijst" aria-autocomplete="list" />
-        <ul id="zoeklijst" role="listbox" hidden></ul>
-      </div>
       <button id="thema" class="themaknop" type="button" aria-label="Dag of nacht"></button>
     </div>
-    <div class="uurrij">
+    <div class="zoek alleenkaart">
+      <input id="zoek" type="search" placeholder="Zoek een strand of plaats" autocomplete="off" aria-label="Zoek een strand of plaats"
+        role="combobox" aria-expanded="false" aria-controls="zoeklijst" aria-autocomplete="list" />
+      <ul id="zoeklijst" role="listbox" hidden></ul>
+    </div>
+    <div class="uurrij alleenkaart">
       <label><span class="sr">Dag</span><select id="datum"></select></label>
       <button id="afspelen" class="afspelen" type="button" aria-label="Afspelen">
         <svg viewBox="0 0 24 24" class="speel" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
@@ -38,6 +37,7 @@
   </header>
   <main>
     <div id="kaart" role="application" aria-label="Kaart met surfspots, wind en golven"></div>
+    <p class="legende-kaart"><span class="stip" aria-hidden="true"></span>Groen = ga surfen: 3 uur of meer een 4 of 5</p>
     <div class="laagknoppen" role="group" aria-label="Lagen">
       <button id="knop-wind" class="laag aan" aria-pressed="true" type="button"><span class="teken wind"></span>Wind</button>
       <button id="knop-deining" class="laag aan" aria-pressed="true" type="button" title="Deining: de golven waarop je surft"><span class="teken golf"></span>Deining</button>
@@ -53,7 +53,7 @@
       Wind en onweer: ECMWF IFS open data (CC BY 4.0) · Getij: EOT20, DGFI-TUM (CC BY 4.0) ·
       Diepte: EMODnet Bathymetry Consortium (CC BY 4.0) · Kustlijn: GSHHG ·
       Stranden: © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a> (ODbL), EEA/APA ·
-      Kaart: Natural Earth · Routes: OSRM (© OpenStreetMap contributors) · Plaatsen zoeken: Esri ArcGIS World Geocoding, Photon
+      Kaart: Natural Earth, GSHHG, wegen via OpenFreeMap · Routes: OSRM (© OpenStreetMap contributors) · Plaatsen zoeken: Esri ArcGIS World Geocoding, Photon
     </details>
   </footer>
   <script type="module" src="./src/main.ts"></script>

@@ -227,7 +227,7 @@ export class Planning {
     const kaart = (dag: string, lijst: (typeof dagen)[number]['lijst']) => {
       const d = new Date(dag + 'T12:00')
       if (!lijst.length) {
-        return `<p class="dagniets"><b>${dagFmt.format(d)} ${d.getDate()} ${maandFmt.format(d)}</b> nergens minstens ${o.data!.min_uren} uur goed binnen ${rijTekst(v.max)} met ${plankTekst}</p>`
+        return `<p class="dagleeg"><b>${dagFmt.format(d)} ${d.getDate()} ${maandFmt.format(d)}</b>niets goed binnen je rijtijd</p>`
       }
       const [x, ...rest] = lijst
       const [k, t] = kleur(x.vak[2])

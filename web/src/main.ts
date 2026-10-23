@@ -9,7 +9,7 @@ import { enablePointInfo } from './punt'
 import { dagSleutel, SpotData, vakkenOpDag, type SpotKort } from './spots'
 import { bewaarSurf, leesSurf } from './surfpaneel'
 import { themaKnop } from './thema'
-import { bewaarVerblijf, leesVerblijf, rijtijden, rijTekst, zoekInDeBuurt, type Verblijf } from './verblijf'
+import { bewaarVerblijf, leesVerblijf, rijtijden, zoekInDeBuurt, type Verblijf } from './verblijf'
 import { zoekveld } from './zoek'
 
 const DATA = './data'
@@ -248,6 +248,7 @@ function kiesTab(naam: string) {
     else b.removeAttribute('aria-current')
   })
   $('planning').hidden = naam !== 'planning'
+  document.body.classList.toggle('op-planning', naam === 'planning')
   if (naam === 'planning') tekenPlanning()
 }
 
@@ -279,8 +280,6 @@ function tekenPlanning() {
 
 // ---- Verblijf en rijtijden (OSRM, zoals in de eerste versie) ----
 function toonVerblijf() {
-  const k = $('verblijfknop')
-  k.innerHTML = verblijf ? `<span class="huisje" aria-hidden="true"></span>${verblijf.naam.split(',')[0]} · ${rijTekst(verblijf.max)}` : 'Waar verblijf je?'
   verblijfMarker?.remove()
   verblijfMarker = null
   if (verblijf) {
@@ -387,7 +386,6 @@ let savedAlt = true
 try { savedAlt = localStorage.getItem('afwisselen') !== '0' } catch { /* privévenster */ }
 setAlternate(savedAlt)
 document.querySelectorAll<HTMLButtonElement>('.tabs button').forEach((b) => b.addEventListener('click', () => kiesTab(b.dataset.tab!)))
-$('verblijfknop').addEventListener('click', () => { kiesTab('planning'); planning.focus() })
 themaKnop()
 // Gezochte plaats: een speld op de kaart, ingezoomd zodat de stranden in de buurt met hun cijfer zichtbaar zijn.
 let plekMarker: maplibregl.Marker | null = null

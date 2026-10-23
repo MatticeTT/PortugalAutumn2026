@@ -31,20 +31,14 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .balk { background: var(--vlak); border-bottom: 1px solid var(--lijn); padding: max(8px, env(safe-area-inset-top)) 12px 6px; z-index: 4; }
 .balk-boven { display: flex; align-items: center; gap: 8px; }
 .balk h1 { font-size: 17px; margin: 0; flex: 1; white-space: nowrap; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
-@media (max-width: 560px) { .balk h1 { display: none; } }
 .tabs { display: flex; gap: 4px; flex: none; }
 .tabs button { border: 0; background: none; font-size: 13px; font-weight: 700; padding: 6px 11px; border-radius: 999px; color: var(--zacht); }
 .tabs button[aria-current="page"] { background: var(--accent); color: #fff; }
-.verblijfknop { flex: 0 1 auto; min-width: 0; max-width: 220px; font-size: 13px; font-weight: 600; color: var(--tekst); background: var(--bg);
-  border: 1px solid var(--lijn); border-radius: 999px; padding: 5px 11px; min-height: 32px; white-space: nowrap; overflow: hidden;
-  text-overflow: ellipsis; display: inline-flex; align-items: center; gap: 6px; }
-@media (max-width: 560px) { .verblijfknop { max-width: 120px; } }
-.huisje { width: 12px; height: 12px; background: currentColor; display: inline-block; flex: none;
-  clip-path: polygon(50% 0, 100% 45%, 86% 45%, 86% 100%, 14% 100%, 14% 45%, 0 45%); }
-.zoek { position: relative; flex: 0 1 230px; min-width: 0; margin-left: auto; }
+/* Zoeken op een eigen rij, over de volle breedte (op de telefoon was het veld te smal). */
+.zoek { position: relative; margin-top: 8px; }
 .zoek input { width: 100%; font: inherit; font-size: 16px; color: var(--tekst); background: var(--bg); border: 1px solid var(--lijn);
-  border-radius: 8px; padding: 5px 10px; min-height: 34px; }
-#zoeklijst { position: absolute; right: 0; top: calc(100% + 4px); width: max(100%, 260px); max-width: calc(100vw - 24px); margin: 0;
+  border-radius: 10px; padding: 7px 12px; min-height: 40px; }
+#zoeklijst { position: absolute; left: 0; right: 0; top: calc(100% + 4px); margin: 0;
   padding: 4px; list-style: none; z-index: 20; background: var(--vlak); border: 1px solid var(--lijn); border-radius: 10px;
   box-shadow: 0 8px 24px rgb(0 0 0 / 0.18); }
 #zoeklijst li { display: flex; flex-direction: column; padding: 7px 10px; border-radius: 7px; cursor: pointer; }
@@ -76,9 +70,10 @@ button { font: inherit; color: inherit; cursor: pointer; }
 /* ---- Kaart (donker: daarop staat de animatie) ---- */
 main { flex: 1; position: relative; min-height: 0; }
 #kaart { position: absolute; inset: 0; background: #1b2430; z-index: 0; }
-.laagknoppen { position: absolute; top: 10px; right: 10px; z-index: 2; display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end;
+/* Lagen onderaan links, de bronvermelding (i) rechtsonder: zo bedekken ze geen stranden bovenaan. */
+.laagknoppen { position: absolute; bottom: 10px; left: 10px; z-index: 2; display: flex; gap: 6px; flex-wrap: wrap;
   max-width: calc(100% - 20px); }
-.laag { display: flex; align-items: center; gap: 7px; padding: 6px 11px; border-radius: 999px; font-size: 13px; font-weight: 600;
+.laag { display: flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 999px; font-size: 13px; font-weight: 600;
   background: rgba(18, 20, 24, 0.8); border: 1px solid rgba(255, 255, 255, 0.14); color: #9aa3ad; }
 .laag.aan { color: #e8ebef; border-color: rgba(255, 255, 255, 0.35); }
 .laag[hidden] { display: none; }
@@ -90,7 +85,8 @@ main { flex: 1; position: relative; min-height: 0; }
   rgba(224, 244, 255, .6) 6px 9px, transparent 9px 11px, rgba(224, 244, 255, .3) 11px 14px); }
 .laagknop { font-weight: 700; font-size: 13px; padding: 6px 13px; border-radius: 999px; border: 0; color: #fff; box-shadow: 0 1px 4px rgb(0 0 0 / 0.25); }
 .laagknop[aria-expanded="true"] { outline: 2px solid #fff; outline-offset: -4px; }
-.maplibregl-ctrl-attrib { font-size: 10px; }
+/* De bronnen staan volledig in de balk onderaan (Bronnen); op de kaart zouden ze onder de knoppen schuiven. */
+.maplibregl-ctrl-attrib { display: none; }
 
 /* Spots op de kaart: bolletje met het cijfer, ingezoomd met de naam erbij */
 .spot { display: flex; align-items: center; gap: 5px; border: 0; padding: 0; background: none; cursor: pointer; width: max-content;
@@ -229,11 +225,10 @@ main { flex: 1; position: relative; min-height: 0; }
 .bronnen a { color: inherit; }
 
 /* Kompas in de fiche */
-.kompasblok { display: flex; align-items: center; gap: 14px; margin: 0 0 10px; }
-.kompas { width: 168px; height: 168px; flex: none; }
-.legende { display: grid; gap: 6px; font-size: 13px; line-height: 1.3; }
-.legende i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; }
-@media (max-width: 420px) { .kompasblok { flex-direction: column; align-items: stretch; } .kompas { align-self: center; width: 200px; height: 200px; } }
+.kompasblok { display: flex; flex-direction: column; align-items: center; gap: 4px; margin: 0 0 10px; }
+.kompas { width: 190px; height: 190px; }
+.kompasuitleg { margin: 0; font-size: 12px; color: var(--zacht); text-align: center; }
+.pijlkleur { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; }
 
 /* Zoeken: icoon voor strand of plaats; speld op de gezochte plaats */
 #zoeklijst .zi { display: inline-block; width: 1.4em; }
@@ -248,3 +243,23 @@ main { flex: 1; position: relative; min-height: 0; }
 .tijden input, .gewicht input { width: 4.2em; font: inherit; font-size: 18px; font-weight: 700; text-align: center; color: var(--tekst);
   background: var(--bg); border: 1px solid var(--lijn); border-radius: 8px; padding: 6px 4px; }
 .gewicht { margin-top: 10px; }
+
+/* Zoeken en de uurbalk horen bij de kaart: niet tonen op Planning. */
+body.op-planning .alleenkaart { display: none; }
+
+/* Uitleg van de kleuren, linksboven op de kaart */
+.legende-kaart { position: absolute; top: 8px; left: 8px; right: 8px; z-index: 2; margin: 0; width: fit-content; max-width: calc(100% - 16px);
+  padding: 5px 10px; border-radius: 10px; font-size: 12px; line-height: 1.3; color: #e8ebef; background: rgba(18, 20, 24, 0.72);
+  pointer-events: none; }
+.legende-kaart .stip { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: var(--s5); margin-right: 6px;
+  vertical-align: -1px; box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.6); }
+body.op-planning .legende-kaart { display: none; }
+/* Uitgezoomd: stranden die niet goed zijn als klein grijs puntje zonder cijfer; ingezoomd (met namen) wel met cijfer. */
+#kaart:not(.met-namen) .spot.grijs { margin-left: -6px; }
+#kaart:not(.met-namen) .spot.grijs b { width: 12px; height: 12px; border-radius: 50%; font-size: 0; }
+.fiche .meerplanken { display: block; margin: 2px 0 12px; font-size: 13px; }
+/* Planning: een dag zonder goed strand is één korte regel */
+.dagleeg { margin: 0; padding: 7px 4px; font-size: 14px; color: var(--zacht); border-bottom: 1px solid var(--lijn); }
+.dagleeg b { display: inline-block; min-width: 92px; color: var(--tekst); }
+.dagleeg b::first-letter { text-transform: uppercase; }
+.dagleeg + .plandag, .plandag + .dagleeg { margin-top: 12px; }

@@ -31,7 +31,7 @@ function pijl(deg: number, kleur: string, dik: number, van = R - 4, tot = 22, op
 
 export const windKleur = (rel: number) => (rel <= 45 ? '#16a34a' : rel < 135 ? '#f08a00' : '#e5484d')
 export const windSoort = (rel: number) => (rel <= 45 ? 'aflandig' : rel < 135 ? 'van opzij' : 'aanlandig')
-const DEINING = '#2f7cf6'
+export const DEINING = '#2f7cf6'
 
 export interface KompasInvoer {
   richting: number // strand kijkt naar (graden)
@@ -70,15 +70,4 @@ export function kompasSvg(k: KompasInvoer) {
     ${ticks}${letters}${golf}${wind}
     <circle r="4" fill="var(--tekst)"/>
   </svg>`
-}
-
-/** Uitleg onder het kompas: kleur en waarde per pijl. */
-export function kompasLegende(k: KompasInvoer) {
-  const uit: string[] = []
-  if (k.deining && (k.breker ?? 0) >= 0.1)
-    uit.push(`<span><i style="background:${DEINING}"></i>Deining ${k.deining[0].toLocaleString('nl-NL')} m · ${k.deining[2]} s uit ${k.deining[1]}° (${kompas(k.deining[1])})</span>`)
-  if (k.wind)
-    uit.push(`<span><i style="background:${windKleur(k.wind[1])}"></i>Wind ${k.wind[0]} kn uit ${k.wind[3]}° · ${windSoort(k.wind[1])}</span>`)
-  if (k.venster.length) uit.push(`<span><i style="background:${DEINING};opacity:.3"></i>Open zee: hier kan deining vandaan komen</span>`)
-  return `<div class="legende">${uit.join('')}</div>`
 }

@@ -5,7 +5,7 @@ import {
   dagNaam, dagSleutel, esc, EXPERT, golfWoord, isTop, kompas, komma, krachtWoord, PLANKEN, rond, routeLink, SOORT, uur, vakkenOpDag,
   windWoord, type SpotData, type SpotDetail, type SpotKort,
 } from './spots'
-import { kompasLegende, kompasSvg } from './kompas'
+import { DEINING, kompasSvg, windKleur } from './kompas'
 import { rijTekst } from './verblijf'
 
 const VAN_UUR = 6
@@ -29,6 +29,7 @@ export interface FicheOpties {
 export class Fiche {
   private el = document.getElementById('fiche')!
   id = -1
+  private alleRijen = false // uurtabel: alle 8 planken in plaats van de 3 beste
 
   constructor(private o: FicheOpties) {
     window.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !this.el.hidden) this.sluit() })
@@ -59,18 +60,27 @@ export class Fiche {
     const planken = this.o.planken()
     const vakken = vakkenOpDag(s, dag, planken)
     const rij = this.o.rijtijd(id)
+    // Uurtabel: je eigen planken. Staan ze allemaal aan, dan de 3 beste van die dag (anders een muur van cijfers).
+    const alle = planken.length === Object.keys(PLANKEN).length
+    const volgorde = this.o.data.index?.planken ?? []
+    const dagRij = s.dag?.[dag]
+    const tabel = alle && !this.alleRijen
+      ? [...planken].sort((a, b) => (dagRij?.[volgorde.indexOf(b)] ?? 0) - (dagRij?.[volgorde.indexOf(a)] ?? 0)).slice(0, 3)
+      : planken
     this.el.innerHTML = `<button class="sluit" aria-label="Sluiten">×</button>
       <h2>${esc(s.naam)}</h2>
       <div class="sub">${s.soort ? SOORT[s.soort] ?? 'Strand' : 'Strand'} · strand kijkt naar het ${kompas(s.richting)}${rij ? ` · ${rijTekst(rij)} rijden` : ''}</div>
       ${this.conclusie(s, dag, vakken)}
       ${vakken.length ? `<div class="tegels">${this.tegels(vakken)}</div>` : ''}
       <h3 class="kop">${dagNaam(new Date(dag + 'T12:00'), true)} per uur</h3>
-      ${this.perUur(d, dag, planken, t)}
+      ${this.perUur(d, dag, tabel, t)}
+      ${alle ? `<button type="button" class="linkknop meerplanken">${this.alleRijen ? 'Alleen de 3 beste planken' : 'Alle planken tonen'}</button>` : ''}
       <h3 class="kop">Waarom ${this.momentTekst(d, t, vakken)}</h3>
       ${this.waarom(d, this.moment(d, t, vakken))}
       <div class="knoppen"><a class="knop hoofd" href="${routeLink(s)}" target="_blank" rel="noopener">Route${rij ? ` · ${rijTekst(rij)}` : ''}</a></div>
       <p class="bron">Golven: Copernicus Marine · wind: ECMWF · getij: EOT20 · strandhelling: ${esc(d.herkomst.tanb ?? '—')}</p>`
     this.el.querySelector('.sluit')!.addEventListener('click', () => this.sluit())
+    this.el.querySelector('.meerplanken')?.addEventListener('click', () => { this.alleRijen = !this.alleRijen; this.open(id) })
     this.el.querySelectorAll<HTMLElement>('[data-dag]').forEach((b) => b.addEventListener('click', () => this.o.naarDag(b.dataset.dag!)))
   }
 
@@ -134,14 +144,17 @@ export class Fiche {
 
   private waarom(d: SpotDetail, i: number) {
     if (i < 0 || !d.wind[i]) return '<p class="bron">Geen gegevens voor dit moment.</p>'
-    const li = (kop: string, tekst: string, klas = '') => `<li class="${klas}"><small>${kop}</small>${tekst}</li>`
+    // Golven en wind met het kleurtje van hun pijl in het kompas (geen aparte legende: niets dubbel).
+    const li = (kop: string, tekst: string, klas = '', kleur = '') =>
+      `<li class="${klas}"><small>${kleur ? `<i class="pijlkleur" style="background:${kleur}"></i>` : ''}${kop}</small>${tekst}</li>`
     const uit: string[] = []
     const dn = d.deining[i], br = d.breker[i] ?? 0, wz = d.windzee[i] ?? 0
     uit.push(dn && br >= 0.1
-      ? li('Golven', `<b>${golfWoord(br)}</b> (${br.toLocaleString('nl-NL')} m), ${krachtWoord(dn[2])} (${dn[2]} s), uit het ${kompas(dn[1])}${wz > dn[0] * 0.6 && wz > 0.4 ? '; veel korte windgolven ertussen' : ''}`)
+      ? li('Golven', `<b>${golfWoord(br)}</b> (${br.toLocaleString('nl-NL')} m), ${krachtWoord(dn[2])} (${dn[2]} s), uit het ${kompas(dn[1])} (${Math.round(dn[1])}°)${wz > dn[0] * 0.6 && wz > 0.4 ? '; veel korte windgolven ertussen' : ''}`, '', DEINING)
       : li('Golven', '<b>Bijna vlak</b>'))
     const [kn, rel, stoot] = d.wind[i]!
-    uit.push(li('Wind', windWoord(kn, rel) + (stoot - kn >= 8 ? ` · vlagen tot ${stoot} kn` : '')))
+    const wr = d.wind[i]!.length > 3 ? d.wind[i]![3] : null
+    uit.push(li('Wind', windWoord(kn, rel) + (wr !== null ? `, uit het ${kompas(wr)} (${Math.round(wr)}°)` : '') + (stoot - kn >= 8 ? ` · vlagen tot ${stoot} kn` : ''), '', windKleur(rel)))
     const dag = dagSleutel(new Date(Date.parse(d.start) + i * 3600e3))
     const tij = d.getij.filter(([x]) => dagSleutel(new Date(x)) === dag).map(([x, soort]) => `${soort} om ${uur(x)}`).join(' · ')
     if (tij) uit.push(li('Getij', tij.charAt(0).toUpperCase() + tij.slice(1) + (d.werkt_bij_tij?.length ? `<br>Werkt het best bij ${d.werkt_bij_tij.map((w) => (w === 'half' ? 'halftij' : `${w} water`)).join(' of ')}` : '')))
@@ -151,6 +164,7 @@ export class Fiche {
     if (d.vlaggen[String(i)]?.includes('bliksem')) letop.add('Kans op onweer')
     if (letop.size) uit.push(li('Let op', [...letop].join(' · ') + (d.expert[i] ? '<br>Alleen voor ervaren surfers' : ''), 'letop'))
     const k = { richting: d.richting, venster: d.venster ?? [], deining: dn, breker: d.breker[i], wind: d.wind[i]!.length > 3 ? d.wind[i] : null }
-    return `<div class="kompasblok">${kompasSvg(k)}${kompasLegende(k)}</div><ul class="waarom">${uit.join('')}</ul>`
+    return `<div class="kompasblok">${kompasSvg(k)}${k.venster.length ? '<p class="kompasuitleg">Blauwe band: daar heeft het strand open zee, van daar kan deining komen.</p>' : ''}</div>
+      <ul class="waarom">${uit.join('')}</ul>`
   }
 }
