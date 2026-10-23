@@ -1,27 +1,31 @@
 import maplibregl from 'maplibre-gl'
 import { FieldSet, heeft, type Kind, type Manifest } from './field'
-import { Labels } from './labels'
-import { enablePointInfo } from './punt'
-import { ParticleLayer } from './particles'
-import { Blad } from './blad'
+import { Fiche } from './fiche'
 import { KaartSpots } from './kaartspots'
-import { laadProfiel, toonProfiel } from './profiel'
-import { dagSleutel, PLANKEN, SpotData, type SpotKort } from './spots'
-import { toonVandaag } from './vandaag'
+import { Labels } from './labels'
+import { ParticleLayer } from './particles'
+import { toonPlanning } from './planning'
+import { enablePointInfo } from './punt'
+import { dagSleutel, SpotData, vakkenOpDag, type SpotKort } from './spots'
+import { leesSurf, surfPaneel } from './surfpaneel'
+import { themaKnop } from './thema'
+import { bewaarVerblijf, leesVerblijf, rijtijden, rijTekst, vraagVerblijf, type Verblijf } from './verblijf'
+import { zoekveld } from './zoek'
 
 const DATA = './data'
 const FINE_ZOOM = 3 // vanaf dit zoomniveau het fijne raster (0,25 graad) voor het zichtbare gebied
 const PLAY_MS = 900
 
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T
-const slider = $<HTMLInputElement>('schuif')
-const label = $('tijd')
+const datum = $<HTMLSelectElement>('datum')
+const slider = $<HTMLInputElement>('uur')
+const uurLabel = $<HTMLOutputElement>('uurlabel')
 const playBtn = $('afspelen')
 const windBtn = $('knop-wind')
 const swellBtn = $('knop-deining')
 const altBtn = $('knop-afwisselen')
 
-// Basiskaart uit Natural Earth (publiek domein), zelf gehost: rustig grijs land, donkere zee, kustlijn en grenzen.
+// ---- Kaart met de animatie van wind en golven (ongewijzigd) ----
 const map = new maplibregl.Map({
   container: 'kaart',
   style: {
@@ -39,37 +43,27 @@ const map = new maplibregl.Map({
       { id: 'grenzen', type: 'line', source: 'grenzen', paint: { 'line-color': '#5c636d', 'line-width': ['interpolate', ['linear'], ['zoom'], 1, 0.4, 6, 0.9], 'line-dasharray': [3, 2] } },
     ],
   },
-  center: [-10, 44],
-  zoom: 3.8,
+  center: [-9.2, 39.3],
+  zoom: 5.6,
   minZoom: 1,
-  maxZoom: 10,
+  maxZoom: 12,
   dragRotate: false,
   pitchWithRotate: false,
   touchPitch: false,
   renderWorldCopies: true,
-  attributionControl: { compact: true, customAttribution: 'Wind: <a href="https://www.ecmwf.int/en/forecasts/datasets/open-data">ECMWF</a> (CC BY 4.0) · Golven: Generated using E.U. <a href="https://marine.copernicus.eu">Copernicus Marine Service</a> Information' },
+  attributionControl: { compact: true },
 })
 map.touchZoomRotate.disableRotation()
 map.keyboard.disableRotation()
 
 const layer = new ParticleLayer()
-const spots = new SpotData(`${DATA}/spots`)
-/** Planken die meetellen: die uit het profiel, anders alle. */
-const planken = () => {
-  const p = laadProfiel().planken
-  return p.length ? p : Object.keys(PLANKEN)
-}
-const kaartSpots = new KaartSpots(map, () => spots.index, (s) => blad.open(s.id, dagSleutel(new Date(manifest.times[idx].time))))
-let blad: Blad
 let manifest: Manifest
 let idx = 0
 let playing: number | null = null
 const show: Record<Kind, boolean> = { wind: true, swell: true, windsea: false }
-const KINDS: Kind[] = ['wind', 'swell', 'windsea']
-// Op de kaart: wind en deining. Windzee staat niet op de kaart, alleen in de info van een punt.
+const KINDS: Kind[] = ['wind', 'swell']
 const knop: Partial<Record<Kind, HTMLElement>> = { wind: windBtn, swell: swellBtn }
 
-// Velden per soort en uur; de laatste paar bewaren zodat terugschuiven direct werkt.
 const cache = new Map<string, FieldSet>()
 function fieldSet(kind: Kind, i: number): FieldSet {
   const t = manifest.times[i]
@@ -81,7 +75,7 @@ function fieldSet(kind: Kind, i: number): FieldSet {
     while (cache.size > 24) cache.delete(cache.keys().next().value!)
   } else {
     cache.delete(key)
-    cache.set(key, fs) // als laatst gebruikt markeren
+    cache.set(key, fs)
   }
   return fs
 }
@@ -89,19 +83,81 @@ function fieldSet(kind: Kind, i: number): FieldSet {
 function updateFine() {
   const fine = map.getZoom() >= FINE_ZOOM
   const b = map.getBounds()
-  for (const fs of [layer.wind, layer.swell.field, layer.windsea.field]) fs?.useFine(fine, b.getWest(), b.getSouth(), b.getEast(), b.getNorth())
+  for (const fs of [layer.wind, layer.swell.field]) fs?.useFine(fine, b.getWest(), b.getSouth(), b.getEast(), b.getNorth())
 }
 
-/** Tijdstip kiezen: het oude veld blijft zichtbaar tot het nieuwe binnen is. */
+// ---- Spots, fiche, verblijf ----
+const spots = new SpotData(`${DATA}/spots`)
+let surf = leesSurf()
+let verblijf: Verblijf | null = leesVerblijf()
+const rij = new Map<number, number | null>()
+let verblijfMarker: maplibregl.Marker | null = null
+const tijdNu = () => new Date(manifest.times[idx].time)
+const dagenMetScore = () => [...new Set(manifest.times.map((t) => dagSleutel(new Date(t.time))))]
+  .filter((d) => d >= dagSleutel(new Date()))
+  .filter((d) => !spots.index || spots.index.spots.some((s) => Object.values(s.tijdvakken).flat().some((v) => dagSleutel(new Date(v[0])) >= d)))
+
+const fiche = new Fiche({
+  data: spots,
+  planken: () => surf.planken,
+  rijtijd: (id) => rij.get(id),
+  tijd: () => tijdNu(),
+  dagen: dagenMetScore,
+  naarDag: (d) => zetDag(d),
+  gesloten: () => {
+    kaartSpots.kies(-1)
+    map.easeTo({ padding: { top: 0, bottom: 0, left: 0, right: 0 } })
+  },
+})
+const kaartSpots = new KaartSpots(map, () => spots.index, (s) => openSpot(s))
+
+function openSpot(s: SpotKort) {
+  kaartSpots.kies(s.id)
+  fiche.open(s.id)
+  // De spot boven het blad houden: op een telefoon bedekt de fiche het onderste deel van de kaart.
+  const smal = window.innerWidth <= 640
+  map.easeTo({ center: [s.lon, s.lat], zoom: Math.max(map.getZoom(), 9),
+    padding: smal ? { top: 0, bottom: map.getContainer().clientHeight * 0.72, left: 0, right: 0 } : { top: 0, bottom: 0, left: 0, right: 460 } })
+}
+
+// ---- Tijd: dag kiezen, uur binnen die dag ----
+const uurFmt = new Intl.DateTimeFormat('nl-NL', { hour: '2-digit', minute: '2-digit' })
+const dagFmt = new Intl.DateTimeFormat('nl-NL', { weekday: 'short', day: 'numeric', month: 'short' })
+const indicesVanDag = (dag: string) => manifest.times.map((t, i) => [t, i] as const).filter(([t]) => dagSleutel(new Date(t.time)) === dag).map(([, i]) => i)
+
+function vulDagen() {
+  const vandaag = dagSleutel(new Date())
+  datum.innerHTML = [...new Set(manifest.times.map((t) => dagSleutel(new Date(t.time))))].map((d) => {
+    const naam = d === vandaag ? 'Vandaag' : dagFmt.format(new Date(d + 'T12:00'))
+    return `<option value="${d}">${naam}</option>`
+  }).join('')
+}
+
+/** Naar een dag, op ongeveer hetzelfde uur (standaard 13u). */
+function zetDag(dag: string, uur = 13) {
+  const lijst = indicesVanDag(dag)
+  if (!lijst.length) return
+  let best = lijst[0]
+  for (const i of lijst) if (Math.abs(new Date(manifest.times[i].time).getHours() - uur) < Math.abs(new Date(manifest.times[best].time).getHours() - uur)) best = i
+  setTime(best)
+}
+
 async function setTime(i: number) {
+  const vorigeDag = manifest.times[idx] ? dagSleutel(new Date(manifest.times[idx].time)) : ''
   idx = i
-  kaartSpots.zet(dagSleutel(new Date(manifest.times[i].time)), planken())
-  slider.value = String(i)
-  label.textContent = fmtTime(manifest.times[i].time)
   const t = manifest.times[i]
+  const d = new Date(t.time)
+  const dag = dagSleutel(d)
+  datum.value = dag
+  const lijst = indicesVanDag(dag)
+  slider.max = String(lijst.length - 1)
+  slider.value = String(lijst.indexOf(i))
+  uurLabel.textContent = uurFmt.format(d)
+  if (dag !== vorigeDag) kaartSpots.zet(dag, surf.planken)
+  fiche.ververs()
   const jobs = KINDS.filter((k) => show[k]).map(async (k) => {
     if (k !== 'wind' && !heeft(t, k)) {
-      layer[k].field = null // na de horizon van het golfmodel: geen golven
+      layer[k].field = null
       return
     }
     const fs = await fieldSet(k, i).loadCoarse()
@@ -113,39 +169,6 @@ async function setTime(i: number) {
   if (idx === i) {
     updateFine()
     map.triggerRepaint()
-  }
-}
-
-const fmtDay = new Intl.DateTimeFormat('nl-NL', { weekday: 'short', day: 'numeric', month: 'short' })
-const fmtHour = new Intl.DateTimeFormat('nl-NL', { hour: '2-digit', minute: '2-digit' })
-function fmtTime(iso: string) {
-  const d = new Date(iso)
-  return `${fmtDay.format(d)} · ${fmtHour.format(d)}`
-}
-
-function buildDayTicks() {
-  const box = $('dagen')
-  box.textContent = ''
-  const n = manifest.times.length - 1
-  let prev = ''
-  manifest.times.forEach((t, i) => {
-    const d = new Date(t.time)
-    const day = d.toDateString()
-    if (day === prev) return
-    prev = day
-    // Alleen een streepje bij middernacht (lokale tijd) of het eerste tijdstip.
-    if (i > 0 && d.getHours() >= 3) return
-    const s = document.createElement('span')
-    s.style.left = `${(i / n) * 100}%`
-    s.textContent = new Intl.DateTimeFormat('nl-NL', { weekday: 'short', day: 'numeric' }).format(d)
-    box.append(s)
-  })
-  // Labels die elkaar raken (bv. eerste dag kort voor middernacht) weglaten.
-  let lastRight = -Infinity
-  for (const s of Array.from(box.children) as HTMLElement[]) {
-    const r = s.getBoundingClientRect()
-    if (r.left < lastRight + 4) s.remove()
-    else lastRight = r.right
   }
 }
 
@@ -161,7 +184,6 @@ function togglePlay(on = playing === null) {
     busy = true
     const next = (idx + 1) % manifest.times.length
     await setTime(next)
-    // Alvast het volgende tijdstip ophalen.
     const after = (next + 1) % manifest.times.length
     for (const k of KINDS) if (show[k] && heeft(manifest.times[after], k)) fieldSet(k, after).loadCoarse().catch(() => {})
     busy = false
@@ -187,89 +209,95 @@ function setAlternate(on: boolean) {
   try { localStorage.setItem('afwisselen', on ? '1' : '0') } catch { /* privévenster */ }
 }
 
+// ---- Tabbladen: Kaart en Planning ----
+let tab = 'kaart'
+function kiesTab(naam: string) {
+  tab = naam
+  document.querySelectorAll<HTMLButtonElement>('.tabs button').forEach((b) => {
+    if (b.dataset.tab === naam) b.setAttribute('aria-current', 'page')
+    else b.removeAttribute('aria-current')
+  })
+  $('planning').hidden = naam !== 'planning'
+  if (naam === 'planning') tekenPlanning()
+}
+
+function tekenPlanning() {
+  if (tab !== 'planning') return
+  toonPlanning($('planning'), {
+    data: spots.index, planken: surf.planken, verblijf, rijtijd: (id) => rij.get(id), dagen: dagenMetScore(),
+    wijzigVerblijf: () => kiesVerblijf(),
+    open: (s, dag) => {
+      kiesTab('kaart')
+      const v = vakkenOpDag(s, dag, surf.planken)[0]
+      const midden = v ? new Date((Date.parse(v[1][0]) + Date.parse(v[1][1])) / 2) : new Date(dag + 'T13:00')
+      zetDag(dag, midden.getHours())
+      openSpot(s)
+    },
+  })
+}
+
+// ---- Verblijf en rijtijden (OSRM, zoals in de eerste versie) ----
+function toonVerblijf() {
+  const k = $('verblijfknop')
+  k.innerHTML = verblijf ? `<span class="huisje" aria-hidden="true"></span>${verblijf.naam.split(',')[0]} · ${rijTekst(verblijf.max)}` : 'Waar verblijf je?'
+  verblijfMarker?.remove()
+  verblijfMarker = null
+  if (verblijf) {
+    const el = document.createElement('div')
+    el.className = 'verblijfpunt'
+    el.title = verblijf.naam
+    verblijfMarker = new maplibregl.Marker({ element: el }).setLngLat([verblijf.lon, verblijf.lat]).addTo(map)
+  }
+}
+
+async function berekenRijtijden() {
+  rij.clear()
+  if (!verblijf || !spots.index) return
+  try {
+    const m = await rijtijden(verblijf, spots.index.spots.map((s) => ({ id: String(s.id), lat: s.lat, lon: s.lon })))
+    for (const [k, v] of m) rij.set(Number(k), v)
+  } catch { /* routeplanner niet bereikbaar: dan zonder rijtijden */ }
+  fiche.ververs()
+  tekenPlanning()
+}
+
+async function kiesVerblijf() {
+  const v = await vraagVerblijf(verblijf)
+  try { localStorage.setItem('verblijf-gevraagd', '1') } catch { /* niets */ }
+  if (!v) return
+  verblijf = v
+  bewaarVerblijf(v)
+  toonVerblijf()
+  map.flyTo({ center: [v.lon, v.lat], zoom: 8 })
+  await berekenRijtijden()
+}
+
+// ---- Starten ----
 async function start() {
   const res = await fetch(`${DATA}/manifest.json`, { cache: 'no-cache' })
   if (!res.ok) {
-    label.textContent = 'Geen voorspelling gevonden'
+    uurLabel.textContent = 'geen voorspelling'
     return
   }
   manifest = await res.json()
-  slider.max = String(manifest.times.length - 1)
-  // Het tijdstip dat het dichtst bij nu ligt.
-  const now = Date.now()
+  vulDagen()
+  const nu = Date.now()
   let best = 0
   manifest.times.forEach((t, i) => {
-    if (Math.abs(Date.parse(t.time) - now) < Math.abs(Date.parse(manifest.times[best].time) - now)) best = i
+    if (Math.abs(Date.parse(t.time) - nu) < Math.abs(Date.parse(manifest.times[best].time) - nu)) best = i
   })
-  const run = new Date(manifest.run)
-  const golfTot = [...manifest.times].reverse().find((t) => t.waves)
-  $('bron').textContent = `Wind: ECMWF-run ${run.getUTCDate()}/${run.getUTCMonth() + 1} ${String(run.getUTCHours()).padStart(2, '0')} UTC, tot ${fmtDay.format(new Date(manifest.times[manifest.times.length - 1].time))} · golven: Copernicus${golfTot ? `, tot ${fmtDay.format(new Date(golfTot.time))}` : ''}`
-  buildDayTicks()
-  window.addEventListener('resize', buildDayTicks)
-  bouwTabs()
-  await setTime(best)
   await spots.load().catch(() => null)
-  blad = new Blad({ data: spots, planken: planken(), profiel: laadProfiel(), dagen: dagenMetVoorspelling(), opKaart: toonOpKaart })
-  kaartSpots.zet(dagSleutel(new Date(manifest.times[idx].time)), planken())
-  kies('vandaag')
+  await setTime(best)
+  kaartSpots.zet(dagSleutel(tijdNu()), surf.planken)
+  toonVerblijf()
+  berekenRijtijden()
+  let gevraagd = false
+  try { gevraagd = localStorage.getItem('verblijf-gevraagd') === '1' } catch { /* niets */ }
+  if (!verblijf && !gevraagd) kiesVerblijf()
 }
 
-// Tabbladen: Vandaag (startscherm), Kaart, Profiel. Vandaag en Profiel liggen als paneel over de kaart.
-let gekozenDag = dagSleutel(new Date())
-function dagenMetVoorspelling() {
-  const laatste = Date.parse(manifest.times[manifest.times.length - 1].time)
-  const uit: string[] = []
-  const nu = new Date()
-  for (let i = 0; i < 16; i++) {
-    const d = new Date(nu.getFullYear(), nu.getMonth(), nu.getDate() + i, 12)
-    if (d.getTime() - 12 * 3600e3 > laatste) break
-    // Alleen dagen waarvoor er scores zijn (golfmodel tot ongeveer 10 dagen).
-    const metScore = spots.index?.spots.some((s) => Object.values(s.tijdvakken).flat().some((v) => Date.parse(v[1]) >= d.getTime() - 12 * 3600e3))
-    if (spots.index && !metScore) break
-    uit.push(dagSleutel(d))
-  }
-  return uit
-}
-
-function toonOpKaart(s: SpotKort, tijd: number) {
-  kies('kaart')
-  let best = 0
-  manifest.times.forEach((t, i) => {
-    if (Math.abs(Date.parse(t.time) - tijd) < Math.abs(Date.parse(manifest.times[best].time) - tijd)) best = i
-  })
-  setTime(best)
-  map.flyTo({ center: [s.lon, s.lat], zoom: Math.max(map.getZoom(), 9) })
-}
-
-function kies(naam: string) {
-  const paneel = $('paneel')
-  document.querySelectorAll<HTMLButtonElement>('#tabs button').forEach((t) => {
-    t.classList.toggle('aan', t.dataset.tab === naam)
-    t.setAttribute('aria-current', String(t.dataset.tab === naam))
-  })
-  paneel.hidden = naam === 'kaart'
-  blad?.sluit()
-  if (naam === 'vandaag') {
-    toonVandaag(paneel, {
-      data: spots.index, planken: planken(), profiel: laadProfiel(), dag: gekozenDag,
-      kiesDag: (d) => { gekozenDag = d; kies('vandaag') },
-      open: (id, d) => blad?.open(id, d),
-    })
-  } else if (naam === 'profiel') {
-    toonProfiel(paneel, () => {
-      blad = new Blad({ data: spots, planken: planken(), profiel: laadProfiel(), dagen: dagenMetVoorspelling(), opKaart: toonOpKaart })
-      kaartSpots.zet(dagSleutel(new Date(manifest.times[idx].time)), planken())
-    })
-  }
-}
-
-function bouwTabs() {
-  document.querySelectorAll<HTMLButtonElement>('#tabs button').forEach((t) => t.addEventListener('click', () => kies(t.dataset.tab!)))
-}
-
-new Labels(map).load('./basis/plaatsen.geojson').catch(() => {})
-
-slider.addEventListener('input', () => setTime(Number(slider.value)))
+datum.addEventListener('change', () => zetDag(datum.value, tijdNu().getHours()))
+slider.addEventListener('input', () => setTime(indicesVanDag(datum.value)[Number(slider.value)]))
 slider.addEventListener('pointerdown', () => togglePlay(false))
 playBtn.addEventListener('click', () => togglePlay())
 windBtn.addEventListener('click', () => setLayer('wind', !show.wind))
@@ -278,17 +306,29 @@ altBtn.addEventListener('click', () => setAlternate(!layer.alternate))
 let savedAlt = true
 try { savedAlt = localStorage.getItem('afwisselen') !== '0' } catch { /* privévenster */ }
 setAlternate(savedAlt)
+document.querySelectorAll<HTMLButtonElement>('.tabs button').forEach((b) => b.addEventListener('click', () => kiesTab(b.dataset.tab!)))
+$('verblijfknop').addEventListener('click', () => kiesVerblijf())
+themaKnop()
+surfPaneel($('knop-surfen'), $('surfpaneel'), (s) => {
+  surf = s
+  kaartSpots.zet(dagSleutel(tijdNu()), surf.planken)
+  fiche.ververs()
+  tekenPlanning()
+})
+zoekveld(() => spots.index, (s) => {
+  kiesTab('kaart')
+  openSpot(s)
+})
 map.on('moveend', updateFine)
+new Labels(map).load('./basis/plaatsen.geojson').catch(() => {})
 enablePointInfo(map, {
   wind: () => fieldSet('wind', idx),
   swell: () => (heeft(manifest.times[idx], 'swell') ? fieldSet('swell', idx) : null),
-  windsea: () => (heeft(manifest.times[idx], 'windsea') ? fieldSet('windsea', idx) : null),
+  windsea: () => null,
   time: () => manifest.times[idx].time,
   run: () => manifest.run,
 })
 
-// Niet op 'load' wachten: dat komt pas als alle tegels van de basiskaart binnen zijn.
-// Golven onder het land (de kustlijn snijdt ze af), wind bovenop alles.
 const addLayer = () => {
   if (map.getLayer(layer.id)) return
   map.addLayer(layer, 'land')
@@ -299,5 +339,5 @@ else map.once('style.load', addLayer)
 ;(window as unknown as { kaart: unknown }).kaart = { map, layer }
 start().catch((e) => {
   console.error(e)
-  label.textContent = 'Laden mislukt'
+  uurLabel.textContent = 'laden mislukt'
 })

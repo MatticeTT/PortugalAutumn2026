@@ -35,6 +35,7 @@ import datetime as dt
 import gzip
 import json
 import math
+import re
 from pathlib import Path
 
 from score import referentie as R
@@ -331,6 +332,24 @@ def reken_spot(spot: dict, invoer: dict, stranden: list[dict], van: dt.datetime,
             "getij": getij, "tijdvakken": vakken}
 
 
+ALGEMEEN = re.compile(r"^(spot( de)? surf|surf ?spot|spot|surf|zona de surf|pico de surf|surf area|surf zone|spot de surf\b.*)$", re.I)
+
+
+def betere_namen(lijst: list[dict], km: float = 2.0) -> None:
+    """Spots met een nietszeggende naam ('Spot de Surf') krijgen de naam van het dichtste strand met een echte naam."""
+    klein = {"de", "da", "do", "das", "dos", "e", "la", "el", "le", "les", "del"}
+    for s in lijst:  # namen in hoofdletters (officiële zwemwaterlijst) gewoon schrijven
+        if s["naam"].isupper():
+            s["naam"] = " ".join(w if i and w in klein else w.capitalize() for i, w in enumerate(s["naam"].lower().split()))
+    goed = [s for s in lijst if not ALGEMEEN.match(s["naam"].strip())]
+    for s in lijst:
+        if not ALGEMEEN.match(s["naam"].strip()):
+            continue
+        buren = sorted((afstand(s, b), b["naam"]) for b in goed)
+        if buren and buren[0][0] <= km:
+            s["naam"] = f"{buren[0][1]} (surfspot)"
+
+
 def groepen(lijst: list[dict], km: float = 2.5) -> None:
     """Stranden vlak naast elkaar met ongeveer dezelfde richting vormen één groep (veld 'groep' = id van de eerste)."""
     for s in lijst:
@@ -375,6 +394,10 @@ def main(argv: list[str] | None = None) -> int:
         bundels.setdefault(n // BUNDEL, {})[str(n)] = r
         lijst.append({"id": n, "naam": r["naam"], "lat": r["lat"], "lon": r["lon"], "richting": r["richting"],
                       "soort": r["soort"], "tijdvakken": {p: v for p, v in r["tijdvakken"].items() if v}})
+    betere_namen(lijst)
+    for s in lijst:  # ook in de details
+        r = bundels[s["id"] // BUNDEL][str(s["id"])]
+        r["naam"] = s["naam"]
     groepen(lijst)
     # Details per bundel van BUNDEL spots (d<n>.json): minder bestanden, één download voor buren.
     for b, inhoud in bundels.items():
