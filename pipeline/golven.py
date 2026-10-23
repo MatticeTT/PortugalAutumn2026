@@ -76,8 +76,10 @@ class Regio:
         import copernicusmarine
 
         w, s, e, n = REGIO
+        # Tijdreeksdienst: opgeslagen in kleine ruimtelijke blokken met alle tijdstippen, het snelst voor een klein vak.
         self.ds = copernicusmarine.open_dataset(dataset_id=IBI, variables=list(SYSTEMEN["swell"]), minimum_longitude=w,
-                                                maximum_longitude=e, minimum_latitude=s, maximum_latitude=n)
+                                                maximum_longitude=e, minimum_latitude=s, maximum_latitude=n,
+                                                service="arco-time-series")
         lat = self.ds["latitude"].values.astype(float)
         lon = self.ds["longitude"].values.astype(float)
         self.omkeren = lat[0] < lat[-1]
@@ -88,8 +90,15 @@ class Regio:
         tijden = [np.datetime64(t, "s").astype(dt.datetime).replace(tzinfo=dt.UTC) for t in self.ds["time"].values]
         self.index = {t: k for k, t in enumerate(tijden)}
         self.tijden = set(tijden)
-        # Het vak is klein (151 x 209 cellen): alles in één keer lezen gaat veel sneller dan per tijdstip.
-        self.velden_ = {v: np.asarray(self.ds[v].values, dtype=np.float32) for v in SYSTEMEN["swell"]}
+        # Het vak is klein (151 x 209 cellen): per blok van 24 tijdstippen lezen is veel sneller dan per tijdstip,
+        # en houdt het geheugen klein (alles in één keer liet de GitHub-machine vastlopen).
+        n = len(tijden)
+        self.velden_ = {}
+        for v in SYSTEMEN["swell"]:
+            uit = np.empty((n, len(lat), len(lon)), dtype=np.float32)
+            for k in range(0, n, 24):
+                uit[k:k + 24] = np.asarray(self.ds[v].isel(time=slice(k, k + 24)).values, dtype=np.float32)
+            self.velden_[v] = uit
 
     def heeft(self, t: dt.datetime) -> bool:
         return t in self.tijden
