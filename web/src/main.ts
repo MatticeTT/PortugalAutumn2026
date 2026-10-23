@@ -37,7 +37,9 @@ const map = new maplibregl.Map({
       // Ingezoomd: de wereldkaart zonder Portugal plus de fijne kust van Portugal (GSHHG, ongeveer 100 m).
       'land-buiten': { type: 'geojson', data: './basis/land-buiten.geojson', tolerance: 0.3 },
       'land-fijn': { type: 'geojson', data: './basis/land-fijn.geojson', tolerance: 0.1, attribution: 'Kust: GSHHG' },
-      // Ingezoomd: stranden en wegen uit OpenStreetMap (vectortegels van OpenFreeMap, zoals de eerste versie).
+      // Strandvlakken van Portugal uit OpenStreetMap (pipeline/stranden_osm.py).
+      stranden: { type: 'geojson', data: './basis/stranden.geojson', tolerance: 0.2 },
+      // Ingezoomd: wegen uit OpenStreetMap (vectortegels van OpenFreeMap, zoals de eerste versie).
       osm: { type: 'vector', url: 'https://tiles.openfreemap.org/planet',
         attribution: '<a href="https://openfreemap.org">OpenFreeMap</a> © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' },
     },
@@ -48,8 +50,8 @@ const map = new maplibregl.Map({
       { id: 'land-fijn', type: 'fill', source: 'land-fijn', minzoom: 7, paint: { 'fill-color': '#3b4048', 'fill-antialias': true } },
       { id: 'meren', type: 'fill', source: 'meren', paint: { 'fill-color': '#1b2430' } },
       // Stranden beige, wegen als donkere lijnen op het grijze land.
-      { id: 'stranden', type: 'fill', source: 'osm', 'source-layer': 'landcover', minzoom: 8, filter: ['==', ['get', 'class'], 'sand'],
-        paint: { 'fill-color': '#d9c49a', 'fill-opacity': ['interpolate', ['linear'], ['zoom'], 8, 0.6, 11, 0.95] } },
+      { id: 'stranden', type: 'fill', source: 'stranden', minzoom: 8,
+        paint: { 'fill-color': '#d9c49a', 'fill-opacity': ['interpolate', ['linear'], ['zoom'], 8, 0.7, 11, 0.95] } },
       { id: 'wegen', type: 'line', source: 'osm', 'source-layer': 'transportation', minzoom: 8,
         filter: ['match', ['get', 'class'], ['motorway', 'trunk', 'primary', 'secondary', 'tertiary', 'minor'], true, false],
         layout: { 'line-cap': 'round', 'line-join': 'round' },
