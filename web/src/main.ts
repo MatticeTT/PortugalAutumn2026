@@ -34,9 +34,9 @@ const map = new maplibregl.Map({
       land: { type: 'geojson', data: './basis/land.geojson', tolerance: 0.3, attribution: 'Kaart: <a href="https://www.naturalearthdata.com">Natural Earth</a>' },
       meren: { type: 'geojson', data: './basis/meren.geojson', tolerance: 0.3 },
       grenzen: { type: 'geojson', data: './basis/grenzen.geojson', tolerance: 0.3 },
-      // Ingezoomd: de wereldkaart zonder Portugal plus de kust van Portugal uit OpenStreetMap (tot op enkele meters).
+      // Ingezoomd: de wereldkaart zonder Portugal plus de fijne kust van Portugal (GSHHG, ongeveer 100 m).
       'land-buiten': { type: 'geojson', data: './basis/land-buiten.geojson', tolerance: 0.3 },
-      'land-fijn': { type: 'geojson', data: './basis/land-fijn.geojson', tolerance: 0.1, attribution: 'Kust: © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' },
+      'land-fijn': { type: 'geojson', data: './basis/land-fijn.geojson', tolerance: 0.1, attribution: 'Kust: GSHHG' },
     },
     layers: [
       { id: 'zee', type: 'background', paint: { 'background-color': '#1b2430' } },
