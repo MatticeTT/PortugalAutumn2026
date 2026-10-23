@@ -1,56 +1,56 @@
 {
- "gemaakt": "2026-10-06T10:34Z",
+ "gemaakt": "2026-10-23T08:33Z",
  "periode": [
-  "2026-09-04",
-  "2026-10-04"
+  "2026-09-21",
+  "2026-10-21"
  ],
  "open_meteo_previous_runs_wind": {
   "status": "ok",
   "resultaat": {
    "gfs_seamless": {
     "tijd": [
-     "2026-09-04T00:00",
-     "2026-10-04T23:00"
+     "2026-09-21T00:00",
+     "2026-10-21T23:00"
     ],
     "uren": 744,
     "wind_speed_10m": {
      "n": 744,
-     "gemiddeld": 5.84
+     "gemiddeld": 5.7
     },
     "wind_speed_10m_previous_day1": {
      "n": 744,
-     "gemiddeld": 5.94
+     "gemiddeld": 5.57
     },
     "wind_speed_10m_previous_day2": {
      "n": 744,
-     "gemiddeld": 6.04
+     "gemiddeld": 5.69
     },
     "wind_speed_10m_previous_day3": {
      "n": 744,
-     "gemiddeld": 6.21
+     "gemiddeld": 5.75
     }
    },
    "ecmwf_ifs": {
     "tijd": [
-     "2026-09-04T00:00",
-     "2026-10-04T23:00"
+     "2026-09-21T00:00",
+     "2026-10-21T23:00"
     ],
     "uren": 744,
     "wind_speed_10m": {
      "n": 744,
-     "gemiddeld": 5.32
+     "gemiddeld": 5.23
     },
     "wind_speed_10m_previous_day1": {
      "n": 744,
-     "gemiddeld": 5.36
+     "gemiddeld": 5.23
     },
     "wind_speed_10m_previous_day2": {
      "n": 744,
-     "gemiddeld": 5.3
+     "gemiddeld": 5.09
     },
     "wind_speed_10m_previous_day3": {
      "n": 744,
-     "gemiddeld": 5.37
+     "gemiddeld": 5.12
     }
    }
   }
@@ -60,32 +60,32 @@
   "resultaat": {
    "gfs_seamless": {
     "tijd": [
-     "2026-09-04T00:00",
-     "2026-10-04T23:00"
+     "2026-09-21T00:00",
+     "2026-10-21T23:00"
     ],
     "uren": 744,
     "wind_speed_10m": {
      "n": 744,
-     "gemiddeld": 5.84
+     "gemiddeld": 5.7
     },
     "wind_gusts_10m": {
      "n": 744,
-     "gemiddeld": 7.86
+     "gemiddeld": 7.9
     }
    },
    "ecmwf_ifs": {
     "tijd": [
-     "2026-09-04T00:00",
-     "2026-10-04T23:00"
+     "2026-09-21T00:00",
+     "2026-10-21T23:00"
     ],
     "uren": 744,
     "wind_speed_10m": {
      "n": 744,
-     "gemiddeld": 5.32
+     "gemiddeld": 5.23
     },
     "wind_gusts_10m": {
      "n": 744,
-     "gemiddeld": 12.21
+     "gemiddeld": 11.99
     }
    }
   }
@@ -95,17 +95,17 @@
   "resultaat": {
    "marine_api": {
     "tijd": [
-     "2026-09-04T00:00",
-     "2026-10-04T23:00"
+     "2026-09-21T00:00",
+     "2026-10-21T23:00"
     ],
     "uren": 744,
     "wave_height": {
      "n": 744,
-     "gemiddeld": 1.36
+     "gemiddeld": 1.37
     },
     "wave_period": {
      "n": 744,
-     "gemiddeld": 10.57
+     "gemiddeld": 11.21
     }
    },
    "previous_runs_marine": "fout: HTTP Error 404: Not Found"
@@ -115,11 +115,11 @@
   "status": "ok",
   "resultaat": {
    "tijd": [
-    "2026-09-04T00:00",
-    "2026-10-04T23:00"
+    "2026-09-21T00:00",
+    "2026-10-21T23:00"
    ],
    "uren": 744,
-   "VHM0_gemiddeld": 1.35
+   "VHM0_gemiddeld": 1.39
   }
  },
  "copernicus_insitu_boeien": {
@@ -131,105 +131,81 @@
     "recent": []
    },
    "6201077": {
-    "aantal": 18,
+    "aantal": 16,
     "voorbeeld": [
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260929/GL_TS_MO_6201077_20260929.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260930/GL_TS_MO_6201077_20260930.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261002/GL_TS_MO_6201077_20261002.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261003/GL_TS_MO_6201077_20261003.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261005/GL_TS_MO_6201077_20261005.nc"
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261007/GL_TS_MO_6201077_20261007.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261009/GL_TS_MO_6201077_20261009.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261010/GL_TS_MO_6201077_20261010.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261011/GL_TS_MO_6201077_20261011.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261012/GL_TS_MO_6201077_20261012.nc"
     ],
     "recent": [
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260929/GL_TS_MO_6201077_20260929.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260930/GL_TS_MO_6201077_20260930.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261002/GL_TS_MO_6201077_20261002.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261003/GL_TS_MO_6201077_20261003.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261005/GL_TS_MO_6201077_20261005.nc"
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261007/GL_TS_MO_6201077_20261007.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261009/GL_TS_MO_6201077_20261009.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261010/GL_TS_MO_6201077_20261010.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261011/GL_TS_MO_6201077_20261011.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261012/GL_TS_MO_6201077_20261012.nc"
     ]
    },
    "6201079": {
-    "aantal": 12,
-    "voorbeeld": [
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260913/GL_TS_MO_6201079_20260913.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260914/GL_TS_MO_6201079_20260914.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260916/GL_TS_MO_6201079_20260916.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260917/GL_TS_MO_6201079_20260917.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260918/GL_TS_MO_6201079_20260918.nc"
-    ],
-    "recent": [
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260913/GL_TS_MO_6201079_20260913.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260914/GL_TS_MO_6201079_20260914.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260916/GL_TS_MO_6201079_20260916.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260917/GL_TS_MO_6201079_20260917.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260918/GL_TS_MO_6201079_20260918.nc"
-    ]
+    "aantal": 0,
+    "voorbeeld": [],
+    "recent": []
    },
    "Sines": {
-    "aantal": 51,
+    "aantal": 61,
     "voorbeeld": [
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261004/IR_TS_TG_SinesTG_20261004.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261005/IR_TS_MO_Sines-coast-buoy_20261005.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261005/IR_TS_TG_SinesTG_20261005.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261006/IR_TS_MO_Sines-coast-buoy_20261006.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261006/IR_TS_TG_SinesTG_20261006.nc"
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261021/IR_TS_MO_Sines-coast-buoy_20261021.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261021/IR_TS_TG_SinesTG_20261021.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261022/IR_TS_MO_Sines-coast-buoy_20261022.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261022/IR_TS_TG_SinesTG_20261022.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261023/IR_TS_MO_Sines-coast-buoy_20261023.nc"
     ],
     "recent": [
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261004/IR_TS_TG_SinesTG_20261004.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261005/IR_TS_MO_Sines-coast-buoy_20261005.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261005/IR_TS_TG_SinesTG_20261005.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261006/IR_TS_MO_Sines-coast-buoy_20261006.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261006/IR_TS_TG_SinesTG_20261006.nc"
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261021/IR_TS_MO_Sines-coast-buoy_20261021.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261021/IR_TS_TG_SinesTG_20261021.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261022/IR_TS_MO_Sines-coast-buoy_20261022.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261022/IR_TS_TG_SinesTG_20261022.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261023/IR_TS_MO_Sines-coast-buoy_20261023.nc"
     ]
    },
    "Leixoes": {
     "aantal": 61,
     "voorbeeld": [
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261004/IR_TS_TG_LeixoesTG_20261004.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261005/IR_TS_MO_Leixoes-coast-buoy_20261005.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261005/IR_TS_TG_LeixoesTG_20261005.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261006/IR_TS_MO_Leixoes-coast-buoy_20261006.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261006/IR_TS_TG_LeixoesTG_20261006.nc"
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261021/IR_TS_MO_Leixoes-coast-buoy_20261021.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261021/IR_TS_TG_LeixoesTG_20261021.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261022/IR_TS_MO_Leixoes-coast-buoy_20261022.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261022/IR_TS_TG_LeixoesTG_20261022.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261023/IR_TS_MO_Leixoes-coast-buoy_20261023.nc"
     ],
     "recent": [
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261004/IR_TS_TG_LeixoesTG_20261004.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261005/IR_TS_MO_Leixoes-coast-buoy_20261005.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261005/IR_TS_TG_LeixoesTG_20261005.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261006/IR_TS_MO_Leixoes-coast-buoy_20261006.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261006/IR_TS_TG_LeixoesTG_20261006.nc"
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261021/IR_TS_MO_Leixoes-coast-buoy_20261021.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261021/IR_TS_TG_LeixoesTG_20261021.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261022/IR_TS_MO_Leixoes-coast-buoy_20261022.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261022/IR_TS_TG_LeixoesTG_20261022.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261023/IR_TS_MO_Leixoes-coast-buoy_20261023.nc"
     ]
    },
    "Faro": {
-    "aantal": 16,
-    "voorbeeld": [
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260917/IR_TS_MO_Faro-coast-buoy_20260917.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260918/IR_TS_MO_Faro-coast-buoy_20260918.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260919/IR_TS_MO_Faro-coast-buoy_20260919.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260920/IR_TS_MO_Faro-coast-buoy_20260920.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260921/IR_TS_MO_Faro-coast-buoy_20260921.nc"
-    ],
-    "recent": [
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260917/IR_TS_MO_Faro-coast-buoy_20260917.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260918/IR_TS_MO_Faro-coast-buoy_20260918.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260919/IR_TS_MO_Faro-coast-buoy_20260919.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260920/IR_TS_MO_Faro-coast-buoy_20260920.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20260921/IR_TS_MO_Faro-coast-buoy_20260921.nc"
-    ]
+    "aantal": 0,
+    "voorbeeld": [],
+    "recent": []
    },
    "Nazare": {
     "aantal": 30,
     "voorbeeld": [
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261002/IR_TS_TG_NazareTG_20261002.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261003/IR_TS_TG_NazareTG_20261003.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261004/IR_TS_TG_NazareTG_20261004.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261005/IR_TS_TG_NazareTG_20261005.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261006/IR_TS_TG_NazareTG_20261006.nc"
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261018/IR_TS_TG_NazareTG_20261018.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261019/IR_TS_TG_NazareTG_20261019.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261020/IR_TS_TG_NazareTG_20261020.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261021/IR_TS_TG_NazareTG_20261021.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261022/IR_TS_TG_NazareTG_20261022.nc"
     ],
     "recent": [
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261002/IR_TS_TG_NazareTG_20261002.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261003/IR_TS_TG_NazareTG_20261003.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261004/IR_TS_TG_NazareTG_20261004.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261005/IR_TS_TG_NazareTG_20261005.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261006/IR_TS_TG_NazareTG_20261006.nc"
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261018/IR_TS_TG_NazareTG_20261018.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261019/IR_TS_TG_NazareTG_20261019.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261020/IR_TS_TG_NazareTG_20261020.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261021/IR_TS_TG_NazareTG_20261021.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261022/IR_TS_TG_NazareTG_20261022.nc"
     ]
    },
    "6200192": {
@@ -240,18 +216,18 @@
    "6200199": {
     "aantal": 31,
     "voorbeeld": [
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261002/IR_TS_MO_6200199_20261002.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261003/IR_TS_MO_6200199_20261003.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261004/IR_TS_MO_6200199_20261004.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261005/IR_TS_MO_6200199_20261005.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261006/IR_TS_MO_6200199_20261006.nc"
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261019/IR_TS_MO_6200199_20261019.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261020/IR_TS_MO_6200199_20261020.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261021/IR_TS_MO_6200199_20261021.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261022/IR_TS_MO_6200199_20261022.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261023/IR_TS_MO_6200199_20261023.nc"
     ],
     "recent": [
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261002/IR_TS_MO_6200199_20261002.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261003/IR_TS_MO_6200199_20261003.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261004/IR_TS_MO_6200199_20261004.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261005/IR_TS_MO_6200199_20261005.nc",
-     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261006/IR_TS_MO_6200199_20261006.nc"
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261019/IR_TS_MO_6200199_20261019.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261020/IR_TS_MO_6200199_20261020.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261021/IR_TS_MO_6200199_20261021.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261022/IR_TS_MO_6200199_20261022.nc",
+     "s3://mdl-native-03/native/INSITU_IBI_PHYBGCWAV_DISCRETE_MYNRT_013_033/cmems_obs-ins_ibi_phybgcwav_mynrt_na_irr_202311/latest/20261023/IR_TS_MO_6200199_20261023.nc"
     ]
    }
   }
@@ -261,11 +237,31 @@
   "resultaat": {
    "stations_po": 64,
    "recent": [],
-   "08554099999": "HTTP Error 404: Not Found",
-   "08554599999": "HTTP Error 404: Not Found",
-   "08536099999": "HTTP Error 404: Not Found",
-   "08545099999": "HTTP Error 404: Not Found",
-   "08533099999": "HTTP Error 404: Not Found"
+   "08554099999": {
+    "regels": 861,
+    "kop": "<!DOCTYPE html>",
+    "laatste": "</script>"
+   },
+   "08554599999": {
+    "regels": 861,
+    "kop": "<!DOCTYPE html>",
+    "laatste": "</script>"
+   },
+   "08536099999": {
+    "regels": 861,
+    "kop": "<!DOCTYPE html>",
+    "laatste": "</script>"
+   },
+   "08545099999": {
+    "regels": 861,
+    "kop": "<!DOCTYPE html>",
+    "laatste": "</script>"
+   },
+   "08533099999": {
+    "regels": 861,
+    "kop": "<!DOCTYPE html>",
+    "laatste": "</script>"
+   }
   }
  }
 }

@@ -1,6 +1,75 @@
 {
- "gemaakt": "2026-10-06T10:39Z",
- "runs": 1,
- "metingen": 127,
- "per_model": {}
+ "gemaakt": "2026-10-23T08:37Z",
+ "runs": 21,
+ "metingen": 791,
+ "per_model": {
+  "wind_ecmwf": {
+   "dag_0": {
+    "n": 2997,
+    "gemiddeld_gemeten_kn": 8.74,
+    "afwijking_kn": -0.39,
+    "rmse_kn": 3.61,
+    "binnen_2_kn_pct": 36.3
+   },
+   "dag_1": {
+    "n": 3004,
+    "gemiddeld_gemeten_kn": 8.65,
+    "afwijking_kn": -0.29,
+    "rmse_kn": 4.2,
+    "binnen_2_kn_pct": 33.4
+   },
+   "dag_2": {
+    "n": 2346,
+    "gemiddeld_gemeten_kn": 7.4,
+    "afwijking_kn": -0.25,
+    "rmse_kn": 3.69,
+    "binnen_2_kn_pct": 45.6
+   },
+   "dag_3": {
+    "n": 763,
+    "gemiddeld_gemeten_kn": 6.83,
+    "afwijking_kn": -0.47,
+    "rmse_kn": 3.03,
+    "binnen_2_kn_pct": 50.2
+   },
+   "dag_4": {
+    "n": 39,
+    "te_weinig": true
+   }
+  },
+  "wind_gfs": {
+   "dag_0": {
+    "n": 2997,
+    "gemiddeld_gemeten_kn": 8.74,
+    "afwijking_kn": -0.99,
+    "rmse_kn": 4.86,
+    "binnen_2_kn_pct": 32.9
+   },
+   "dag_1": {
+    "n": 3004,
+    "gemiddeld_gemeten_kn": 8.65,
+    "afwijking_kn": -1.6,
+    "rmse_kn": 5.14,
+    "binnen_2_kn_pct": 26.8
+   },
+   "dag_2": {
+    "n": 2346,
+    "gemiddeld_gemeten_kn": 7.4,
+    "afwijking_kn": -1.59,
+    "rmse_kn": 4.47,
+    "binnen_2_kn_pct": 31.6
+   },
+   "dag_3": {
+    "n": 763,
+    "gemiddeld_gemeten_kn": 6.83,
+    "afwijking_kn": -1.88,
+    "rmse_kn": 3.91,
+    "binnen_2_kn_pct": 37.9
+   },
+   "dag_4": {
+    "n": 39,
+    "te_weinig": true
+   }
+  }
+ }
 }
