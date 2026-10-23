@@ -89,7 +89,6 @@ main { flex: 1; position: relative; min-height: 0; }
 .teken.golf { width: 14px; margin: 0 1px; background: linear-gradient(90deg, #e0f4ff 0 3px, transparent 3px 6px,
   rgba(224, 244, 255, .6) 6px 9px, transparent 9px 11px, rgba(224, 244, 255, .3) 11px 14px); }
 .laagknop { font-weight: 700; font-size: 13px; padding: 6px 13px; border-radius: 999px; border: 0; color: #fff; box-shadow: 0 1px 4px rgb(0 0 0 / 0.25); }
-.laagknop.surf { background: #0e8fa6; }
 .laagknop[aria-expanded="true"] { outline: 2px solid #fff; outline-offset: -4px; }
 .maplibregl-ctrl-attrib { font-size: 10px; }
 
@@ -116,16 +115,6 @@ main { flex: 1; position: relative; min-height: 0; }
 .punt table { border-collapse: collapse; margin: 6px 0; font-variant-numeric: tabular-nums; }
 .punt th { text-align: left; font-weight: 500; color: var(--zacht); padding: 1px 10px 1px 0; vertical-align: top; }
 
-/* ---- Paneel Surfen: planken en gewicht ---- */
-.surfpaneel { position: absolute; top: 52px; right: 10px; z-index: 3; width: min(320px, calc(100% - 20px)); max-height: calc(100% - 64px);
-  overflow: auto; padding: 12px 14px; border-radius: 12px; background: var(--vlak); color: var(--tekst); box-shadow: var(--schaduw); font-size: 14px; }
-.surfpaneel[hidden] { display: none; }
-.surfpaneel h2 { font-size: 15px; margin: 0 0 6px; }
-.surfpaneel fieldset { border: 0; border-top: 1px solid var(--lijn); margin: 8px 0 0; padding: 8px 0 0; display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; }
-.surfpaneel legend { font-weight: 700; padding: 0; }
-.surfpaneel label { display: inline-flex; align-items: center; gap: 6px; min-height: 30px; }
-.surfpaneel input[type=number] { width: 70px; font: inherit; padding: 4px 6px; border: 1px solid var(--lijn); border-radius: 6px; background: var(--bg); color: var(--tekst); }
-.surfpaneel .klein { color: var(--zacht); font-size: 12px; margin: 6px 0 0; grid-column: 1 / -1; }
 
 /* ---- Fiche van een spot: rechts op een groot scherm, onderaan op een telefoon ---- */
 .fiche { position: absolute; z-index: 3; background: var(--vlak); color: var(--tekst); box-shadow: var(--schaduw); overflow-y: auto;
@@ -205,35 +194,33 @@ main { flex: 1; position: relative; min-height: 0; }
 .dagniets b { color: var(--tekst); margin-right: 6px; }
 .dagniets b::first-letter { text-transform: uppercase; }
 
-/* ---- Venster: waar verblijf je (uit de eerste versie) ---- */
-dialog { border: 0; border-radius: 14px; padding: 18px 20px; max-width: min(520px, calc(100% - 24px)); background: var(--vlak); color: var(--tekst); box-shadow: var(--schaduw); }
-dialog::backdrop { background: rgb(0 0 0 / 0.35); }
-.verblijfvraag { padding: 0; width: min(420px, calc(100vw - 32px)); }
-.verblijfvraag::backdrop { background: rgb(10 20 30 / 0.35); }
-.verblijfvraag form { padding: 18px 18px 16px; display: flex; flex-direction: column; gap: 8px; }
-.verblijfvraag h2 { font-size: 17px; margin: 4px 0 0; }
-.verblijfvraag .zoekrij { display: flex; gap: 6px; }
-.verblijfvraag input[type=search] { flex: 1; min-width: 0; font: inherit; font-size: 16px; color: var(--tekst); background: var(--bg);
-  border: 1px solid var(--lijn); border-radius: 8px; padding: 6px 10px; }
-.verblijfvraag .gevonden { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; max-height: 260px; overflow-y: auto; }
-.verblijfvraag .gevonden button { all: unset; box-sizing: border-box; cursor: pointer; display: flex; gap: 10px; align-items: center; width: 100%; padding: 7px 8px; border-radius: 8px; }
-.verblijfvraag .gevonden button svg { flex: none; color: var(--zacht); }
-.verblijfvraag .gevonden button span { display: flex; flex-direction: column; min-width: 0; }
-.verblijfvraag .gevonden b { font-size: 14px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.verblijfvraag .gevonden small { font-size: 12px; color: var(--zacht); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.verblijfvraag .gevonden button:hover, .verblijfvraag .gevonden button[aria-selected="true"] { background: var(--zacht-vlak); }
-.verblijfvraag .keuze { margin: 0; font-size: 14px; }
-.verblijfvraag .keuze:empty { display: none; }
-.verblijfvraag .tijden { display: flex; gap: 14px; align-items: center; }
-.verblijfvraag .tijden label { display: inline-flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 600; }
-.verblijfvraag .tijden input { width: 4.2em; font: inherit; font-size: 18px; font-weight: 700; text-align: center; color: var(--tekst);
-  background: var(--bg); border: 1px solid var(--lijn); border-radius: 8px; padding: 6px 4px; }
-.verblijfvraag .fout { margin: 0; color: var(--gevaar); font-size: 13px; }
-.verblijfvraag .knoppen { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
-.verblijfvraag .knop { flex: none; min-height: 36px; padding: 6px 14px; }
-.verblijfvraag .hoofd { background: var(--accent); color: #fff; border-color: var(--accent); }
-.linkknop { all: unset; cursor: pointer; color: var(--accent); font-size: 14px; align-self: flex-start; }
-.verblijfvraag .rustig { color: var(--zacht); font-size: 13px; padding: 6px 8px; }
+/* ---- Planning: instellingen in drie stappen (verblijf, rijtijd, planken) ---- */
+.stap { display: flex; align-items: center; gap: 8px; margin: 14px 0 8px; }
+.stap:first-child { margin-top: 0; }
+.stap .nr { flex: none; width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 12px; font-weight: 800;
+  display: grid; place-items: center; }
+.stap h3 { margin: 0; font-size: 15px; }
+.zoekrij { display: flex; gap: 6px; }
+.zoekrij input { flex: 1; min-width: 0; font: inherit; font-size: 16px; color: var(--tekst); background: var(--bg);
+  border: 1px solid var(--lijn); border-radius: 10px; padding: 8px 12px; }
+.gevonden { list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-direction: column; gap: 2px; max-height: 260px; overflow-y: auto; }
+.gevonden:empty { display: none; }
+.gevonden button { all: unset; box-sizing: border-box; cursor: pointer; display: flex; gap: 10px; align-items: center; width: 100%; padding: 7px 8px; border-radius: 8px; }
+.gevonden button svg { flex: none; color: var(--zacht); }
+.gevonden button span { display: flex; flex-direction: column; min-width: 0; }
+.gevonden b { font-size: 14px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gevonden small { font-size: 12px; color: var(--zacht); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gevonden button:hover, .gevonden button[aria-selected="true"] { background: var(--zacht-vlak); }
+.gevonden .rustig { color: var(--zacht); font-size: 13px; padding: 6px 8px; }
+.keuzelijn { display: flex; align-items: center; gap: 10px; margin-top: 8px; font-size: 14px; }
+.keuzelijn .gekozen { flex: 1; min-width: 0; }
+.keuzelijn .gekozen:empty { display: none; }
+.fout { margin: 6px 0 0; color: var(--gevaar); font-size: 13px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chips button { font: inherit; font-size: 14px; font-weight: 600; padding: 7px 12px; min-height: 36px; border-radius: 999px; cursor: pointer;
+  color: var(--tekst); background: var(--bg); border: 1px solid var(--lijn); }
+.chips button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+.linkknop { all: unset; cursor: pointer; color: var(--accent); font-size: 14px; white-space: nowrap; }
 .verblijfpunt { width: 26px; height: 26px; border-radius: 50%; background: #14202b; border: 3px solid #fff; box-shadow: 0 1px 6px rgb(0 0 0 / 0.35); position: relative; }
 .verblijfpunt::after { content: ""; position: absolute; inset: 5px; background: #fff; clip-path: polygon(50% 0, 100% 45%, 86% 45%, 86% 100%, 14% 100%, 14% 45%, 0 45%); }
 
@@ -254,3 +241,4 @@ dialog::backdrop { background: rgb(0 0 0 / 0.35); }
 .plekspeld { width: 26px; height: 30px; }
 .plekspeld i { display: block; width: 22px; height: 22px; margin: 0 2px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg);
   background: #e5484d; border: 2px solid #fff; box-shadow: 0 1px 4px rgb(0 0 0 / 0.5); }
+.planlijst .uitleg { margin: -2px 0 12px; font-size: 13px; color: var(--zacht); }

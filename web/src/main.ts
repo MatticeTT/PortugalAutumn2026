@@ -4,12 +4,12 @@ import { Fiche } from './fiche'
 import { KaartSpots } from './kaartspots'
 import { Labels } from './labels'
 import { ParticleLayer } from './particles'
-import { toonPlanning } from './planning'
+import { Planning } from './planning'
 import { enablePointInfo } from './punt'
 import { dagSleutel, SpotData, vakkenOpDag, type SpotKort } from './spots'
-import { leesSurf, surfPaneel } from './surfpaneel'
+import { bewaarSurf, leesSurf } from './surfpaneel'
 import { themaKnop } from './thema'
-import { bewaarVerblijf, leesVerblijf, rijtijden, rijTekst, vraagVerblijf, zoekInDeBuurt, type Verblijf } from './verblijf'
+import { bewaarVerblijf, leesVerblijf, rijtijden, rijTekst, zoekInDeBuurt, type Verblijf } from './verblijf'
 import { zoekveld } from './zoek'
 
 const DATA = './data'
@@ -251,11 +251,20 @@ function kiesTab(naam: string) {
   if (naam === 'planning') tekenPlanning()
 }
 
+const planning = new Planning($('planning'))
+let rijStatus: 'bezig' | 'klaar' | 'fout' = 'klaar'
 function tekenPlanning() {
   if (tab !== 'planning') return
-  toonPlanning($('planning'), {
-    data: spots.index, planken: surf.planken, verblijf, rijtijd: (id) => rij.get(id), dagen: dagenMetScore(),
-    wijzigVerblijf: () => kiesVerblijf(),
+  planning.teken({
+    data: spots.index, planken: surf.planken, verblijf, rijtijd: (id) => rij.get(id), rijStatus, dagen: dagenMetScore(),
+    zetVerblijf: (v) => kiesVerblijf(v),
+    zetPlanken: (p) => {
+      surf = { ...surf, planken: p }
+      bewaarSurf(surf)
+      kaartSpots.zet(dagSleutel(tijdNu()), surf.planken)
+      fiche.ververs()
+      tekenPlanning()
+    },
     open: (s, dag) => {
       kiesTab('kaart')
       const v = vakkenOpDag(s, dag, surf.planken)[0]
@@ -280,26 +289,36 @@ function toonVerblijf() {
   }
 }
 
+let rijVraag = 0
 async function berekenRijtijden() {
   rij.clear()
   if (!verblijf || !spots.index) return
+  const nr = ++rijVraag
+  rijStatus = 'bezig'
+  tekenPlanning()
   try {
     const m = await rijtijden(verblijf, spots.index.spots.map((s) => ({ id: String(s.id), lat: s.lat, lon: s.lon })))
+    if (nr !== rijVraag) return
     for (const [k, v] of m) rij.set(Number(k), v)
-  } catch { /* routeplanner niet bereikbaar: dan zonder rijtijden */ }
+    rijStatus = 'klaar'
+  } catch {
+    if (nr !== rijVraag) return
+    rijStatus = 'fout' // routeplanner niet bereikbaar: dan zonder rijtijden
+  }
   fiche.ververs()
   tekenPlanning()
 }
 
-async function kiesVerblijf() {
-  const v = await vraagVerblijf(verblijf)
-  try { localStorage.setItem('verblijf-gevraagd', '1') } catch { /* niets */ }
-  if (!v) return
+/** Nieuw verblijf of andere rijtijd (Planning, stap 1 en 2). */
+async function kiesVerblijf(v: Verblijf) {
+  const andereplek = !verblijf || verblijf.lat !== v.lat || verblijf.lon !== v.lon
+  const verder = !verblijf || v.max > verblijf.max
   verblijf = v
   bewaarVerblijf(v)
   toonVerblijf()
-  map.flyTo({ center: [v.lon, v.lat], zoom: 8 })
-  await berekenRijtijden()
+  // Rijtijden worden alleen opgevraagd voor stranden die binnen de rijtijd kunnen liggen: bij een langere rijtijd opnieuw.
+  if (andereplek || verder) await berekenRijtijden()
+  else tekenPlanning()
 }
 
 // ---- Starten ----
@@ -321,9 +340,6 @@ async function start() {
   kaartSpots.zet(dagSleutel(tijdNu()), surf.planken)
   toonVerblijf()
   berekenRijtijden()
-  let gevraagd = false
-  try { gevraagd = localStorage.getItem('verblijf-gevraagd') === '1' } catch { /* niets */ }
-  if (!verblijf && !gevraagd) kiesVerblijf()
 }
 
 datum.addEventListener('change', () => zetDag(datum.value, tijdNu().getHours()))
@@ -369,14 +385,8 @@ let savedAlt = true
 try { savedAlt = localStorage.getItem('afwisselen') !== '0' } catch { /* privévenster */ }
 setAlternate(savedAlt)
 document.querySelectorAll<HTMLButtonElement>('.tabs button').forEach((b) => b.addEventListener('click', () => kiesTab(b.dataset.tab!)))
-$('verblijfknop').addEventListener('click', () => kiesVerblijf())
+$('verblijfknop').addEventListener('click', () => { kiesTab('planning'); planning.focus() })
 themaKnop()
-surfPaneel($('knop-surfen'), $('surfpaneel'), (s) => {
-  surf = s
-  kaartSpots.zet(dagSleutel(tijdNu()), surf.planken)
-  fiche.ververs()
-  tekenPlanning()
-})
 // Gezochte plaats: een speld op de kaart, ingezoomd zodat de stranden in de buurt met hun cijfer zichtbaar zijn.
 let plekMarker: maplibregl.Marker | null = null
 zoekveld(() => spots.index, (s) => {
