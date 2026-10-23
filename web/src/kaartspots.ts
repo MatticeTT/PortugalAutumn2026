@@ -15,6 +15,25 @@ export class KaartSpots {
 
   constructor(private map: maplibregl.Map, private data: () => SpotIndex | null, private open: (s: SpotKort) => void) {
     map.on('zoomend', () => this.update())
+    map.on('moveend', () => this.namenZonderOverlap())
+  }
+
+  /** Alleen namen tonen die niet over een andere naam vallen; goede spots (en de gekozen) eerst. */
+  private namenZonderOverlap() {
+    if (!this.map.getContainer().classList.contains('met-namen')) return
+    const lijst = [...this.markers.entries()].map(([id, m]) => ({ id, el: m.getElement() }))
+    lijst.sort((a, b) => Number(b.id === this.gekozen) - Number(a.id === this.gekozen)
+      || Number(b.el.style.zIndex || 0) - Number(a.el.style.zIndex || 0))
+    const bezet: DOMRect[] = []
+    for (const { el } of lijst) {
+      const span = el.querySelector('span') as HTMLElement | null
+      if (!span) continue
+      span.style.visibility = 'visible'
+      const r = span.getBoundingClientRect()
+      const raakt = bezet.some((q) => r.left < q.right + 2 && r.right > q.left - 2 && r.top < q.bottom + 1 && r.bottom > q.top - 1)
+      if (raakt) span.style.visibility = 'hidden'
+      else bezet.push(r)
+    }
   }
 
   zet(dag: string, planken: string[]) {
@@ -52,7 +71,9 @@ export class KaartSpots {
         this.markers.set(s.id, m)
       }
       const el = m.getElement()
-      el.className = klasse
+      // Alleen onze eigen klassen wisselen: de klassen van MapLibre (maplibregl-marker ...) zetten het bolletje op zijn plaats.
+      el.classList.remove('spot', 's4', 's5', 'grijs')
+      el.classList.add(...klasse.split(' '))
       el.innerHTML = `<b>${best ? rond(best) : ''}</b><span>${esc(s.naam)}</span>`
       el.setAttribute('aria-label', `${s.naam}: ${best ? `score ${rond(best)}` : 'niet goed'}`)
       el.setAttribute('aria-pressed', String(s.id === this.gekozen))
@@ -64,5 +85,6 @@ export class KaartSpots {
         this.markers.delete(id)
       }
     }
+    requestAnimationFrame(() => this.namenZonderOverlap())
   }
 }
