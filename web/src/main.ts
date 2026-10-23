@@ -37,6 +37,9 @@ const map = new maplibregl.Map({
       // Ingezoomd: de wereldkaart zonder Portugal plus de fijne kust van Portugal (GSHHG, ongeveer 100 m).
       'land-buiten': { type: 'geojson', data: './basis/land-buiten.geojson', tolerance: 0.3 },
       'land-fijn': { type: 'geojson', data: './basis/land-fijn.geojson', tolerance: 0.1, attribution: 'Kust: GSHHG' },
+      // Ingezoomd: stranden en wegen uit OpenStreetMap (vectortegels van OpenFreeMap, zoals de eerste versie).
+      osm: { type: 'vector', url: 'https://tiles.openfreemap.org/planet',
+        attribution: '<a href="https://openfreemap.org">OpenFreeMap</a> © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' },
     },
     layers: [
       { id: 'zee', type: 'background', paint: { 'background-color': '#1b2430' } },
@@ -44,6 +47,16 @@ const map = new maplibregl.Map({
       { id: 'land-buiten', type: 'fill', source: 'land-buiten', minzoom: 7, paint: { 'fill-color': '#3b4048', 'fill-antialias': true } },
       { id: 'land-fijn', type: 'fill', source: 'land-fijn', minzoom: 7, paint: { 'fill-color': '#3b4048', 'fill-antialias': true } },
       { id: 'meren', type: 'fill', source: 'meren', paint: { 'fill-color': '#1b2430' } },
+      // Stranden beige, wegen als donkere lijnen op het grijze land.
+      { id: 'stranden', type: 'fill', source: 'osm', 'source-layer': 'landcover', minzoom: 8, filter: ['==', ['get', 'class'], 'sand'],
+        paint: { 'fill-color': '#d9c49a', 'fill-opacity': ['interpolate', ['linear'], ['zoom'], 8, 0.6, 11, 0.95] } },
+      { id: 'wegen', type: 'line', source: 'osm', 'source-layer': 'transportation', minzoom: 8,
+        filter: ['match', ['get', 'class'], ['motorway', 'trunk', 'primary', 'secondary', 'tertiary', 'minor'], true, false],
+        layout: { 'line-cap': 'round', 'line-join': 'round' },
+        paint: { 'line-color': '#22262c',
+          'line-width': ['interpolate', ['linear'], ['zoom'],
+            8, ['match', ['get', 'class'], ['motorway', 'trunk'], 1.4, ['primary'], 1, ['minor'], 0, 0.6],
+            12, ['match', ['get', 'class'], ['motorway', 'trunk'], 3.5, ['primary'], 2.8, ['secondary'], 2.2, ['tertiary'], 1.8, 1.1]] } },
       { id: 'kust', type: 'line', source: 'land', maxzoom: 7, paint: { 'line-color': '#6c7682', 'line-width': ['interpolate', ['linear'], ['zoom'], 1, 0.5, 6, 1.1] } },
       { id: 'kust-buiten', type: 'line', source: 'land-buiten', minzoom: 7, paint: { 'line-color': '#6c7682', 'line-width': 1.1 } },
       { id: 'kust-fijn', type: 'line', source: 'land-fijn', minzoom: 7, paint: { 'line-color': '#8a96a3', 'line-width': 1.2 } },
@@ -179,6 +192,7 @@ async function setTime(i: number) {
   }
 }
 
+const togglePlaying = () => playing !== null
 function togglePlay(on = playing === null) {
   if (playing !== null) clearInterval(playing)
   playing = null
@@ -304,7 +318,39 @@ async function start() {
 }
 
 datum.addEventListener('change', () => zetDag(datum.value, tijdNu().getHours()))
-slider.addEventListener('input', () => setTime(indicesVanDag(datum.value)[Number(slider.value)]))
+// Schuifbalk voor het uur. Op een telefoon: overal op de balk tikken of slepen werkt (ook op iPhone), en tijdens
+// het slepen wordt alleen het nieuwste uur getekend (geen achterstand als de kaart even werk heeft).
+let gevraagd: number | null = null
+let tekent = false
+async function naarUur(k: number) {
+  const lijst = indicesVanDag(datum.value)
+  const i = lijst[Math.max(0, Math.min(lijst.length - 1, k))]
+  if (i === undefined) return
+  uurLabel.textContent = uurFmt.format(new Date(manifest.times[i].time))
+  gevraagd = i
+  if (tekent) return
+  tekent = true
+  while (gevraagd !== null) {
+    const j = gevraagd
+    gevraagd = null
+    if (j !== idx) await setTime(j)
+  }
+  tekent = false
+}
+slider.addEventListener('input', () => naarUur(Number(slider.value)))
+const uitPositie = (e: PointerEvent) => {
+  const r = slider.getBoundingClientRect()
+  const max = Number(slider.max)
+  const k = Math.round(Math.max(0, Math.min(1, (e.clientX - r.left - 14) / Math.max(1, r.width - 28))) * max)
+  if (String(k) !== slider.value) { slider.value = String(k); naarUur(k) }
+}
+slider.addEventListener('pointerdown', (e) => {
+  if (togglePlaying()) togglePlay(false)
+  slider.setPointerCapture(e.pointerId)
+  uitPositie(e)
+  e.preventDefault()
+})
+slider.addEventListener('pointermove', (e) => { if (slider.hasPointerCapture(e.pointerId)) uitPositie(e) })
 slider.addEventListener('pointerdown', () => togglePlay(false))
 playBtn.addEventListener('click', () => togglePlay())
 windBtn.addEventListener('click', () => setLayer('wind', !show.wind))

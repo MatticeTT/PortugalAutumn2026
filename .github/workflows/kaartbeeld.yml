@@ -1,0 +1,28 @@
+# Controle: de site bouwen en schermafdrukken van de kaart maken (proef/kaartbeeld.mjs), naar proef/beeld.
+name: kaartbeeld
+on:
+  workflow_dispatch:
+  push:
+    branches: [ccr-1fe05339-6haah2]
+    paths: ["proef/kaartbeeld.mjs", ".github/workflows/kaartbeeld.yml"]
+permissions:
+  contents: write
+jobs:
+  beeld:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "22", cache: npm, cache-dependency-path: web/package-lock.json }
+      - run: cd web && npm ci && npm run build && mkdir -p dist/data && cp -r ../data/spots dist/data/spots
+      - run: npm i --no-save playwright@1.48.2 && npx playwright install --with-deps chromium
+      - run: |
+          (cd web/dist && python3 -m http.server 4300 >/dev/null 2>&1 &)
+          sleep 2; mkdir -p proef/beeld; node proef/kaartbeeld.mjs
+      - name: Beelden committen
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add proef/beeld && git commit -q -m "Kaartbeelden ter controle" || exit 0
+          for i in 1 2 3; do git pull --rebase -q && git push -q && break; sleep 5; done
