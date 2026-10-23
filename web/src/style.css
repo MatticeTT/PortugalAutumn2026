@@ -85,13 +85,14 @@ main { flex: 1; position: relative; min-height: 0; }
 .maplibregl-ctrl-attrib { font-size: 10px; }
 
 /* Spots op de kaart: bolletje met het cijfer, ingezoomd met de naam erbij */
-.spot { display: flex; align-items: center; gap: 5px; border: 0; padding: 0; background: none; cursor: pointer; }
+.spot { display: flex; align-items: center; gap: 5px; border: 0; padding: 0; background: none; cursor: pointer; width: max-content; }
 .spot b { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font: 800 14px/1 system-ui, sans-serif;
   border: 1.5px solid rgba(13, 28, 35, 0.6); box-shadow: 0 1px 4px rgba(0, 0, 0, 0.45); }
 .spot.s5 b { background: var(--s5); color: var(--s5t); }
 .spot.s4 b { background: var(--s4); color: var(--s4t); }
-.spot.grijs b { width: 12px; height: 12px; background: #c9d1d6; border-color: rgba(13, 28, 35, 0.5); }
+.spot.grijs b { width: 22px; height: 22px; font-size: 12px; background: #c9d1d6; color: #2a3a44; border-color: rgba(13, 28, 35, 0.5); box-shadow: none; }
 .spot span { font: 600 12px/1.2 system-ui, sans-serif; color: #fff; text-shadow: 0 1px 2px #000, 0 0 4px #000; white-space: nowrap; display: none; }
+.spot.grijs span { color: #d3dae0; font-weight: 500; }
 .met-namen .spot span { display: inline; }
 .spot[aria-pressed="true"] b { outline: 3px solid #fff; }
 

@@ -15,6 +15,7 @@ export interface SpotKort {
   soort: string | null
   groep: number
   tijdvakken: Record<string, Vak[]>
+  dag: Record<string, number[]> // per dag de hoogste score overdag per plank (x 10, volgorde: SpotIndex.planken)
 }
 
 export interface SpotIndex {
@@ -22,6 +23,7 @@ export interface SpotIndex {
   drempel: number
   min_uren: number
   bundel: number // details staan per bundel: d<floor(id / bundel)>.json
+  planken: string[]
   spots: SpotKort[]
 }
 
@@ -103,6 +105,13 @@ export function vakkenOpDag(s: SpotKort, dag: string, planken: string[]): [strin
     }
   }
   return uit.sort((a, b) => b[1][2] - a[1][2] || Date.parse(a[1][0]) - Date.parse(b[1][0]))
+}
+
+/** Hoogste score van de dag (overdag) over de gekozen planken, ook als die geen 3 uur aanhoudt (0 = onbekend). */
+export function dagCijfer(s: SpotKort, dag: string, planken: string[], volgorde: string[]) {
+  const rij = s.dag?.[dag]
+  if (!rij) return 0
+  return Math.max(0, ...planken.map((p) => rij[volgorde.indexOf(p)] ?? 0)) / 10
 }
 
 /** Beste score van een spot op een dag (0 als nergens goed). */

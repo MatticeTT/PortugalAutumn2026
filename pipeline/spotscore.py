@@ -329,7 +329,24 @@ def reken_spot(spot: dict, invoer: dict, stranden: list[dict], van: dt.datetime,
             "vlaggen": {str(n): rijen[i][7] for n, i in enumerate(uren) if rijen[i][7] and rijen[i][7] != ["donker"]},
             # Label "alleen voor ervaren surfers" per uur als letters (zie EXPERT_CODE), "" = geen label.
             "expert": ["" if i in nacht else "".join(EXPERT_CODE.get(x, "?") for x in rijen[i][8]) for i in uren],
-            "getij": getij, "tijdvakken": vakken}
+            "getij": getij, "tijdvakken": vakken, "dag": dagmax(spot["lon"], [tijden[i] for i in uren],
+                                                                     [i in nacht for i in uren],
+                                                                     {p: [per_plank[p][i] for i in uren] for p in R.PL})}
+
+
+def dagmax(lon: float, tijden: list, nacht: list, scores: dict) -> dict:
+    """Per dag (zonnetijd ter plaatse: UTC + lengte/15 uur) de hoogste score overdag per plank (x 10, in de volgorde
+    van R.PL), voor het cijfer bij elke spot op de kaart."""
+    uit: dict[str, list[int]] = {}
+    verschuiving = dt.timedelta(hours=lon / 15)
+    for k, t in enumerate(tijden):
+        if nacht[k]:
+            continue
+        d = (t + verschuiving).strftime("%Y-%m-%d")
+        rij = uit.setdefault(d, [0] * len(R.PL))
+        for j, p in enumerate(R.PL):
+            rij[j] = max(rij[j], round(scores[p][k] * 10))
+    return uit
 
 
 ALGEMEEN = re.compile(r"^(spot( de)? surf|surf ?spot|spot|surf|zona de surf|pico de surf|surf area|surf zone|spot de surf\b.*)$", re.I)
@@ -393,7 +410,8 @@ def main(argv: list[str] | None = None) -> int:
             continue
         bundels.setdefault(n // BUNDEL, {})[str(n)] = r
         lijst.append({"id": n, "naam": r["naam"], "lat": r["lat"], "lon": r["lon"], "richting": r["richting"],
-                      "soort": r["soort"], "tijdvakken": {p: v for p, v in r["tijdvakken"].items() if v}})
+                      "soort": r["soort"], "tijdvakken": {p: v for p, v in r["tijdvakken"].items() if v},
+                      "dag": r.pop("dag")})
     betere_namen(lijst)
     for s in lijst:  # ook in de details
         r = bundels[s["id"] // BUNDEL][str(s["id"])]
@@ -403,6 +421,7 @@ def main(argv: list[str] | None = None) -> int:
     for b, inhoud in bundels.items():
         (a.uit / f"d{b}.json").write_text(json.dumps(inhoud, ensure_ascii=False, separators=(",", ":")))
     (a.uit / "index.json").write_text(json.dumps({"run": inv["run"], "drempel": DREMPEL, "min_uren": MIN_UREN, "bundel": BUNDEL,
+                                                  "planken": R.PL,
                                                   "spots": lijst, "niet_gescoord": overgeslagen},
                                                  ensure_ascii=False, separators=(",", ":")))
     print(f"{len(lijst)} spots gescoord, {len(overgeslagen)} niet", flush=True)
