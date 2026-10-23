@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="robots" content="noindex, nofollow, noarchive" />
+  <meta name="color-scheme" content="light dark" />
+  <title>Surfkaart</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><path d='M16 2a14 14 0 0 0 0 28z' fill='%2312b5d3'/><path d='M16 2a14 14 0 0 1 0 28z' fill='%233a6fe0'/></svg>" />
+  <script>try { const t = localStorage.getItem('thema'); if (t === 'licht' || t === 'donker') document.documentElement.dataset.theme = t === 'licht' ? 'light' : 'dark' } catch {}</script>
+  <script type="module" crossorigin src="./assets/index-GMUkcQYW.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-6kT8OQqK.css">
+</head>
+<body>
+  <header class="balk">
+    <div class="balk-boven">
+      <h1>Surfkaart</h1>
+      <nav class="tabs" aria-label="Pagina's">
+        <button type="button" data-tab="kaart" aria-current="page">Kaart</button>
+        <button type="button" data-tab="planning">Planning</button>
+      </nav>
+      <button id="verblijfknop" class="verblijfknop" type="button">Waar verblijf je?</button>
+      <div class="zoek">
+        <input id="zoek" type="search" placeholder="Strand of plaats" autocomplete="off" aria-label="Zoek een strand of plaats"
+          role="combobox" aria-expanded="false" aria-controls="zoeklijst" aria-autocomplete="list" />
+        <ul id="zoeklijst" role="listbox" hidden></ul>
+      </div>
+      <button id="thema" class="themaknop" type="button" aria-label="Dag of nacht"></button>
+    </div>
+    <div class="uurrij">
+      <label><span class="sr">Dag</span><select id="datum"></select></label>
+      <button id="afspelen" class="afspelen" type="button" aria-label="Afspelen">
+        <svg viewBox="0 0 24 24" class="speel" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+        <svg viewBox="0 0 24 24" class="pauze" aria-hidden="true"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>
+      </button>
+      <input id="uur" type="range" min="0" max="0" step="1" value="0" aria-label="Uur" />
+      <output id="uurlabel" for="uur"></output>
+    </div>
+  </header>
+  <main>
+    <div id="kaart" role="application" aria-label="Kaart met surfspots, wind en golven"></div>
+    <div class="laagknoppen" role="group" aria-label="Lagen">
+      <button id="knop-wind" class="laag aan" aria-pressed="true" type="button"><span class="teken wind"></span>Wind</button>
+      <button id="knop-deining" class="laag aan" aria-pressed="true" type="button" title="Deining: de golven waarop je surft"><span class="teken golf"></span>Deining</button>
+      <button id="knop-afwisselen" class="laag" aria-pressed="false" type="button" title="Wind en golven om beurt tonen"><span class="teken wissel">&#8644;</span>Afwisselen</button>
+      <button id="knop-surfen" class="laagknop surf" type="button" aria-expanded="false" aria-controls="surfpaneel">Surfen</button>
+    </div>
+    <div id="surfpaneel" class="surfpaneel" hidden></div>
+    <section id="planning" class="planning" hidden aria-label="Planning"></section>
+    <aside id="fiche" class="fiche" hidden aria-live="polite"></aside>
+  </main>
+  <footer class="bronnen">
+    <details>
+      <summary>Bronnen: Copernicus Marine · ECMWF · EOT20 · EMODnet · © OpenStreetMap contributors (ODbL) · OSRM</summary>
+      Golven: Generated using E.U. Copernicus Marine Service Information ·
+      Wind en onweer: ECMWF IFS open data (CC BY 4.0) · Getij: EOT20, DGFI-TUM (CC BY 4.0) ·
+      Diepte: EMODnet Bathymetry Consortium (CC BY 4.0) · Kustlijn: GSHHG ·
+      Stranden: © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a> (ODbL), EEA/APA ·
+      Kaart: Natural Earth · Routes: OSRM (© OpenStreetMap contributors) · Plaatsen zoeken: Esri ArcGIS World Geocoding, Photon
+    </details>
+  </footer>
+</body>
+</html>
