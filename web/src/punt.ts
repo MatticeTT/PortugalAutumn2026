@@ -26,7 +26,7 @@ export function enablePointInfo(map: maplibregl.Map, ctx: PointContext) {
 
   async function show(lngLat: maplibregl.LngLat) {
     const lon = lngLat.wrap().lng, lat = lngLat.lat
-    const onLand = map.queryRenderedFeatures(map.project(lngLat), { layers: ['land'] }).length > 0
+    const onLand = map.queryRenderedFeatures(map.project(lngLat), { layers: ['land', 'land-buiten', 'land-fijn'].filter((l) => map.getLayer(l)) }).length > 0
       && map.queryRenderedFeatures(map.project(lngLat), { layers: ['meren'] }).length === 0
     const sw = ctx.swell(), ws2 = ctx.windsea()
     const [w, g, z] = await Promise.all([ctx.wind().exactGrid(lon, lat), sw?.exactGrid(lon, lat), ws2?.exactGrid(lon, lat)])
