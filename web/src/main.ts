@@ -37,6 +37,8 @@ const map = new maplibregl.Map({
       // Ingezoomd: de wereldkaart zonder Portugal plus de fijne kust van Portugal (GSHHG, ongeveer 100 m).
       'land-buiten': { type: 'geojson', data: './basis/land-buiten.geojson', tolerance: 0.3 },
       'land-fijn': { type: 'geojson', data: './basis/land-fijn.geojson', tolerance: 0.1, attribution: 'Kust: GSHHG' },
+      // Vanaf zoom 9: de kust van Portugal uit OpenStreetMap (tot op de meter, past bij stranden en wegen).
+      'land-osm': { type: 'geojson', data: './basis/land-osm.geojson', tolerance: 0.15 },
       // Strandvlakken van Portugal uit OpenStreetMap (pipeline/stranden_osm.py).
       stranden: { type: 'geojson', data: './basis/stranden.geojson', tolerance: 0.2 },
       // Ingezoomd: wegen uit OpenStreetMap (vectortegels van OpenFreeMap, zoals de eerste versie).
@@ -47,8 +49,12 @@ const map = new maplibregl.Map({
       { id: 'zee', type: 'background', paint: { 'background-color': '#1b2430' } },
       { id: 'land', type: 'fill', source: 'land', maxzoom: 7, paint: { 'fill-color': '#3b4048', 'fill-antialias': true } },
       { id: 'land-buiten', type: 'fill', source: 'land-buiten', minzoom: 7, paint: { 'fill-color': '#3b4048', 'fill-antialias': true } },
-      { id: 'land-fijn', type: 'fill', source: 'land-fijn', minzoom: 7, paint: { 'fill-color': '#3b4048', 'fill-antialias': true } },
+      { id: 'land-fijn', type: 'fill', source: 'land-fijn', minzoom: 7, maxzoom: 9, paint: { 'fill-color': '#3b4048', 'fill-antialias': true } },
+      { id: 'land-osm', type: 'fill', source: 'land-osm', minzoom: 9, paint: { 'fill-color': '#3b4048', 'fill-antialias': true } },
       { id: 'meren', type: 'fill', source: 'meren', paint: { 'fill-color': '#1b2430' } },
+      // Rivieren en meren (niet de zee: daar loopt de animatie onder het land door).
+      { id: 'binnenwater', type: 'fill', source: 'osm', 'source-layer': 'water', minzoom: 9, filter: ['!=', ['get', 'class'], 'ocean'],
+        paint: { 'fill-color': '#1b2430' } },
       // Stranden beige, wegen als donkere lijnen op het grijze land.
       { id: 'stranden', type: 'fill', source: 'stranden', minzoom: 8,
         paint: { 'fill-color': '#d9c49a', 'fill-opacity': ['interpolate', ['linear'], ['zoom'], 8, 0.7, 11, 0.95] } },
@@ -61,7 +67,8 @@ const map = new maplibregl.Map({
             12, ['match', ['get', 'class'], ['motorway', 'trunk'], 3.5, ['primary'], 2.8, ['secondary'], 2.2, ['tertiary'], 1.8, 1.1]] } },
       { id: 'kust', type: 'line', source: 'land', maxzoom: 7, paint: { 'line-color': '#6c7682', 'line-width': ['interpolate', ['linear'], ['zoom'], 1, 0.5, 6, 1.1] } },
       { id: 'kust-buiten', type: 'line', source: 'land-buiten', minzoom: 7, paint: { 'line-color': '#6c7682', 'line-width': 1.1 } },
-      { id: 'kust-fijn', type: 'line', source: 'land-fijn', minzoom: 7, paint: { 'line-color': '#8a96a3', 'line-width': 1.2 } },
+      { id: 'kust-fijn', type: 'line', source: 'land-fijn', minzoom: 7, maxzoom: 9, paint: { 'line-color': '#8a96a3', 'line-width': 1.2 } },
+      { id: 'kust-osm', type: 'line', source: 'land-osm', minzoom: 9, paint: { 'line-color': '#8a96a3', 'line-width': 1.2 } },
       { id: 'grenzen', type: 'line', source: 'grenzen', paint: { 'line-color': '#5c636d', 'line-width': ['interpolate', ['linear'], ['zoom'], 1, 0.4, 6, 0.9], 'line-dasharray': [3, 2] } },
     ],
   },
