@@ -1,6 +1,6 @@
 # Overdracht plankscore: van onderzoek naar bouw
 
-Opgesteld 22 oktober 2026 door de onderzoekschat. De eigenaar beslist. Regelversie **2026-10-22g** (zie onderaan: wat veranderde na de laatste reviews).
+Opgesteld 22 oktober 2026 door de onderzoekschat. De eigenaar beslist. Regelversie **2026-10-23h** (zie onderaan: wat veranderde na de laatste reviews).
 
 ## Wat zit erin
 
@@ -78,16 +78,16 @@ Afronden: ,5 gaat naar boven. "Goed" is een 4 of een 5. Niveau telt nooit mee (b
 
 ## Hoe goed is de regel (eerlijk getest)
 
-Getest met `toets.py` op versie 22e: vijf keer afstemmen op 80 nagekeken situaties en toetsen op de 20 die de regel niet zag. De afstemming vertrekt van de expertinschatting (niet van de waarden die al op alle 100 afgestemd zijn, want dat zou lekken) en blijft er licht aan vastgehouden.
+Getest met `toets.py` op versie 23h: vijf keer afstemmen op 80 nagekeken situaties en toetsen op de 20 die de regel niet zag. De afstemming vertrekt van de expertinschatting (niet van de waarden die al op alle 100 afgestemd zijn, want dat zou lekken) en blijft er licht aan vastgehouden.
 
 | JA vanaf | JA klopt | Echte JA's gevonden |
 |---|---|---|
-| 3,5 | 79% | 83% |
-| 3,7 | 83% | 70% |
-| 3,8 | 86% | 64% |
+| 3,5 | 78% | 83% |
+| 3,7 | 85% | 73% |
+| 3,8 | 86% | 66% |
 | 4,0 | 96% | 54% |
 
-Bij de kaartdrempel 3,8: 96 van de 150 goede planken gevonden, 15 keer te veel, waarvan 13 op de grens (handscore 3,0 tot 3,4) en 2 echt fout (handscore onder 3). Gemiddelde afwijking: 0,297.
+Bij de kaartdrempel 3,8: 99 van de 150 goede planken gevonden, 16 keer te veel, waarvan 2 echt fout (handscore onder 3). Gemiddelde afwijking: 0,295 (22g: 0,297; 96 gevonden, 15 te veel, 2 echt fout).
 
 Dezelfde toets op versie 22c (voor de laatste twee reviews): vanaf 3,8 84% / 65%, vanaf 3,5 76% / 78%, afwijking 0,312. De wijzigingen zijn dus ook in de eerlijke toets een verbetering. De vroegere cijfers (79 % / 79 % vanaf 3,5) kwamen van een afstemming die niet meer na te rekenen is; vanaf nu telt `toets.py`.
 
@@ -109,7 +109,7 @@ Dezelfde toets op versie 22c (voor de laatste twee reviews): vanaf 3,8 84% / 65%
 - **Periode-omrekening 0,835:** voor smalle, oude deining eerder 0,86 tot 0,87. Toetsen tegen boeien met spectra (NDBC, Copernicus In Situ).
 - **Kleine point met offshore voor de longboard:** knie- tot heuphoog met 10 kn offshore geeft 1,9 ("sterke offshore houdt de take-off tegen"); in het water is dat voor een longboard nog een prima dag. Laten meelopen in de sessielogs.
 - **Deiningsvensters:** in de 1000 testset verzonnen (alle points, ongeveer 30% van rif, baai en big wave).
-- **Ideale hoogtes per plank:** na het afstemmen liggen ze lager dan de inschatting (midlength tot 0,93 m i.p.v. 1,9 m; longboard 0,9 i.p.v. 1,2; fish 1,06 i.p.v. 1,5; step-up vanaf 1,54 i.p.v. 2,0). Getest: terug naar de inschatting maakt de regel slechter op de 100 (afwijking 0,286 → 0,343). De handscores vragen dit dus zelf. Opgelet: de flank boven het ideaal is zacht (midlength op 1,5 m nog ×0,83), en hoogte en kracht hangen samen. Toetsen met echte sessies; tot dan niet lezen als 'zo gebruiken surfers die plank'. Ook de **ondergrens 0,6** op strand en point.
+- **Ideale hoogtes per plank:** na het afstemmen liggen ze lager dan de inschatting (longboard 0,9 i.p.v. 1,2; step-up vanaf 1,54 i.p.v. 2,0). Midlength en fish zijn in 23h op de surfer zijn vraag vastgelegd: midlength ideaal tot minstens 1,5 m (nu 1,61), fish tot minstens 1,3 m (nu 1,41). Getest: terug naar de inschatting maakt de regel slechter op de 100 (afwijking 0,286 → 0,343). De handscores vragen dit dus zelf. Opgelet: de flank boven het ideaal is zacht (midlength op 1,5 m nog ×0,83), en hoogte en kracht hangen samen. Toetsen met echte sessies; tot dan niet lezen als 'zo gebruiken surfers die plank'. Ook de **ondergrens 0,6** op strand en point.
 - **Tijvenster, getal 0,5:** afgeleid uit één veldmeting (Guedes e.a. 2011: 1,1 m extra water boven de bank, golven onder 1 m, van "meeste golven breken" naar "breken amper"). Toetsen met echte spots met een gekend venster, liefst bij groot én klein getijverschil. Een bank die bij hoogwater altijd dood is, krijgt beter de vlag `vol`.
 - **Windstoten 6–14 kn:** expert, nog te toetsen.
 - **Testinvoer:** de tijvensters en de getijverschillen in `testset_1000.json` zijn verzonnen (afgeronde typische waarden per kust); echte vensters komen uit de spotvelden (databronnen-doc, hoofdstuk 14), het echte verschil uit het getijmodel.
@@ -199,3 +199,37 @@ Op de 100 verandert niets (afwijking 0,272), dus de eerlijke toets blijft dezelf
 | Voorbeelden | Geen. | Tabel met voorbeelden hierboven en `testset_getij_uur.json`. |
 
 Op de 100 verandert niets (afwijking 0,272), dus de eerlijke toets blijft dezelfde. Op de 1000 veranderen scores waar het tij buiten het venster ligt: de straf is kleiner geworden, omdat nu telt hoe ver het water buiten het venster staat in plaats van een hele stap. Voorbeeld 184 (laag-tot-halftij-bank, hoogwater, 3,8 m getij, golf 1,8 m): 0,6 m water te veel, shortboard 4,2.
+
+## Wat veranderde in versie 2026-10-23h (review 6, surfer)
+
+Twee planken waren verkeerd afgesteld. Alleen midlength en fish zijn opnieuw afgestemd op de 100 (`afstemmen.py MID FI`); de andere planken en alfa zijn ongemoeid. Vaste grenzen staan in `regels.json` als `min` of `max`; `afstemmen.py` en `toets.py` houden zich eraan.
+
+| Punt | Was (22g) | Nu (23h) |
+|---|---|---|
+| Midlength, ideaal tot (c) | 0,93 m (inschatting 1,9) | 1,61 m (inschatting 1,7; vast op minstens 1,5) |
+| Midlength, d | 3,46 (inschatting 3,2) | 2,81 (inschatting 3,5) |
+| Fish, straf in zachte golven (zacht_min) | 0,25 | 0 |
+| Fish, kracht nodig (kp) | 0,57 (inschatting 0,6) | 0,28 (inschatting 0,25; vast op hoogstens 0,3) |
+| Fish, ideaal tot (c) | 1,06 m (inschatting 1,5) | 1,41 m (inschatting 1,5; vast op minstens 1,3) |
+| Handscores midlength 26 / 30 / 40 (4,7 / 4,7 / 4,2) | regel 3,95 / 3,74 / 3,39 | regel 4,13 / 4,58 / 3,83 |
+
+**Gevolg op de 100** (getallen zoals in de app): afwijking 0,272 → 0,265 (midlength 0,361 → 0,328, fish 0,285 → 0,265, de andere planken gelijk). Bij drempel 3,8: 104 → 106 goede planken gevonden, 6 te veel (gelijk), 0 echt fout.
+
+**Eerlijke toets** (`toets.py`): afwijking 0,297 → 0,295; bij 3,8 JA klopt 86,5% → 86,1%, echte JA's gevonden 64% → 66% (96 → 99 van 150, te veel 15 → 16, echt fout 2 → 2). Vanaf 3,5 stijgt 'echt fout' van 2 naar 5; de kaart gebruikt 3,8.
+
+**Fish op zachte dagen** (1000, golf aan het strand 0,6–1,2 m, zacht): fish 1,72 → 1,92, midlength 2,06 → 2,09, shortboard 1,32. Fish boven de shortboard in 102 → 119 van de 134. Op kleine slappe dagen blijft de fish onder de groveler (in de 100: hand −1,05, regel −0,93 → −0,72).
+
+**Hoe vaak is elke plank de beste in de 1000**
+
+| Plank | België + Nederland (87), vóór → na | Portugal + Zuidwest-Frankrijk (223), vóór → na |
+|---|---|---|
+| Longboard | 20 → 22 | 42 → 42 |
+| Minimal | 1 → 1 | 19 → 19 |
+| Midlength | 20 → 19 | 26 → 29 |
+| Groveler | 46 → 42 | 71 → 63 |
+| Fish | 0 → 3 | 1 → 5 |
+| Shortboard | 0 → 0 | 43 → 44 |
+| Step-up | 0 → 0 | 14 → 14 |
+| Gun | 0 → 0 | 7 → 7 |
+
+De testsets (`testset_100.json`, `testset_1000.json`, `testset_getij_uur.json`) zijn herberekend: `referentie.py` geeft weer 0,000. De pagina's "Honderd surfdagen" en "Duizend surfdagen" staan niet in deze repository en zijn dus niet aangepast.

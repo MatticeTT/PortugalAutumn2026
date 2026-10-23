@@ -39,11 +39,14 @@ def doel(v, idx):
 nrs = [i for i, r in enumerate(rows)]
 rng = random.Random(2026); rng.shuffle(nrs)
 folds = [nrs[f::5] for f in range(5)]
-bounds = [(0.4 * p, 1.8 * p) for p in prior[:-1]] + [(0.6, 1.4)]
+# 0,4 tot 1,8 keer de inschatting; waar regels.json een 'min' of 'max' vastlegt (bv. review 6), die.
+VAST = [R.REGELS["planken"][k][q] for k, q in PARS]
+bounds = [(max(0.4 * p, v.get("min", -math.inf)), min(1.8 * p, v.get("max", math.inf))) for p, v in zip(prior[:-1], VAST)] + [(0.6, 1.4)]
+prior_start = np.clip(prior, [b[0] for b in bounds], [b[1] for b in bounds])
 voorspeld = {}
 for f, test in enumerate(folds):
     train = [i for i in nrs if i not in test]
-    res = minimize(doel, prior.copy(), args=(train,), method="Powell", bounds=bounds, options=dict(maxfev=40000, xtol=1e-3, ftol=1e-4))
+    res = minimize(doel, prior_start.copy(), args=(train,), method="Powell", bounds=bounds, options=dict(maxfev=40000, xtol=1e-3, ftol=1e-4))
     u = scores(res.x, test)
     for j, i in enumerate(test): voorspeld[i] = {k: u[j][k][0] for k in PL}
     print(f"vouw {f+1}: doel {res.fun:.1f} start {doel(prior, train):.1f} nfev {res.nfev}", file=sys.stderr)
