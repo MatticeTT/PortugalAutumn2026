@@ -1,0 +1,38 @@
+# Kaartbasis van Portugal uit OpenStreetMap (Geofabrik): strandvlakken (pipeline/stranden_osm.py) en de kustlijn tot op de
+# meter (pipeline/kust_osm.py), zodat land, stranden en wegen op elkaar passen. Resultaat in web/public/basis.
+name: kaartbasis
+on:
+  workflow_dispatch:
+  push:
+    branches: [ccr-1fe05339-6haah2]
+    paths: ["pipeline/stranden_osm.py", "pipeline/kust_osm.py", ".github/workflows/kaartbasis.yml"]
+permissions:
+  contents: write
+jobs:
+  basis:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: sudo apt-get install -y -qq osmium-tool && pip install -q shapely
+      - name: OpenStreetMap Portugal (Geofabrik)
+        run: curl -sSfL --retry 3 -o pt.osm.pbf https://download.geofabrik.de/europe/portugal-latest.osm.pbf
+      - name: Stranden
+        run: |
+          osmium tags-filter pt.osm.pbf wa/natural=beach -o strand.osm.pbf
+          osmium export strand.osm.pbf -f geojson -o strand.geojson --geometry-types=polygon
+          python pipeline/stranden_osm.py strand.geojson web/public/basis/stranden.geojson
+      - name: Kustlijn
+        run: |
+          osmium tags-filter pt.osm.pbf w/natural=coastline -o kust.osm.pbf
+          osmium export kust.osm.pbf -f geojson -o kust.geojson --geometry-types=linestring
+          python -m pipeline.kust_osm --kust kust.geojson --gshhg web/public/basis/land-fijn.geojson --uit web/public/basis
+          ls -la web/public/basis
+      - name: Committen
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add web/public/basis/stranden.geojson web/public/basis/land-osm.geojson && git commit -q -m "Kaartbasis uit OpenStreetMap (stranden, kustlijn)" || exit 0
+          for i in 1 2 3; do git pull --rebase -q && git push -q && break; sleep 5; done
