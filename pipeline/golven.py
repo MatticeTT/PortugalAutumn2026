@@ -85,18 +85,22 @@ class Regio:
                      "deg": round(float(lon[1] - lon[0]), 8), "w": int(len(lon)), "h": int(len(lat))}
         if abs(abs(lat[1] - lat[0]) - self.meta["deg"]) > 1e-6:
             raise RuntimeError("IBI-rooster niet vierkant")
-        self.tijden = {np.datetime64(t, "s").astype(dt.datetime).replace(tzinfo=dt.UTC) for t in self.ds["time"].values}
+        tijden = [np.datetime64(t, "s").astype(dt.datetime).replace(tzinfo=dt.UTC) for t in self.ds["time"].values]
+        self.index = {t: k for k, t in enumerate(tijden)}
+        self.tijden = set(tijden)
+        # Het vak is klein (151 x 209 cellen): alles in één keer lezen gaat veel sneller dan per tijdstip.
+        self.velden_ = {v: np.asarray(self.ds[v].values, dtype=np.float32) for v in SYSTEMEN["swell"]}
 
     def heeft(self, t: dt.datetime) -> bool:
         return t in self.tijden
 
     def velden(self, t: dt.datetime) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
         """Hoogte, richting (vandaan) en piekperiode van de deining."""
-        tt = np.datetime64(t.replace(tzinfo=None), "ns")
-        h, d, tm = (np.asarray(self.ds[v].sel(time=tt).values, dtype=np.float32) for v in SYSTEMEN["swell"])
+        k = self.index[t]
+        h, d, tm = (self.velden_[v][k] for v in SYSTEMEN["swell"])
         if self.omkeren:
             h, d, tm = h[::-1], d[::-1], tm[::-1]
-        return h, d, tm / TM01_GEDEELD_DOOR_TP
+        return h.copy(), d.copy(), tm / TM01_GEDEELD_DOOR_TP
 
 
 def _som3(x: np.ndarray) -> np.ndarray:
