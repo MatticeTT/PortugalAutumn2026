@@ -95,6 +95,10 @@ export function dagNaam(d: Date, lang = false) {
 }
 
 export const rond = (x: number) => Math.floor(x + 0.5) // ,5 naar boven (regels)
+/** Score op één decimaal (4,45 wordt 4,5), zoals de app hem toont; vanaf 4,5 is het een top (donkergroen). */
+export const een = (x: number) => Math.floor(x * 10 + 0.5) / 10
+export const komma = (x: number) => een(x).toLocaleString('nl-NL', { minimumFractionDigits: 1, maximumFractionDigits: 1 })
+export const isTop = (x: number) => een(x) >= 4.5
 export const woordScore = (s: number) => (rond(s) >= 5 ? 'TOP' : rond(s) >= 4 ? 'GOED' : '')
 
 /** Goede tijdvakken op een dag voor de gekozen planken: [plank, vak][], beste eerst. */

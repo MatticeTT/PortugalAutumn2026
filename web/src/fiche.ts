@@ -2,7 +2,7 @@
 // zichtbaar). Bovenaan het antwoord, dan per plank een tegel met de uren, de dag per uur en waarom.
 
 import {
-  dagNaam, dagSleutel, esc, EXPERT, golfWoord, kompas, krachtWoord, PLANKEN, rond, routeLink, SOORT, uur, vakkenOpDag,
+  dagNaam, dagSleutel, esc, EXPERT, golfWoord, isTop, kompas, komma, krachtWoord, PLANKEN, rond, routeLink, SOORT, uur, vakkenOpDag,
   windWoord, type SpotData, type SpotDetail, type SpotKort,
 } from './spots'
 import { kompasLegende, kompasSvg } from './kompas'
@@ -14,7 +14,7 @@ const GEVAAR: Record<string, string> = {
   ondiep: 'Ondiep rif of rotsen bij laag water', stroming: 'Sterke stroming', strekdam: 'Strekdam: terugslag bij hoog water',
   pier: 'Pier vlakbij', closeout: 'Golven klappen bij grote deining snel dicht',
 }
-export const kleur = (s: number) => (rond(s) >= 5 ? ['var(--s5)', 'var(--s5t)'] : ['var(--s4)', 'var(--s4t)'])
+export const kleur = (s: number) => (isTop(s) ? ['var(--s5)', 'var(--s5t)'] : ['var(--s4)', 'var(--s4t)'])
 
 export interface FicheOpties {
   data: SpotData
@@ -78,7 +78,7 @@ export class Fiche {
     if (vakken.length) {
       const [, [van, tot, g]] = vakken[0]
       return `<div class="conclusie" style="--kleur:${kleur(g)[0]}"><p>Ja, ga surfen: ${uur(van)} – ${uur(tot)}</p>
-        <small>${rond(g) >= 5 ? 'Top' : 'Goed'} (${rond(g)} van 5) met ${PLANKEN[vakken[0][0]]}</small></div>`
+        <small>${isTop(g) ? 'Top' : 'Goed'} (${komma(g)} van 5) met ${PLANKEN[vakken[0][0]]}</small></div>`
     }
     const later = this.o.dagen().filter((x) => x > dag).map((x) => [x, vakkenOpDag(s, x, this.o.planken())[0]] as const).find(([, v]) => v)
     return `<div class="conclusie"><p>Nee, ${dag === dagSleutel(new Date()) ? 'vandaag' : 'deze dag'} niet goed</p>
@@ -92,7 +92,7 @@ export class Fiche {
     for (const [p, v] of vakken) if (!per.has(p)) per.set(p, v)
     return [...per].slice(0, 4).map(([p, [van, tot, g]]) => {
       const [k, t] = kleur(g)
-      return `<div class="tegel" style="--kleur:${k};--tekstkleur:${t}"><span class="soort">${PLANKEN[p]}</span><b>${rond(g)}</b>
+      return `<div class="tegel" style="--kleur:${k};--tekstkleur:${t}"><span class="soort">${PLANKEN[p]}</span><b>${komma(g)}</b>
         <span class="betekenis">${uur(van)} – ${uur(tot)}</span></div>`
     }).join('')
   }

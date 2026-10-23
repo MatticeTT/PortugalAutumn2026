@@ -2,7 +2,7 @@
 // met een foto, de uren en de rijtijd, en de andere goede spots eronder.
 
 import { kleur } from './fiche'
-import { besteOpDag, dagSleutel, esc, PLANKEN, rond, uur, vakkenOpDag, type SpotIndex, type SpotKort } from './spots'
+import { besteOpDag, dagSleutel, een, esc, komma, PLANKEN, uur, vakkenOpDag, type SpotIndex, type SpotKort } from './spots'
 import { rijTekst, type Verblijf } from './verblijf'
 
 const dagFmt = new Intl.DateTimeFormat('nl-NL', { weekday: 'short' })
@@ -44,9 +44,9 @@ export function toonPlanning(box: HTMLElement, o: PlanningOpties) {
     const perGroep = new Map<number, (typeof goed)[number]>()
     for (const x of goed) {
       const y = perGroep.get(x.s.groep)
-      if (!y || rond(x.best) > rond(y.best) || (rond(x.best) === rond(y.best) && (o.rijtijd(x.s.id) ?? 0) < (o.rijtijd(y.s.id) ?? 0))) perGroep.set(x.s.groep, x)
+      if (!y || een(x.best) > een(y.best) || (een(x.best) === een(y.best) && (o.rijtijd(x.s.id) ?? 0) < (o.rijtijd(y.s.id) ?? 0))) perGroep.set(x.s.groep, x)
     }
-    const lijst = [...perGroep.values()].sort((a, b) => rond(b.best) - rond(a.best) || (o.rijtijd(a.s.id) ?? 0) - (o.rijtijd(b.s.id) ?? 0) || b.best - a.best)
+    const lijst = [...perGroep.values()].sort((a, b) => een(b.best) - een(a.best) || (o.rijtijd(a.s.id) ?? 0) - (o.rijtijd(b.s.id) ?? 0) || b.best - a.best)
     return { dag, lijst }
   })
   const kaart = (dag: string, lijst: (typeof dagen)[number]['lijst']) => {
@@ -61,14 +61,14 @@ export function toonPlanning(box: HTMLElement, o: PlanningOpties) {
       <figure data-id="${eerste.s.id}" data-dag="${dag}"><img src="./foto/golfsurfen.webp" alt="" loading="lazy">
         <figcaption>
           <span class="datumlijn"><b>${dagFmt.format(d).replace('.', '').toUpperCase()} ${d.getDate()}</b>${maandFmt.format(d).replace('.', '')}</span>
-          <span class="cijfer">${rond(eerste.best)}</span>
+          <span class="cijfer">${komma(eerste.best)}</span>
           <span class="wat">Surfen · ${PLANKEN[eerste.vak[0]]}</span>
           <span class="uren">${uur(eerste.vak[1][0])}–${uur(eerste.vak[1][1])}</span>
           <span class="waar"><b>${esc(eerste.s.naam)}</b>${rij(eerste.s) ? `<em>${rijTekst(rij(eerste.s)!)} rijden</em>` : ''}</span>
         </figcaption></figure>
       ${rest.length ? `<div class="onder">${rest.slice(0, 4).map((x) => {
         const [k2, t2] = kleur(x.best)
-        return `<button class="linkrij" style="--kleur:${k2};--tekstkleur:${t2}" data-id="${x.s.id}" data-dag="${dag}"><i>${rond(x.best)}</i>
+        return `<button class="linkrij" style="--kleur:${k2};--tekstkleur:${t2}" data-id="${x.s.id}" data-dag="${dag}"><i>${komma(x.best)}</i>
           <span><b>${esc(x.s.naam)}</b><small>${PLANKEN[x.vak[0]]} · ${uur(x.vak[1][0])}–${uur(x.vak[1][1])}${rij(x.s) ? ` · ${rijTekst(rij(x.s)!)} rijden` : ''}</small></span></button>`
       }).join('')}</div>` : ''}
     </article>`

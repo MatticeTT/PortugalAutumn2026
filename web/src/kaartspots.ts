@@ -4,7 +4,7 @@
 // inzoomt, hoe meer stranden. Ingezoomd ook de namen.
 
 import maplibregl from 'maplibre-gl'
-import { besteOpDag, dagCijfer, esc, rond, type SpotIndex, type SpotKort } from './spots'
+import { besteOpDag, dagCijfer, esc, een, komma, type SpotIndex, type SpotKort } from './spots'
 
 const NAMEN_VANAF_ZOOM = 9
 
@@ -35,7 +35,7 @@ export class KaartSpots {
     if (!index) return
     for (const s of index.spots) {
       const goed = besteOpDag(s, this.dag, this.planken)
-      const cijfer = goed ? rond(goed) : rond(dagCijfer(s, this.dag, this.planken, index.planken))
+      const cijfer = een(goed || dagCijfer(s, this.dag, this.planken, index.planken))
       let x = this.markers.get(s.id)
       if (!x) {
         const el = document.createElement('button')
@@ -44,15 +44,15 @@ export class KaartSpots {
           e.stopPropagation()
           this.open(s)
         })
-        x = { m: new maplibregl.Marker({ element: el, anchor: 'left', offset: [-14, 0] }).setLngLat([s.lon, s.lat]).addTo(this.map), prio: 0 }
+        x = { m: new maplibregl.Marker({ element: el, anchor: 'left' }).setLngLat([s.lon, s.lat]).addTo(this.map), prio: 0 }
         this.markers.set(s.id, x)
       }
       const el = x.m.getElement()
       // Alleen onze eigen klassen wisselen: die van MapLibre (maplibregl-marker ...) zetten het bolletje op zijn plaats.
       el.classList.remove('s4', 's5', 'grijs')
-      el.classList.add('spot', goed ? (cijfer >= 5 ? 's5' : 's4') : 'grijs')
-      el.innerHTML = `<b>${cijfer || ''}</b><span>${esc(s.naam)}</span>`
-      el.setAttribute('aria-label', `${s.naam}: ${goed ? `ga surfen, score ${cijfer}` : `niet goed (hoogste score ${cijfer || 'onbekend'})`}`)
+      el.classList.add('spot', goed ? (cijfer >= 4.5 ? 's5' : 's4') : 'grijs')
+      el.innerHTML = `<b>${cijfer ? komma(cijfer) : ''}</b><span>${esc(s.naam)}</span>`
+      el.setAttribute('aria-label', `${s.naam}: ${goed ? `ga surfen, score ${komma(cijfer)}` : `niet goed (hoogste score ${cijfer ? komma(cijfer) : 'onbekend'})`}`)
       el.setAttribute('aria-pressed', String(s.id === this.gekozen))
       x.prio = (goed ? 100 : 0) + (goed || dagCijfer(s, this.dag, this.planken, index.planken))
       el.style.zIndex = String(Math.round(x.prio))
