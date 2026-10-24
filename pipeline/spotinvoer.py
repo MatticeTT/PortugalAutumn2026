@@ -92,38 +92,62 @@ class Golfbron:
         return uit
 
 
+def _lees_reeksen(bron: "Golfbron", naam: str, spots: list[dict], idx: list[int], tijden: list[dt.datetime]):
+    """Zeecel per spot kiezen en per tijdstip de drie systemen [H, richting, Tp] lezen."""
+    punten = [((spots[n].get("startpunt") or spots[n]["kustpunt"])[1], (spots[n].get("startpunt") or spots[n]["kustpunt"])[0]) for n in idx]
+    cellen = bron.kies_cellen(punten, tijden[0])
+    ok = [(n, c) for n, c in zip(idx, cellen) if c is not None]
+    print(f"{naam}: {len(ok)}/{len(idx)} spots met een zeecel, {len(tijden)} tijdstippen", flush=True)
+    reeks = {n: {k: [] for k in VARS} for n, _ in ok}
+    t0 = time.time()
+    for m, t in enumerate(tijden):
+        w = bron.lees(t, [c for _, c in ok])
+        for q, (n, _) in enumerate(ok):
+            for k, (vh, vd, vt) in VARS.items():
+                h, d, tm = (float(w[x][q]) for x in (vh, vd, vt))
+                reeks[n][k].append(None if not np.isfinite(h) else
+                                   [round(h, 2), round(d % 360, 1) if np.isfinite(d) else None,
+                                    round(tm / golven.TM01_GEDEELD_DOOR_TP, 2) if np.isfinite(tm) else None])
+        if m % 24 == 0:
+            print(f"  {naam} {iso(t)}  {time.time() - t0:.0f} s", flush=True)
+    return ok, reeks
+
+
 def golven_per_spot(spots: list[dict], van: dt.datetime, tot: dt.datetime) -> tuple[list[dict | None], dict]:
-    """Per spot: bron, cel en per tijdstip de drie systemen [H, richting, Tp]."""
+    """Per spot: bron, cel en per tijdstip de drie systemen [H, richting, Tp].
+
+    IBI (fijn, per uur) loopt ongeveer 9 dagen vooruit, het wereldmodel MFWAM (per 3 uur) ongeveer 10. Na het laatste
+    IBI-uur vult MFWAM aan tot het einde, zodat ook de spots in het IBI-gebied 10 dagen vooruit hebben ('aangevuld')."""
     bronnen = {}
     res: list[dict | None] = [None] * len(spots)
     groepen: dict[str, list[int]] = {}
     ibi = Golfbron(IBI)
+    glo = None
     for n, s in enumerate(spots):
         p = s.get("startpunt") or s["kustpunt"]
         groepen.setdefault(IBI if ibi.binnen(p[1], p[0]) else GLO, []).append(n)
     for naam, idx in groepen.items():
-        bron = ibi if naam == IBI else Golfbron(GLO)
+        if naam == GLO and glo is None:
+            glo = Golfbron(GLO)
+        bron = ibi if naam == IBI else glo
         tijden = [t for t in bron.tijden if van <= t <= tot]
-        punten = [((spots[n].get("startpunt") or spots[n]["kustpunt"])[1], (spots[n].get("startpunt") or spots[n]["kustpunt"])[0]) for n in idx]
-        cellen = bron.kies_cellen(punten, tijden[0])
-        ok = [(n, c) for n, c in zip(idx, cellen) if c is not None]
-        print(f"{naam}: {len(ok)}/{len(idx)} spots met een zeecel, {len(tijden)} tijdstippen", flush=True)
-        reeks = {n: {k: [] for k in VARS} for n, _ in ok}
-        t0 = time.time()
-        for m, t in enumerate(tijden):
-            w = bron.lees(t, [c for _, c in ok])
-            for q, (n, _) in enumerate(ok):
-                for k, (vh, vd, vt) in VARS.items():
-                    h, d, tm = (float(w[x][q]) for x in (vh, vd, vt))
-                    reeks[n][k].append(None if not np.isfinite(h) else
-                                       [round(h, 2), round(d % 360, 1) if np.isfinite(d) else None,
-                                        round(tm / golven.TM01_GEDEELD_DOOR_TP, 2) if np.isfinite(tm) else None])
-            if m % 24 == 0:
-                print(f"  {naam} {iso(t)}  {time.time() - t0:.0f} s", flush=True)
+        ok, reeks = _lees_reeksen(bron, naam, spots, idx, tijden)
         for n, c in ok:
             res[n] = {"bron": naam, "cel": [round(float(bron.lat[c[0]]), 4), round(float(bron.lon[c[1]]), 4)],
                       "tijden": [iso(t) for t in tijden], **reeks[n]}
         bronnen[naam] = len(ok)
+        if naam == IBI and ok:
+            if glo is None:
+                glo = Golfbron(GLO)
+            extra = [t for t in glo.tijden if tijden[-1] < t <= tot]
+            if extra:
+                ok2, reeks2 = _lees_reeksen(glo, f"{GLO} (aanvulling na {iso(tijden[-1])})", spots, [n for n, _ in ok], extra)
+                for n, _ in ok2:
+                    res[n]["tijden"] += [iso(t) for t in extra]
+                    for k in VARS:
+                        res[n][k] += reeks2[n][k]
+                    res[n]["aangevuld"] = {"bron": GLO, "vanaf": iso(extra[0])}
+                bronnen[f"{GLO} aanvulling"] = len(ok2)
     return res, bronnen
 
 
